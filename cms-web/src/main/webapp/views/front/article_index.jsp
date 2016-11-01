@@ -29,7 +29,8 @@
         <div class="am-article-hd">
           <h1 class="am-article-title blog-text-center">${model.title}</h1>
           <p class="am-article-meta blog-text-center">
-              <!-- <span><a href="#" class="blog-color">article &nbsp;</a></span>- -->
+              <span> <i class="am-icon-comment blog-color"></i>&nbsp; ${model.countComment} &nbsp;</span>
+               <span> <i class="am-icon-link blog-color"></i>&nbsp; ${model.countView} &nbsp;</span>
               <span><a href="#">${model.authorName} &nbsp;</a></span>-
               <span><a href="#"><fmt:formatDate value="${model.createDate}" pattern="yyyy/MM/dd" /></a></span>
           </p>

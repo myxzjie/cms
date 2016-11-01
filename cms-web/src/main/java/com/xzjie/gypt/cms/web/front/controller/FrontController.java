@@ -103,6 +103,10 @@ public class FrontController extends BaseController {
 	private String article(Long id, Map<String, Object> modelMap) {
 		categoryService.setCategoryList(getSiteId(), modelMap);
 		Article article = articleService.get(id);
+		
+		//访问量
+		articleService.updateAccess(id);
+		
 		article.setContent(this.unescapeHtml4(article.getContent()));
 		modelMap.put("model", article);
 		return "front/article_index";

@@ -3,6 +3,8 @@ package com.xzjie.gypt.cms.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import com.xzjie.gypt.common.page.PageEntity;
 
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private ArticleMapper articleMapper;
@@ -148,6 +151,26 @@ public class ArticleServiceImpl implements ArticleService {
 		record.setRecord(article);
 		
 		return articleMapper.findListPage(record);
+	}
+
+	@Override
+	public void updateAccess(Long articleId) {
+		Article article=new Article();
+		Integer countView=1;
+		article.setArticleId(articleId);
+		
+		Article record  = articleMapper.getById(articleId);
+		if(record==null){
+			logger.error("update access number error: query Article object null. articleId="+articleId);
+			return ;
+		}
+		
+		if(record.getCountView()!=null)
+			countView=record.getCountView()+1;
+		
+		article.setCountView(countView);
+		
+		articleMapper.update(article);
 	}
 
 }

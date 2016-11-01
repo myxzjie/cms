@@ -17,4 +17,10 @@ public interface ArticleService extends BaseService<Article, Long>{
 	List<Article> sliderList(Article record);
 	
 	List<Article> getContentBySiteId(Long siteId);
+	
+	/**
+	 * 修改访问量
+	 * @param articleId
+	 */
+	void updateAccess(Long articleId);
 }
