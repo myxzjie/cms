@@ -3,3 +3,5 @@
 /.project
 /.settings
 /cms-web/doc/generator
+/cms-web/doc/.gitignore
+/cms-web/env/.gitignore
