@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzjie.gypt.system.dao.UploadMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.Upload" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="upload_file_name" property="uploadFileName" jdbcType="VARCHAR" />
+    <result column="web_url" property="webUrl" jdbcType="VARCHAR" />
+    <result column="uri_path" property="uriPath" jdbcType="VARCHAR" />
+    <result column="createDete" property="createdete" jdbcType="TIMESTAMP" />
+    <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="stype" property="stype" jdbcType="INTEGER" />
+    <result column="file_size" property="fileSize" jdbcType="DOUBLE" />
+    <result column="their_type" property="theirType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, file_name, upload_file_name, web_url, uri_path, createDete, updateDate, stype, 
+    file_size, their_type
+  </sql>
+  
+  <select id="findListPage" resultMap="BaseResultMap" parameterType="PageEntity">
+  	select
+	<include refid="Base_Column_List" />
+	from sys_upload
+	where 1=1
+  </select>
+ <!--  <if test="record.stype != null">
+	and stype = #{record.stype,jdbcType=CHAR}
+	</if>
+	<if test="record.name != null">
+	and name like '${record.name}%'
+	</if> -->
+  
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_upload
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_upload
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Upload" >
+    insert into sys_upload (id, file_name, upload_file_name, 
+      web_url, uri_path, createDete, 
+      updateDate, stype, file_size, 
+      their_type)
+    values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{uploadFileName,jdbcType=VARCHAR}, 
+      #{webUrl,jdbcType=VARCHAR}, #{uriPath,jdbcType=VARCHAR}, #{createdete,jdbcType=TIMESTAMP}, 
+      #{updatedate,jdbcType=TIMESTAMP}, #{stype,jdbcType=INTEGER}, #{fileSize,jdbcType=DOUBLE}, 
+      #{theirType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.gypt.system.model.Upload" >
+    insert into sys_upload
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="uploadFileName != null" >
+        upload_file_name,
+      </if>
+      <if test="webUrl != null" >
+        web_url,
+      </if>
+      <if test="uriPath != null" >
+        uri_path,
+      </if>
+      <if test="createdete != null" >
+        createDete,
+      </if>
+      <if test="updatedate != null" >
+        updateDate,
+      </if>
+      <if test="stype != null" >
+        stype,
+      </if>
+      <if test="fileSize != null" >
+        file_size,
+      </if>
+      <if test="theirType != null" >
+        their_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadFileName != null" >
+        #{uploadFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        #{webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="uriPath != null" >
+        #{uriPath,jdbcType=VARCHAR},
+      </if>
+      <if test="createdete != null" >
+        #{createdete,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stype != null" >
+        #{stype,jdbcType=INTEGER},
+      </if>
+      <if test="fileSize != null" >
+        #{fileSize,jdbcType=DOUBLE},
+      </if>
+      <if test="theirType != null" >
+        #{theirType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.gypt.system.model.Upload" >
+    update sys_upload
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadFileName != null" >
+        upload_file_name = #{uploadFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        web_url = #{webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="uriPath != null" >
+        uri_path = #{uriPath,jdbcType=VARCHAR},
+      </if>
+      <if test="createdete != null" >
+        createDete = #{createdete,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null" >
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stype != null" >
+        stype = #{stype,jdbcType=INTEGER},
+      </if>
+      <if test="fileSize != null" >
+        file_size = #{fileSize,jdbcType=DOUBLE},
+      </if>
+      <if test="theirType != null" >
+        their_type = #{theirType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.Upload" >
+    update sys_upload
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      upload_file_name = #{uploadFileName,jdbcType=VARCHAR},
+      web_url = #{webUrl,jdbcType=VARCHAR},
+      uri_path = #{uriPath,jdbcType=VARCHAR},
+      createDete = #{createdete,jdbcType=TIMESTAMP},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      stype = #{stype,jdbcType=INTEGER},
+      file_size = #{fileSize,jdbcType=DOUBLE},
+      their_type = #{theirType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

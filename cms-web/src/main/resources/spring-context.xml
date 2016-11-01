@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util-4.0.xsd 
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+	<!-- 引入属性文件 多个加 ignore-unresolvable="true" -->
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:jdbc.properties" />
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:config.properties" />
+	<!-- <context:property-placeholder ignore-unresolvable="true" location="classpath:redis.properties" 
+		/> -->
+
+
+	<!-- 自动扫描(自动注入) -->
+	<context:component-scan base-package="com.xzjie.gypt.**.service" />
+	<!-- <context:component-scan base-package="com.xzjie.gypt.common.spring" /> -->
+	<!-- <context:component-scan base-package="org.radp.xzjie.module.system.security" /> -->
+
+	<!-- 支持异步方法执行 -->
+	<task:annotation-driven />
+	
+	<!-- 导入其它spring配置文件 -->
+	<import resource="classpath:spring-cache.xml"/>
+	<import resource="classpath:spring-shiro.xml"/>
+	<import resource="classpath:spring-mybatis.xml"/> 
+</beans>

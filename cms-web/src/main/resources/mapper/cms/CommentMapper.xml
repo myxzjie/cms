@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzjie.gypt.cms.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.gypt.cms.model.Comment" >
+    <id column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="content_id" property="contentId" jdbcType="BIGINT" />
+    <result column="comment_p_id" property="commentPId" jdbcType="BIGINT" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="author" property="author" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="approve_status" property="approveStatus" jdbcType="INTEGER" />
+    <result column="approve_author" property="approveAuthor" jdbcType="BIGINT" />
+    <result column="approve_date" property="approveDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comment_id, content_id, comment_p_id, content, status, author, create_date, ip, approve_status, 
+    approve_author, approve_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from cms_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xzjie.gypt.cms.model.Comment" >
+    insert into cms_comment (comment_id, content_id, comment_p_id, 
+      content, status, author, 
+      create_date, ip, approve_status, 
+      approve_author, approve_date)
+    values (#{commentId,jdbcType=BIGINT}, #{contentId,jdbcType=BIGINT}, #{commentPId,jdbcType=BIGINT}, 
+      #{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{author,jdbcType=BIGINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, #{approveStatus,jdbcType=INTEGER}, 
+      #{approveAuthor,jdbcType=BIGINT}, #{approveDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.gypt.cms.model.Comment" >
+    insert into cms_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="contentId != null" >
+        content_id,
+      </if>
+      <if test="commentPId != null" >
+        comment_p_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="approveStatus != null" >
+        approve_status,
+      </if>
+      <if test="approveAuthor != null" >
+        approve_author,
+      </if>
+      <if test="approveDate != null" >
+        approve_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="contentId != null" >
+        #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentPId != null" >
+        #{commentPId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="approveStatus != null" >
+        #{approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approveAuthor != null" >
+        #{approveAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="approveDate != null" >
+        #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.gypt.cms.model.Comment" >
+    update cms_comment
+    <set >
+      <if test="contentId != null" >
+        content_id = #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentPId != null" >
+        comment_p_id = #{commentPId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="approveStatus != null" >
+        approve_status = #{approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approveAuthor != null" >
+        approve_author = #{approveAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="approveDate != null" >
+        approve_date = #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.cms.model.Comment" >
+    update cms_comment
+    set content_id = #{contentId,jdbcType=BIGINT},
+      comment_p_id = #{commentPId,jdbcType=BIGINT},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      author = #{author,jdbcType=BIGINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      approve_status = #{approveStatus,jdbcType=INTEGER},
+      approve_author = #{approveAuthor,jdbcType=BIGINT},
+      approve_date = #{approveDate,jdbcType=TIMESTAMP}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+</mapper>

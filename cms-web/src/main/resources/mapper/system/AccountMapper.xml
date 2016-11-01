@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzjie.gypt.system.dao.AccountMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.Account" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="e_mail" property="eMail" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="stype" property="stype" jdbcType="CHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="card" property="card" jdbcType="VARCHAR" />
+    <result column="birtn" property="birtn" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="BIGINT" />
+    <result column="locked" property="locked" jdbcType="INTEGER" />
+    <result column="org_id" property="orgId" jdbcType="BIGINT" />
+    <result column="head_portrait" property="headPortrait" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, name, nick_name, phone, e_mail, state, create_date, remarks, stype, 
+    sex, card, birtn, create_user,  locked, org_id, head_portrait
+  </sql>
+  
+  <select id="findListPage" resultMap="BaseResultMap" parameterType="PageEntity">
+  	select
+	<include refid="Base_Column_List" />
+	from sys_account
+	where state=1
+	<if test="record.stype != null">
+	and stype = #{record.stype,jdbcType=CHAR}
+	</if>
+	<if test="record.name != null">
+	and name like '${record.name}%'
+	</if>
+  </select>
+  
+  <select id="getEntity" resultMap="BaseResultMap" parameterType="com.xzjie.gypt.system.model.Account">
+	select
+	<include refid="Base_Column_List" />
+	,password
+	,salt
+	from sys_account
+	where state=1
+	and stype = #{stype,jdbcType=CHAR}
+	<if test="name != null">
+		and name = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="phone != null">
+		and phone = #{phone,jdbcType=VARCHAR}
+	</if>
+	<if test="eMail != null">
+		and e_mail = #{eMail,jdbcType=VARCHAR}
+	</if>
+  </select>
+  
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_account
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_account
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+ <!--  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Account" >
+    insert into sys_account (user_id, name, nick_name, 
+      phone, e_mail, password, 
+      state, create_date, remarks, 
+      stype, sex, card, birtn, 
+      create_user, locked, org_id, 
+      head_portrait)
+    values (#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{eMail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{stype,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{card,jdbcType=VARCHAR}, #{birtn,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=BIGINT}, #{locked,jdbcType=INTEGER}, #{orgId,jdbcType=BIGINT}, 
+      #{headPortrait,jdbcType=VARCHAR})
+  </insert> -->
+  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Account" useGeneratedKeys="true" keyProperty="userId">
+    insert into sys_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="eMail != null" >
+        e_mail,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="stype != null" >
+        stype,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="card != null" >
+        card,
+      </if>
+      <if test="birtn != null" >
+        birtn,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="locked != null" >
+        locked,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="headPortrait != null" >
+        head_portrait,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null" >
+        #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+       <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="stype != null" >
+        #{stype,jdbcType=CHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="card != null" >
+        #{card,jdbcType=VARCHAR},
+      </if>
+      <if test="birtn != null" >
+        #{birtn,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="locked != null" >
+        #{locked,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="headPortrait != null" >
+        #{headPortrait,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.xzjie.gypt.system.model.Account" >
+    update sys_account
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null" >
+        e_mail = #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="stype != null" >
+        stype = #{stype,jdbcType=CHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="card != null" >
+        card = #{card,jdbcType=VARCHAR},
+      </if>
+      <if test="birtn != null" >
+        birtn = #{birtn,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="locked != null" >
+        locked = #{locked,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="headPortrait != null" >
+        head_portrait = #{headPortrait,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.Account" >
+    update sys_account
+    set name = #{name,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      e_mail = #{eMail,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      stype = #{stype,jdbcType=CHAR},
+      sex = #{sex,jdbcType=CHAR},
+      card = #{card,jdbcType=VARCHAR},
+      birtn = #{birtn,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=BIGINT},
+      locked = #{locked,jdbcType=INTEGER},
+      org_id = #{orgId,jdbcType=BIGINT},
+      head_portrait = #{headPortrait,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>
