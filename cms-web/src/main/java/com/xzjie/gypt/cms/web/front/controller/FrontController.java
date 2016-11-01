@@ -99,13 +99,20 @@ public class FrontController extends BaseController {
 		return "front/category_index";
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param modelMap
+	 * @return
+	 */
 	@RequestMapping(value = "article")
 	private String article(Long id, Map<String, Object> modelMap) {
-		categoryService.setCategoryList(getSiteId(), modelMap);
-		Article article = articleService.get(id);
-		
+		//TODO 可以优化
 		//访问量
 		articleService.updateAccess(id);
+		
+		categoryService.setCategoryList(getSiteId(), modelMap);
+		Article article = articleService.get(id);
 		
 		article.setContent(this.unescapeHtml4(article.getContent()));
 		modelMap.put("model", article);
