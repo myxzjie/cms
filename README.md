@@ -4,6 +4,7 @@
 spring4 + shrio + ehcache + mybatis + MYSQL + H-ui.admin + Amaze UI
 
 
+
 在项目上有什么问题或bug ，可以联系：
 QQ群：203498970
 个人QQ:513961835
