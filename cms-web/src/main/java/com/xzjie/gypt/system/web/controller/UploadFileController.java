@@ -28,18 +28,6 @@ import sun.misc.BASE64Decoder;
 @RequestMapping("upload")
 public class UploadFileController {
 
-	private static String uploadImageDirectory = WebUtils.getUploadImageDirectory();
-
-	private static String uploadImageWeb = WebUtils.getUploadImageWeb();
-
-	private static Long uploadImgageMaxSize = WebUtils.getUploadImgageMaxSize();
-
-	private static String uploadImgageExts = WebUtils.getUploadImgageExts();
-
-	private static String uploadFileExts = WebUtils.getUploadFileExts();
-
-	private static Long uploadFileMaxSize = WebUtils.getUploadFileMaxSize();
-
 	@Autowired
 	private UploadService uploadService;
 
@@ -54,17 +42,17 @@ public class UploadFileController {
 
 		String suffix = "." + type.substring(type.lastIndexOf("/") + 1);
 
-		if (!isValid(suffix, uploadImgageExts.split(","))) {// 检测图片类型
-			return MapResult.mapError("上传失败，图片类型为:" + uploadImgageExts);
+		if (!isValid(suffix, WebUtils.getUploadImgageExts().split(","))) {// 检测图片类型
+			return MapResult.mapError("上传失败，图片类型为:" + WebUtils.getUploadImgageExts());
 		}
 
-		if (entity.getFileSize() > uploadImgageMaxSize) {
-			return MapResult.mapError("上传失败：文件大小不能超过[" + uploadImgageMaxSize / (1024 * 1024) + "M]");
+		if (entity.getFileSize() > WebUtils.getUploadImgageMaxSize()) {
+			return MapResult.mapError("上传失败：文件大小不能超过[" + WebUtils.getUploadImgageMaxSize() / (1024 * 1024) + "M]");
 		}
 
 		String fileName = System.currentTimeMillis() + "_" + DateUtils.getRandom(6) + suffix;
 
-		String path = uploadImageDirectory + dir;
+		String path = WebUtils.getUploadImageDirectory() + dir;
 
 		String filePath = path + fileName;
 
@@ -73,7 +61,7 @@ public class UploadFileController {
 		try {
 			ImageBase64Utils.base64ToImageFile(base64, filePath);
 
-			String weburl = uploadImageWeb + dir + fileName;
+			String weburl = WebUtils.getUploadImageWeb() + dir + fileName;
 
 			entity.setFileName(fileName);
 			entity.setWebUrl(weburl);
@@ -103,12 +91,12 @@ public class UploadFileController {
 				// 获得文件后缀名
 				String suffix = multipartFile.getOriginalFilename()
 						.substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-				if (!isValid(suffix, uploadImgageExts.split(","))) {// 检测图片类型
-					return MapResult.mapError("上传失败，图片类型为:" + uploadImgageExts);
+				if (!isValid(suffix, WebUtils.getUploadImgageExts().split(","))) {// 检测图片类型
+					return MapResult.mapError("上传失败，图片类型为:" + WebUtils.getUploadImgageExts());
 				}
 				Long fileSize = multipartFile.getSize();
-				if (fileSize > uploadImgageMaxSize) {
-					return MapResult.mapError("上传失败：文件大小不能超过[" + uploadImgageMaxSize / (1024 * 1024) + "M]");
+				if (fileSize > WebUtils.getUploadImgageMaxSize()) {
+					return MapResult.mapError("上传失败：文件大小不能超过[" + WebUtils.getUploadImgageMaxSize() / (1024 * 1024) + "M]");
 				}
 
 				if (dir == null) {
@@ -123,7 +111,7 @@ public class UploadFileController {
 				String fileName = System.currentTimeMillis() + "_" + DateUtils.getRandom(6) + suffix;
 				;
 
-				String path = uploadImageDirectory + dir;
+				String path = WebUtils.getUploadImageDirectory() + dir;
 				String filePath = path + fileName;
 
 				setMkdir(path);
@@ -164,13 +152,13 @@ public class UploadFileController {
 				// 获得文件后缀名
 				String suffix = multipartFile.getOriginalFilename()
 						.substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-				if (!isValid(suffix, uploadFileExts.split(","))) {// 检测图片类型
-					return MapResult.mapError(RspCode.R99999, "上传失败，文件类型为:" + uploadFileExts);
+				if (!isValid(suffix, WebUtils.getUploadFileExts().split(","))) {// 检测图片类型
+					return MapResult.mapError(RspCode.R99999, "上传失败，文件类型为:" + WebUtils.getUploadFileExts());
 				}
 				Long fileSize = multipartFile.getSize();
-				if (fileSize > uploadFileMaxSize) {
+				if (fileSize > WebUtils.getUploadFileMaxSize()) {
 					return MapResult.mapError(RspCode.R99999,
-							"上传失败：文件大小不能超过[" + uploadFileMaxSize / (1024 * 1024) + "M]");
+							"上传失败：文件大小不能超过[" + WebUtils.getUploadFileMaxSize() / (1024 * 1024) + "M]");
 				}
 
 				if (dir == null) {
@@ -185,14 +173,14 @@ public class UploadFileController {
 				String fileName = System.currentTimeMillis() + "_" + DateUtils.getRandom(6) + suffix;
 				;
 
-				String path = uploadImageDirectory + dir;
+				String path = WebUtils.getUploadImageDirectory() + dir;
 				String filePath = path + fileName;
 
 				setMkdir(path);
 
 				multipartFile.transferTo(new File(filePath));
 
-				String weburl = uploadImageWeb + dir + fileName;
+				String weburl = WebUtils.getUploadImageWeb() + dir + fileName;
 
 				Upload entity = new Upload();
 				entity.setFileName(fileName);
