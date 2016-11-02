@@ -11,6 +11,10 @@ spring4 + shrio + ehcache + mybatis + MYSQL + H-ui.admin + Amaze UI
 
 #3.MYSQL数据模型：
 
+![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093504_7ea0e4a1_411145.png "数据库模型1")
+
+![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093601_a87043e3_411145.png "数据库模型2")
+
 #4.项目地址
 
 http://120.25.240.110/
