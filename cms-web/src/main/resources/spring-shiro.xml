@@ -128,6 +128,10 @@
 	
 	<bean id="cmsFilter" class="com.xzjie.gypt.cms.interceptor.CMSFilter">
 	</bean>
+	
+	<bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+		<property name="redirectUrl" value="/login" />
+	</bean>
     
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -141,6 +145,7 @@
                 <entry key="systemPathMatchingFilter" value-ref="systemPathMatchingFilter"/>
                 <entry key="cms" value-ref="cmsFilter"/>
                 <entry key="cros" value-ref="crosFilter" />
+                <entry key="logout" value-ref="logout" />
             </util:map>
         </property>
         <property name="filterChainDefinitions">
