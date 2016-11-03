@@ -133,6 +133,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/index" />
         <property name="unauthorizedUrl" value="/unauthorized.jsp" />
         <property name="filters">
             <util:map>
@@ -164,6 +165,7 @@
                 /role/** = roles[administrator]
                 /resource/save = roles[administrator]
                 /resource/update = roles[administrator]
+                /index = user
                 <!-- /** = user -->
             </value>
         </property>

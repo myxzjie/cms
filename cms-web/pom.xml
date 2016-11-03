@@ -325,9 +325,24 @@
 	<build>
 		<finalName>cms-web</finalName>
 		<plugins>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
-				<configuration> <testFailureIgnore>true</testFailureIgnore> </configuration> 
-				</plugin> -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<port>8080</port>
+					<path>/cms-web</path>
+					<uriEncoding>UTF-8</uriEncoding>
+					<server>tomcat7</server>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -338,123 +353,7 @@
 				</configuration>
 			</plugin>
 			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>com.google.javascript</groupId>
-									<artifactId>closure-compiler</artifactId>
-									<version>r1810</version>
-									<type>jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${project.build.directory}/compressor</outputDirectory>
-									<destFileName>closure-compiler.jar</destFileName>
-								</artifactItem>
-								<artifactItem>
-									<groupId>com.yahoo.platform.yui</groupId>
-									<artifactId>yuicompressor</artifactId>
-									<version>2.4.7</version>
-									<type>jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${project.build.directory}/compressor</outputDirectory>
-									<destFileName>yuicompressor.jar</destFileName>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<tasks>
-								<echo message="开始压缩 JS 文件. 请耐心等待！" />
-								<property name="yuicompressor"
-									value="${project.build.directory}/compressor/yuicompressor.jar" />
-								<property name="closure-compiler"
-									value="${project.build.directory}/compressor/closure-compiler.jar" />
-								<property name="css.compress.directory"
-									value="${project.build.directory}/${project.build.finalName}/resources" />
-								<property name="js.compress.directory" value="${css.compress.directory}" />
-
-								<echo message="============开始压缩 CSS 文件. 请耐心等待！================" />
-								<apply executable="java" parallel="false" failonerror="true"
-									dest="${css.compress.directory}">
-									<fileset dir="${css.compress.directory}">
-										<include name="**/*.css" />
-										<exclude name="**/*.min.css" />
-										<exclude name="**/*-min.css" />
-										<exclude name="**/layer.css" />
-									</fileset>
-									<arg line="-jar" />
-									<arg path="${yuicompressor}" />
-									<arg line="--charset UTF-8" />
-									<arg value="--type" />
-									<arg value="css" />
-									<srcfile />
-									<arg line="-o" />
-									<targetfile />
-									<mapper type="regexp" from="^(.*)\.(css)$" to="\1-min.\2" />
-								</apply>
-								<move todir="${css.compress.directory}">
-									<fileset dir="${css.compress.directory}" includes="**/*.css" />
-									<mapper type="regexp" from="^(.*)-min\.(css)$" to="\1.\2" />
-								</move>
-
-								<echo message="======================成功压缩 CSS 文件==================" />
-
-								<echo message="======================开始压缩 js 文件. 请耐心等待！================" />
-								<apply executable="java" parallel="false" failonerror="true"
-									dest="${css.compress.directory}">
-									<fileset dir="${css.compress.directory}">
-										<include name="**/*.js" />
-										<exclude name="**/*.min.js" />
-										<exclude name="**/*-min.js" />
-										<exclude name="**/webuploader.fis.js" />
-									</fileset>
-									<arg line="-jar" />
-									<arg path="${yuicompressor}" />
-									<arg line="--charset UTF-8" />
-									<arg value="--type" />
-									<arg value="js" />
-									<srcfile />
-									<arg line="-o" />
-									<targetfile />
-									<mapper type="regexp" from="^(.*)\.(js)$" to="\1-min.\2" />
-								</apply>
-								<move todir="${css.compress.directory}">
-									<fileset dir="${css.compress.directory}" includes="**/*.js" />
-									<mapper type="regexp" from="^(.*)-min\.(js)$" to="\1.\2" />
-								</move>
-								<echo message="======================成功压缩 js 文件==================" />
-								
-								<war destfile="${project.build.directory}/${project.build.finalName}-compress.war" >
-							         <fileset dir="${project.build.directory}/${project.build.finalName}" />
-							    </war>
-							</tasks>
-							
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

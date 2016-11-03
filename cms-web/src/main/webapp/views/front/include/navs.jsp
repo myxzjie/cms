@@ -2,7 +2,7 @@
 <input id="uploadImageWeb" type="hidden" value="${uploadImageWeb}">
 <div class="am-g am-g-fixed blog-fixed ">
 <h1 class="am-topbar-brand">
-  <a href="#">${site.siteName}</a>
+  <a href="${ctx_front}/index?cid=${site.siteId}">${site.siteName}</a>
 </h1>
 
 <!-- nav start am-g am-g-fixed blog-fixed-->
