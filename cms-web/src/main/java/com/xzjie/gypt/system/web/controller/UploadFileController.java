@@ -24,6 +24,8 @@ import com.xzjie.gypt.system.web.WebUtils;
 
 import sun.misc.BASE64Decoder;
 
+
+@SuppressWarnings("restriction")
 @Controller
 @RequestMapping("upload")
 public class UploadFileController {
@@ -96,7 +98,8 @@ public class UploadFileController {
 				}
 				Long fileSize = multipartFile.getSize();
 				if (fileSize > WebUtils.getUploadImgageMaxSize()) {
-					return MapResult.mapError("上传失败：文件大小不能超过[" + WebUtils.getUploadImgageMaxSize() / (1024 * 1024) + "M]");
+					return MapResult
+							.mapError("上传失败：文件大小不能超过[" + WebUtils.getUploadImgageMaxSize() / (1024 * 1024) + "M]");
 				}
 
 				if (dir == null) {

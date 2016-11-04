@@ -186,6 +186,50 @@ public class AccountServiceImpl implements AccountService{
 		}
 		return entity;
 	}
+	
+	@Override
+	public boolean changePassword(Long userId, String password, String newPass) throws Exception  {
+		Account changeAccount=new Account();
+		Account record=new Account();
+		
+		record.setUserId(userId);
+		
+		Account account =accountMapper.getEntity(record);
+		
+		String pass=account.getPassword();
+		
+		account.setPassword(password);//明文 旧密码
+		
+		if(!passwordHelper.verifyPassword(account, pass)){
+			throw new Exception("旧密码错误");
+		}
+		
+		account.setPassword(newPass);//明文 新密码
+		passwordHelper.encryptPassword(account);
+		
+		changeAccount.setUserId(userId);
+		changeAccount.setPassword(account.getPassword());
+		changeAccount.setSalt(account.getSalt());
+		
+		return this.update(changeAccount);
+	}
+	
+	@Override
+	public boolean resetPassword(Long userId) {
+		Account record=new Account();
+		record.setUserId(userId);
+		
+		Account account =accountMapper.getEntity(record);
+		
+		account.setPassword(ConstantsUtils.DEFAULT_PASSWORD);
+		
+		passwordHelper.encryptPassword(account);
+		
+		record.setPassword(account.getPassword());
+		record.setSalt(account.getSalt());
+		
+		return this.update(record);
+	}
 
 	
 

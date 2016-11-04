@@ -30,4 +30,20 @@ public interface AccountService extends BaseService<Account, Long>{
 	void update(AccountEntity parameter);
 	
 	AccountEntity getAccount(Long userId);
+	
+	/**
+	 * 修改密码
+	 * @param userId
+	 * @param newPass
+	 * @return
+	 * @throws Exception 
+	 */
+	boolean changePassword(Long userId, String password, String newPassword) throws Exception;
+	
+	/**
+	 * 重置密码
+	 * @param userId
+	 * @return
+	 */
+	boolean resetPassword(Long userId);
 }

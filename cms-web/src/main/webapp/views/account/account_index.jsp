@@ -29,6 +29,7 @@
 	<span class="l"><!-- bg-1 bk-gray mt-20 -->
 	<a href="javascript:;" onclick="tgridObj.add();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
 	<a href="javascript:;" onclick="tgridObj.edit();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe60c;</i> 编辑</a>
+	<a href="javascript:;" onclick="tgridObj.resetpwd();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe60c;</i> 重置密码</a>
 	<a href="javascript:;" onclick="tgridObj.unlocked();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe605;</i>解锁</a> 
 	<a href="javascript:;" onclick="tgridObj.locked();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe60e;</i> 锁定</a>
 	<a href="javascript:;" onclick="tgridObj.del();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe605;</i>删除</a> 
@@ -206,6 +207,35 @@ var tgridObj={
 			
 			var url= global.basePath+'/account/edit?id='+obj[0].userId;
 			layer_show('编辑',url,800,500);
+		},
+		resetpwd:function(){
+			var obj=$('#datatable').tgrid('getSelections');
+			
+			
+			if(obj.length!=1){
+				layer.alert('请选择一条', {icon: 7});
+				return false;
+			}
+			
+			layer.confirm('确认要重置密码？',function(index){
+				var data={};
+				data.id=obj[0].userId;
+			
+				$.ajax({
+					type: "POST",
+					data: data,
+					dataType: 'json',
+					url: global.basePath+'/account/resetpwd',
+					success: function(res){
+						if(res.success){
+							tgridObj.load();
+							layer.alert('重置密码成功!', {icon: 1});
+						}else{
+							layer.alert(res.message, {icon: 2});
+						}
+					}
+				});
+			});
 		},
 		del:function(){
 			

@@ -30,7 +30,7 @@
   	select
 	<include refid="Base_Column_List" />
 	from sys_account
-	where state=1
+	where state=1 and name != 'root'
 	<if test="record.stype != null">
 	and stype = #{record.stype,jdbcType=CHAR}
 	</if>
@@ -46,12 +46,17 @@
 	,salt
 	from sys_account
 	where state=1
+	<if test="userId != null">
+	and user_id = #{userId,jdbcType=BIGINT}
+	</if>
+	<if test="stype != null">
 	and stype = #{stype,jdbcType=CHAR}
+	</if>
 	<if test="name != null">
-		and name = #{name,jdbcType=VARCHAR}
+	and name = #{name,jdbcType=VARCHAR}
 	</if>
 	<if test="phone != null">
-		and phone = #{phone,jdbcType=VARCHAR}
+	and phone = #{phone,jdbcType=VARCHAR}
 	</if>
 	<if test="eMail != null">
 		and e_mail = #{eMail,jdbcType=VARCHAR}
@@ -69,20 +74,7 @@
     delete from sys_account
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
- <!--  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Account" >
-    insert into sys_account (user_id, name, nick_name, 
-      phone, e_mail, password, 
-      state, create_date, remarks, 
-      stype, sex, card, birtn, 
-      create_user, locked, org_id, 
-      head_portrait)
-    values (#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{eMail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{state,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
-      #{stype,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{card,jdbcType=VARCHAR}, #{birtn,jdbcType=TIMESTAMP}, 
-      #{createUser,jdbcType=BIGINT}, #{locked,jdbcType=INTEGER}, #{orgId,jdbcType=BIGINT}, 
-      #{headPortrait,jdbcType=VARCHAR})
-  </insert> -->
+ 
   <insert id="insert" parameterType="com.xzjie.gypt.system.model.Account" useGeneratedKeys="true" keyProperty="userId">
     insert into sys_account
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -198,6 +190,7 @@
       </if>
     </trim>
   </insert>
+  
   <update id="update" parameterType="com.xzjie.gypt.system.model.Account" >
     update sys_account
     <set >
@@ -215,6 +208,9 @@
       </if>
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},

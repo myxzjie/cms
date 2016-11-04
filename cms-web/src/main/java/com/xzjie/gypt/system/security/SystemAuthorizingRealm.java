@@ -1,7 +1,6 @@
 package com.xzjie.gypt.system.security;
 
 import java.io.Serializable;
-import java.security.Permission;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
@@ -99,6 +98,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	@Override
     public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
         super.clearCachedAuthorizationInfo(principals);
+        clearAllCache();
     }
 
     @Override

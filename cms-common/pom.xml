@@ -1,131 +1,39 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.xzjie</groupId>
-    <artifactId>cms</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.xzjie</groupId>
-  <artifactId>cms-common</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>cms-common</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.1.7.RELEASE</spring.version>
-		<!-- <spring.version>4.2.4.RELEASE</spring.version> -->
-		<jackson.version>2.7.0</jackson.version>
-		<log4j.version>2.2</log4j.version>
-		<slf4j.version>1.7.5</slf4j.version>
-		<mybatis.version>3.3.0</mybatis.version>
-		<druid.version>1.0.13</druid.version>
-		<shiro.version>1.2.3</shiro.version>
-		<quartz.version>2.2.2</quartz.version>
-	</properties>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.xzjie</groupId>
+		<artifactId>cms</artifactId>
+		<version>0.0.2</version>
+	</parent>
+	
+	<artifactId>cms-common</artifactId>
+	<name>cms-common</name>
+
+	<url>http://maven.apache.org</url>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<!-- <dependency> <groupId>org.apache.logging.log4j</groupId> <artifactId>log4j-core</artifactId> 
-			<version>${log4j.version}</version> </dependency> <dependency> <groupId>org.apache.logging.log4j</groupId> 
-			<artifactId>log4j-api</artifactId> <version>${log4j.version}</version> </dependency> 
-			<dependency> <groupId>org.apache.logging.log4j</groupId> <artifactId>log4j-web</artifactId> 
-			<version>${log4j.version}</version> </dependency> <dependency> <groupId>org.apache.logging.log4j</groupId> 
-			<artifactId>log4j-slf4j-impl</artifactId> <version>${log4j.version}</version> 
-			</dependency> -->
-
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -137,37 +45,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.36</version>
-		</dependency>
 
 		<!-- 持久层框架 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${mybatis.version}</version>
-		</dependency>
-
-		<!-- pool -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
 		</dependency>
 
 		<dependency>
@@ -182,24 +72,6 @@
 			<version>1.8.7</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.apache.velocity</groupId> <artifactId>velocity</artifactId> 
-			<version>1.7</version> </dependency> -->
-		<!-- 视图freemarker -->
-		<!-- <dependency> <groupId>org.freemarker</groupId> <artifactId>freemarker</artifactId> 
-			<version>2.3.20</version> </dependency> -->
-
-		<!-- <dependency> <groupId>org.beetl</groupId> <artifactId>beetl-core</artifactId> 
-			<version>2.2.3</version> </dependency> -->
-
-		<!-- 视图beetl -->
-		<!-- <dependency> <groupId>com.ibeetl</groupId> <artifactId>beetl</artifactId> 
-			<version>2.3.2</version> </dependency> -->
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.github.penggle</groupId>
@@ -288,6 +160,6 @@
 			<version>3.12</version>
 		</dependency>
 	</dependencies>
-	
-	
+
+
 </project>

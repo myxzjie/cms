@@ -265,3 +265,36 @@ Date.prototype.format = function(fmt)   {
         return o;
     };
 })(jQuery);
+
+function formSubmit(id,href){
+	$(id).Validform({
+		tiptype:2,
+		ajaxPost:true,
+		showAllError:true,
+		beforeSubmit:function(curform){
+			var data={};
+			data=curform.serializeJSON();
+			$.ajax({
+				type: "POST",
+				data: data,
+				dataType: 'json',
+				url:curform[0].action,
+				success: function(res){
+					if(res.success){
+						layer.alert(res.message, {icon: 1});
+						var index = parent.layer.getFrameIndex(window.name);
+						if(href){
+							parent.location.href=href;
+						}else{
+							parent.location.href=location.href;
+						}
+						parent.layer.close(index);
+					}else{
+						layer.alert(res.message, {icon: 2});
+					}
+				}
+			});
+			return false;
+		}
+	});
+}

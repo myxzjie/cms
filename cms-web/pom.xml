@@ -1,36 +1,24 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.xzjie</groupId>
-    <artifactId>cms</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.xzjie</groupId>
-  <artifactId>cms-web</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>cms-web Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-		<spring.version>4.1.7.RELEASE</spring.version>
-		<!-- <spring.version>4.2.4.RELEASE</spring.version> -->
-		<jackson.version>2.7.0</jackson.version>
-		<log4j.version>2.2</log4j.version>
-		<slf4j.version>1.7.5</slf4j.version>
-		<mybatis.version>3.3.0</mybatis.version>
-		<druid.version>1.0.13</druid.version>
-		<shiro.version>1.2.3</shiro.version>
-		<quartz.version>2.2.2</quartz.version>
-		<cms.version>0.0.1-SNAPSHOT</cms.version>
-	</properties>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.xzjie</groupId>
+		<artifactId>cms</artifactId>
+		<version>0.0.2</version>
+	</parent>
+	<artifactId>cms-web</artifactId>
+	<packaging>war</packaging>
+	<name>cms-web</name>
+	
+	<url>http://maven.apache.org</url>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -38,8 +26,10 @@
 			<groupId>com.xzjie</groupId>
 			<artifactId>cms-common</artifactId>
 			<version>${cms.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -122,14 +112,6 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.apache.logging.log4j</groupId> <artifactId>log4j-core</artifactId> 
-			<version>${log4j.version}</version> </dependency> <dependency> <groupId>org.apache.logging.log4j</groupId> 
-			<artifactId>log4j-api</artifactId> <version>${log4j.version}</version> </dependency> 
-			<dependency> <groupId>org.apache.logging.log4j</groupId> <artifactId>log4j-web</artifactId> 
-			<version>${log4j.version}</version> </dependency> <dependency> <groupId>org.apache.logging.log4j</groupId> 
-			<artifactId>log4j-slf4j-impl</artifactId> <version>${log4j.version}</version> 
-			</dependency> -->
-
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -192,18 +174,9 @@
 			<version>1.8.7</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.apache.velocity</groupId> <artifactId>velocity</artifactId> 
-			<version>1.7</version> </dependency> -->
 		<!-- 视图freemarker -->
 		<!-- <dependency> <groupId>org.freemarker</groupId> <artifactId>freemarker</artifactId> 
 			<version>2.3.20</version> </dependency> -->
-
-		<!-- <dependency> <groupId>org.beetl</groupId> <artifactId>beetl-core</artifactId> 
-			<version>2.2.3</version> </dependency> -->
-
-		<!-- 视图beetl -->
-		<!-- <dependency> <groupId>com.ibeetl</groupId> <artifactId>beetl</artifactId> 
-			<version>2.3.2</version> </dependency> -->
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -246,25 +219,7 @@
 			<artifactId>json-lib</artifactId>
 			<version>2.1</version>
 			<classifier>jdk15</classifier>
-			<!-- <exclusions>
-				<exclusion>
-					<groupId>commons-lang</groupId>
-		    		<artifactId>commons-lang</artifactId>
-				</exclusion>
-			</exclusions> -->
 		</dependency>
-		
-		<!-- <dependency>
-    		<groupId>commons-beanutils</groupId>
-    		<artifactId>commons-beanutils</artifactId>
-    		<version>1.9.3</version>
-		</dependency> -->
-		
-		<!-- <dependency>
-		    <groupId>commons-lang</groupId>
-		    <artifactId>commons-lang</artifactId>
-		    <version>2.6</version>
-		</dependency> -->
 
 
 		<dependency>
@@ -349,19 +304,16 @@
 				<version>2.19.1</version>
 				<configuration>
 					<skipTests>true</skipTests>
-					<!-- <includes> <include>**/Hello*.java</include> </includes> -->
 				</configuration>
 			</plugin>
-			
-			
-			
+
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-					<!-- <overlays> <overlay> <groupId>TransactionResource</groupId> <artifactId>TransactionResource</artifactId> 
-						<excludes> <exclude>WEB-INF/web.xml</exclude> </excludes> </overlay> </overlays> -->
 					<webResources>
 						<resource>
 							<directory>${runtime.env}</directory>
@@ -372,7 +324,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<!-- 开发环境 -->
 		<profile>
@@ -384,13 +336,6 @@
 				<runtime.env>${project.basedir}/env/dev</runtime.env>
 				<final.name>webapp</final.name>
 			</properties>
-			<!-- <dependencies>
-				<dependency>
-					<groupId>com.xzjie</groupId>
-					<artifactId>arvr-common</artifactId>
-					<version>${arvr.version}</version>
-				</dependency>
-			</dependencies> -->
 		</profile>
 
 		<!-- 测试环境 -->
@@ -403,13 +348,6 @@
 				<runtime.env>${project.basedir}/env/test</runtime.env>
 				<final.name>webapp</final.name>
 			</properties>
-			<!-- <dependencies>
-				<dependency>
-					<groupId>com.xzjie</groupId>
-					<artifactId>arvr-common</artifactId>
-					<version>${arvr.version}</version>
-				</dependency>
-			</dependencies> -->
 		</profile>
 
 		<!-- 生成环境 -->
@@ -422,13 +360,6 @@
 				<runtime.env>${project.basedir}/env/prod</runtime.env>
 				<final.name>webapp</final.name>
 			</properties>
-			<!-- <dependencies>
-				<dependency>
-					<groupId>com.xzjie</groupId>
-					<artifactId>arvr-common</artifactId>
-					<version>${arvr.version}</version>
-				</dependency>
-			</dependencies> -->
 		</profile>
 	</profiles>
 </project>

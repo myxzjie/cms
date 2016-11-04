@@ -109,6 +109,21 @@ public class AccountController {
 
 	}
 	
+	@RequestMapping(value = "resetpwd", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> resetPassword(Long id){
+		if(id==null){
+			return MapResult.mapError(RspCode.R99997,"请选择一条用户");
+		}
+		
+		try {
+			accountService.resetPassword(id);
+			return MapResult.mapOK(RspCode.R00000);
+		} catch (Exception e) {
+			return MapResult.mapError(RspCode.R99997, e.getMessage());
+		}
+	}
+	
 	@RequestMapping(value="delete", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> delete(Long id){

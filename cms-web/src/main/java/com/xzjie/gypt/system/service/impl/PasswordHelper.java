@@ -54,4 +54,21 @@ public class PasswordHelper {
 
         account.setPassword(newPassword);
     }
+    
+    /**
+     * 
+     * @param account 输入 name , salt, password(明文)
+     * @param password 加密的
+     * @return
+     */
+    public boolean verifyPassword(Account account,String password){
+    	
+    	String newPassword = new SimpleHash(
+                algorithmName,
+                account.getPassword(),
+                ByteSource.Util.bytes(account.getCredentialsSalt()),
+                hashIterations).toHex();
+    	
+    	return newPassword.equals(password);
+    }
 }

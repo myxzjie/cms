@@ -33,6 +33,8 @@
 		<li class="dropDown dropDown_hover">
 			<a href="javascript:;" class="dropDown_A"><shiro:principal property="username"/><i class="Hui-iconfont">&#xe6d5;</i></a>
 			<ul class="dropDown-menu radius box-shadow">
+				<li><a onclick="changePassword();" >修改密码</a></li>
+				<li><a href="${ctx}/logout">退出</a></li>
 				<%-- <li><a href="#">个人信息</a></li>
 				<li><a href="#">切换账户</a></li>
 				<li><a href="${ctx}/logout">退出</a></li>  --%>
@@ -82,73 +84,7 @@
 </section>
 <%@ include file="/common/script.jsp" %>
 
-<script type="text/javascript">
-$(function(){
-	resourceTree();
-})
-
-function resourceTree(){
-	var data={};
-	$.ajax({
-		type: "POST",
-		data: data,
-		async:false,
-		dataType: 'json',
-		url: global.basePath+'/resource/resourceuser',
-		success: function(res){
-			if(res.success){
-				var data=res.data[0].children;
-				var _html='';
-				for(var i=0;i<data.length;i++){
-					var node=data[i];
-					_html+='<dl id="menu-article"><dt><i class="Hui-iconfont">&#xe616;</i> '+node.resourceName+'<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>';
-					
-					if(node.children!=''&&node.children.length>0){
-						var children=node.children;
-						_html+='<dd><ul>';
-						
-						for(var j=0;j<children.length;j++){
-							var childrenNode=children[j];
-							var _href=global.basePath+childrenNode.resourceUrl;
-							_html+='<li><a _href="'+_href+'" href="javascript:void(0)">'+childrenNode.resourceName+'</a></li>';
-						}
-						_html+='</ul></dd>';
-					}
-					
-					_html+='</dl>';
-				}
-				$('#resource').html(_html);
-				
-				$.Huifold(".menu_dropdown dl dt",".menu_dropdown dl dd","fast",1,"click");
-			}else{
-				alert("错误："+res.message);
-			}
-			
-		}
-	});
-}
-
-
-function traverse(node, i) {  
-	if(node){
-		
-	
-		
-		$('#resource').append(_html);
-	}
-    /* var children = node.children;  
-    if (children != null) {  
-        window.alert("parent:" + node.name + ",child:" + children[i].name);  
-        if (i == children.length - 1) {  
-            traverse(children[0], 0);  
-        } else {  
-            traverse(node, i + 1);  
-        }  
-    }   */
-}  
-
-
-</script>
+<script type="text/javascript" src="${ctx}/resources/assets/js/index.js"></script>
 
 <!-- <script type="text/javascript">
 /*资讯-添加*/
