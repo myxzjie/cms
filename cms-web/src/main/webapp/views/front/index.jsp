@@ -129,7 +129,105 @@ $(function(){
 			}
 		}
 	});
+	
+	
+	
 });
+
+/* 
+//获取滚动条当前的位置  
+function getScrollTop() {  
+    var scrollTop = 0;  
+    if (document.documentElement && document.documentElement.scrollTop) {  
+        scrollTop = document.documentElement.scrollTop;  
+    }  
+    else if (document.body) {  
+        scrollTop = document.body.scrollTop;  
+    }  
+    return scrollTop;  
+}  
+  
+//获取当前可是范围的高度  
+function getClientHeight() {  
+    var clientHeight = 0;  
+    if (document.body.clientHeight && document.documentElement.clientHeight) {  
+        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);  
+    }  
+    else {  
+        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);  
+    }  
+    return clientHeight;  
+}  
+  
+//获取文档完整的高度  
+function getScrollHeight() {  
+    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);  
+}  
+var currentPage=3;
+var isload=true;
+
+window.onscroll = function () { 
+	if(!isload){
+		return false;
+	}
+    if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+    	var data={};
+    	data.currentPage=currentPage;
+    	data.showCount=global.showCount;
+    	data.cmId=$('#cmId').val();
+    	
+    	$.ajax({
+			type: "POST",
+			data: data,
+			dataType: 'json',
+			url: global.basePath+'/f/material/datapage/2',
+			success: function(res){
+				if(res.success){
+					currentPage++;
+					var data=res.data;
+					if(data.length<1){
+						isload=false;
+						$('.notdata').show();
+						return false;
+					}else{
+						$('.notdata').hide();
+					}
+					
+					var downloadFileWeb=$('#downloadFileWeb').val();
+					
+					for(var i=0;i<data.length;i++){
+						var row=data[i];
+						var models=$(".models").clone()[0];
+						//console.log(models);
+						var imgurl=global.basePath+'/resources/front/assets/image/icon-img.png';
+						var downurl=global.basePath+'/f/material/download?id='+row.materialId+'&fileName='+row.uploadFileName;
+						
+						if(row.image){
+							imgurl=downloadFileWeb+row.image;
+						}
+						$(models).find('img').attr('src',imgurl);
+						$(models).find('img').attr('alt',row.uploadFileName);
+						$(models).find('.download h5').text(row.uploadFileName);
+						var btn_down= $(models).find('.download');
+						$(btn_down).attr('href',downurl);
+						$(btn_down).unbind("click")
+						$(btn_down).click(function(e){
+							location.href =$(this).attr('href');
+						});
+						
+						$('.main-data-box').append(models);
+					}
+					
+				}else{
+					layer.alert(res.message, {icon: 2});
+				}
+			}
+		});
+    }  
+}   */
+
+
+
 
 </script>
 </body>

@@ -32,5 +32,5 @@
             </p>
         </div>
     </div>  -->   
-    <div class="blog-text-center">© 2016 XXXX, XXXXX</div>    
+    <div class="blog-text-center">Copyright © 2016 dev56.com All Rights Reserved 闽ICP备16032514号-1</div>    
   </footer>

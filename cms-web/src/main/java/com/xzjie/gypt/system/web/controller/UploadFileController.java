@@ -86,7 +86,9 @@ public class UploadFileController {
 	@ResponseBody
 	public synchronized Map<String, Object> uploadImage(String dir, @RequestParam("file") MultipartFile multipartFile,
 			HttpServletRequest request) {
-
+		
+//		String path2=request.getSession().getServletContext().getRealPath("upload/img/product");
+//		System.out.println("path2:"+path2);
 		/** 判断文件是否为空,空直接返回上传错误 **/
 		if (!multipartFile.isEmpty()) {
 			try {
@@ -112,7 +114,6 @@ public class UploadFileController {
 
 				String uploadFileName = multipartFile.getOriginalFilename();
 				String fileName = System.currentTimeMillis() + "_" + DateUtils.getRandom(6) + suffix;
-				;
 
 				String path = WebUtils.getUploadImageDirectory() + dir;
 				String filePath = path + fileName;

@@ -15,6 +15,17 @@
       
       <c:forEach var="nav" items="${navs}">
       	<li><a href="${frontPath}/category?cid=${site.siteId}&id=${nav.categoryId}">${nav.categoryName}</a></li>
+      	<!-- <li class="am-dropdown" data-am-dropdown="">
+        <a class="am-dropdown-toggle" data-am-dropdown-toggle="" href="javascript:;">
+          首页布局 <span class="am-icon-caret-down"></span>
+        </a>
+        <ul class="am-dropdown-content">
+          <li><a href="lw-index.html">1. blog-index-standard</a></li>         
+          <li><a href="lw-index-nosidebar.html">2. blog-index-nosidebar</a></li>
+          <li><a href="lw-index-center.html">3. blog-index-layout</a></li>
+          <li><a href="lw-index-noslider.html">4. blog-index-noslider</a></li>
+        </ul>
+      </li> -->
       </c:forEach>
      
     </ul>

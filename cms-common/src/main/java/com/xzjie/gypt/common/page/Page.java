@@ -49,8 +49,8 @@ public class Page implements Serializable {
 	public int getCurrentPage() {
 		if (currentPage<= 0 )    
             currentPage = 1 ;    
-        if (currentPage>getTotalPage())    
-            currentPage = getTotalPage();    
+//        if (currentPage>getTotalPage())    
+//            currentPage = getTotalPage();    
         return  currentPage; 
 	}
 
