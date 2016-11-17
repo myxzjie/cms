@@ -209,12 +209,12 @@ body {
 /**
  * blog css 
  * a:hover: #10D07A 
- * 基本色：#333 
- * 或者 #3d3d3d   
- * bgcolor：#10D07A  ， color：#fff
- * blog-color  单独的颜色突出
+ * 鍩烘湰鑹诧細#333 
+ * 鎴栬�� #3d3d3d   
+ * bgcolor锛�#10D07A  锛� color锛�#fff
+ * blog-color  鍗曠嫭鐨勯鑹茬獊鍑�
  * .blog-bor    border:1px solid #e5e5e5
- * css复用 与 规范化
+ * css澶嶇敤 涓� 瑙勮寖鍖�
  */
 a {
     color:#474747;
@@ -245,7 +245,8 @@ a {
     color:#10D07A;
 }
 .blog-button {
-    width:95%;
+   /*  width:95%; */
+    width: 4.5rem;
     height:100%;
     margin-left:1.5rem;
     background-color:#10D07A;
@@ -439,8 +440,8 @@ h1 span{
 /**
  * bug:
  * width:100%; height:100%; 
- * margin: 1% 或者 1rem ;
- * 此处的定位出现问题。
+ * margin: 1% 鎴栬�� 1rem ;
+ * 姝ゅ鐨勫畾浣嶅嚭鐜伴棶棰樸��
  */
 .blog-h-margin {
     margin:0;
