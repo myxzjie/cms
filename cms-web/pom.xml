@@ -13,6 +13,19 @@
 	<name>cms-web</name>
 	
 	<url>http://maven.apache.org</url>
+	
+	<!-- <distributionManagement>
+		<repository>
+        <id>nexus</id>
+        <name>Releases</name>
+        <url>http://192.168.1.18:8081/repository/maven-releases</url>
+    </repository>
+    <snapshotRepository>
+        <id>nexus</id>
+        <name>Snapshot</name>
+        <url>http://192.168.1.18:8081/repository/maven-snapshots</url>
+    </snapshotRepository>
+	</distributionManagement> -->
 
 	<dependencies>
 		<dependency>

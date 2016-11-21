@@ -56,9 +56,7 @@ public class FrontController extends BaseController {
 
 		if (page.getCurrentPage() < 1) {
 			page.setCurrentPage(1);
-			System.out.println(">>pp:"+page.getCurrentPage());
 		}
-		System.out.println(">>pp2:"+page.getCurrentPage());
 
 		article.setSiteId(getSiteId());
 
