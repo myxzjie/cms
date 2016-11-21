@@ -23,8 +23,14 @@ public abstract class WebUtils {
 
 	public static String getBasePath(HttpServletRequest request) {
 		String path = request.getContextPath();
-		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-		return basePath;
+		int post=request.getServerPort();
+		
+		String basePath	= request.getScheme()+"://"+request.getServerName();
+        if(post!=80){
+        	basePath+=":"+request.getServerPort();
+        }
+        basePath+=path;
+        return basePath;
 	}
 
 	/**
