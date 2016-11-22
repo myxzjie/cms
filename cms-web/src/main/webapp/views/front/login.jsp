@@ -1,67 +1,114 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/common/tag.jsp"%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
-  <%@ include file="include/meta.jsp" %>
-  <title>登录-${site.siteName}</title>
-  <meta name="description" content="${site.keywords}">
-  <meta name="keywords" content="${site.description}">
-  <%@ include file="include/style.jsp" %>
-  <style>
-    .header {
-      text-align: center;
-    }
-    .header h1 {
-      font-size: 200%;
-      color: #333;
-      margin-top: 30px;
-    }
-    .header p {
-      font-size: 14px;
-    }
-  </style>
+<%@ include file="include/meta.jsp"%>
+<title>登录-${site.siteName}</title>
+<meta name="description" content="${site.keywords}">
+<meta name="keywords" content="${site.description}">
+<%@ include file="include/style.jsp"%>
+<style>
+.header {
+	text-align: center;
+}
+
+.header h1 {
+	font-size: 200%;
+	color: #333;
+	margin-top: 30px;
+}
+
+.header p {
+	font-size: 14px;
+}
+</style>
 </head>
-<body>
-<div class="header">
-  <!-- <div class="am-g">
-    <h1>Web ide</h1>
-    <p>Integrated Development Environment<br/>代码编辑，代码生成，界面设计，调试，编译</p>
-  </div>
-  <hr />-->
-</div> 
-<div class="am-g" style="margin-top: 5rem;">
-  <div class="am-u-lg-4 am-u-md-8 am-u-sm-centered">
-    <h3 class="blog-text-center">登录</h3>
-    <!-- <hr>
-    <div class="am-btn-group">
-      <a href="#" class="am-btn am-btn-secondary am-btn-sm"><i class="am-icon-github am-icon-sm"></i> Github</a>
-      <a href="#" class="am-btn am-btn-success am-btn-sm"><i class="am-icon-google-plus-square am-icon-sm"></i> Google+</a>
-      <a href="#" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-stack-overflow am-icon-sm"></i> stackOverflow</a>
-    </div> -->
-   <!--  <br>
-    <br>
- -->
-    <form method="post" class="am-form">
-      <label for="email">邮箱:</label>
-      <input type="email" name="" id="email" value="">
-      <br>
-      <label for="password">密码:</label>
-      <input type="password" name="" id="password" value="">
-      <br>
-      <label for="remember-me">
-        <input id="remember-me" type="checkbox">
-        记住密码
-      </label>
-      <br />
-      <div class="am-cf">
-        <input type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm am-fl">
-        <!-- <input type="submit" name="" value="忘记密码 ^_^? " class="am-btn am-btn-default am-btn-sm am-fr"> -->
-      </div>
-    </form>
-    <hr>
-    <p>Copyright © 2016 dev56.com All Rights Reserved 闽ICP备16032514号-1</p>
-  </div>
-</div>
+<body style="background: #f5f5f5;">
+	<div class="login-boxtitle">
+		<a href="${ctx_front}/index?cid=${site.siteId}">
+		<img alt="logo" src="${ctx}/favicon.ico" />
+		${site.siteName}
+		</a>
+	</div>
+
+	<div class="login-banner">
+		<div class="login-main">
+			<div class="login-banner-bg">
+				<span></span>
+				<img src="${ctx}/resources/front/images/big.jpg" />
+			</div>
+			<div class="login-box">
+
+				<h3 class="title">登录</h3>
+
+				<div class="clear"></div>
+
+				<div class="login-form">
+					<form>
+						<div class="user-name">
+							<label for="user"><i class="am-icon-user"></i></label> 
+							<input type="text" name="username" id="user" placeholder="邮箱/手机/用户名">
+						</div>
+						<div class="user-pass">
+							<label for="password"><i class="am-icon-lock"></i></label> 
+							<input type="password" name="password" id="password" placeholder="请输入密码">
+						</div>
+						<div class="user-captcha">
+							<input type="text" name="captcha" id="captcha" placeholder="请输入验证码">
+							<img id="captcha_img" src="${ctx}/kaptcha/image" >
+							<a id="kanbuq" href="javascript:;">换一张</a>
+						</div>
+					</form>
+				</div>
+
+				<div class="login-links">
+					<label for="remember-me"><input id="remember-me"
+						type="checkbox">记住密码</label> <a href="#" class="am-fr">忘记密码</a> <a
+						href="register.html" class="zcnext am-fr ">注册</a> <br />
+				</div>
+				<div class="am-cf">
+					<input type="submit" name="" value="登 录"
+						class="am-btn am-btn-primary am-btn-sm">
+				</div>
+				<div class="partner">
+					<h3>合作账号</h3>
+					<div class="am-btn-group">
+						<li><a href="#"><i class="am-icon-qq am-icon-sm"></i><span>QQ登录</span></a></li>
+						<li><a href="#"><i class="am-icon-weibo am-icon-sm"></i><span>微博登录</span>
+						</a></li>
+						<li><a href="#"><i class="am-icon-weixin am-icon-sm"></i><span>微信登录</span>
+						</a></li>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="footer ">
+		<div class="footer-hd ">
+			<p>
+				<a href="# ">恒望科技</a> <b>|</b> <a href="# ">商城首页</a> <b>|</b> <a
+					href="# ">支付宝</a> <b>|</b> <a href="# ">物流</a>
+			</p>
+		</div>
+		<div class="footer-bd ">
+			<p>
+				<a href="# ">关于恒望</a> <a href="# ">合作伙伴</a> <a href="# ">联系我们</a> <a
+					href="# ">网站地图</a> <em>© 2015-2025 Hengwang.com 版权所有</em>
+			</p>
+		</div>
+	</div>
+	<%@include file="include/script.jsp" %>
+	<script type="text/javascript">
+	$(function(){
+		$('#kanbuq').click(function(){
+			$('#captcha_img').attr('src','${ctx}/kaptcha/image');
+		});
+	})
+	</script>
 </body>
 </html>

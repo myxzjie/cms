@@ -11,7 +11,7 @@
 <link href="${ctx}/resources/assets/skin/blue/skin.css" rel="stylesheet" type="text/css" id="skin" />
 <link href="${ctx}/resources/assets/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 <link href="${ctx}/resources/assets/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
-<link href="${ctx}/resources/assets/lib/flexigrid/css/flexigrid.css" rel="stylesheet" type="text/css" />
+<%-- <link href="${ctx}/resources/assets/lib/flexigrid/css/flexigrid.css" rel="stylesheet" type="text/css" /> --%>
 <link href="${ctx}/resources/assets/lib/laypage/1.3/skin/laypage.css" rel="stylesheet" type="text/css" />
 <link href="${ctx}/resources/assets/css/style.css" rel="stylesheet" type="text/css" />
 

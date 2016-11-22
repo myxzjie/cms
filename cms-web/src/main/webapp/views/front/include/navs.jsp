@@ -34,7 +34,7 @@
       <a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> 注册</a>
     </div>
     <div class="am-topbar-right">
-      <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="${frontPath}/login"><span class="am-icon-user"></span> 登录</a>
+      <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="${frontPath}/login?cid=${siteId}"><span class="am-icon-user"></span> 登录</a>
     </div>
    <!--  <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
       <div class="am-form-group">
