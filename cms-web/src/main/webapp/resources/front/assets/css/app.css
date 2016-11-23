@@ -494,61 +494,61 @@ h1 span{
 	color: #0e90d2
 }
 
+/**
+* 登录
+**/
+.login-body{background: #83c9ec; padding-top: 30px;}
 
-.login-boxtitle {max-width: 1000px;margin: 0 auto 0;height: 48px;}
-.login-boxtitle img{height:40px;}
+.login-box {width: 100%;}
+.login-banner-bg,
+.login-boxtitle{display: none;}
 
-.login-boxtitle a{color: #13beec; font-size: 2.5rem;}
-.login-boxtitle a:hover,
-.login-boxtitle a:focus{
-    color: #23c7f3
+.login-banner {
+	width: 100%;
+	background: #83c9ec;
+	padding: 0 20px;
 }
 
-.login-banner, .res-banner {
-    width: 100%;
-    height: 470px;
-    background: #83c9ec;
-}
-
-.login-main, .res-main {
+.login-main {
     max-width: 1000px;
-    height: 470px;
+    /* height: 470px;  */
     margin: 0px auto;
     position: relative;
 }
 
-.login-banner-bg {
-    display: block;
-    float: left;
-}
-
-.login-box, .login-box2 {
-    width: 100%;
+.login-box{
+	width: 100%;
     max-width: 360px;
-    height: 430px;
-    position: absolute;
-    margin-top: 20px;
-    margin-left: 0px;
-    background: #d4eaf4;
-    right: 2%;
-    padding: 10px 20px;
-
+    margin: 0 auto;
+    position: relative;
 }
 
 .login-box h3.title {
     text-align: center;
     padding: 8px;
     font-weight: 600;
-    color: #13beec;
+    /* color: #13beec; */
     font-size: 2.0rem;
     letter-spacing:1rem;
 }
 
-.login-box form,
+/*主题*/
+
+/* .login-box form,
 .login-box .am-cf,
 .login-box .partner {
     max-width: 640px;
     margin: 20px auto;
+} */
+
+.login-box .user-name,
+.login-box .user-pass,
+.login-box .user-email,
+.login-box .user-phone,
+.login-box .verification {
+    position: relative;
+    height: 42px;
+    margin-bottom: 5px;
 }
 
 .login-box form label {
@@ -562,7 +562,6 @@ h1 span{
     top: 1px;
     left: 1px;
 }
-
 
 .login-box input[name='username'],
 .login-box input[name='password'],
@@ -589,36 +588,20 @@ h1 span{
 .login-box .user-captcha a:hover,
 .login-box .user-captcha a:focus{color:#06c}
 
+.login-links{/* max-width:320px; */margin:20px auto 10px;font-size:14px;}
+.login-links .zcnext{position: absolute;right:5px;top:5px ;padding:5px;font-size: 2.0rem;}
 
-.login-box .user-name,
-.login-box .user-pass,
-.login-box .user-email,
-.login-box .user-phone,
-.login-box .verification {
-    position: relative;
-    height: 42px;
-    margin-bottom: 5px;
-}
+.login-links a:hover,
+.login-links a:focus{color:#06c}
 
-.login-box .am-icon-user,
-.login-box .user-pass{color: #696565}
+.login-box .am-cf{width: 100%;/* max-width:320px; */margin:0px auto ;}
+.login-box .am-cf input{width: 100%;font-size: 1.8rem;}
 
-.login-links{max-width:320px;margin:20px auto ;font-size:14px;}
+.login-body .footer{ display:none; }
 
-.login-links label{color: #696565}
-
-.login-links .zcnext {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 2.0rem;
-}
-
-.login-box .am-cf{width: 100%;max-width:320px;margin:0px auto ;}
-.login-box .am-cf input{width: 100%;font-size: 14px;}
 
 /*合作账号*/
-.login-box .partner{width: 100%;max-width:320px;margin:20px auto ;font-size:14px;}
+.login-box .partner{width: 100%;/* max-width:320px; */margin:20px auto ;font-size:14px;}
 .login-box .partner h3{text-align: center;}
 .login-box .am-btn-group{display: block;overflow: hidden;}
 .login-box .am-btn-group li{width:33.333% ;display: block;float: left;}
@@ -626,5 +609,58 @@ h1 span{
 .login-box .am-btn-group span{display: none;}
 
 /*底部*/
-.footer {text-align:center;font-size: 12px;padding-top: 5px;}
-.footer-bd{ display:none;}
+.login-body .footer {text-align:center;font-size: 12px;padding-top: 5px;}
+
+
+@media screen and (min-width:640px){
+	
+	.login-banner-bg{display: none;}
+	
+	.login-box form,
+	.login-box .am-cf,
+	.login-box .partner{
+		max-width:640px;margin:20px auto ;
+	}
+
+}
+
+@media screen and (min-width:1025px){
+	.login-body{background:#f5f5f5;padding-top: 0;}
+	/*背景*/
+	.login-banner-bg{display:block;float:left;} 
+	
+	/*头部*/
+	.login-boxtitle {display: block;max-width: 1000px;margin: 0 auto 0;height: 48px;}
+	.login-boxtitle img{height:40px;}
+	
+	.login-boxtitle a{color: #13beec; font-size: 2.5rem;}
+	.login-boxtitle a:hover,
+	.login-boxtitle a:focus{
+	    color: #23c7f3
+	}
+	
+	.login-banner {
+	    width: 100%;
+	    height: 470px;
+	    background: #83c9ec;
+	}
+	
+	.login-box {
+	    width: 100%;
+	    max-width: 360px;
+	    height: 430px;
+	    position: absolute;
+	    margin-top: 20px;
+	    margin-left: 0px;
+	    background: #d4eaf4;
+	    right: 2%;
+	    padding: 10px 20px;
+
+	} 
+	/*底部*/
+	.login-body .footer {text-align:left; display:block;position: relative;margin: 0px auto; padding: 7px 0px 9px; margin-top:20px;max-width: 1200px;}
+	.login-body .footer .footer-bd p, .footer .footer-hd p {margin-bottom: 8px;line-height: 27px;text-align:center;/* border-bottom:1px solid #ddd ; */}
+	.login-body .footer .footer-hd a { margin: 0px 4px;white-space: nowrap;color: #6C6C6C;}
+	.login-body .footer .footer-hd b { margin: 0px 3px;font-weight: 400;color: #DDD;}
+	.login-body .footer .footer-bd p{ border-bottom:none;}
+}

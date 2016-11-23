@@ -25,7 +25,7 @@
 }
 </style>
 </head>
-<body style="background: #f5f5f5;">
+<body class="login-body" >
 	<div class="login-boxtitle">
 		<a href="${ctx_front}/index?cid=${site.siteId}">
 		<img alt="logo" src="${ctx}/favicon.ico" />
@@ -70,18 +70,21 @@
 					<a href="register.html" class="zcnext am-fr ">注册</a> <br />
 				</div>
 				<div class="am-cf">
-					<input type="submit" name="" value="登 录"
-						class="am-btn am-btn-primary am-btn-sm">
+					<input type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm">
 				</div>
 				<div class="partner">
-					<h3>合作账号</h3>
-					<div class="am-btn-group">
-						<li><a href="#"><i class="am-icon-qq am-icon-sm"></i><span>QQ登录</span></a></li>
-						<li><a href="#"><i class="am-icon-weibo am-icon-sm"></i><span>微博登录</span>
-						</a></li>
-						<li><a href="#"><i class="am-icon-weixin am-icon-sm"></i><span>微信登录</span>
-						</a></li>
-					</div>
+					<!-- <h3>合作账号</h3> -->
+					<ul class="am-btn-group">
+						<li>
+						<a href="#"><i class="am-icon-qq am-icon-sm"></i><span>QQ登录</span></a>
+						</li>
+						<li>
+						<a href="#"><i class="am-icon-weibo am-icon-sm"></i><span>微博登录</span></a>
+						</li>
+						<li>
+						<a href="#"><i class="am-icon-weixin am-icon-sm"></i><span>微信登录</span></a>
+						</li>
+					</ul>
 				</div>
 
 			</div>
@@ -92,14 +95,22 @@
 	<div class="footer ">
 		<div class="footer-hd ">
 			<p>
-				<a href="# ">恒望科技</a> <b>|</b> <a href="# ">商城首页</a> <b>|</b> <a
-					href="# ">支付宝</a> <b>|</b> <a href="# ">物流</a>
+				<!-- <a href="# ">XXX</a> 
+				<b>|</b> 
+				<a href="# ">XXX</a> 
+				<b>|</b> 
+				<a href="# ">XXX</a> 
+				<b>|</b> 
+				<a href="# ">XXX</a> -->
 			</p>
 		</div>
 		<div class="footer-bd ">
 			<p>
-				<a href="# ">关于恒望</a> <a href="# ">合作伙伴</a> <a href="# ">联系我们</a> <a
-					href="# ">网站地图</a> <em>© 2015-2025 Hengwang.com 版权所有</em>
+				<!-- <a href="# ">XXX</a> 
+				<a href="# ">XXX</a> 
+				<a href="# ">XXXX</a> 
+				<a href="# ">XXX</a>  -->
+				<em>Copyright © 2016 dev56.com All Rights Reserved 闽ICP备16032514号-1</em>
 			</p>
 		</div>
 	</div>
