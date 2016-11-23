@@ -532,14 +532,24 @@ h1 span{
     letter-spacing:1rem;
 }
 
-/*主题*/
+.login-box .am-tabs-bd{
+	border: 0px solid #ddd; 
+}
+.login-box .am-tabs li a,
+.login-box .am-tabs li.am-active a{
+	color: #555;
+    background: #83c9ec;
+    border: 0px solid #ddd;
+    border-bottom: 1px solid #83c9ec;
+    font-size: 2.0rem;
+}
 
-/* .login-box form,
-.login-box .am-cf,
-.login-box .partner {
-    max-width: 640px;
-    margin: 20px auto;
-} */
+.login-box .am-tabs li.am-active a,
+.login-box .am-tabs li.am-active a:hover,
+.login-box .am-tabs li.am-active a:focus{
+	border-bottom: 1px solid #d4eaf4;
+}
+
 
 .login-box .user-name,
 .login-box .user-pass,
@@ -563,15 +573,24 @@ h1 span{
     left: 1px;
 }
 
-.login-box input[name='username'],
-.login-box input[name='password'],
-.login-box input[name='verifycode']{
+.login-box input[type='text'],
+.login-box input[type='password'],
+.login-box input[type='email'],
+.login-box input[type='tel']{
     font-size: 14px;
     line-height: 18px;
     height: 42px;
     padding: 11px 8px 11px 50px;
     width: 100%;
     border: 1px solid #fff;
+}
+
+.login-box .verification .am-btn{
+    line-height:inherit;
+}
+
+.login-box input[name='phonecode']{
+    width: 65%;
 }
 
 .login-box input[name='verifycode']{
@@ -657,6 +676,24 @@ h1 span{
 	    padding: 10px 20px;
 
 	} 
+	
+	.login-box .am-tabs li a,
+	.login-box .am-tabs li.am-active a{
+	    background: #d4eaf4;
+	    border-bottom: 1px solid #d4eaf4;
+	   
+	}
+
+	.login-box .am-tabs li.am-active a,
+	.login-box .am-tabs li.am-active a:hover,
+	.login-box .am-tabs li.am-active a:focus{
+		border-bottom: 1px solid #83c9ec; 
+	}
+
+    .login-box input[name='phonecode']{
+        width: 60%;
+    }
+	
 	/*底部*/
 	.login-body .footer {text-align:left; display:block;position: relative;margin: 0px auto; padding: 7px 0px 9px; margin-top:20px;max-width: 1200px;}
 	.login-body .footer .footer-bd p, .footer .footer-hd p {margin-bottom: 8px;line-height: 27px;text-align:center;/* border-bottom:1px solid #ddd ; */}

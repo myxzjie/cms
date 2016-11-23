@@ -26,9 +26,18 @@ import com.xzjie.gypt.system.web.controller.BaseController;
 @Controller("${web.frontPath}LoginController")
 public class LoginController extends BaseController{
 
+	/**
+	 * 登录页面
+	 * @return
+	 */
 	@RequestMapping(value = "${web.frontPath}/login")
 	public String login(){
 		return "front/login";
+	}
+	
+	@RequestMapping(value="${web.frontPath}/register")
+	public String register(){
+		return "front/register";
 	}
 	
 	/**
