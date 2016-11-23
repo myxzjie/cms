@@ -5,15 +5,20 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.web.filter.PathMatchingFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xzjie.gypt.cms.model.Site;
 import com.xzjie.gypt.cms.service.SiteService;
 import com.xzjie.gypt.common.utils.RequestHelper;
 import com.xzjie.gypt.common.utils.StringUtils;
+import com.xzjie.gypt.system.interceptor.CrosFilter;
 
 public class CMSFilter extends PathMatchingFilter {
 
+	private final static Logger log = LoggerFactory.getLogger(CMSFilter.class); 
+	
 	private String[] regx = new String[] { ".jpg", ".jpeg", ".gif", ".png", ".ico", ".js", ".css", ".woff2", ".woff",
 			".eot" };
 
@@ -38,12 +43,13 @@ public class CMSFilter extends PathMatchingFilter {
 				url += ":" + request.getServerPort();
 			}
 			url += request.getRequestURI();
-			throw new Exception("cid 参数错误. url:" + url);
+			log.error(">> cid 参数错误. url:" + url);
+			//throw new Exception("cid 参数错误. url:" + url);
 		}
 
 		Object obj = request.getSession().getAttribute(siteId);
 
-		if (obj == null) {
+		if (obj == null&&siteId!=null) {
 			Site site = siteService.get(Long.parseLong(siteId));
 			request.getSession().setAttribute(siteId, site);
 		}

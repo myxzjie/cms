@@ -45,33 +45,37 @@
 
 				<div class="clear"></div>
 
+				<form id="login-form" action="${ctx_front}/auth" method="post">
 				<div class="login-form">
-					<form>
+					
 						<div class="user-name">
-							<label for="user"><i class="am-icon-user"></i></label> 
+							<label class="label" for="user"><i class="am-icon-user"></i></label> 
 							<input type="text" name="username" id="user" placeholder="邮箱/手机/用户名">
 						</div>
 						<div class="user-pass">
-							<label for="password"><i class="am-icon-lock"></i></label> 
+							<label class="label" for="password"><i class="am-icon-lock"></i></label> 
 							<input type="password" name="password" id="password" placeholder="请输入密码">
 						</div>
 						<div class="user-captcha">
-							<input type="text" name="captcha" id="captcha" placeholder="请输入验证码">
+							<input type="text" name="verifycode" id="verifycode" placeholder="请输入验证码">
 							<img id="captcha_img" src="${ctx}/kaptcha/image" >
 							<a id="kanbuq" href="javascript:;">换一张</a>
 						</div>
-					</form>
+					
 				</div>
 
 				<div class="login-links">
 					<label for="remember-me">
-					<input id="remember-me" type="checkbox">记住密码</label> 
+					<input id="remember-me" name="rememberMe" type="checkbox">记住密码</label> 
 					<a href="#" class="am-fr">忘记密码</a> 
 					<a href="register.html" class="zcnext am-fr ">注册</a> <br />
 				</div>
 				<div class="am-cf">
-					<input type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm">
+					<button type="button" id="btn_login" class="am-btn am-btn-primary am-btn-sm">
+					登 录
+					</button>
 				</div>
+				</form>
 				<div class="partner">
 					<!-- <h3>合作账号</h3> -->
 					<ul class="am-btn-group">
@@ -119,6 +123,46 @@
 	$(function(){
 		$('#kanbuq').click(function(){
 			$('#captcha_img').attr('src','${ctx}/kaptcha/image');
+		});
+		
+		$('#btn_login').click(function(){
+			var form= $('#login-form');
+			var data={};
+			data=form.serializeJSON();
+			
+			$.ajax({
+				type: "POST",
+				data: data,
+				dataType: 'json',
+				url:form[0].action,
+				success: function(res){
+					if(res.success){
+						var referrer = document.referrer; 
+					    if (!referrer) { 
+					        try { 
+					            if (window.opener) { 
+					                // ie下如果跨域则抛出权限异常 
+					                // safari和chrome下window.opener.location没有任何属性 
+					                referrer = window.opener.location.href; 
+					            } 
+					        }  
+					        catch (e) {} 
+					    } else{
+					    	location.href=referrer;//global.frontPath+"/index?cid=1"
+					    }
+						/* layer.alert(res.message, {icon: 1});
+						var index = parent.layer.getFrameIndex(window.name);
+						if(href){
+							parent.location.href=href;
+						}else{
+							parent.location.href=location.href;
+						}
+						parent.layer.close(index); */
+					}else{
+						layer.alert(res.message, {icon: 2});
+					}
+				}
+			});
 		});
 	})
 	</script>

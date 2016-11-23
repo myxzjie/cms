@@ -551,7 +551,7 @@ h1 span{
     margin-bottom: 5px;
 }
 
-.login-box form label {
+.login-box form label.label {
     position: absolute;
     display: block;
     width: 40px;
@@ -565,7 +565,7 @@ h1 span{
 
 .login-box input[name='username'],
 .login-box input[name='password'],
-.login-box input[name='captcha']{
+.login-box input[name='verifycode']{
     font-size: 14px;
     line-height: 18px;
     height: 42px;
@@ -574,7 +574,7 @@ h1 span{
     border: 1px solid #fff;
 }
 
-.login-box input[name='captcha']{
+.login-box input[name='verifycode']{
     padding: 11px 8px 11px 10px;
     width: 45%;
 }
@@ -595,7 +595,7 @@ h1 span{
 .login-links a:focus{color:#06c}
 
 .login-box .am-cf{width: 100%;/* max-width:320px; */margin:0px auto ;}
-.login-box .am-cf input{width: 100%;font-size: 1.8rem;}
+.login-box .am-cf button{width: 100%;font-size: 1.8rem;}
 
 .login-body .footer{ display:none; }
 

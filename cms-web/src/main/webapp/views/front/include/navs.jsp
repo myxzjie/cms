@@ -29,13 +29,39 @@
       </c:forEach>
      
     </ul>
-    
+   
+   <shiro:notAuthenticated>
     <div class="am-topbar-right">
       <a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> 注册</a>
     </div>
     <div class="am-topbar-right">
       <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="${frontPath}/login?cid=${siteId}"><span class="am-icon-user"></span> 登录</a>
     </div>
+    </shiro:notAuthenticated>
+    <shiro:user>  
+    	<div class="am-topbar-right">
+    		<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm sign-out" href="javascript:;">
+    		<span class="am-icon-sign-out"></span> 退出
+    		</a>
+    	</div>
+    	<shiro:authenticated>
+    	<div class="am-topbar-right">
+    	 
+    		<div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
+		        <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>
+		        	<i class="am-icon-user"></i>&nbsp;
+		        	<shiro:principal property="username"/>
+		        	<span class="am-icon-caret-down"></span>
+		        </button>
+		        <ul class="am-dropdown-content">
+		          <li><a href="javascript:;">个人信息</a></li>
+		         <li><a class="sign-out" href="javascript:;">退出</a></li>
+		        </ul>
+	        </div>
+    	</div>
+    	
+    	</shiro:authenticated>
+    </shiro:user>
    <!--  <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
       <div class="am-form-group">
         <input type="text" class="am-form-field am-input-sm" placeholder="搜索">
