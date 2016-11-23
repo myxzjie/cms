@@ -6,3 +6,4 @@
 /cms-web/doc/.gitignore
 /cms-web/env/.gitignore
 /cms-web/src/main/webapp/upload/
+/compile.bat
