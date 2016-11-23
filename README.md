@@ -1,4 +1,7 @@
 #cms 
+
+网站地址：http://www.dev56.com/
+
 #1.功能
 
 1.cms 网站 
@@ -55,9 +58,9 @@ pause
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093601_a87043e3_411145.png "数据库模型2")
 
-#4.项目地址
+#4.网站地址
 
-http://120.25.240.110/
+http://www.dev56.com/
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/091211_684205a6_411145.png "网站首页")
 
@@ -71,4 +74,4 @@ QQ群：203498970
 
 在未来项目会进行完善可以不足和扩展新的功能  ^_^  
 
-demo: http://120.25.240.110/
+网站地址: http://www.dev56.com/
