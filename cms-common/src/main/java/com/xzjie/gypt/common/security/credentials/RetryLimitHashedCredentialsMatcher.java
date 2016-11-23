@@ -32,7 +32,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
         //重复登录大于5次 错误提示
         if(retryCount.incrementAndGet() > 5) {
             //if retry count > 5 throw
-            throw new ExcessiveAttemptsException();
+            throw new ExcessiveAttemptsException("Repeat login more than 5 times");
         }
 
         //登录成功移除 次数

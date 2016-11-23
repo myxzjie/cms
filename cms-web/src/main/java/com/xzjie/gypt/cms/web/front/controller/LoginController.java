@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -91,20 +92,23 @@ public class LoginController extends BaseController{
 			 
 			return MapResult.mapOK(RspCode.R00000);
         } catch (UnknownAccountException e) {
-            logger.error("账号不存在：{0}", e);
+            logger.error("账号不存在："+ e.getMessage());
             return MapResult.mapError(RspCode.R10000,"对不起，您账号不存在");
         } catch (LockedAccountException e) {
-            logger.error("账号未启用：{0}", e);
+            logger.error("账号未启用："+ e.getMessage());
             return MapResult.mapError(RspCode.R10006,"对不起，您账号被冻结");
         } catch (IncorrectCredentialsException e) {
-            logger.error("密码错误：{0}", e);
+            logger.error("密码错误："+ e.getMessage());
             return MapResult.mapError(RspCode.R10001,"对不起，您账号或密码错误");
         } catch (CaptchaException e) {
         	logger.error("验证码错误："+ e.getMessage());
         	return MapResult.mapError(RspCode.R10001,"对不起，验证码错误");
+        } catch(ExcessiveAttemptsException e){
+        	logger.error("重复登录错误超过次数："+ e.getMessage());
+        	return MapResult.mapError(RspCode.R10001,"对不起，您重复登录错误超过5次,请等待 30分钟");
         } catch (RuntimeException e) {
             logger.error("未知错误,请联系管理员："+ e.getMessage());
-            return MapResult.mapError(RspCode.R10001,"对不起，未知错误,请联系管理员");
+            return MapResult.mapError(RspCode.R10001,"対不起，业务繁忙.");
         } 
 		
 	}
