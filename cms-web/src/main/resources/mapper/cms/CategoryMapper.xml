@@ -15,32 +15,42 @@
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="perent_name" property="perentName" jdbcType="VARCHAR"/>
+    <result column="show_modes" property="showModes" jdbcType="VARCHAR" />
+    <result column="perent_name" property="perentName" jdbcType="VARCHAR" />
+    <result column="is_show" property="isShow" jdbcType="VARCHAR" />
   </resultMap>
   
   <resultMap id="CategoryTree" type="com.xzjie.gypt.cms.model.Category" extends="BaseResultMap">
-  	<collection column="{categoryId=category_id,siteId=site_id}" property="children" ofType="com.xzjie.gypt.cms.model.Category" javaType="java.util.ArrayList" select="findChildren" />
+  	<collection column="{categoryId=category_id,siteId=site_id,isShow=is_show}" property="children" ofType="com.xzjie.gypt.cms.model.Category" javaType="java.util.ArrayList" select="findChildren" />
   </resultMap>
   
   <sql id="Base_Column_List" >
     category_id, site_id, category_p_id, category_name, image, href, target, keywords, 
-    description, category_order, state, create_date, update_date
+    description, category_order, state, create_date, update_date, show_modes
   </sql>
   
   <select id="findCategoryTree" resultMap="CategoryTree" parameterType="com.xzjie.gypt.cms.model.Category">
   	select 
     <include refid="Base_Column_List" />
+    , '${isShow}' is_show
 	from cms_category
 	where category_p_id=0 and site_id =	#{siteId,jdbcType=BIGINT}
+	<if test="isShow != null">
+	and show_modes = #{isShow,jdbcType=VARCHAR}
+	</if>
 	order by category_order 
   </select>
   
   <select id="findChildren" resultMap="CategoryTree" parameterType="java.util.Map">
   	select 
     <include refid="Base_Column_List" />
+    , '${isShow}' is_show
     from cms_category
   	where category_p_id=#{categoryId,jdbcType=BIGINT}
   	and site_id = #{siteId,jdbcType=BIGINT}
+  	<if test="isShow != null and isShow != ''">
+	and show_modes = #{isShow,jdbcType=VARCHAR}
+	</if>
   	order by category_order 
   </select>
   
@@ -131,6 +141,9 @@
       <if test="updateDate != null" >
         update_date,
       </if>
+      <if test="showModes != null">
+      	show_modes,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="categoryId != null" >
@@ -172,8 +185,12 @@
       <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="showModes != null">
+      	#{showModes,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
+  
   <update id="update" parameterType="com.xzjie.gypt.cms.model.Category" >
     update cms_category
     <set >
@@ -213,9 +230,13 @@
       <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="showModes != null">
+      	show_modes = #{showModes,jdbcType=VARCHAR},
+      </if>
     </set>
     where category_id = #{categoryId,jdbcType=BIGINT}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.cms.model.Category" >
     update cms_category
     set site_id = #{siteId,jdbcType=BIGINT},

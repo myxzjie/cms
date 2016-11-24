@@ -80,6 +80,19 @@ var tgridObj={
 		    align : 'center',
 		    field : 'perentName'
 		},{
+			width : '30',
+			title:'显示栏目',
+			align : 'center',
+			field:'showModes',
+			formatter:function(value,row,index){
+				if(value==0){
+					return '隐藏';
+				}else{
+					return '显示';
+				}
+					
+			}
+		},{
 			width : '80',
 			align : 'center',
 		    title : '排序',

@@ -97,7 +97,9 @@ public class CategoryServiceImpl implements CategoryService {
 	public void setCategoryList(Long siteId, Map<String, Object> modelMap) {
 		Category record = new Category();
 		record.setSiteId(siteId);
-		modelMap.put("navs", this.getList(record));
+		record.setIsShow("1"); //状态为1 栏目
+		List<Category> navs=categoryMapper.findCategoryTree(record);
+		modelMap.put("navs", navs);
 	}
 
 	@Override
