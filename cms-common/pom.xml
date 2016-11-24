@@ -8,7 +8,7 @@
 		<artifactId>cms</artifactId>
 		<version>0.0.2</version>
 	</parent>
-	
+
 	<artifactId>cms-common</artifactId>
 	<name>cms-common</name>
 
@@ -33,7 +33,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -45,7 +45,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -159,6 +159,12 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.12</version>
 		</dependency>
+
+		<!-- <dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.47</version>
+		</dependency> -->
 	</dependencies>
 
 

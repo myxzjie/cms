@@ -151,7 +151,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			this.orgId = account.getOrgId();
 			this.isMobile = isMobile;
 		}
-
+		
 		public Long getUserId() {
 			return userId;
 		}

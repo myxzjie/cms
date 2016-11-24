@@ -161,6 +161,7 @@
                 /authenticated = authc
                 /accessToken=anon
                 /account/info=anon
+                /account/register/**=anon
                 <!-- /wechat/accesstoken = user -->
                 <!-- /account/** = authc,perms[account:view:*,account:create:*]
                 /org/** = authc,roles[administrator]

@@ -46,4 +46,32 @@ public interface AccountService extends BaseService<Account, Long>{
 	 * @return
 	 */
 	boolean resetPassword(Long userId);
+	
+	
+	/**
+	 * 判断用户名是否已存在
+	 * @param name
+	 * @return 存在返回 true, 不存在返回 false
+	 */
+	boolean isNameExist(String name);
+	
+	/**
+	 * 判断手机号是否已存在
+	 * @param phone
+	 * @return 存在返回 true, 不存在返回 false
+	 */
+	boolean isPhoneExist(String phone);
+	
+	/**
+	 * 判断邮箱是否已存在
+	 * @param eMail
+	 * @return 存在返回 true, 不存在返回 false
+	 */
+	boolean isEmailExist(String eMail);
+	
+	/**
+	 * 获得最大ID值
+	 * @return
+	 */
+	long getIdMaxValue();
 }

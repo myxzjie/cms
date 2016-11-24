@@ -9,6 +9,11 @@ import com.xzjie.gypt.common.page.PageEntity;
 
 public abstract interface BaseService<T,Obj extends Serializable> {
 
+	/**
+	 * 添加一个条信息
+	 * @param record 
+	 * @return 添加成功返回true,失败返回false
+	 */
 	boolean save(T record);
 	
 	void batchSave(List<T> records);

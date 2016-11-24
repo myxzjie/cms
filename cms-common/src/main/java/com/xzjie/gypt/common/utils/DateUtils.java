@@ -341,15 +341,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return
      */
 	public static String getRandom(int i) {
-		Random jjj = new Random();
-		// int suiJiShu = jjj.nextInt(9);
+		Random rand = new Random();
 		if (i == 0)
 			return "";
-		String jj = "";
+		String var = "";
 		for (int k = 0; k < i; k++) {
-			jj = jj + jjj.nextInt(9);
+			var = var + rand.nextInt(9);
 		}
-		return jj;
+		return var;
 	}
 	
 	/**

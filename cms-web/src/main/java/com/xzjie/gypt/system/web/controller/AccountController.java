@@ -1,5 +1,4 @@
 /**
- * radp-cms
  * @Title: AccountController.java 
  * @Package com.xzjie.gypt.system.web.controller
  * @Description: TODO(添加描述) 
@@ -32,13 +31,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xzjie.gypt.common.page.Page;
 import com.xzjie.gypt.common.page.PageEntity;
+import com.xzjie.gypt.common.utils.RegexUtils;
 import com.xzjie.gypt.common.utils.RspCode;
+import com.xzjie.gypt.common.utils.StringUtils;
 import com.xzjie.gypt.common.utils.constants.ConstantsUtils;
 import com.xzjie.gypt.common.utils.flexigrid.FlexigridJson;
 import com.xzjie.gypt.common.utils.result.DataGridResult;
@@ -94,6 +96,71 @@ public class AccountController {
 			return MapResult.mapError(RspCode.R99998,e.getMessage());
 		}
 		
+	}
+	
+	@RequestMapping(value="register/{typeName}", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> registerAccouunt(@PathVariable String typeName,String passwordRepeat,Account model){
+		
+		//邮箱注册
+		if("email".equals(typeName)){
+			
+			if(StringUtils.isBlank(model.geteMail())){
+				return MapResult.mapError(RspCode.R99999, "请输入邮箱账号");
+			}
+			
+			if(!RegexUtils.checkEmail(model.geteMail())){
+				return MapResult.mapError(RspCode.R99999, "请输入邮箱账号不合法");
+			}
+			
+			if(accountService.isEmailExist(model.geteMail())){
+				return MapResult.mapError(RspCode.R99999, "邮箱账号已存在！");
+			}
+			
+//			String name=model.geteMail().replace("@", "_");
+//			name=model.geteMail().replace(".", "_");
+//			model.setName("user_"+name);
+			
+		}
+		//手机号注册
+		if("phone".equals(typeName)){
+			if(StringUtils.isBlank(model.getPhone())){
+				return MapResult.mapError(RspCode.R99999, "请输入手机账号");
+			}
+			
+			if(!RegexUtils.checkMobile(model.getPhone())){
+				return MapResult.mapError(RspCode.R99999, "请输入手机账号不合法");
+			}
+			
+			if(accountService.isEmailExist(model.getPhone())){
+				return MapResult.mapError(RspCode.R99999, "手机账号已存在！");
+			}
+			
+			//model.setName("user_"+model.getPhone());
+		}
+		
+		if(StringUtils.isBlank(model.getPassword())){
+			return MapResult.mapError(RspCode.R99999, "请输入密码");
+		}
+		
+		if(StringUtils.isBlank(passwordRepeat)){
+			return MapResult.mapError(RspCode.R99999, "请输入确认密码");
+		}
+		
+		if(!passwordRepeat.equals(model.getPassword())){
+			return MapResult.mapError(RspCode.R99999, "两次密码不一致");
+		}
+		
+		if("email".equals(typeName)||"phone".equals(typeName)){
+			String name="user_"+(accountService.getIdMaxValue()+1);
+			model.setName(name);
+		}
+		
+		if(accountService.save(model)){
+			return MapResult.mapOK(RspCode.R00000);
+		}
+		
+		return MapResult.mapError(RspCode.R99999, "注册用户失败，请重试...");
 	}
 	
 	@RequestMapping(value = "update", method = RequestMethod.POST)
@@ -193,7 +260,8 @@ public class AccountController {
 	
 	
 
-    @RequestMapping("/info")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping("/info")
     public HttpEntity userInfo(HttpServletRequest request) throws OAuthSystemException {
         try {
 

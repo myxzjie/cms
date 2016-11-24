@@ -57,13 +57,13 @@ public class LoginController extends BaseController{
 			Boolean rememberMe, Boolean mobileLogin, Account account,HttpServletRequest request) {
 //		//登录用户名类型  用户名登录 1, 手机登录2, 邮箱登录3
 //		String longUsernameType=ConstantsUtils.LOGIN_USERNAME_TYPE_NAME;
-		logger.debug(">>"+verifycode);
-		logger.debug(">>"+username);
 		if (account == null){
 			return MapResult.mapError(RspCode.R10001,"对不起,您输入用户名和密码");
 		}
 		account.setName(username);
-		logger.debug(">>"+JSON.toJSONString(account));
+		if(logger.isDebugEnabled()){
+			logger.debug(">> 用户登录信息："+JSON.toJSONString(account));
+		}
 		if(StringUtils.isBlank(account.getName())){
 			return MapResult.mapError(RspCode.R10003,"对不起，您输入的用户名为空，请重新输入");
 		}
@@ -107,7 +107,7 @@ public class LoginController extends BaseController{
         	logger.error("重复登录错误超过次数："+ e.getMessage());
         	return MapResult.mapError(RspCode.R10001,"对不起，您重复登录错误超过5次,请等待 30分钟");
         } catch (RuntimeException e) {
-            logger.error("未知错误,请联系管理员："+ e.getMessage());
+            logger.error("未知错误："+ e.getMessage());
             return MapResult.mapError(RspCode.R10001,"対不起，业务繁忙.");
         } 
 		
@@ -123,4 +123,5 @@ public class LoginController extends BaseController{
 		SecurityUtils.getSubject().logout();
 		return MapResult.mapOK(RspCode.R00000);
 	}
+
 }

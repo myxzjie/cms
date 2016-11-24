@@ -231,6 +231,46 @@ public class AccountServiceImpl implements AccountService{
 		return this.update(record);
 	}
 
+	@Override
+	public boolean isNameExist(String name) {
+		return this.isExist(name, 1);
+	}
+
+	@Override
+	public boolean isPhoneExist(String phone) {
+		return this.isExist(phone, 2);
+	}
+
+	@Override
+	public boolean isEmailExist(String eMail) {
+		return this.isExist(eMail, 3);
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @param type 1 用户名，2 手机号，3  邮箱
+	 * @return
+	 */
+	private boolean isExist(String value,int type){
+		Account account =new Account();
+		
+		if(1==type){
+			account.setName(value);
+		}else if(2==type){
+			account.setPhone(value);
+		}else {
+			account.seteMail(value);
+		}
+		
+		return accountMapper.exist(account)>0;
+	}
+
+	@Override
+	public long getIdMaxValue() {
+		return accountMapper.getIdMaxValue();
+	}
+
 	
 
 }
