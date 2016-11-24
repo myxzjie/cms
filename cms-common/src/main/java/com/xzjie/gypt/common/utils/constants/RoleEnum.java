@@ -1,7 +1,5 @@
 /**
- * radp-cms
  * @Title: RoleEnum.java 
- * @Package com.xzjie.gypt.common.utils.constants
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:

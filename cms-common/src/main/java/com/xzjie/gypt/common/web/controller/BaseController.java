@@ -1,7 +1,5 @@
 /**
- * radp-cms
  * @Title: BaseController.java 
- * @Package org.radp.xzjie.core.base.web
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:
@@ -59,7 +57,9 @@ public abstract class BaseController{
 	 */
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-		logger.info("String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击>>>:" + System.currentTimeMillis());
+		if(logger.isDebugEnabled()){
+			logger.debug("String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击>>>:" + System.currentTimeMillis());
+		}
 		// String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击
 		binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
 			@Override
