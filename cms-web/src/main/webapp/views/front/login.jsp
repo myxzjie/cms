@@ -145,11 +145,13 @@
 					                // ie下如果跨域则抛出权限异常 
 					                // safari和chrome下window.opener.location没有任何属性 
 					                referrer = window.opener.location.href; 
-					            } 
+					            } else{
+					            	location.href=global.frontPath+"/index?cid=1"
+					            }
 					        }  
 					        catch (e) {} 
 					    } else{
-					    	if(referrer.indexOf("/f/register")){
+					    	if(referrer.indexOf("/f/register")>-1){
 					    		location.href=global.frontPath+"/index?cid=1"
 					    	}else{
 					    		location.href=referrer;

@@ -46,6 +46,9 @@
     <if test="record.recommendType != null">
     and a.recommend_type = #{record.recommendType,jdbcType=BIGINT}
     </if>
+    <if test="record.author != null">
+    and a.author = #{record.author,jdbcType=BIGINT}
+    </if>
     order by a.create_date desc
   </select>
   

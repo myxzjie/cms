@@ -2,6 +2,7 @@ package com.xzjie.gypt.cms.web.front.controller;
 
 import java.util.Map;
 
+import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
@@ -11,12 +12,14 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.xzjie.gypt.common.security.CaptchaException;
+import com.xzjie.gypt.common.security.FormAuthenticationCaptchaFilter;
 import com.xzjie.gypt.common.security.UsernamePasswordCaptchaToken;
 import com.xzjie.gypt.common.utils.RspCode;
 import com.xzjie.gypt.common.utils.StringUtils;
@@ -31,7 +34,7 @@ public class LoginController extends BaseController{
 	 * 登录页面
 	 * @return
 	 */
-	@RequestMapping(value = "${web.frontPath}/login")
+	@RequestMapping(value = "${web.frontPath}/login", method=RequestMethod.GET)
 	public String login(){
 		return "front/login";
 	}
@@ -40,6 +43,30 @@ public class LoginController extends BaseController{
 	public String register(){
 		return "front/register";
 	}
+	
+	@RequestMapping(value = "${web.frontPath}/login", method = RequestMethod.POST)
+    public String showLoginForm(Account account,HttpServletRequest request, Model model) {
+		String error = null;
+        String exceptionClassName = (String)request.getAttribute(FormAuthenticationCaptchaFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
+        logger.error(">> exceptionClassName:"+exceptionClassName);
+        if(AccountException.class.getName().equals(exceptionClassName)){
+        	error = "对不起，您输入用户名和密码";
+        }else if(UnknownAccountException.class.getName().equals(exceptionClassName)||IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
+            error = "对不起，您输入用户名/密码错误";
+        }  else if(CaptchaException.class.getName().equals(exceptionClassName)) {
+        	error="对不起，您输入验证码错误";
+        } else if(LockedAccountException.class.getName().equals(exceptionClassName)) {
+        	error="对不起，您账号被冻结,请联系管理员";
+        } else if(ExcessiveAttemptsException.class.getName().equals(exceptionClassName)){
+        	error="对不起，您重复登录错误超过5次,请等待 30分钟";
+        }else if(exceptionClassName != null) {
+            error = "対不起，业务繁忙." ;//+ (String)request.getAttribute("message");
+        }
+        
+        model.addAttribute("error",  error);
+        
+        return "front/login";//redirect:
+    }
 	
 	/**
 	 * 前端登录

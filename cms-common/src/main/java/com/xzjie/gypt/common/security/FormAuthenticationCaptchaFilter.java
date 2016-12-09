@@ -1,5 +1,10 @@
 package com.xzjie.gypt.common.security;
 
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -79,17 +84,35 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
 	@Override
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
+
+		System.out.println("=========================登录成功");
+//		boolean isadministrator= subject.hasRole("administrator");
+//		{
+//			
+//		}
 		return super.onLoginSuccess(token, subject, request, response);
 	}
 
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,ServletResponse response) {
 		//return super.onLoginFailure(token, e, request, response);
-		
+		System.out.println("=========================登录Failure");
 		request.setAttribute(getFailureKeyAttribute(), e.getClass().getName());
         request.setAttribute("message", e.getMessage());
         return true;
+	}
+	
+
+
+	@Override
+	protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
+		
+//		String loginUrl = getLoginUrl();
+//		loginUrl += "&loginType=json";
+//		
+//		WebUtils.issueRedirect(request, response, loginUrl);
+		
+		super.redirectToLogin(request, response);
 	}
 
 	public String getCaptchaParam() {

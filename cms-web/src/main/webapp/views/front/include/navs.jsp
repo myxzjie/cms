@@ -35,21 +35,25 @@
    
    <shiro:notAuthenticated>
     <div class="am-topbar-right">
-      <a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm" href="${frontPath}/register?cid=${siteId}"><span class="am-icon-pencil"></span> 注册</a>
+    	<a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="${frontPath}/login?cid=${site.siteId}"><span class="am-icon-user"></span> 登录</a>
+    	<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm" href="${frontPath}/register?cid=${site.siteId}"><span class="am-icon-pencil"></span> 注册</a>
     </div>
-    <div class="am-topbar-right">
-      <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="${frontPath}/login?cid=${siteId}"><span class="am-icon-user"></span> 登录</a>
-    </div>
+   <!--  <div class="am-topbar-right">
+      
+    </div> -->
     </shiro:notAuthenticated>
     <shiro:user>  
     	
     	<shiro:authenticated>
     	<div class="am-topbar-right">
+    		<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm " href="${frontPath}/personal/info?cid=${siteId}">
+    		<span class="am-icon-user"></span> <shiro:principal property="username"/>
+    		</a>
     		<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm sign-out" href="javascript:;">
     		<span class="am-icon-sign-out"></span> 退出
     		</a>
     	</div>
-    	<div class="am-topbar-right">    	 
+    	<%-- <div class="am-topbar-right">    	 
     		<div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
 		        <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>
 		        	<i class="am-icon-user"></i>&nbsp;
@@ -61,7 +65,7 @@
 		         <li><a class="sign-out" href="javascript:;">退出</a></li>
 		        </ul>
 	        </div>
-    	</div>
+    	</div> --%>
     	
     	</shiro:authenticated>
     </shiro:user>

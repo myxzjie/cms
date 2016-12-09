@@ -20,4 +20,4 @@
 
 <link href="${ctx}/resources/front/assets/css/amazeui.min.css" rel="stylesheet" />
 <link href="${ctx}/resources/assets/lib/laypage/1.3/skin/laypage.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="${ctx}/resources/front/assets/css/app.css">
+<link href="${ctx}/resources/front/assets/css/app.css" rel="stylesheet" type="text/css" >
