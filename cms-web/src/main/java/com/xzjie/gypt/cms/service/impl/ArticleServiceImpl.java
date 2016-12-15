@@ -29,6 +29,8 @@ public class ArticleServiceImpl implements ArticleService {
 	public boolean save(Article record) {
 
 		record.setCreateDate(new Date());
+		record.setCountView(0);
+		record.setCountComment(0);
 		record.setStatus(1); // 1 正常 0失效
 
 		return articleMapper.insert(record) > 0;

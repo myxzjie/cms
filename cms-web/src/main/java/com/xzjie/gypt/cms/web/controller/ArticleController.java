@@ -65,6 +65,7 @@ public class ArticleController extends BaseController {
 
 		try {
 			model.setAuthor(getUserId());
+			model.setApproveStatus(1);//发布的
 			articleService.save(model, model.getContent());
 			return MapResult.mapOK(RspCode.R00000);
 		} catch (Exception e) {

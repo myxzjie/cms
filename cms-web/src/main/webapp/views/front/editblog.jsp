@@ -59,6 +59,7 @@
 					<div class="am-form-group">
 					    <label for="categoryId" class="am-u-sm-2 am-form-label">内容分类</label>
 					    <div class="am-u-sm-10">
+					    	<input id="h_categoryId" type="hidden" value="${model.categoryId}">
 					      <select id="categoryId" name="categoryId" required>					        
 					      </select>
 					    </div>
@@ -91,23 +92,22 @@
 		 		 	
 		 		 	<div class="am-form-group">
 				      <label class="am-radio-inline">
-				        <input type="radio" value="1" name="showModes"> 公开
+				        <input type="radio" <c:if test='${model.showModes==1}'>checked="checked"</c:if> value="1" name="showModes"> 公开
 				      </label>
 				      <label class="am-radio-inline">
-				        <input type="radio" checked="checked" value="0" name="showModes"> 私藏
+				        <input type="radio" <c:if test='${model.showModes==null || model.showModes==0 }'>checked="checked"</c:if> value="0" name="showModes"> 私藏
 				      </label>
 				     </div>
 		 		 	
 		 		 	 <div class="am-form-group">
 				      <label class="am-radio-inline">
-				        <input type="radio" checked="checked" value="0" name="approveStatus"> 草稿
+				        <input type="radio" <c:if test='${model.approveStatus==null || model.approveStatus==0}'>checked="checked"</c:if> value="0" name="approveStatus"> 草稿
 				      </label>
 				      <label class="am-radio-inline">
-				        <input type="radio" value="1" name="approveStatus"> 发布
+				        <input type="radio" <c:if test='${ model.approveStatus>=1}'>checked="checked"</c:if> value="${ model.approveStatus==1?1:model.approveStatus }" name="approveStatus"> 发布
 				      </label>
 				      
 				     </div>
-		 		 	
 		 		 	 <button type="submit" class="am-btn am-btn-primary">提交</button>
 	 		 	</fieldset>
 			</form>
@@ -191,11 +191,6 @@ $(function() {
 	
 	ue = UE.getEditor('editor');
 	
-	// 编辑器内容变化时同步到 textarea
-    //ue.addListener('contentChange', function() {
-    //  editor.sync();
-    //  $('[name=editor').trigger('change');
-    //});
 	
 	$.ajax({
 		type: "POST",
@@ -211,7 +206,7 @@ $(function() {
 					var row=res.data[i];
 					categoryId.append('<option value="'+row.categoryId+'">'+row.categoryName+'</option>');
 				}
-	
+				$('#categoryId').val($('#h_categoryId').val());
 			}else{
 				layer.alert(res.message, {icon: 2});
 			}

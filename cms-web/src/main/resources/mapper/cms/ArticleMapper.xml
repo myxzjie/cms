@@ -26,11 +26,12 @@
     <result column="author_name" property="authorName" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="show_modes" property="showModes" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     article_id, category_id, title, href, image, keywords, description, author, create_date, 
     update_date, count_view, count_comment, sort, status, approve_status, publish_date, 
-    publish_author, start_time, end_time, remarks, recommend_type
+    publish_author, start_time, end_time, remarks, recommend_type, show_modes
   </sql>
   
   <select id="findListPage" resultMap="BaseResultMap" parameterType="pageEntity" >
@@ -48,6 +49,9 @@
     </if>
     <if test="record.author != null">
     and a.author = #{record.author,jdbcType=BIGINT}
+    </if>
+    <if test="record.approveStatus != null">
+    and a.approve_status = #{record.approveStatus,jdbcType=BIGINT}
     </if>
     order by a.create_date desc
   </select>

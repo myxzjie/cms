@@ -59,6 +59,7 @@ public class FrontController extends BaseController {
 		}
 
 		article.setSiteId(getSiteId());
+		article.setApproveStatus(1);//发布的
 
 		record.setPage(page);
 		record.setRecord(article);
@@ -84,7 +85,8 @@ public class FrontController extends BaseController {
 
 		article.setCategoryId(id);
 		article.setSiteId(getSiteId());
-
+		article.setApproveStatus(1);//发布的
+		
 		pageEntity.setPage(page);
 		pageEntity.setRecord(article);
 		List<Article> list = articleService.getListPage(pageEntity);

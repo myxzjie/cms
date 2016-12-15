@@ -51,7 +51,13 @@
 						${article.description}
 						</p>
 						<div class="am-fr">
-						<button type="button" class="am-btn am-btn-primary am-btn-xs " onclick="location.href='/blog/edit/182'">修改</button>
+						<c:if test="${article.approveStatus==1}">
+						<span style="margin-right: 5px;">正在审核中，请耐心等待...</span>
+						</c:if>
+						<c:if test="${article.approveStatus==0}">
+						<button type="button" class="am-btn am-btn-primary am-btn-xs " onclick="publish(${article.articleId})">发布</button>
+						</c:if>
+						<button type="button" class="am-btn am-btn-primary am-btn-xs " onclick="location.href='${ctx_front}/blog/edit/${article.articleId}?cid=${site.siteId}'">修改</button>
 						<button type="button" class="am-btn am-btn-danger am-btn-xs " onclick="deleteblog(182)">删除</button>
 						
 						</div>
@@ -83,17 +89,15 @@
 			    <i class="am-icon-user-secret"></i>
 			   	 博主:
 			   	 <shiro:principal property="username"/>
-			   	 <!-- <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '点我管理您的博客', trigger: 'hover focus'}" onclick="javascript:location.href='/blog/myblog/'">2</button> -->
 			  </li>
 			  <li>
 			    <i class="am-icon-mortar-board"></i>
 			   	职业:java工程师
-			   	<!-- <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '点我管理您的美图', trigger: 'hover focus'}" onclick="javascript:location.href='/beauty/myBeauty/'">0</button> -->
 			  </li>
 			  <li>
 			    <i class="am-icon-newspaper-o"></i>
 			   	 简介
-			   	 <!-- <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '点我管理您的视频', trigger: 'hover focus'}" onclick="javascript:location.href='/video/myVideo/'">0</button> -->
+			   	 
 			  </li>
 			 </ul>
     	</div>
@@ -134,6 +138,7 @@ ${paramValues.hobbies[0]}可以通过指定下标来访问特定的参数的值 
 
 <script type="text/javascript">
 
+
 <%-- var currentPage=${empty param.currentPage? 1:param.currentPage}; --%>
 var totalPage=${empty totalPage?0:totalPage};
 
@@ -154,6 +159,23 @@ laypage({
          }
      }
  });
+ 
+ function publish(id){
+	 $.ajax({
+		type: "POST",
+		data: {cid:location.search.match(/cid=(\d+)/)[1]},
+		dataType: 'json',
+		url:global.frontPath+'/blog/category/1/'+id,
+		success: function(res){
+			if(res.success){
+				layer.alert("发布成功，请等待申请...", {icon: 1});
+				location.reload();
+			}else{
+				layer.alert(res.message, {icon: 2});
+			}
+		}
+	});
+ }
 </script>
 </body>
 </html>
