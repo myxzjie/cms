@@ -19,4 +19,6 @@ public interface CategoryMapper extends BaseMapper<Category, Long>{
     int updateByPrimaryKey(Category record);*/
 	
 	List<Category> findCategoryTree(Category record);
+	
+	List<Category> findCategoryChild(Category record); 
 }

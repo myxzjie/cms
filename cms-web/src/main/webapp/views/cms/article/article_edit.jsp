@@ -99,7 +99,7 @@ position: absolute;
 		<div class="row cl">
 			<label class="form-label col-2">文章摘要：</label>
 			<div class="formControls col-10">
-				<textarea name="description" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*1-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,200)">${model.description}</textarea>
+				<textarea name="description" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-200" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,200)">${model.description}</textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>

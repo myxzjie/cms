@@ -69,6 +69,10 @@
 
     <div class="am-u-md-4 am-u-sm-12 ">
     	<div data-am-widget="intro" class="am-intro am-cf am-intro-default am-no-layout blog-bor">
+    	<a href="${ctx_front}/blog/edit?cid=${site.siteId}" class="am-btn am-btn-primary am-btn-block">发布博文</a>
+    	</div>
+    	
+    	<div data-am-widget="intro" class="am-intro am-cf am-intro-default am-no-layout blog-bor" style="margin-top: 5px;">
     	<h2 style="border-bottom: 1px #eee solid; margin: 0 0 0.5rem; padding-left: 0.5rem">关于博主</h2>
     	<div class="blog-sidebar-widget">
     	<img style="width: 100%" alt="<shiro:principal property="username"/>" src="${uploadImageWeb}<shiro:principal property="photo"/>" >

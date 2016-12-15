@@ -115,4 +115,11 @@ public class CategoryServiceImpl implements CategoryService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Category> getCategoryChild(Long siteId) {
+		Category record = new Category();
+		record.setSiteId(siteId);
+		return categoryMapper.findCategoryChild(record);
+	}
 }

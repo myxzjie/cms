@@ -13,4 +13,6 @@ public interface CategoryService extends BaseService<Category, Long>{
 	List<Category> getCategoryTree(Long categoryPId,Long siteId);
 	
 	Category getCategory(Long siteId);
+	
+	List<Category> getCategoryChild(Long siteId); 
 }

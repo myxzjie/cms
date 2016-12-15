@@ -29,6 +29,15 @@
     description, category_order, state, create_date, update_date, show_modes
   </sql>
   
+  <select id="findCategoryChild" resultMap="BaseResultMap" parameterType="com.xzjie.gypt.cms.model.Category" >
+    select 
+    category_id, category_name
+    from cms_category a
+    where state=1 
+    and category_p_id>0
+    and site_id = #{siteId,jdbcType=BIGINT}    
+  </select>
+  
   <select id="findCategoryTree" resultMap="CategoryTree" parameterType="com.xzjie.gypt.cms.model.Category">
   	select 
     <include refid="Base_Column_List" />

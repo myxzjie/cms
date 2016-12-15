@@ -175,6 +175,7 @@
                 /account/info=anon
                 /account/register/**=anon
                 /${web.frontPath}/personal/**=cms,fontAuthc
+                /${web.frontPath}/blog/**=cms,fontAuthc
                 /${web.frontPath}/** = cms,anon
                 <!-- /wechat/accesstoken = user -->
                 <!-- /account/** = authc,perms[account:view:*,account:create:*]

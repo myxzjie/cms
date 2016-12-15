@@ -46,7 +46,7 @@
     	
     	<shiro:authenticated>
     	<div class="am-topbar-right">
-    		<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm " href="${frontPath}/personal/info?cid=${siteId}">
+    		<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm " href="${frontPath}/personal/info?cid=${site.siteId}">
     		<span class="am-icon-user"></span> <shiro:principal property="username"/>
     		</a>
     		<a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm sign-out" href="javascript:;">
