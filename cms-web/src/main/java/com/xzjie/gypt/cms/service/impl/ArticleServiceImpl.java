@@ -175,4 +175,10 @@ public class ArticleServiceImpl implements ArticleService {
 		articleMapper.update(article);
 	}
 
+	@Override
+	public String getContentByArticleId(Long articleId) {
+		ArticleContent model=articleContentMapper.findContentByArticleId(articleId);
+		return model.getContent();
+	}
+
 }

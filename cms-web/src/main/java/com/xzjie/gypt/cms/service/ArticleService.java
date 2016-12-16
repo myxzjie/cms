@@ -23,4 +23,6 @@ public interface ArticleService extends BaseService<Article, Long>{
 	 * @param articleId
 	 */
 	void updateAccess(Long articleId);
+	
+	String getContentByArticleId(Long articleId);
 }

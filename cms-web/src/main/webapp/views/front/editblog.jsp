@@ -24,9 +24,9 @@
 <!-- content srart -->
 <div class="am-g am-g-fixed blog-fixed">
 	<ol class="am-breadcrumb" style=" margin-bottom: 0rem;">
-	<li><a href="/" class="am-icon-home">首页</a></li>
-	<li><a href="/user/personalInfo">个人主页</a></li>
-	<li class="am-active">详情</li>
+	<li><a href="${ctx}" class="am-icon-home">首页</a></li>
+	<li><a href="${ctx_front}/personal/info?cid=${site.siteId}">个人主页</a></li>
+	<li class="am-active">${editType==1?'博文编辑':'发布博文'}</li>
 	</ol>
 	<hr style="margin: 0 0 0.5rem;">	
 	
@@ -37,7 +37,8 @@
   					<div class="am-form-group">
 					    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">标题</label>
 					    <div class="am-u-sm-10">
-					      <input type="text" class="input-text" placeholder=""  name="title" required value="${model.title}">
+					      <input id="articleId" type="hidden" name="articleId" value="${model.articleId}">
+					      <input type="text" placeholder=""  name="title" required value="${model.title}">
 					    </div>	    
 	  				</div>
 	  				
@@ -45,14 +46,14 @@
 					    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">关键词</label>
 					    <div class="am-u-sm-10">
 					      
-					      <input type="text" class="input-text" value="${model.keywords}" placeholder="" name="keywords">
+					      <input type="text" value="${model.keywords}" placeholder="" name="keywords">
 					    </div>
 					</div>
 					
 					<div class="am-form-group">
 					    <label for="description" class="am-u-sm-2 am-form-label">内容摘要</label>
 					    <div class="am-u-sm-10">
-					      <textarea id="description" name="description" cols="" rows="" minlength="10" maxlength="100"  placeholder="说点什么...最少输入10个字符" >${model.description}</textarea>
+					      <textarea id="description" name="description" cols="" rows="4" minlength="10" maxlength="100"  placeholder="说点什么...最少输入10个字符" >${model.description}</textarea>
 					    </div>
 					</div>
 					
@@ -73,7 +74,7 @@
 				         </div>
 				         
 				         <div id="fileList" class="uploader-list">
-						<c:if test="${model.articleId != null}">
+						<c:if test="${model.image != null}">
 						<div id="WU_FILE_0" class="item upload-state-success">
 						<div class="pic-box">
 						<img width="30" src="${uploadImageWeb}${model.image}">
@@ -98,16 +99,19 @@
 				        <input type="radio" <c:if test='${model.showModes==null || model.showModes==0 }'>checked="checked"</c:if> value="0" name="showModes"> 私藏
 				      </label>
 				     </div>
-		 		 	
+				     
+		 		 	<c:if test='${model.approveStatus==null || model.approveStatus==0}'>
 		 		 	 <div class="am-form-group">
 				      <label class="am-radio-inline">
-				        <input type="radio" <c:if test='${model.approveStatus==null || model.approveStatus==0}'>checked="checked"</c:if> value="0" name="approveStatus"> 草稿
+				        <input type="radio" checked="checked" value="0" name="approveStatus"> 草稿
 				      </label>
 				      <label class="am-radio-inline">
-				        <input type="radio" <c:if test='${ model.approveStatus>=1}'>checked="checked"</c:if> value="${ model.approveStatus==1?1:model.approveStatus }" name="approveStatus"> 发布
+				        <input type="radio"  value="1" name="approveStatus"> 发布
 				      </label>
 				      
 				     </div>
+				     </c:if>
+				     
 		 		 	 <button type="submit" class="am-btn am-btn-primary">提交</button>
 	 		 	</fieldset>
 			</form>
@@ -191,6 +195,27 @@ $(function() {
 	
 	ue = UE.getEditor('editor');
 	
+	/* if($('#articleId').val()!=''){
+		ue.addListener("ready",function(){
+	        //通过ajax请求数据
+	        UE.ajax.request(global.frontPath+'/blog/content/'+$('#articleId').val(),
+	            {
+	                method:"post",
+	                async:true,
+	                data:{cid:location.search.match(/cid=(\d+)/)[1]},
+	                dataType: 'json',
+	                onsuccess:function(xhr){
+	                	debugger
+	                    var s = xhr.responseText;
+	                    ue.setContent(s);
+	                    //document.getElementById("show").innerHTML=s;
+	                }
+	            }
+	        );
+	    });
+	} */
+	
+	
 	
 	$.ajax({
 		type: "POST",
@@ -199,7 +224,7 @@ $(function() {
 		url:global.frontPath+'/blog/category',
 		success: function(res){
 			if(res.success){
-				debugger
+				
 				var categoryId=$('#categoryId');
 				
 				for(var i=0;i<res.data.length;i++){
@@ -247,10 +272,12 @@ var toolObj={
 		            	form_group.removeClass('my-error');
 		            }
 		            
-		            debugger//
+		            var data={};
+		            data=$form.serializeJSON();
+					data.content=ue.getContent();
 		            $.ajax({
 						type: "POST",
-						data: $form.serialize()+"&content="+content,
+						data: data,
 						dataType: 'json',
 						url:$form[0].action,
 						success: function(res){

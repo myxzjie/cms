@@ -6,4 +6,6 @@ import com.xzjie.gypt.common.dao.BaseMapper;
 public interface ArticleContentMapper extends BaseMapper<ArticleContent, Long>{
 	
 	int updateByArticleId(ArticleContent record);
+	
+	ArticleContent findContentByArticleId(Long articleId);
 }

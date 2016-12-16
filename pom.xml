@@ -4,7 +4,7 @@
 
 	<groupId>com.xzjie</groupId>
 	<artifactId>cms</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.4</version>
 	<packaging>pom</packaging>
 
 	<name>cms</name>
@@ -21,7 +21,7 @@
 		<shiro.version>1.2.3</shiro.version>
 		<quartz.version>2.2.2</quartz.version>
 		<junit.version>4.12</junit.version>
-		<cms.version>0.0.2</cms.version>
+		<cms.version>0.0.4</cms.version>
 	</properties>
 
 	<dependencies>

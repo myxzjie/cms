@@ -135,6 +135,8 @@ public class UploadFileController {
 				entity.setFileSize(Double.valueOf(fileSize));
 
 				uploadService.save(entity);
+				
+				entity.setUriPath(WebUtils.getUploadImageWeb()+weburl);
 
 				return MapResult.mapOK(entity, "OK");
 			} catch (Exception e) {

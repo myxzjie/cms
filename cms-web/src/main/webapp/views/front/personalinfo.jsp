@@ -52,13 +52,13 @@
 						</p>
 						<div class="am-fr">
 						<c:if test="${article.approveStatus==1}">
-						<span style="margin-right: 5px;">正在审核中，请耐心等待...</span>
+						<span class="am-text-danger" style="margin-right: 5px;">正在审核中，请耐心等待...</span>
 						</c:if>
 						<c:if test="${article.approveStatus==0}">
 						<button type="button" class="am-btn am-btn-primary am-btn-xs " onclick="publish(${article.articleId})">发布</button>
 						</c:if>
 						<button type="button" class="am-btn am-btn-primary am-btn-xs " onclick="location.href='${ctx_front}/blog/edit/${article.articleId}?cid=${site.siteId}'">修改</button>
-						<button type="button" class="am-btn am-btn-danger am-btn-xs " onclick="deleteblog(182)">删除</button>
+						<button type="button" class="am-btn am-btn-danger am-btn-xs " onclick="deleteblog(${article.articleId})">删除</button>
 						
 						</div>
 				<c:if test="${article.image !=null }">
@@ -81,7 +81,9 @@
     	<div data-am-widget="intro" class="am-intro am-cf am-intro-default am-no-layout blog-bor" style="margin-top: 5px;">
     	<h2 style="border-bottom: 1px #eee solid; margin: 0 0 0.5rem; padding-left: 0.5rem">关于博主</h2>
     	<div class="blog-sidebar-widget">
-    	<img style="width: 100%" alt="<shiro:principal property="username"/>" src="${uploadImageWeb}<shiro:principal property="photo"/>" >
+    	<%-- <img style="width: 100%" alt="<shiro:principal property="username"/>" src="${uploadImageWeb}<shiro:principal property="photo"/>" > --%>
+    	<img style="width: 100%" alt="" src="${ctx}/resources/front/images/user_default.jpg" />
+    	
     	<!-- onerror="javascript:this.src='/attached/avatar/default.jpg'" -->
     	<div style="text-align: left;">
     		<ul class="am-list am-list-static am-list-border">
@@ -89,6 +91,7 @@
 			    <i class="am-icon-user-secret"></i>
 			   	 博主:
 			   	 <shiro:principal property="username"/>
+			   	 <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '编辑个人信息', trigger: 'hover focus'}" onclick="javascript:location.href='${ctx_front}/personal/edit'">编辑</button>
 			  </li>
 			  <li>
 			    <i class="am-icon-mortar-board"></i>
@@ -168,13 +171,29 @@ laypage({
 		url:global.frontPath+'/blog/category/1/'+id,
 		success: function(res){
 			if(res.success){
-				layer.alert("发布成功，请等待申请...", {icon: 1});
+				//layer.alert("发布成功，请等待申请...", {icon: 1});
 				location.reload();
 			}else{
 				layer.alert(res.message, {icon: 2});
 			}
 		}
 	});
+ }
+ 
+ function deleteblog(id){
+	 $.ajax({
+			type: "POST",
+			data: {cid:location.search.match(/cid=(\d+)/)[1]},
+			dataType: 'json',
+			url:global.frontPath+'/blog/delete/'+id,
+			success: function(res){
+				if(res.success){					
+					location.reload();
+				}else{
+					layer.alert(res.message, {icon: 2});
+				}
+			}
+		});
  }
 </script>
 </body>

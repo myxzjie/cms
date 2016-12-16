@@ -15,6 +15,15 @@
     content
   </sql>
   
+  <select id="findContentByArticleId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cms_article_content
+    where article_id = #{articleId,jdbcType=BIGINT}
+  </select>
+  
   <select id="getById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

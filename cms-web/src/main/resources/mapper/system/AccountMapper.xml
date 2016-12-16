@@ -20,6 +20,11 @@
     <result column="locked" property="locked" jdbcType="INTEGER" />
     <result column="org_id" property="orgId" jdbcType="BIGINT" />
     <result column="head_portrait" property="headPortrait" jdbcType="VARCHAR" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, name, nick_name, phone, e_mail, state, create_date, remarks, stype, 
@@ -43,6 +48,9 @@
 	</if>
 	<if test="eMail != null and eMail !=''">
 	and e_mail = #{eMail,jdbcType=VARCHAR}
+	</if>
+	<if test="userId != null">
+	and user_id !=#{userId,jdbcType=BIGINT}
 	</if>
   </select>
   
@@ -86,6 +94,7 @@
   <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
+    , nation, qq, job, address, login_date
     from sys_account
     where user_id = #{userId,jdbcType=BIGINT}
   </select>
@@ -264,6 +273,24 @@
       </if>
       <if test="headPortrait != null" >
         head_portrait = #{headPortrait,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null" >
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null" >
+        login_date = #{loginDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
