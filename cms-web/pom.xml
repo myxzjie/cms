@@ -14,18 +14,18 @@
 	
 	<url>http://maven.apache.org</url>
 	
-	<!-- <distributionManagement>1
+	<distributionManagement>
 		<repository>
         <id>nexus</id>
         <name>Releases</name>
-        <url>http://192.168.1.18:8081/repository/maven-releases</url>
+        <url>http://106.75.61.108:8081/nexus/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
         <id>nexus</id>
         <name>Snapshot</name>
-        <url>http://192.168.1.18:8081/repository/maven-snapshots</url>
+        <url>http://106.75.61.108:8081/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
-	</distributionManagement> -->
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
