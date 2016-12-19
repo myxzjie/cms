@@ -20,7 +20,7 @@
 	<ol class="am-breadcrumb" style=" margin-bottom: 0rem;">
 			  <li><a href="/" class="am-icon-home">首页</a></li>
 			  <li><a href="/user/personalInfo">个人主页</a></li>
-			  <li class="am-active">详情</li>
+			  <li class="am-active">个人信息编辑</li>
 			</ol>
 	<hr style="margin: 0 0 0.5rem;">	
 	
@@ -178,8 +178,8 @@
 							  <input type="file" name="file" accept="image/*" multiple="multiple" onchange="cahngavatar();">
 							  </div>
 						</form>
-					 	<form id="FaceUpload" name="FaceUpload" method="post" action="/user/updateAvatar" style="padding-top: 10px">
-					 		<input type="hidden" name="avatar" id="avatarname" value="32707921ac424e8780d69ef9f5267295.jpg">
+					 	<form id="FaceUpload" name="FaceUpload" method="post" action="${ctx_front}/personal/imgcut" style="padding-top: 10px">
+					 		<input type="hidden" name="avatarname" id="avatarname" value="${model.headPortrait}">
 					        <input type="hidden" id="x1" name="x1" value="0">
 					        <input type="hidden" id="y1" name="y1" value="0">
 					        <input type="hidden" id="cw" name="cw" value="100">
@@ -190,6 +190,7 @@
 						
 						<div>
 						<c:if test="${model.headPortrait==null}">
+						<span style="color: red;">默认图不能提交</span>
 						<img id="target" alt="user default" src="${ctx}/resources/front/images/user_default.jpg" />
 						</c:if>
 						<c:if test="${model.headPortrait!=null}">
@@ -202,13 +203,11 @@
 			    <div data-tab-panel-3="" class="am-tab-panel">
 			    	<div class="am-g">
 					  <div class="am-u-md-8 am-u-sm-centered">
-					    <form class="am-form" enctype="multipart/form-data" method="post" action="/user/updatePassword">
+					    <form id="changepwd" class="am-form" enctype="multipart/form-data" method="post" action="${ctx}/changepwd">
 					      <fieldset class="am-form-set">
-					      	
-						        <input type="password" name="oldpwd" placeholder="原密码">
-					      	
-					        <input type="password" name="newpwd" placeholder="新密码">
-					        <input type="password" name="newpwd_ag" placeholder="重复密码">
+						    <input type="password" name="password" placeholder="原密码" >
+					        <input type="password" name="newPassword" placeholder="新密码" >
+					        <input type="password" name="confirmPassword" placeholder="重复密码" >
 					      </fieldset>
 					      <button type="submit" class="am-btn am-btn-primary am-btn-block">提交</button>
 					    </form>
@@ -227,7 +226,13 @@
     	<div data-am-widget="intro" class="am-intro am-cf am-intro-default am-no-layout blog-bor" style="margin-top: 5px;">
     	<h2 style="border-bottom: 1px #eee solid; margin: 0 0 0.5rem; padding-left: 0.5rem">关于博主</h2>
     	<div class="blog-sidebar-widget">
-    	<img style="width: 100%" alt="user default" src="${ctx}/resources/front/images/user_default.jpg" />
+    	
+    	<c:if test="${model.headPortrait==null}">
+		<img style="width: 100%" alt="user default" src="${ctx}/resources/front/images/user_default.jpg" />
+		</c:if>
+		<c:if test="${model.headPortrait!=null}">
+		<img style="width: 100%" alt="${model.name}" src="${uploadImageWeb}${model.headPortrait}" >
+		</c:if>
     	<div style="text-align: left;">
     		<ul class="am-list am-list-static am-list-border">
 			  <li>
@@ -238,7 +243,7 @@
 			  </li>
 			  <li>
 			    <i class="am-icon-mortar-board"></i>
-			   	职业:java工程师
+			   	职业:${model.job}
 			  </li>
 			  <li>
 			    <i class="am-icon-newspaper-o"></i>
@@ -286,24 +291,15 @@ var jcrop_api;
 
 $(function(){
 	toolObj.submit();
+	jcropSetting();
 	
-	$('#target').Jcrop({
-    	bgColor: 'black',
-        bgOpacity: 0.4,
-        setSelect: [0, 0, 230,230],  //设定4个角的初始位置
-        aspectRatio: 1 / 1,
-        onChange: showCoords,   //当裁剪框变动时执行的函数
-        onSelect: showCoords,
-        minSize:[100,100],
-        maxSize:[230,230],
-    },function(){
-      jcrop_api = this;
-    });
 });
 
 var toolObj={
 		submit:function(){
 			this.edit();
+			this.FaceUpload();
+			this.changepwd();
 		},
 		edit:function(){
 			var $form =$("#persionalInfo_form");
@@ -334,7 +330,82 @@ var toolObj={
 		            return false;
 		          }
 		        });
+		},
+		FaceUpload:function(){
+			var $form=$('#FaceUpload');
+			
+			$form.validator({
+		          submit: function() {
+		            var formValidity = this.isFormValid();
+		            if (!formValidity){
+		            	return false;
+		            }
+
+		            var data={};
+		            data=$form.serializeJSON();
+		            $.ajax({
+						type: "POST",
+						data: data,
+						dataType: 'json',
+						url:$form[0].action,
+						success: function(res){
+							if(res.success){
+								location.reload();
+							}else{
+								layer.alert(res.message, {icon: 2});
+							}
+						}
+					});
+
+		            return false;
+		          }
+		        });
+		},
+		changepwd:function(){
+			var $form=$('#changepwd');
+			$form.validator({
+		          submit: function() {
+		            var formValidity = this.isFormValid();
+		            if (!formValidity){
+		            	return false;
+		            }
+
+		            var data={};
+		            data=$form.serializeJSON();
+		            $.ajax({
+						type: "POST",
+						data: data,
+						dataType: 'json',
+						url:$form[0].action,
+						success: function(res){
+							if(res.success){
+								location.reload();
+							}else{
+								layer.alert(res.message, {icon: 2});
+							}
+						}
+					});
+
+		            return false;
+		          }
+		        });
 		}
+		
+}
+
+function jcropSetting(){
+	$('#target').Jcrop({
+    	bgColor: 'black',
+        bgOpacity: 0.4,
+        setSelect: [0, 0, 230,230],  //设定4个角的初始位置
+        aspectRatio: 1 / 1,
+        onChange: showCoords,   //当裁剪框变动时执行的函数
+        onSelect: showCoords,
+        minSize:[100,100],
+        maxSize:[230,230],
+    },function(){
+      jcrop_api = this;
+    });
 }
 
 function cahngavatar(){
@@ -348,7 +419,7 @@ function cahngavatar(){
            if(res.success){
         	  var data=res.data;
         	  debugger
-        	  getImageWidth(rooturl+"/attached/temp/"+data.uriPath,function(w,h){
+        	  getImageWidth(data.uriPath,function(w,h){
         		  if(w!=undefined){
 	            		wi=w;
           		}
@@ -372,21 +443,10 @@ function cahngavatar(){
         			    ,icon:0
         			});
         		}else{
-		            	 $("#target").attr("src", rooturl+"/attached/temp/"+data.url);
-		            	$("#avatarname").val(data.url);
-		             	jcrop_api.setImage(rooturl+"/attached/temp/"+data.url);
-		            	 $('#target').Jcrop({
-		                    bgColor: 'black',
-		                    bgOpacity: 0.4,
-		                    setSelect: [0, 0, 100,100],  //设定4个角的初始位置
-		                    aspectRatio: 1 / 1,
-		                    onChange: showCoords,   //当裁剪框变动时执行的函数
-		                    onSelect: showCoords,   //当选择完成时执行的函数
-		                    minSize:[100,100],
-		                    maxSize:[300,300],
-		                },function(){
-		                    jcrop_api = this;
-		                });
+		            	 $("#target").attr("src", data.uriPath);
+		            	$("#avatarname").val(data.webUrl);
+		             	jcrop_api.setImage(data.uriPath);
+		             	jcropSetting();
 		            	 $(".jcrop-holder").attr("style","width: "+wi+"px; height: "+he+"px; position: relative; background-color: black;");
 		            	 $(".jcrop-holder").children("img").attr("style","width:"+wi+"px;height:"+he+"px;");
 		            	 $(".jcrop-holder").children(".jcrop-tracker").attr("style","width: "+wi+"px; height: "+he+"px; position: absolute; top: -2px; left: -2px; z-index: 290; cursor: crosshair;");

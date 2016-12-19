@@ -177,7 +177,6 @@ public class UploadFileController {
 
 				String uploadFileName = multipartFile.getOriginalFilename();
 				String fileName = System.currentTimeMillis() + "_" + DateUtils.getRandom(6) + suffix;
-				;
 
 				String path = WebUtils.getUploadImageDirectory() + dir;
 				String filePath = path + fileName;

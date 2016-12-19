@@ -113,7 +113,7 @@ public class AccountController {
 				return MapResult.mapError(RspCode.R99999, "请输入邮箱账号不合法");
 			}
 			
-			if(accountService.isEmailExist(model.geteMail())){
+			if(accountService.isEmailExist(model.geteMail(),null)){
 				return MapResult.mapError(RspCode.R99999, "邮箱账号已存在！");
 			}
 			
@@ -132,7 +132,8 @@ public class AccountController {
 				return MapResult.mapError(RspCode.R99999, "请输入手机账号不合法");
 			}
 			
-			if(accountService.isEmailExist(model.getPhone())){
+			//if(accountService.isEmailExist(model.getPhone(),null)){
+			if(accountService.isPhoneExist(model.getPhone(),null)){
 				return MapResult.mapError(RspCode.R99999, "手机账号已存在！");
 			}
 			
