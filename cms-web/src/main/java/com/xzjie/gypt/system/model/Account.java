@@ -38,6 +38,16 @@ public class Account {
     private Long orgId;
 
     private String headPortrait;
+    
+    private String nation;
+    
+    private String qq;
+    
+    private String job;
+    
+    private String address;
+    
+    private String loginDate;
 
     public Long getUserId() {
         return userId;
@@ -186,4 +196,44 @@ public class Account {
 	public String getCredentialsSalt() {
         return name + salt;
     }
+
+	public String getNation() {
+		return nation;
+	}
+
+	public void setNation(String nation) {
+		this.nation = nation;
+	}
+
+	public String getQq() {
+		return qq;
+	}
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+
+	public String getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(String loginDate) {
+		this.loginDate = loginDate;
+	}
 }

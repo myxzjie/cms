@@ -1,7 +1,5 @@
 /**
- * ask_rear
  * @Title: ConstantsUtils.java 
- * @Package com.ask.rear.utils
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:

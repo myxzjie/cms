@@ -32,6 +32,10 @@ public class Category {
     
     private String perentName;
     
+    private String showModes;
+    
+    private String isShow;
+    
     private List<Category> children;
 
     public Long getCategoryId() {
@@ -152,5 +156,21 @@ public class Category {
 
 	public void setChildren(List<Category> children) {
 		this.children = children;
+	}
+
+	public String getShowModes() {
+		return showModes;
+	}
+
+	public void setShowModes(String showModes) {
+		this.showModes = showModes;
+	}
+
+	public String getIsShow() {
+		return isShow;
+	}
+
+	public void setIsShow(String isShow) {
+		this.isShow = isShow;
 	}
 }

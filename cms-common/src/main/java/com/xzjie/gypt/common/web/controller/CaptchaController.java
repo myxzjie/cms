@@ -1,7 +1,5 @@
 /**
- * ask_rear
  * @Title: CaptchaController.java 
- * @Package com.ask.rear.sys.controller
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:

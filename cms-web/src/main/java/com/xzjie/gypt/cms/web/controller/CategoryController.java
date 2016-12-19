@@ -110,4 +110,6 @@ public class CategoryController extends BaseController{
 		categorys.add(category);
 		return MapResult.mapOK(categorys);
 	}
+	
+	
 }

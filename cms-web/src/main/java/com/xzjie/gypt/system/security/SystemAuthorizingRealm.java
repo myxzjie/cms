@@ -141,6 +141,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		private String eMail; // 邮箱
 		private Long orgId; //组织
 		private boolean isMobile; // 是否手机登录
+		private String photo; //照片
 
 		public Principal(Account account, boolean isMobile) {
 			this.userId = account.getUserId();
@@ -150,8 +151,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			this.eMail = account.geteMail();
 			this.orgId = account.getOrgId();
 			this.isMobile = isMobile;
+			this.photo=account.getHeadPortrait();
 		}
-
+		
 		public Long getUserId() {
 			return userId;
 		}
@@ -178,6 +180,14 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 		public boolean isMobile() {
 			return isMobile;
+		}
+
+		public String getPhoto() {
+			return photo;
+		}
+
+		public void setPhoto(String photo) {
+			this.photo = photo;
 		}
 
 	}

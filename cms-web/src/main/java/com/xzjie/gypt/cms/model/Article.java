@@ -52,6 +52,8 @@ public class Article {
 	private Long siteId;
 	
 	private String categoryName;
+	
+	private Integer showModes;
 
     public Long getArticleId() {
         return articleId;
@@ -251,5 +253,13 @@ public class Article {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	public Integer getShowModes() {
+		return showModes;
+	}
+
+	public void setShowModes(Integer showModes) {
+		this.showModes = showModes;
 	}
 }

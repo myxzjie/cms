@@ -68,7 +68,8 @@
 					<label for="remember-me">
 					<input id="remember-me" name="rememberMe" type="checkbox">记住密码</label> 
 					<a href="#" class="am-fr">忘记密码</a> 
-					<a href="register.html" class="zcnext am-fr ">注册</a> <br />
+					<a href="${frontPath}/register?cid=${site.siteId}" class="zcnext am-fr ">注册</a> 
+					<br />
 				</div>
 				<div class="am-cf">
 					<button type="button" id="btn_login" class="am-btn am-btn-primary am-btn-sm">
@@ -139,25 +140,25 @@
 					if(res.success){
 						var referrer = document.referrer; 
 					    if (!referrer) { 
-					        try { 
-					            if (window.opener) { 
-					                // ie下如果跨域则抛出权限异常 
-					                // safari和chrome下window.opener.location没有任何属性 
-					                referrer = window.opener.location.href; 
-					            } 
-					        }  
-					        catch (e) {} 
+					    	location.href=global.frontPath+"/index?cid=1"
+					        //try { 
+					        //    if (window.opener) { 
+					        //        // ie下如果跨域则抛出权限异常 
+					        //        // safari和chrome下window.opener.location没有任何属性 
+					        //        referrer = window.opener.location.href; 
+					        //    } else{
+					        //    	location.href=global.frontPath+"/index?cid=1"
+					        //    }
+					       // }  
+					       // catch (e) {} 
 					    } else{
-					    	location.href=referrer;//global.frontPath+"/index?cid=1"
+					    	if(referrer.indexOf("/f/register")>-1){
+					    		location.href=global.frontPath+"/index?cid=1"
+					    	}else{
+					    		location.href=referrer;
+					    	}
 					    }
-						/* layer.alert(res.message, {icon: 1});
-						var index = parent.layer.getFrameIndex(window.name);
-						if(href){
-							parent.location.href=href;
-						}else{
-							parent.location.href=location.href;
-						}
-						parent.layer.close(index); */
+						
 					}else{
 						layer.alert(res.message, {icon: 2});
 					}

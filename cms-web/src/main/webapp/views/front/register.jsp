@@ -5,7 +5,7 @@
 <html>
 <head lang="en">
 <%@ include file="include/meta.jsp"%>
-<title>登录-${site.siteName}</title>
+<title>注册-${site.siteName}</title>
 <meta name="description" content="${site.keywords}">
 <meta name="keywords" content="${site.description}">
 <%@ include file="include/style.jsp"%>
@@ -48,10 +48,10 @@
 					
 					<div class="am-tabs-bd">
 						<div class="am-tab-panel am-active">
-							<form method="post">
+							<form action="${ctx}/account/register/email" method="post">
 								<div class="user-email">
 									<label class="label" for="email"><i class="am-icon-envelope-o"></i></label>
-									<input class="" type="email" name="eMail" id="email" placeholder="请输入邮箱账号">
+									<input type="email" name="eMail" id="email" placeholder="请输入邮箱账号">
 								</div>										
                  				<div class="user-pass">
 									<label class="label" for="password"><i class="am-icon-lock"></i></label>
@@ -69,7 +69,7 @@
 							  	</div> -->
 										
 								<div class="am-cf">
-									<button type="submit" name=""  class="am-btn am-btn-primary am-btn-sm am-fl">
+									<button type="button"  class="am-btn am-btn-primary am-btn-sm am-fl btn_res">
 									注册
 									</button>
 								</div>
@@ -78,7 +78,7 @@
 						</div>
 						
 						<div class="am-tab-panel">
-							<form method="post">
+							<form action="${ctx}/account/register/phone" method="post">
 								<div class="user-phone">
 								    <label class="label" for="phone"><i class="am-icon-mobile-phone am-icon-md"></i></label>
 								    <input type="tel" name="phone" id="phone" placeholder="请输入手机号">
@@ -96,7 +96,7 @@
 				                </div>										
 				                <div class="user-pass">
 									<label class="label" for="passwordRepeat"><i class="am-icon-lock"></i></label>
-									<input type="password" name="" id="passwordRepeat" placeholder="确认密码">
+									<input type="password" name="passwordRepeat" id="passwordRepeat" placeholder="确认密码">
 				                </div>	
 				                
 				                <!-- <div class="login-links">
@@ -105,7 +105,7 @@
 										</label>
 							  	</div> -->
 								<div class="am-cf">
-									<button type="submit" name=""  class="am-btn am-btn-primary am-btn-sm am-fl">
+									<button type="button" class="am-btn am-btn-primary am-btn-sm am-fl btn_res">
 									注册
 									</button>
 								</div>
@@ -151,46 +151,31 @@
 			$('#captcha_img').attr('src','${ctx}/kaptcha/image');
 		});
 		
-		$('#btn_login').click(function(){
-			var form= $('#login-form');
-			var data={};
+		$('.btn_res').click(function(){
+			var form= $(this).parents('form');
+			var data={},url;
 			data=form.serializeJSON();
-			
-			$.ajax({
-				type: "POST",
-				data: data,
-				dataType: 'json',
-				url:form[0].action,
-				success: function(res){
-					if(res.success){
-						var referrer = document.referrer; 
-					    if (!referrer) { 
-					        try { 
-					            if (window.opener) { 
-					                // ie下如果跨域则抛出权限异常 
-					                // safari和chrome下window.opener.location没有任何属性 
-					                referrer = window.opener.location.href; 
-					            } 
-					        }  
-					        catch (e) {} 
-					    } else{
-					    	location.href=referrer;//global.frontPath+"/index?cid=1"
-					    }
-						/* layer.alert(res.message, {icon: 1});
-						var index = parent.layer.getFrameIndex(window.name);
-						if(href){
-							parent.location.href=href;
-						}else{
-							parent.location.href=location.href;
-						}
-						parent.layer.close(index); */
-					}else{
-						layer.alert(res.message, {icon: 2});
-					}
-				}
-			});
-		});
+			url=form[0].action;
+			res(url,data);
+		});		
+	
 	})
+	
+	function res(url,data){
+		$.ajax({
+			type: "POST",
+			data: data,
+			dataType: 'json',
+			url:url,
+			success: function(res){
+				if(res.success){
+					location.href=global.frontPath+"/login?cid=1"
+				}else{
+					layer.alert(res.message, {icon: 2});
+				}
+			}
+		});
+	}
 	</script>
 </body>
 </html>

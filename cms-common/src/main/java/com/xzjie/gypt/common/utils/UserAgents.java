@@ -1,7 +1,5 @@
 /**
- * radp-cms
  * @Title: UserAgents.java 
- * @Package com.xzjie.gypt.common.utils
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:

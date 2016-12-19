@@ -121,6 +121,18 @@
         <property name="loginUrl" value="/login"/>
     </bean>
     
+    <bean id="fontAuthcFilter" class="com.xzjie.gypt.common.security.FormAuthenticationCaptchaFilter">
+        <property name="usernameParam" value="username"/>
+        <property name="passwordParam" value="password"/>
+        <property name="captchaParam" value="captcha"/>
+        <property name="stypeParam" value="stype"/>
+        <property name="isMobileParam" value="isMobile" />
+        <property name="rememberMeParam" value="rememberMe"/>
+        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
+        <property name="loginUrl" value="/${web.frontPath}/login"/>
+    </bean>
+    
+    
     <bean id="crosFilter" class="com.xzjie.gypt.system.interceptor.CrosFilter">  
 		<property name="casServerURL" value="http://www.b.com/token"/>  
 		<property name="domain" value="www.a.com"/>  
@@ -146,6 +158,7 @@
                 <entry key="cms" value-ref="cmsFilter"/>
                 <entry key="cros" value-ref="crosFilter" />
                 <entry key="logout" value-ref="logout" />
+                <entry key="fontAuthc" value-ref="fontAuthcFilter"></entry>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
@@ -153,14 +166,17 @@
                 /resources/** = anon
                 /kaptcha/** = anon
                 /wechat/signature/** =anon
-                /api/** = cros,anon
-                /${web.frontPath}/** = cms,anon
+                /api/** = cros,anon                
                 /login = authc
                 /logout = logout
                 /authorize=anon
                 /authenticated = authc
                 /accessToken=anon
                 /account/info=anon
+                /account/register/**=anon
+                /${web.frontPath}/personal/**=cms,fontAuthc
+                /${web.frontPath}/blog/**=cms,fontAuthc
+                /${web.frontPath}/** = cms,anon
                 <!-- /wechat/accesstoken = user -->
                 <!-- /account/** = authc,perms[account:view:*,account:create:*]
                 /org/** = authc,roles[administrator]

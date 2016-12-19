@@ -4,7 +4,7 @@
 
 $(function() { 
 	
-	$('#sex').val($('#h_sex').val());
+	$('#showModes').val($('#h_showModes').val());
 	
 	categoryTree.getPerentCategory();
 	

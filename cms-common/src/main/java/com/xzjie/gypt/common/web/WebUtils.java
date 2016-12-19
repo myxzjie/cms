@@ -1,7 +1,5 @@
 /**
- * radp-cms
  * @Title: WebUtils.java 
- * @Package org.radp.xzjie.core.base
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:

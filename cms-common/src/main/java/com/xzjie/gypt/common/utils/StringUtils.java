@@ -1,7 +1,5 @@
 /**
- * radp-cms
  * @Title: StringUtils.java 
- * @Package org.radp.xzjie.core.utils
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:

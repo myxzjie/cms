@@ -3,6 +3,7 @@ package com.xzjie.gypt.system.web.controller;
 import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -30,7 +31,7 @@ public class LoginController extends BaseController{
     public String showLoginForm(Account account,HttpServletRequest request, Model model) {
 		String error = null;
         String exceptionClassName = (String)request.getAttribute(FormAuthenticationCaptchaFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-        
+        logger.error(">> exceptionClassName:"+exceptionClassName);
         if(AccountException.class.getName().equals(exceptionClassName)){
         	error = "对不起，您输入用户名和密码";
         }else if(UnknownAccountException.class.getName().equals(exceptionClassName)||IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
@@ -39,8 +40,10 @@ public class LoginController extends BaseController{
         	error="对不起，您输入验证码错误";
         } else if(LockedAccountException.class.getName().equals(exceptionClassName)) {
         	error="对不起，您账号被冻结,请联系管理员";
-        } else if(exceptionClassName != null) {
-            error = "未知错误:," + (String)request.getAttribute("message");
+        } else if(ExcessiveAttemptsException.class.getName().equals(exceptionClassName)){
+        	error="对不起，您重复登录错误超过5次,请等待 30分钟";
+        }else if(exceptionClassName != null) {
+            error = "対不起，业务繁忙." ;//+ (String)request.getAttribute("message");
         }
         
         model.addAttribute("error",  error);

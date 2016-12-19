@@ -6,26 +6,18 @@
 	<parent>
 		<groupId>com.xzjie</groupId>
 		<artifactId>cms</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.4</version>
 	</parent>
 	<artifactId>cms-web</artifactId>
 	<packaging>war</packaging>
 	<name>cms-web</name>
-	
+
 	<url>http://maven.apache.org</url>
-	
-	<distributionManagement>
-		<repository>
-        <id>nexus</id>
-        <name>Releases</name>
-        <url>http://106.75.61.108:8081/nexus/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-        <id>nexus</id>
-        <name>Snapshot</name>
-        <url>http://106.75.61.108:8081/nexus/content/repositories/snapshots/</url>
-    </snapshotRepository>
-	</distributionManagement>
+
+	<!-- <distributionManagement> <repository> <id>nexus</id> <name>Releases</name> 
+		<url>http://192.168.1.18:8081/repository/maven-releases</url> </repository> 
+		<snapshotRepository> <id>nexus</id> <name>Snapshot</name> <url>http://192.168.1.18:8081/repository/maven-snapshots</url> 
+		</snapshotRepository> </distributionManagement> -->
 
 	<dependencies>
 		<dependency>
@@ -289,6 +281,12 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.12</version>
 		</dependency>
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cms-web</finalName>
@@ -335,6 +333,7 @@
 					</webResources>
 					<warSourceExcludes>upload/**</warSourceExcludes>
 				</configuration>
+				
 			</plugin>
 		</plugins>
 	</build>

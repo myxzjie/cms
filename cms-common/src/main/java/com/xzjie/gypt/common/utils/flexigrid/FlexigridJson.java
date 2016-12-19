@@ -1,7 +1,5 @@
 /**
- * radp-cms
  * @Title: FlexigridJson.java 
- * @Package com.xzjie.gypt.common.utils.flexigrid
  * @Description: TODO(添加描述) 
  * @Copyright: Copyright (c) 2016
  * @Company:
