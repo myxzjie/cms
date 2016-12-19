@@ -14,7 +14,7 @@
 	
 	<url>http://maven.apache.org</url>
 	
-	<!-- <distributionManagement>
+	<!-- <distributionManagement>1
 		<repository>
         <id>nexus</id>
         <name>Releases</name>
