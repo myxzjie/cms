@@ -40,11 +40,7 @@
 <div class="am-g am-g-fixed blog-fixed">
     <div class="am-u-md-8 am-u-sm-12">
     	<%@include file="include/article.jsp" %>
-        
-        <ul class="am-pagination">
-		  <li class="am-pagination-prev"><a href="${ctx_front}/category?cid=${siteId}&id=${model.categoryId}&currentPage=${page.currentPage-1}">&laquo; 上一页</a></li>
-		  <li class="am-pagination-next"><a href="${ctx_front}/category?cid=${siteId}&id=${model.categoryId}&currentPage=${page.currentPage+1}">下一页 &raquo;</a></li>
-		</ul>
+       
     </div>
 
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
@@ -78,6 +74,27 @@
 
 <%@include file="include/script.jsp" %>
 <script type="text/javascript">
+
+var totalPage=${empty totalPage?0:totalPage};
+
+//显示分页
+laypage({
+ cont: 'pagination', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+ pages: totalPage, //通过后台拿到的总页数
+ curr: function(){//通过url获取当前页，也可以同上（pages）方式获取
+		var currentPage = location.search.match(/currentPage=(\d+)/);
+ 		return currentPage ? currentPage[1] : 1;
+ }(), //当前页
+ skip: false, //是否开启跳页
+ skin: '#5eb95e',
+ groups: 3, //连续显示分页数
+ jump: function(obj, first){ //触发分页后的回调
+     if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+     	 location.href = global.frontPath+'/index?cid=1&currentPage='+obj.curr;
+     }
+ }
+});
+
 $(function(){
 	
 	

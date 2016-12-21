@@ -65,7 +65,7 @@ public class FrontController extends BaseController {
 		record.setRecord(article);
 
 		modelMap.put("articles", articleService.getListPage(record));
-		modelMap.put("page", page);
+		modelMap.put("totalPage", page.getTotalPage());
 		modelMap.put("siteId", getSiteId());
 		return "front/index";
 	}
@@ -93,6 +93,7 @@ public class FrontController extends BaseController {
 
 		modelMap.put("model", category);
 		modelMap.put("articles", list);
+		modelMap.put("totalPage", page.getTotalPage());
 		modelMap.put("siteId", getSiteId());
 		return "front/category_index";
 	}

@@ -1,21 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-		<c:forEach var="article" items="${articles}">
-		<article class="am-g blog-entry-article">
-            <div class="am-u-lg-4 am-u-md-12 am-u-sm-12 blog-entry-img">
-                <img src="${uploadImageWeb}${article.image}" alt="" class="thumbnails am-u-sm-12">
-            </div>
-            <div class="am-u-lg-8 am-u-md-12 am-u-sm-12 blog-entry-text">
-            	<h1><a href="${ctx_front}/article?cid=${siteId}&id=${article.articleId}">${article.title}</a></h1>
-                <!-- <span><a href="" class="blog-color">article &nbsp;</a></span> -->
-                
-                <span> <i class="am-icon-comment blog-color"></i>&nbsp; ${article.countComment} &nbsp;</span>
-                <span> <i class="am-icon-link blog-color"></i>&nbsp; ${article.countView} &nbsp;</span>
-                <span> ${article.authorName} &nbsp;</span>
-                
-                <span><fmt:formatDate value="${article.createDate}" pattern="yyyy/MM/dd" /></span>
-                
-                <p class="description">${article.description}</p>
-                <p><a href="" class="blog-continue">continue reading</a></p>
-            </div>
-        </article>
-		</c:forEach>
+		<div class="am-panel am-panel-default">
+    		<c:forEach var="article" items="${articles}">
+    		<div class="inner-box blog-img ">
+    			<c:if test="${article.image !=null }">
+	  			<div class="am-g">
+		  			<div class="am-u-sm-4">
+						<a class="blog-a-curse" href="${ctx_front}/article?cid=${site.siteId}&id=${article.articleId}">
+						<img alt="" class="am_img animated thumbnails"src="${uploadImageWeb}${article.image}" data-original="${uploadImageWeb}${article.image}" >
+						</a>
+					</div>
+					<div class="am-u-sm-8">
+				</c:if>
+						<div class="blog-header">
+							<h2><a href="${ctx_front}/article?cid=${site.siteId}&id=${article.articleId}">${article.title}</a></h2>
+						</div>
+						<p class="blog-ext">
+							<span> <i class="am-icon-comment blog-color"></i>&nbsp; ${article.countComment} &nbsp;</span>
+							<span> <i class="am-icon-link blog-color"></i>&nbsp; ${article.countView} &nbsp;</span>
+							<span> <i class="am-icon-user blog-color blog-ext-ico"></i> ${article.authorName} &nbsp;</span>
+							<span> <i class="am-icon-clock-o blog-color blog-ext-ico"></i> <fmt:formatDate value="${article.createDate}" pattern="yyyy/MM/dd" /></span>
+							<span> <i class="am-icon-tag blog-color blog-ext-ico"></i> 分类:${article.categoryName}</span>
+						</p>
+						<p class="blog-content-show">
+						${article.description}
+						</p>
+						
+				<c:if test="${article.image !=null }">
+					</div>
+				</div>
+				</c:if>
+	 		</div>
+    		</c:forEach>
+	 		
+		</div>
+        <ul id="pagination" class="am-pagination">
+		</ul>
+		
