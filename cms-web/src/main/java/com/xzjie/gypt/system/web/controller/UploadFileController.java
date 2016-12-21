@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.xzjie.gypt.common.utils.DateUtils;
 import com.xzjie.gypt.common.utils.ImageBase64Utils;
 import com.xzjie.gypt.common.utils.RspCode;
@@ -30,6 +33,7 @@ import sun.misc.BASE64Decoder;
 @RequestMapping("upload")
 public class UploadFileController {
 
+	protected Logger log = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private UploadService uploadService;
 
@@ -86,11 +90,12 @@ public class UploadFileController {
 	@ResponseBody
 	public synchronized Map<String, Object> uploadImage(String dir, @RequestParam("file") MultipartFile multipartFile,
 			HttpServletRequest request) {
-		
+		log.info("upload image>>:"+dir);
 //		String path2=request.getSession().getServletContext().getRealPath("upload/img/product");
 //		System.out.println("path2:"+path2);
 		/** 判断文件是否为空,空直接返回上传错误 **/
 		if (!multipartFile.isEmpty()) {
+			log.info("upload image Filename>>:"+ multipartFile.getOriginalFilename());
 			try {
 				// 获得文件后缀名
 				String suffix = multipartFile.getOriginalFilename()
@@ -138,8 +143,10 @@ public class UploadFileController {
 				
 				entity.setUriPath(WebUtils.getUploadImageWeb()+weburl);
 
+				log.info("upload image info>>:"+ JSON.toJSONString(entity));
 				return MapResult.mapOK(entity, "OK");
 			} catch (Exception e) {
+				log.error("upload image error>>:",e.getMessage());
 				e.printStackTrace();
 				return MapResult.mapOK(e.getMessage(), "OK");
 			}
