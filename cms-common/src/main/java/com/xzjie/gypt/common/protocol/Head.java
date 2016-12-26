@@ -10,6 +10,8 @@
  */
 package com.xzjie.gypt.common.protocol;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,9 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @create 2016年8月31日 下午9:59:14 
  * @version V0.0.1 
  */
-@XmlRootElement(name = "head")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Head {
+/*@XmlRootElement(name = "head")
+@XmlAccessorType(XmlAccessType.FIELD)*/
+public class Head implements Serializable{
 	private String code;
 	private String massage;
 	private Boolean success;

@@ -172,7 +172,9 @@
                 <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />  
                 <!-- for application/xml --> 
                 <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >
-                	<constructor-arg ref="jaxbMarshaller" />
+                	<!-- <constructor-arg ref="jaxbMarshaller" /> -->
+                	<constructor-arg ref="xstreamMarshaller" />
+                	<property name="contentType" value="application/xml;charset=UTF-8" />
                 </bean>
             </list>  
         </property>  
@@ -205,6 +207,14 @@
 	            <value>com.xzjie.gypt.**.model</value>
 	        </list>
     	</property>  -->
+    </bean>
+    
+    <bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+        <property name="autodetectAnnotations" value="true"/>
+        <property name="streamDriver">
+            <bean class="com.thoughtworks.xstream.io.xml.StaxDriver" />
+        </property>
+        <property name="encoding" value="GBK" />
     </bean>
     
     <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  

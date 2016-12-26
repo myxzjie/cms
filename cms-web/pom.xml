@@ -287,6 +287,12 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.9</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cms-web</finalName>
@@ -333,7 +339,7 @@
 					</webResources>
 					<warSourceExcludes>upload/**</warSourceExcludes>
 				</configuration>
-				
+
 			</plugin>
 		</plugins>
 	</build>

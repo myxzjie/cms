@@ -8,7 +8,7 @@
  * @author 作者 E-mail: 513961835@qq.com
  * @date 2016年9月1日
  */
-package com.xzjie.gypt.api.model.api100001;
+package com.xzjie.gypt.api.model.api10002;
 
 import java.io.Serializable;
 import java.util.List;

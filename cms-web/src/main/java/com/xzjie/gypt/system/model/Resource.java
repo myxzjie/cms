@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 
 @SuppressWarnings("serial")
+@XStreamAlias("resources")
 public class Resource implements Serializable{
     private Long resourceId;
 

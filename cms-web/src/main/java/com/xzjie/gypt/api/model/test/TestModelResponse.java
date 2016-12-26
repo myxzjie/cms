@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.xzjie.gypt.common.page.Page;
 import com.xzjie.gypt.common.protocol.Head;
 
@@ -26,8 +27,9 @@ import com.xzjie.gypt.common.protocol.Head;
  * @create 2016年2月2日 下午5:17:06
  * @version V0.0.1
  */
-@XmlRootElement(name = "response")
-@XmlAccessorType(XmlAccessType.FIELD)
+/*@XmlRootElement(name = "response")
+@XmlAccessorType(XmlAccessType.FIELD)*/
+@XStreamAlias("response")
 public class TestModelResponse {
 
 	private Head head;
