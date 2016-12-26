@@ -96,6 +96,33 @@ laypage({
 });
 
 $(function(){
+	
+	$.ajax({
+		type: "POST",
+		data: {},
+		dataType: 'xml',
+		contentType: "application/xml; charset=utf-8",
+		scriptCharset: "utf-8" ,
+		url: 'http://localhost:8080/cms-web/api/example/demoitem.xml',
+		success: function(res){
+			if(res.success){
+				var data=res.data,slides= $('.am-slides');
+				for(var i=0;i<data.length;i++){
+					var row=data[i],html='<li>';
+					html+='<a href="'+global.frontPath+'/article?cid=${siteId}&id='+row.articleId+'"><img src="'+$('#uploadImageWeb').val()+row.image+'"></a>';
+	           		html+='</li>';
+	           		slides.append(html);
+				}
+				$('.am-slider').flexslider({
+					    // options
+				});
+			}else{
+				//$('#content').html('<p>没有内容...</p>');
+				//layer.alert(res.message, {icon: 2});
+			}
+		}
+	}); 
+	
 	$.ajax({
 		type: "POST",
 		data: {},

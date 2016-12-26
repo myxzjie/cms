@@ -214,7 +214,7 @@
         <property name="streamDriver">
             <bean class="com.thoughtworks.xstream.io.xml.StaxDriver" />
         </property>
-        <property name="encoding" value="GBK" />
+        <property name="encoding" value="UTF-8" />
     </bean>
     
     <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
