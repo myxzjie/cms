@@ -56,7 +56,9 @@
 	</bean>
 	<!-- 避免IE执行AJAX时,返回XML出现下载文件 -->
 	<bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-	    <constructor-arg ref="jaxbMarshaller" />
+	   <!--  <constructor-arg ref="jaxbMarshaller" /> -->
+	   <constructor-arg ref="xstreamMarshaller" />
+	   
 	    <property name="supportedMediaTypes" >
 	    	<list>
 	    		<value>application/xml;charset=UTF-8</value>
@@ -113,8 +115,8 @@
                 <entry key="html" value="text/html" />  
                 <entry key="pdf" value="application/pdf" />  
                 <entry key="xsl" value="application/vnd.ms-excel" />  
-                <entry key="xml" value="application/xml" />  
-                <entry key="json" value="application/json" />  
+                <entry key="xml" value="application/xml;charset=UTF-8" />  
+                <entry key="json" value="application/json;charset=UTF-8" />  
             </map>  
         </property>  
         <!-- 以路径扩展名确定请求的媒体类型, 如 info.json -> application/json, 默认为 true -->
@@ -199,20 +201,35 @@
 	</bean> -->
 	
 	<!-- XML 对象配置 -->
-	<bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-    	<property name="packagesToScan" value="com.xzjie.gypt.**.model.*"/>
+	<!-- <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+    	<property name="packagesToScan" value="com.xzjie.gypt.**.model.*"/> -->
     	<!-- <property name="classesToBeBound">
 	        <list>
 	            <value>com.xzjie.gypt.common.protocol</value>
 	            <value>com.xzjie.gypt.**.model</value>
 	        </list>
     	</property>  -->
-    </bean>
+   <!--  </bean> -->
     
     <bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
         <property name="autodetectAnnotations" value="true"/>
         <property name="streamDriver">
-            <bean class="com.thoughtworks.xstream.io.xml.StaxDriver" />
+            <!-- <bean class="com.thoughtworks.xstream.io.xml.StaxDriver" /> -->
+            <bean class="com.thoughtworks.xstream.io.xml.XppDriver"> 
+
+			<constructor-arg> 
+			
+			<bean class="com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer">
+			
+			<constructor-arg index="0" value="_-"/> 
+			
+			<constructor-arg index="1" value="_"/> 
+			
+			</bean> 
+			
+			</constructor-arg> 
+			
+			</bean> 
         </property>
         <property name="encoding" value="UTF-8" />
     </bean>
