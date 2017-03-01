@@ -12,6 +12,7 @@ import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.MultiState;
 import com.baidu.ueditor.define.State;
+import com.xzjie.gypt.system.web.WebUtils;
 
 public class FileManager {
 
@@ -24,6 +25,7 @@ public class FileManager {
 
 		this.rootPath = (String)conf.get( "rootPath" );
 		this.dir = this.rootPath + (String)conf.get( "dir" );
+		this.dir = WebUtils.getUploadImageDirectory() + (String)conf.get( "dir" );
 		this.allowFiles = this.getAllowFiles( conf.get("allowFiles") );
 		this.count = (Integer)conf.get( "count" );
 		
@@ -72,6 +74,7 @@ public class FileManager {
 			file = (File)obj;
 			fileState = new BaseState( true );
 			fileState.putInfo( "url", PathFormat.format( this.getPath( file ) ) );
+			
 			state.addState( fileState );
 		}
 		
@@ -82,8 +85,10 @@ public class FileManager {
 	private String getPath ( File file ) {
 		
 		String path = file.getAbsolutePath();
+		String rootPath=WebUtils.getUploadImageDirectory();
 		
-		return path.replace( this.rootPath, "/" );
+		return path.replace(rootPath, "/" );
+		//return path.replace( this.rootPath, "/" );
 		
 	}
 	
