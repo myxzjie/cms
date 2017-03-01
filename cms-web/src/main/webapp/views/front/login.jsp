@@ -28,7 +28,7 @@
 <body class="login-body" >
 	<div class="login-boxtitle">
 		<a href="${ctx_front}/index?cid=${site.siteId}">
-		<img alt="logo" src="${ctx}/favicon.ico" />
+		<img alt="logo" src="${ctx}/resources/assets/images/logo/TRen-64x64.png" />
 		${site.siteName}
 		</a>
 	</div>

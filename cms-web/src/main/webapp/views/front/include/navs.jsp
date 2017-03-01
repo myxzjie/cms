@@ -3,6 +3,7 @@
 <input id="uploadImageWeb" type="hidden" value="${uploadImageWeb}">
 <div class="am-g am-g-fixed blog-fixed ">
 <h1 class="am-topbar-brand">
+	<img alt="logo" src="${ctx}/resources/assets/images/logo/TRen-32x32.png" />
   <a href="${ctx_front}/index?cid=${site.siteId}">${site.siteName}</a>
 </h1>
 
