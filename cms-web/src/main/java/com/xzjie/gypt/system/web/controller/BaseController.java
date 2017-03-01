@@ -19,6 +19,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.xzjie.cache.SystemCacheManager;
+import com.xzjie.gypt.cms.model.Site;
 import com.xzjie.gypt.common.utils.constants.ConstantsUtils;
 import com.xzjie.gypt.system.model.Role;
 import com.xzjie.gypt.system.security.SystemAuthorizingRealm.Principal;
@@ -35,10 +37,15 @@ import com.xzjie.gypt.wechat.service.WXAccountService;
  */
 public class BaseController extends com.xzjie.gypt.common.web.controller.BaseController {
 
+	private final String SITE_KEY="site";
+	
 	@Autowired
 	private RoleService roleService;
 	@Autowired
 	private WXAccountService wxAccountService;
+	
+	@Autowired
+	private SystemCacheManager systemCache;
 
 	public String getRoleCode() {
 		return getRole().getRoleCode();
@@ -122,13 +129,8 @@ public class BaseController extends com.xzjie.gypt.common.web.controller.BaseCon
 	}
 	
 	public Long getSiteId(){
-		String cid= request.getParameter("cid");
-		
-		if(cid!=null&&!"".equals(cid)){
-			return Long.parseLong(cid);
-		}
-		
-		return null;
+		Site site = (Site) systemCache.get(SITE_KEY);
+		return site.getSiteId();
 	}
 	
 

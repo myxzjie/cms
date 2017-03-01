@@ -5,6 +5,7 @@ import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.FileType;
 import com.baidu.ueditor.define.State;
+import com.xzjie.gypt.system.web.WebUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,6 +71,8 @@ public class BinaryUploader {
 			savePath = PathFormat.parse(savePath, originFileName);
 
 			String physicalPath = (String) conf.get("rootPath") + savePath;
+			
+			physicalPath = WebUtils.getUploadImageDirectory()+ savePath;
 
 			InputStream is = fileStream.openStream();
 			State storageState = StorageManager.saveFileByInputStream(is,

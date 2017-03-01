@@ -18,10 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xzjie.cache.SystemCacheManager;
 import com.xzjie.gypt.cms.model.Article;
 import com.xzjie.gypt.cms.model.Category;
 import com.xzjie.gypt.cms.service.ArticleService;
 import com.xzjie.gypt.cms.service.CategoryService;
+import com.xzjie.gypt.cms.service.SiteService;
 import com.xzjie.gypt.common.page.Page;
 import com.xzjie.gypt.common.page.PageEntity;
 import com.xzjie.gypt.common.utils.result.MapResult;
@@ -38,8 +40,7 @@ import com.xzjie.gypt.system.web.controller.BaseController;
 @RequestMapping(value = "${web.frontPath}")
 public class FrontController extends BaseController {
 
-	// @Autowired
-	// private SiteService siteService;
+	
 
 	@Autowired
 	private CategoryService categoryService;

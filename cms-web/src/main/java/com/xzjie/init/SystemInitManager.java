@@ -18,7 +18,7 @@ public class SystemInitManager implements  ServletContextAware{
 	
 	private Logger logger=LoggerFactory.getLogger(getClass());
 	
-	private final String SITE="site_";
+	private final String SITE_KEY="site";
 	
 	@Value(value = "${web.cid}")
 	private Long siteId;
@@ -41,14 +41,12 @@ public class SystemInitManager implements  ServletContextAware{
 		sb.append("\r\n=====   Site info load start  =====\r\n");
 		
 		logger.info(sb.toString());
-		String key =SITE+siteId;
 		Site site=null;
 		try {
-			Object obj=systemCache.get(key);
-			site = (Site)obj ;
+			site = (Site) systemCache.get(SITE_KEY);
 		} catch (Exception e) {
 			site = siteService.get(siteId);
-			systemCache.put(key, site);
+			systemCache.put(SITE_KEY, site);
 		}
 		
 		servletContext.setAttribute("site", site);
