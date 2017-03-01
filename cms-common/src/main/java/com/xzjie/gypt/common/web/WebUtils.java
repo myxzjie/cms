@@ -41,12 +41,12 @@ public abstract class WebUtils {
 		return request.getLocale().getLanguage();
 	}
 
-	public static Object getSite(HttpServletRequest request) {
-		String cid = request.getParameter("cid");
-		Object obj = request.getSession().getAttribute(cid);
-		if (obj != null) {
-			return obj;
-		}
-		return null;
-	}
+//	public static Object getSite(HttpServletRequest request) {
+//		String cid = request.getParameter("cid");
+//		Object obj = request.getSession().getAttribute(cid);
+//		if (obj != null) {
+//			return obj;
+//		}
+//		return null;
+//	}
 }

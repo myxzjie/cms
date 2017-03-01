@@ -26,7 +26,6 @@
 </head>
 
 <body id="blog">
-
 <%@include file="include/navs.jsp" %>
 
 <!-- banner start -->

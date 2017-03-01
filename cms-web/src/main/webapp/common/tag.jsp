@@ -13,6 +13,6 @@
 <c:set var="frontPath" value="${ctx}/f"/>
 <c:set var="ctx_front" value="${ctx}/f"/>
 
-<c:set var="site"  value="<%=WebUtils.getSite(request)%>"  />
+<%-- <c:set var="site"  value="<%=WebUtils.getSite(request)%>"  /> --%>
 <c:set var="uploadImageWeb" value="<%=WebUtils.getUploadImageWeb()%>"/>
   
