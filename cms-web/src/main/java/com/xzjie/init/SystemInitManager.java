@@ -29,8 +29,6 @@ public class SystemInitManager implements  ServletContextAware{
 	
 	@Autowired
 	private SiteService siteService;
-	@Autowired
-	private SystemCacheManager systemCache;
 	
 	@Autowired
 	private CategoryService categoryService;
@@ -41,7 +39,7 @@ public class SystemInitManager implements  ServletContextAware{
 //		String ctxPath=servletContext.getContextPath(); 
 //		servletContext.setAttribute("ctxPath",ctxPath);
         initSite(servletContext);
-        initCategory(servletContext);
+        //initCategory(servletContext);
 	}
 	
 	public void initSite(ServletContext servletContext){
@@ -51,10 +49,10 @@ public class SystemInitManager implements  ServletContextAware{
 		logger.info(sb.toString());
 		Site site=null;
 		try {
-			site = (Site) systemCache.get(SITE_KEY);
+			site = (Site) SystemCacheManager.get(SITE_KEY);
 		} catch (Exception e) {
 			site = siteService.get(siteId);
-			systemCache.put(SITE_KEY, site);
+			SystemCacheManager.put(SITE_KEY, site);
 		}
 		
 		servletContext.setAttribute("site", site);

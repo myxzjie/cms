@@ -8,31 +8,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class SystemCacheManager {
 	
-	private Cache cache;
+	private static Cache cache;
 
 	@Autowired
 	public SystemCacheManager(CacheManager cacheManager) {
-		this.cache = cacheManager.getCache("system-cache");
+		SystemCacheManager.cache = cacheManager.getCache("system-cache");
 	}
 	
-	public Object get(String key){
+	public static Object get(String key){
 		return cache.get(key).get();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T get(String key, Class<T> cls) {
+	public static <T> T get(String key, Class<T> cls) {
 		return (T) cache.get(key).get();
 	}
 	
-	public void put(String key, Object value){
+	public static void put(String key, Object value){
 		cache.put(key, value);
     }
 	
-	public void evict(String key){
+	public static void evict(String key){
 		cache.evict(key);
     }
 	
-	public void clear(){
+	public static void clear(){
 		cache.clear();
     }
 	

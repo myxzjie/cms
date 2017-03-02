@@ -15,7 +15,7 @@
     <ul class="am-nav am-nav-pills am-topbar-nav">
       <li ${param.active=='index'?'class="am-active"':''}><a href="${ctx_front}/index?cid=${site.siteId}">首页</a></li>
       
-      <c:forEach var="nav" items="${navs}">
+      <c:forEach var="nav" items="${mytag:navs()}">
       	<c:if test="${nav.children == null || fn:length(nav.children) == 0}">
       	<li ${categoryId==nav.categoryId?'class="am-active"':''}><a href="${frontPath}/category?cid=${site.siteId}&id=${nav.categoryId}">${nav.categoryName}</a></li>
       	</c:if>
