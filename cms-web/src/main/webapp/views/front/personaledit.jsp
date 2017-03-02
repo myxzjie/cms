@@ -198,6 +198,7 @@
 						<c:if test="${model.headPortrait!=null}">
 						<img alt="${model.name}" id="target" src="${uploadImageWeb}${model.headPortrait}" >
 						</c:if>
+						<%-- <img id="target" alt="${model.name}" src="${uploadImageWeb}${model.headPortrait}" onerror="javascript:this.src='${ctx}/resources/front/images/user_default.jpg'" /> --%>
 						</div>
 					</div>
 				</div>
@@ -220,63 +221,7 @@
 			</div>
     </div>
 
-    <div class="am-u-md-4 am-u-sm-12 ">
-    	<div data-am-widget="intro" class="am-intro am-cf am-intro-default am-no-layout blog-bor">
-    	<a href="${ctx_front}/blog/edit?cid=${site.siteId}" class="am-btn am-btn-primary am-btn-block">发布博文</a>
-    	</div>
-    	
-    	<div data-am-widget="intro" class="am-intro am-cf am-intro-default am-no-layout blog-bor" style="margin-top: 5px;">
-    	<h2 style="border-bottom: 1px #eee solid; margin: 0 0 0.5rem; padding-left: 0.5rem">关于博主</h2>
-    	<div class="blog-sidebar-widget">
-    	
-    	<c:if test="${model.headPortrait==null}">
-		<img style="width: 100%" alt="user default" src="${ctx}/resources/front/images/user_default.jpg" />
-		</c:if>
-		<c:if test="${model.headPortrait!=null}">
-		<img style="width: 100%" alt="${model.name}" src="${uploadImageWeb}${model.headPortrait}" >
-		</c:if>
-    	<div style="text-align: left;">
-    		<ul class="am-list am-list-static am-list-border">
-			  <li>
-			    <i class="am-icon-user-secret"></i>
-			   	 博主:
-			   	 <shiro:principal property="username"/>
-			   	 <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '编辑个人信息', trigger: 'hover focus'}" onclick="javascript:location.href='/personal/edit'">编辑</button>
-			  </li>
-			  <li>
-			    <i class="am-icon-mortar-board"></i>
-			   	职业:${model.job}
-			  </li>
-			  <li>
-			    <i class="am-icon-newspaper-o"></i>
-			   	 简介
-			   	 
-			  </li>
-			 </ul>
-    	</div>
-    	</div>
-    	</div>
-    	<div data-am-widget="list_news" class="am-list-news am-list-news-default " >
-  			<!--列表标题-->
-    		<div class="am-list-news-hd am-cf">
-	       		<!--带更多链接-->
-	        	<!-- <a href="##" class=""> -->
-	          	<h2>内容推荐</h2>
-	            <!-- <span class="am-list-news-more am-fr">更多 &raquo;</span> -->
-	        	<!-- </a> -->
-          	</div>
-
-  			<div class="am-list-news-bd">
-			  <ul class="am-list recommend-list">
-			
-			  </ul>
-  			</div>
-
-    	</div>
-    
-    	<%@include file="include/about.jsp" %>
-        
-    </div>
+    <%@include file="personal_common_userinfo.jsp" %>
 </div>
 <!-- content end -->
 
