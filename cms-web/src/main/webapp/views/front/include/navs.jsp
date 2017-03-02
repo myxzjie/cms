@@ -13,11 +13,11 @@
 
   <div class="am-collapse am-topbar-collapse" id="blog-collapse">
     <ul class="am-nav am-nav-pills am-topbar-nav">
-      <li class="am-active"><a href="${ctx_front}/index?cid=${site.siteId}">首页</a></li>
+      <li ${param.active=='index'?'class="am-active"':''}><a href="${ctx_front}/index?cid=${site.siteId}">首页</a></li>
       
       <c:forEach var="nav" items="${navs}">
       	<c:if test="${nav.children == null || fn:length(nav.children) == 0}">
-      	<li><a href="${frontPath}/category?cid=${site.siteId}&id=${nav.categoryId}">${nav.categoryName}</a></li>
+      	<li ${categoryId==nav.categoryId?'class="am-active"':''}><a href="${frontPath}/category?cid=${site.siteId}&id=${nav.categoryId}">${nav.categoryName}</a></li>
       	</c:if>
       	<c:if test="${nav.children != null && fn:length(nav.children) > 0}">
       		<li class="am-dropdown" data-am-dropdown="">

@@ -150,6 +150,16 @@
 		<location>/error/500.jsp</location>
 	</error-page>
 
+	<!-- <security-constraint>
+		 <web-resource-collection>
+        <web-resource-name>securedapp</web-resource-name>
+        <url-pattern>/*</url-pattern>
+        <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+    </web-resource-collection>
+	</security-constraint> -->
+	
 	<welcome-file-list>
 		<!-- <welcome-file>index.html</welcome-file> <welcome-file>index.htm</welcome-file> -->
 		<welcome-file>index.jsp</welcome-file>

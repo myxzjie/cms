@@ -38,7 +38,7 @@ public class PersonalController extends BaseController {
 
 	@RequestMapping(value = "info")
 	public String info(Article model, Page page, Map<String, Object> modelMap) {
-		categoryService.setCategoryList(getSiteId(), modelMap);
+		//categoryService.setCategoryList(getSiteId(), modelMap);
 
 		PageEntity<Article> record = new PageEntity<>();
 

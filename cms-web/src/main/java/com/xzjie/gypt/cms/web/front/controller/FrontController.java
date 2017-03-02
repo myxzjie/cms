@@ -53,7 +53,7 @@ public class FrontController extends BaseController {
 
 		PageEntity<Article> record = new PageEntity<Article>();
 
-		categoryService.setCategoryList(getSiteId(), modelMap);
+		//categoryService.setCategoryList(getSiteId(), modelMap);
 
 		if (page.getCurrentPage() < 1) {
 			page.setCurrentPage(1);
@@ -74,7 +74,7 @@ public class FrontController extends BaseController {
 	@RequestMapping(value = "category")
 	private String category(Long id, Map<String, Object> modelMap) {
 
-		categoryService.setCategoryList(getSiteId(), modelMap);
+		//categoryService.setCategoryList(getSiteId(), modelMap);
 		Category category = categoryService.get(id);
 
 		PageEntity<Article> pageEntity = new PageEntity<Article>();
@@ -96,6 +96,7 @@ public class FrontController extends BaseController {
 		modelMap.put("articles", list);
 		modelMap.put("totalPage", page.getTotalPage());
 		modelMap.put("siteId", getSiteId());
+		modelMap.put("categoryId", id);
 		return "front/category_index";
 	}
 
@@ -111,11 +112,12 @@ public class FrontController extends BaseController {
 		//访问量
 		articleService.updateAccess(id);
 		
-		categoryService.setCategoryList(getSiteId(), modelMap);
+		//categoryService.setCategoryList(getSiteId(), modelMap);
 		Article article = articleService.get(id);
 		
 		article.setContent(this.unescapeHtml4(article.getContent()));
 		modelMap.put("model", article);
+		modelMap.put("categoryId", article.getCategoryId());
 		return "front/article_index";
 	}
 

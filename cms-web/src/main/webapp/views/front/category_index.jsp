@@ -33,8 +33,9 @@
     </div>
 </header>
 <hr> --%>
-
-<%@include file="include/navs.jsp" %>
+<jsp:include page="include/navs.jsp">
+   	<jsp:param name="active" value=""/>
+</jsp:include>
 
 <!-- content srart -->
 <div class="am-g am-g-fixed blog-fixed">

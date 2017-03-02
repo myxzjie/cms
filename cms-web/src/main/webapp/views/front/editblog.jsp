@@ -17,9 +17,9 @@
   </style>
 </head>
 <body id="blog">
-
-<%@include file="include/navs.jsp" %>
-
+<jsp:include page="include/navs.jsp">
+   	<jsp:param name="active" value="index"/>
+</jsp:include>
 
 <!-- content srart -->
 <div class="am-g am-g-fixed blog-fixed">

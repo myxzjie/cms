@@ -24,7 +24,6 @@ import com.xzjie.gypt.common.page.PageEntity;
 import com.xzjie.gypt.common.utils.RspCode;
 import com.xzjie.gypt.common.utils.result.MapResult;
 import com.xzjie.gypt.system.model.Resource;
-import com.xzjie.gypt.system.security.SystemAuthorizingRealm.Principal;
 import com.xzjie.gypt.system.service.ResourceService;
 
 /**
