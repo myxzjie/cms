@@ -47,13 +47,18 @@ public class FrontController extends BaseController {
 
 	@Autowired
 	private ArticleService articleService;
+	
+	@RequestMapping(value = "disk/home")
+	public String diskHome(){
+		return "disk/disk_home";
+	}
 
 	@RequestMapping(value = "index")
 	private String index(Article article, Page page, Map<String, Object> modelMap) {
 
 		PageEntity<Article> record = new PageEntity<Article>();
 
-		//categoryService.setCategoryList(getSiteId(), modelMap);
+		categoryService.setCategoryList(getSiteId(), modelMap);
 
 		if (page.getCurrentPage() < 1) {
 			page.setCurrentPage(1);
@@ -68,7 +73,8 @@ public class FrontController extends BaseController {
 		modelMap.put("articles", articleService.getListPage(record));
 		modelMap.put("totalPage", page.getTotalPage());
 		modelMap.put("siteId", getSiteId());
-		return "front/index";
+		//return "front/index";
+		return "front_index";
 	}
 
 	@RequestMapping(value = "category")

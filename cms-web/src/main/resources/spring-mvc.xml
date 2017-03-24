@@ -129,42 +129,42 @@
         
         <property name="viewResolvers">  
             <list>  
-            	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />  
-                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-                    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
-                    <property name="prefix" value="/views/" />  
-                    <property name="suffix" value=".jsp" />  
-                </bean>
-                <!-- <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />  
-                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-                	<property name="viewNames">
-						<list>
-							<value>/views/**</value>
-						</list>
-					</property>
-                    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
-                    <property name="prefix" value="/" />  
-                    <property name="suffix" value=".jsp" />  
-                    <property name="order" value="2"/>
-                </bean>  -->
-                
-				<!-- FreeMarker视图解析 如返回student。。在这里配置后缀名ftl和视图解析器。。 -->
-				<!-- <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+            	<!--===============通用视图解析器 begin===============-->
+				<bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/views/" />
+					<property name="suffix" value=".jsp" />
+					<!-- 可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
+					<property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView" />
+					<property name="order" value="1" />
+				</bean>
+				
+				<!-- 视图解析器 -->
+				<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="order" value="2"></property>
+					<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+					<property name="prefix" value="/views/" />
+					<property name="suffix" value=".jsp"></property>
+				</bean>
+				
+                <!-- 配置freeMarker视图解析器 -->
+				<bean id="viewResolverFtl" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+					<!-- <property name="viewClass" value="com.sojson.core.freemarker.extend.FreeMarkerViewExtend" /> -->
 					<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
-					<property name="viewNames">
-						<list>
-							<value>/freemarker/**</value>
-						</list>
-					</property>
-					<property name="prefix" value="/" />
+					<property name="requestContextAttribute" value="request" />
+					<!-- 把Freemarker 扩展一下，把相关属性加入进去  -->
+					<property name="cache" value="true" />
 					<property name="suffix" value=".ftl" />
+					<property name="order" value="0" />
 					<property name="contentType" value="text/html;charset=utf-8" />
-					<property name="allowRequestOverride" value="true" /> 
-					<property name="exposeRequestAttributes" value="true" />
-					<property name="exposeSessionAttributes" value="true" />
-					<property name="exposeSpringMacroHelpers" value="true" />
-					<property name="order" value="3"/>
-				</bean> -->
+					<property name="attributes">
+			            <props>
+			                <!-- 传值给${author} -->
+			                <prop key="author">xzjie</prop>
+			                <!-- 传值给${resources} -->
+			                <prop key="resources">http://localhost:8080</prop>
+			            </props>
+			        </property>
+				</bean>
             </list>  
         </property>  
         
@@ -183,22 +183,45 @@
         
 	</bean>
 	
-	<!-- freemarker的配置 -->
-	<!-- <bean id="freemarkerConfig"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/" />
+	<!-- 配置freeMarker 拓展-->
+	<!-- <bean id="freemarkerConfig" class="com.sojson.core.freemarker.extend.FreeMarkerConfigExtend"> -->
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/template/${template.name}/" />
 		<property name="defaultEncoding" value="utf-8" />
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape" />
+				<!-- <entry key="api" value-ref="api"/> -->
+			</map>
+		</property>
+		<!-- <property name="freemarkerSettings" ref="freemarkerConfiguration" />  -->
 		<property name="freemarkerSettings">
-			<props>
-				<prop key="template_update_delay">1</prop>
+			<props><!-- 315360000 -->
+				<prop key="template_update_delay">0</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
 				<prop key="locale">zh_CN</prop>
-				<prop key="datetime_format">yyyy-MM-dd</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
 				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<!-- <prop key="number_format">0.######</prop> -->
+				<!-- <prop key="number_format">#</prop> -->
 				<prop key="number_format">#.##</prop>
-			    <prop key="auto_import">/freemarker/index.ftl as fk</prop>  				
+				<prop key="whitespace_stripping">true</prop>
+				<!-- <prop key="auto_import">
+					/_inc/_layout.ftl as layout
+				</prop> -->
 			</props>
 		</property>
-	</bean> -->
+	</bean>
+	<!-- <bean id="freemarkerConfiguration"  
+        class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+        <property name="location" value="classpath:freemarker.properties" />  
+    </bean>  -->
+	
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+	<!--===============通用视图解析器 end===============-->
 	
 	<!-- XML 对象配置 -->
 	<!-- <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
