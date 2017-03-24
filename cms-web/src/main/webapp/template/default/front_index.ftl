@@ -5,11 +5,184 @@
 </#macro>
 -->
 <#macro script>
+	<script type="text/javascript">
+
+var totalPage=${totalPage?default(0)};
+
+//显示分页
+laypage({
+   cont: 'pagination', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+   pages: totalPage, //通过后台拿到的总页数
+   curr: function(){//通过url获取当前页，也可以同上（pages）方式获取
+		var currentPage = location.search.match(/currentPage=(\d+)/);
+   		return currentPage ? currentPage[1] : 1;
+   }(), //当前页
+   skip: false, //是否开启跳页
+   skin: '#5eb95e',
+   groups: 3, //连续显示分页数
+   jump: function(obj, first){ //触发分页后的回调
+       if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+       	 location.href = global.frontPath+'/index?cid=1&currentPage='+obj.curr;
+       }
+   }
+});
+
+$(function(){
 	
+	$.ajax({
+		type: "POST",
+		data: {},
+		dataType: 'json',
+		url: global.frontPath+'/slider?cid=${siteId}',
+		success: function(res){
+			if(res.success){
+				var data=res.data,slides= $('.am-slides');
+				for(var i=0;i<data.length;i++){
+					var row=data[i],html='<li>';
+					html+='<a href="'+global.frontPath+'/article?cid=${siteId}&id='+row.articleId+'"><img src="${u_img_url}'+row.image+'"></a>';
+	           		html+='</li>';
+	           		slides.append(html);
+				}
+				$('.am-slider').flexslider({
+					    // options
+				});
+			}else{
+				//$('#content').html('<p>没有内容...</p>');
+				//layer.alert(res.message, {icon: 2});
+			}
+		}
+	}); 
+	
+	
+	$.ajax({
+		type: "POST",
+		data: {},
+		dataType: 'json',
+		url: global.frontPath+'/recommend?cid=${siteId}',
+		success: function(res){
+			if(res.success){
+				
+				var data=res.data,slides= $('.recommend-list');
+				for(var i=0;i<data.length;i++){
+					var row=data[i],html='<li class="am-g am-list-item-dated">';
+					
+					html+='<a href="'+global.frontPath+'/article?cid=${siteId}&id='+row.articleId+'" class="am-list-item-hd ">'+row.title+'</a>';
+			
+					html+='<span class="am-list-date">'+new Date(row.createDate).format("yyyy-MM-dd")+'</span>';
+			
+					html+='</li>';
+					
+	           		slides.append(html);
+				}
+			}else{
+				//layer.alert(res.message, {icon: 2});
+			}
+		}
+	});
+	
+	
+	
+});
+
+/* 
+//获取滚动条当前的位置  
+function getScrollTop() {  
+    var scrollTop = 0;  
+    if (document.documentElement && document.documentElement.scrollTop) {  
+        scrollTop = document.documentElement.scrollTop;  
+    }  
+    else if (document.body) {  
+        scrollTop = document.body.scrollTop;  
+    }  
+    return scrollTop;  
+}  
+  
+//获取当前可是范围的高度  
+function getClientHeight() {  
+    var clientHeight = 0;  
+    if (document.body.clientHeight && document.documentElement.clientHeight) {  
+        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);  
+    }  
+    else {  
+        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);  
+    }  
+    return clientHeight;  
+}  
+  
+//获取文档完整的高度  
+function getScrollHeight() {  
+    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);  
+}  
+var currentPage=3;
+var isload=true;
+
+window.onscroll = function () { 
+	if(!isload){
+		return false;
+	}
+    if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+    	var data={};
+    	data.currentPage=currentPage;
+    	data.showCount=global.showCount;
+    	data.cmId=$('#cmId').val();
+    	
+    	$.ajax({
+			type: "POST",
+			data: data,
+			dataType: 'json',
+			url: global.basePath+'/f/material/datapage/2',
+			success: function(res){
+				if(res.success){
+					currentPage++;
+					var data=res.data;
+					if(data.length<1){
+						isload=false;
+						$('.notdata').show();
+						return false;
+					}else{
+						$('.notdata').hide();
+					}
+					
+					var downloadFileWeb=$('#downloadFileWeb').val();
+					
+					for(var i=0;i<data.length;i++){
+						var row=data[i];
+						var models=$(".models").clone()[0];
+						//console.log(models);
+						var imgurl=global.basePath+'/resources/front/assets/image/icon-img.png';
+						var downurl=global.basePath+'/f/material/download?id='+row.materialId+'&fileName='+row.uploadFileName;
+						
+						if(row.image){
+							imgurl=downloadFileWeb+row.image;
+						}
+						$(models).find('img').attr('src',imgurl);
+						$(models).find('img').attr('alt',row.uploadFileName);
+						$(models).find('.download h5').text(row.uploadFileName);
+						var btn_down= $(models).find('.download');
+						$(btn_down).attr('href',downurl);
+						$(btn_down).unbind("click")
+						$(btn_down).click(function(e){
+							location.href =$(this).attr('href');
+						});
+						
+						$('.main-data-box').append(models);
+					}
+					
+				}else{
+					layer.alert(res.message, {icon: 2});
+				}
+			}
+		});
+    }  
+}   */
+
+
+
+
+</script>
 </#macro> 
 
 <@layout >
-	<#include "_inc/_navs.ftl">
     <!-- banner start -->
 	<div class="am-g am-g-fixed blog-fixed am-u-sm-centered blog-article-margin">
 	    <div data-am-widget="slider" class="am-slider am-slider-b1" data-am-slider='{&quot;controlNav&quot;:false}' >

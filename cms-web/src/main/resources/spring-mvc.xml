@@ -161,9 +161,11 @@
 			                <!-- 传值给${author} -->
 			                <prop key="author">xzjie</prop>
 			                <!-- 传值给${resources} -->
-			                <prop key="resources">http://localhost:8080</prop>
+			                <prop key="resources">${template.resources}</prop>
+			                <prop key="u_img_url">${upload.image.web}</prop>
 			            </props>
 			        </property>
+			        <property name="attributesMap" ref="freemarkerStaticModels" />
 				</bean>
             </list>  
         </property>  
@@ -219,9 +221,18 @@
         class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
         <property name="location" value="classpath:freemarker.properties" />  
     </bean>  -->
+    <bean id="freemarkerStaticModelsProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="classpath:freemarkerstatic.properties" />
+	</bean>
+	
+	<bean id="freemarkerStaticModels" class="com.xzjie.freemarker.FreemarkerStaticModels" factory-method="getInstance">
+		<property name="staticModels" ref="freemarkerStaticModelsProps" />
+	</bean>
 	
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 	<!--===============通用视图解析器 end===============-->
+	
+	
 	
 	<!-- XML 对象配置 -->
 	<!-- <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">

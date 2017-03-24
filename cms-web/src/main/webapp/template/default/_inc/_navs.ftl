@@ -12,6 +12,7 @@
   <div class="am-collapse am-topbar-collapse" id="blog-collapse">
     <ul class="am-nav am-nav-pills am-topbar-nav">
       <li ><a href="${f_ctx}/index">首页</a></li>
+	  <#assign navs=CategoryTag.getNavs()>
       <#list navs as nav >
       	<#if (nav.children)?exists && nav.children?size == 0>
       	<li ><a href="${f_ctx}/category?cid=${site.siteId}&id=${nav.categoryId}">${nav.categoryName}</a></li>

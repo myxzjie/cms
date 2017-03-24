@@ -5,7 +5,7 @@
 	<div class="am-g">
 		<div class="am-u-sm-4">
 			<a class="blog-a-curse" target="_blank" href="${f_ctx}/article?cid=${site.siteId}&id=${article.articleId}">
-			<img alt="" class="am_img animated thumbnails"src="${article.image}" data-original="${article.image}" >
+			<img alt="" class="am_img animated thumbnails"src="${u_img_url}${article.image}" data-original="${u_img_url}${article.image}" >
 			</a>
 		</div>
 		<div class="am-u-sm-8">
@@ -16,7 +16,7 @@
 			<p class="blog-ext">
 				<#-- <span> <i class="am-icon-comment blog-color"></i>&nbsp; ${article.countComment} &nbsp;</span> -->
 				<span> <i class="am-icon-link blog-color"></i>&nbsp; ${article.countView?default(0)} &nbsp;</span>
-				<span> <i class="am-icon-user blog-color blog-ext-ico"></i> ${article.authorName} &nbsp;</span>
+				<span> <i class="am-icon-user blog-color blog-ext-ico"></i> ${article.authorName?default('')} &nbsp;</span>
 				<span> <i class="am-icon-clock-o blog-color blog-ext-ico"></i> ${article.createDate?string('yyyy/MM/dd')} </span>
 				<span> <i class="am-icon-tag blog-color blog-ext-ico"></i> 分类:${article.categoryName}</span>
 			</p>

@@ -58,8 +58,6 @@ public class FrontController extends BaseController {
 
 		PageEntity<Article> record = new PageEntity<Article>();
 
-		categoryService.setCategoryList(getSiteId(), modelMap);
-
 		if (page.getCurrentPage() < 1) {
 			page.setCurrentPage(1);
 		}
@@ -103,7 +101,7 @@ public class FrontController extends BaseController {
 		modelMap.put("totalPage", page.getTotalPage());
 		modelMap.put("siteId", getSiteId());
 		modelMap.put("categoryId", id);
-		return "front/category_index";
+		return "category";
 	}
 
 	/**
@@ -124,7 +122,7 @@ public class FrontController extends BaseController {
 		article.setContent(this.unescapeHtml4(article.getContent()));
 		modelMap.put("model", article);
 		modelMap.put("categoryId", article.getCategoryId());
-		return "front/article_index";
+		return "article";
 	}
 
 	@RequestMapping(value = "slider")
