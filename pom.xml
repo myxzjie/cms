@@ -4,7 +4,7 @@
 
 	<groupId>com.xzjie</groupId>
 	<artifactId>cms</artifactId>
-	<version>0.0.5</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>cms</name>
@@ -21,7 +21,8 @@
 		<shiro.version>1.2.3</shiro.version>
 		<quartz.version>2.2.2</quartz.version>
 		<junit.version>4.12</junit.version>
-		<cms.version>0.0.5</cms.version>
+		<commons-io.version>2.4</commons-io.version>
+		<commons-codec.version>1.9</commons-codec.version>
 	</properties>
 
 	<dependencyManagement>
@@ -36,6 +37,12 @@
 			<dependency>
 				<groupId>com.xzjie</groupId>
 				<artifactId>cms-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.xzjie</groupId>
+				<artifactId>cms-ueditor</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -120,6 +127,20 @@
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
+
+
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons-codec.version}</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>
@@ -127,6 +148,7 @@
 	<modules>
 		<module>cms-common</module>
 		<module>cms-web</module>
+		<module>cms-ueditor</module>
 	</modules>
 
 	<build>
