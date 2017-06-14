@@ -30,9 +30,6 @@
 		<dependency>
 			<groupId>com.xzjie</groupId>
 			<artifactId>cms-common</artifactId>
-			<version>${cms.version}</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 
 		<dependency>

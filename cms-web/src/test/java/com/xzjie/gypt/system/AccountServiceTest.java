@@ -45,4 +45,10 @@ public class AccountServiceTest extends BaseTest{
 		Account account= accountService.getAccountLogin("root", "1");
 		logger.info(">> account info:"+JSON.toJSONString(account));
 	}
+	
+	@Test
+	public void getAccount(){
+		Account account= accountService.get(1L);
+		logger.info(">> account info:"+JSON.toJSONString(account));
+	}
 }

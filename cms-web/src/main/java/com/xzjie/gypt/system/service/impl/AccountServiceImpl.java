@@ -16,9 +16,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xzjie.gypt.common.dao.BaseMapper;
 import com.xzjie.gypt.common.page.PageEntity;
 import com.xzjie.gypt.common.utils.RegexUtils;
 import com.xzjie.gypt.common.utils.constants.ConstantsUtils;
+import com.xzjie.gypt.core.service.AbstractBaseService;
 import com.xzjie.gypt.system.dao.AccountMapper;
 import com.xzjie.gypt.system.entity.AccountEntity;
 import com.xzjie.gypt.system.model.Account;
@@ -34,7 +36,7 @@ import com.xzjie.gypt.system.service.AccountService;
  * @version V0.0.1
  */
 @Service("accountService")
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl extends AbstractBaseService<Account, Long> implements AccountService {
 
 	@Autowired
 	private AccountMapper accountMapper;
@@ -44,6 +46,11 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private AccountRoleService accountRoleService;
+	
+	@Override
+	protected BaseMapper<Account, Long> getMapper() {
+		return accountMapper;
+	}
 
 	@Override
 	public Account getAccountLogin(String username, String stype) {
@@ -87,12 +94,6 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void batchSave(List<Account> records) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update(AccountEntity parameter) {
 		AccountRole accountRole = new AccountRole();
 
@@ -129,41 +130,6 @@ public class AccountServiceImpl implements AccountService {
 	public void batchDeleteById(List<Long> records) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public boolean delete(Account record) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void batchDelete(List<Account> records) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Account get(Long id) {
-		return accountMapper.getById(id);
-	}
-
-	@Override
-	public Account get(Account record) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Account> getList(Account record) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Account> getAllList(Account record) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -291,5 +257,7 @@ public class AccountServiceImpl implements AccountService {
 	public boolean isEmailExist(String eMail, Long userId) {
 		return this.isExist(eMail, 3,userId);
 	}
+
+
 
 }
