@@ -358,5 +358,7 @@ public class HttpUtils {
 	 */
 	public static void main(String[] args) throws Exception {
 
+		System.out.println(HttpUtils.doGet("http://xjcainfo.miitbeian.gov.cn/state/outPortal/queryLatestMessageInfo.action?id=21"));
+		
 	}
 }
