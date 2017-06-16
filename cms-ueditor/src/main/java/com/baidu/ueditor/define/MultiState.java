@@ -36,7 +36,6 @@ public class MultiState implements State {
 		this.info = AppInfo.getStateInfo( infoKey );
 	}
 	
-	@Override
 	public boolean isSuccess() {
 		return this.state;
 	}
@@ -48,12 +47,10 @@ public class MultiState implements State {
 	/**
 	 * 该方法调用无效果
 	 */
-	@Override
 	public void putInfo(String name, String val) {
 		this.infoMap.put(name, val);
 	}
 
-	@Override
 	public String toJSONString() {
 		
 		String stateVal = this.isSuccess() ? AppInfo.getStateInfo( AppInfo.SUCCESS ) : this.info;
@@ -104,7 +101,6 @@ public class MultiState implements State {
 
 	}
 
-	@Override
 	public void putInfo(String name, long val) {
 		this.intMap.put( name, val );
 	}
