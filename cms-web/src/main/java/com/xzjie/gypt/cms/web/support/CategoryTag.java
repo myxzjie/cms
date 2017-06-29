@@ -10,6 +10,12 @@ import com.xzjie.gypt.cms.model.Category;
 import com.xzjie.gypt.cms.model.Site;
 import com.xzjie.gypt.cms.service.CategoryService;
 
+/**
+ * CategoryTag 不使用 ，推荐使用 freemarker 自定义标签 NavsDirective 
+ * @author xzjie
+ *
+ */
+@Deprecated
 @Component
 public class CategoryTag {
 

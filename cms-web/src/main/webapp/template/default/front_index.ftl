@@ -183,6 +183,15 @@ window.onscroll = function () {
 </#macro> 
 
 <@layout >
+	<#--
+	<@upper>
+            bar
+            <#list ["red", "green", "blue"] as color>
+                  ${color}
+            </#list>
+            baaz
+     </@upper>
+     -->
     <!-- banner start -->
 	<div class="am-g am-g-fixed blog-fixed am-u-sm-centered blog-article-margin">
 	    <div data-am-widget="slider" class="am-slider am-slider-b1" data-am-slider='{&quot;controlNav&quot;:false}' >

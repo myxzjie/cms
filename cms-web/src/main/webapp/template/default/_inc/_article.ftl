@@ -30,7 +30,6 @@
 	</#if>
 </div>
 </#list>
-	
 <!-- </div> -->
 <ul id="pagination" class="am-pagination">
 </ul>

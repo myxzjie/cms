@@ -8,3 +8,5 @@
 /cms-web/src/main/webapp/upload/
 /compile.bat
 /cms-web/src/main/webapp/*.txt
+/.idea
+*.iml

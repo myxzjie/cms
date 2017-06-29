@@ -190,12 +190,6 @@
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/template/${template.name}/" />
 		<property name="defaultEncoding" value="utf-8" />
-		<property name="freemarkerVariables">
-			<map>
-				<entry key="xml_escape" value-ref="fmXmlEscape" />
-				<!-- <entry key="api" value-ref="api"/> -->
-			</map>
-		</property>
 		<!-- <property name="freemarkerSettings" ref="freemarkerConfiguration" />  -->
 		<property name="freemarkerSettings">
 			<props><!-- 315360000 -->
@@ -216,6 +210,16 @@
 				</prop> -->
 			</props>
 		</property>
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape" />
+				<!-- <entry key="api" value-ref="api"/> -->
+				<entry key="dictDisplay" value-ref="dictDisplay" />
+				<entry key="dictSelect" value-ref="dictSelect" />
+				<entry key="upper" value-ref="upper"/>
+				<entry key="navs" value-ref="navsDirective" />
+			</map>
+		</property>
 	</bean>
 	<!-- <bean id="freemarkerConfiguration"  
         class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
@@ -230,6 +234,12 @@
 	</bean>
 	
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+	
+	<bean id="dictDisplay" class="com.xzjie.freemarker.DictDisplayDirective" />
+	<bean id="dictSelect" class="com.xzjie.freemarker.DictSelectDirective" />
+	<bean id="upper" class="com.xzjie.freemarker.UpperDirective" />
+	<bean id="navsDirective" class="com.xzjie.freemarker.directive.NavsDirective" />
+	
 	<!--===============通用视图解析器 end===============-->
 	
 	
