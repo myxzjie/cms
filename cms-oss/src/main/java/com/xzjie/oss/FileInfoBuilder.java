@@ -1,5 +1,7 @@
 package com.xzjie.oss;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class FileInfoBuilder {
@@ -51,9 +53,14 @@ public class FileInfoBuilder {
 			path += (suffix.startsWith(".") ? suffix.substring(1) : suffix) + "/";
 		}
 
-		path += fileName();
+		path += date()+"/"+fileName();
 
 		return path;
+	}
+
+	private  String date(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(new Date());
 	}
 
 	private String fileName() {

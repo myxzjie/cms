@@ -1,6 +1,8 @@
 package com.baidu.ueditor.upload;
 
 import com.baidu.ueditor.define.State;
+import com.xzjie.oss.ueditor.OSSUploader;
+
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +23,8 @@ public class Uploader {
 			state = Base64Uploader.save(this.request.getParameter(filedName),
 					this.conf);
 		} else {
-			state = BinaryUploader.save(this.request, this.conf);
+			//state = BinaryUploader.save(this.request, this.conf);
+			state = OSSUploader.save(this.request, this.conf);
 		}
 
 		return state;

@@ -6,7 +6,6 @@ target/
 /cms-web/doc/.gitignore
 /cms-web/env/.gitignore
 /cms-web/src/main/webapp/upload/
-/cms-web/src/main/resources/oss.properties
 /compile.bat
 /cms-web/src/main/webapp/*.txt
 .idea

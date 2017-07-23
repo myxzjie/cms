@@ -22,6 +22,17 @@ public class OSSUploadUtils {
 		ossUpload.setKey(key);
 
 		return ossUpload.upload(stream);
+	}
 
+	public static String upload(String key,InputStream stream) {
+
+		if (ossUpload == null) {
+			ossUpload = new ObjectOSSUpload();
+		}
+
+		ossUpload.setBucketName(bucketName);
+		ossUpload.setKey(key);
+
+		return ossUpload.upload(stream);
 	}
 }
