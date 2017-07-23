@@ -1,12 +1,12 @@
-/target/
-/.classpath
-/.project
-/.settings
+target/
+.classpath
+.project
+.settings
 /cms-web/doc/generator
 /cms-web/doc/.gitignore
 /cms-web/env/.gitignore
 /cms-web/src/main/webapp/upload/
 /compile.bat
 /cms-web/src/main/webapp/*.txt
-/.idea
+.idea
 *.iml

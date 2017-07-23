@@ -296,6 +296,55 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.3.3.v20150827</version>
+				<configuration>
+					<httpConnector>
+						<port>8080</port>
+						<!--<host>admin.myshop.com</host>-->
+					</httpConnector>
+					<!-- 自动热部署 默认值是 0。大于 0 的数值表示开启，0 表示关闭，单位为秒 -->
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<reload>automatic</reload>
+					<reload>manual</reload>
+					<stopKey>foo</stopKey>
+					<stopPort>9091</stopPort>
+
+					<webApp>
+						<!-- <contextPath>/${project.artifactId}</contextPath> -->
+						<contextPath>/</contextPath>
+						<extraClasspath>./target/classes</extraClasspath>
+						<extraClasspath>../cms-common/target/classes</extraClasspath>
+					</webApp>
+					<scanTargets>
+						<scanTarget>./target/classes</scanTarget>
+						<scanTarget>../cms-common/target/classes</scanTarget>
+					</scanTargets>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<scanIntervalSeconds>0</scanIntervalSeconds>
+							<!--<daemon>true</daemon>-->
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>

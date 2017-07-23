@@ -214,9 +214,6 @@
 			<map>
 				<entry key="xml_escape" value-ref="fmXmlEscape" />
 				<!-- <entry key="api" value-ref="api"/> -->
-				<entry key="dictDisplay" value-ref="dictDisplay" />
-				<entry key="dictSelect" value-ref="dictSelect" />
-				<entry key="upper" value-ref="upper"/>
 				<entry key="navs" value-ref="navsDirective" />
 			</map>
 		</property>
@@ -235,9 +232,6 @@
 	
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 	
-	<bean id="dictDisplay" class="com.xzjie.freemarker.DictDisplayDirective" />
-	<bean id="dictSelect" class="com.xzjie.freemarker.DictSelectDirective" />
-	<bean id="upper" class="com.xzjie.freemarker.UpperDirective" />
 	<bean id="navsDirective" class="com.xzjie.freemarker.directive.NavsDirective" />
 	
 	<!--===============通用视图解析器 end===============-->
