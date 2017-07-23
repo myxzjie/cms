@@ -31,7 +31,7 @@ public class ObjectOSSUpload extends DefaultOSSUpload{
 	public String upload(InputStream stream)  {
 		ossUpload.upload(stream);
 		String url=getDomain();
-		close();
+		//close();
 		return url;
 	}
 	
