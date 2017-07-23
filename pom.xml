@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -25,6 +26,7 @@
 		<commons-codec.version>1.9</commons-codec.version>
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<commons-fileupload.version>1.3</commons-fileupload.version>
+		<oss.version>2.7.0</oss.version>
 	</properties>
 
 	<dependencyManagement>
@@ -46,6 +48,18 @@
 				<groupId>com.xzjie</groupId>
 				<artifactId>cms-ueditor</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.xzjie</groupId>
+				<artifactId>cms-oss</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.aliyun.oss</groupId>
+				<artifactId>aliyun-sdk-oss</artifactId>
+				<version>${oss.version}</version>
 			</dependency>
 
 			<dependency>
@@ -162,6 +176,7 @@
 		<module>cms-common</module>
 		<module>cms-web</module>
 		<module>cms-ueditor</module>
+		<module>cms-oss</module>
 	</modules>
 
 	<build>
