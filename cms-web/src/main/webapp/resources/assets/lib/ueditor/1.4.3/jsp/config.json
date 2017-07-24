@@ -33,24 +33,24 @@
 
     /* 截图工具上传 */
     "snapscreenActionName": "uploadimage", /* 执行上传截图的action名称 */
-    "snapscreenPathFormat": "/ueditor/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
-    "snapscreenUrlPrefix": "http://localhost:8080/upload", /* 图片访问路径前缀 */
+    "snapscreenPathFormat": "cms/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
+    "snapscreenUrlPrefix": "http://my.cdn.dev56.com/", /* 图片访问路径前缀 */
     "snapscreenInsertAlign": "none", /* 插入的图片浮动方式 */
 
     /* 抓取远程图片配置 */
     "catcherLocalDomain": ["127.0.0.1", "localhost", "img.baidu.com"],
     "catcherActionName": "catchimage", /* 执行抓取远程图片的action名称 */
     "catcherFieldName": "source", /* 提交的图片列表表单名称 */
-    "catcherPathFormat": "/ueditor/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
-    "catcherUrlPrefix": "http://localhost:8080/upload", /* 图片访问路径前缀 */
+    "catcherPathFormat": "cms/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
+    "catcherUrlPrefix": "http://my.cdn.dev56.com/", /* 图片访问路径前缀 */
     "catcherMaxSize": 2048000, /* 上传大小限制，单位B */
     "catcherAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], /* 抓取图片格式显示 */
 
     /* 上传视频配置 */
     "videoActionName": "uploadvideo", /* 执行上传视频的action名称 */
     "videoFieldName": "upfile", /* 提交的视频表单名称 */
-    "videoPathFormat": "/ueditor/jsp/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
-    "videoUrlPrefix": "http://localhost:8080/upload", /* 视频访问路径前缀 */
+    "videoPathFormat": "cms/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
+    "videoUrlPrefix": "http://my.cdn.dev56.com/", /* 视频访问路径前缀 */
     "videoMaxSize": 1024000000, /* 上传大小限制，单位B，默认1000MB */
     "videoAllowFiles": [
         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
@@ -59,8 +59,8 @@
     /* 上传文件配置 */
     "fileActionName": "uploadfile", /* controller里,执行上传视频的action名称 */
     "fileFieldName": "upfile", /* 提交的文件表单名称 */
-    "filePathFormat": "/ueditor/jsp/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
-    "fileUrlPrefix": "http://localhost:8080/upload", /* 文件访问路径前缀 */
+    "filePathFormat": "cms/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
+    "fileUrlPrefix": "http://my.cdn.dev56.com/", /* 文件访问路径前缀 */
     "fileMaxSize": 51200000, /* 上传大小限制，单位B，默认50MB */
     "fileAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
@@ -80,8 +80,8 @@
 
     /* 列出指定目录下的文件 */
     "fileManagerActionName": "listfile", /* 执行文件管理的action名称 */
-    "fileManagerListPath": "/ueditor/jsp/upload/file/", /* 指定要列出文件的目录 */
-    "fileManagerUrlPrefix": "http://localhost:8080/upload", /* 文件访问路径前缀 */
+    "fileManagerListPath": "cms/upload/file/", /* 指定要列出文件的目录 */
+    "fileManagerUrlPrefix": "http://my.cdn.dev56.com/", /* 文件访问路径前缀 */
     "fileManagerListSize": 20, /* 每次列出文件数量 */
     "fileManagerAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
