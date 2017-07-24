@@ -2,7 +2,7 @@
 <ehcache name="es">
 
     <!-- <diskStore path="java.io.tmpdir"/> -->
-    <diskStore path="/opt/data/gypt/ehcache" />
+    <diskStore path="/opt/data/cms/ehcache" />
 
     <!-- 登录记录缓存 锁定10分钟 -->
     <cache name="passwordRetryCache"
@@ -32,13 +32,22 @@
            statistics="true">
     </cache>
 
-    <cache name="shiro-activeSessionCache"
+    <!--<cache name="shiro-activeSessionCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"
            timeToLiveSeconds="0"
            overflowToDisk="false"
            statistics="true">
+    </cache>-->
+    <cache name="shiro-activeSessionCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="7200"
+           timeToLiveSeconds="0"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LFU">
     </cache>
     
     <cache name="code-cache"
