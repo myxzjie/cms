@@ -23,12 +23,16 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>com.aliyun.openservices</groupId>
-            <artifactId>aliyun-openservices</artifactId>
-            <version>1.2.3</version>
-        </dependency>
+			<groupId>com.xzjie</groupId>
+			<artifactId>cms-oss</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>

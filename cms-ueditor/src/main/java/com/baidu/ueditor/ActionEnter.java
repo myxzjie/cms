@@ -11,6 +11,7 @@ import com.baidu.ueditor.define.State;
 import com.baidu.ueditor.hunter.FileManager;
 import com.baidu.ueditor.hunter.ImageHunter;
 import com.baidu.ueditor.upload.Uploader;
+import com.xzjie.oss.ueditor.OSSFileManager;
 
 public class ActionEnter {
 	
@@ -90,7 +91,8 @@ public class ActionEnter {
 			case ActionMap.LIST_FILE:
 				conf = configManager.getConfig( actionCode );
 				int start = this.getStartIndex();
-				state = new FileManager( conf ).listFile( start );
+				//state = new FileManager( conf ).listFile( start );
+				state = new OSSFileManager( conf ).listFile( start );
 				break;
 				
 		}

@@ -47,6 +47,7 @@ public class BaseState implements State {
 		this.info = AppInfo.getStateInfo( infoCode );
 	}
 	
+	@Override
 	public String toJSONString() {
 		return this.toString();
 	}
@@ -76,10 +77,12 @@ public class BaseState implements State {
 
 	}
 
+	@Override
 	public void putInfo(String name, String val) {
 		this.infoMap.put(name, val);
 	}
 
+	@Override
 	public void putInfo(String name, long val) {
 		this.putInfo(name, val+"");
 	}

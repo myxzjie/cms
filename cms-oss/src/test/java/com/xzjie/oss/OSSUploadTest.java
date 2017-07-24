@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -44,5 +45,14 @@ public class OSSUploadTest {
 		InputStream stream = new FileInputStream(file);
 		String url = OSSUploadUtils.upload("test", path.substring(path.lastIndexOf(".")), stream);
 		System.out.println(url);
+	}
+
+	@Test
+	public void list(){
+		List<String> list=OSSUploadUtils.list("cms/");
+
+		for (String value : list) {
+			System.out.println(">>"+value);
+		}
 	}
 }

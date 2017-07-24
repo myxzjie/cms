@@ -26,9 +26,9 @@
     /* 涂鸦图片上传配置项 */
     "scrawlActionName": "uploadscrawl", /* 执行上传涂鸦的action名称 */
     "scrawlFieldName": "upfile", /* 提交的图片表单名称 */
-    "scrawlPathFormat": "/ueditor/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
+    "scrawlPathFormat": "cms/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
     "scrawlMaxSize": 2048000, /* 上传大小限制，单位B */
-    "scrawlUrlPrefix": "http://localhost:8080/upload", /* 图片访问路径前缀 */
+    "scrawlUrlPrefix": "http://my.cdn.dev56.com/", /* 图片访问路径前缀 */
     "scrawlInsertAlign": "none",
 
     /* 截图工具上传 */
@@ -72,9 +72,9 @@
 
     /* 列出指定目录下的图片 */
     "imageManagerActionName": "listimage", /* 执行图片管理的action名称 */
-    "imageManagerListPath": "upload/image/", /* 指定要列出图片的目录 */
+    "imageManagerListPath": "cms/upload/image/", /* 指定要列出图片的目录 */
     "imageManagerListSize": 20, /* 每次列出文件数量 */
-    "imageManagerUrlPrefix": "", /* 图片访问路径前缀 */
+    "imageManagerUrlPrefix": "http://my.cdn.dev56.com/", /* 图片访问路径前缀 */
     "imageManagerInsertAlign": "none", /* 插入的图片浮动方式 */
     "imageManagerAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], /* 列出的文件类型 */
 
