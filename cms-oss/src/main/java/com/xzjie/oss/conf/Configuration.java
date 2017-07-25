@@ -11,13 +11,27 @@ import org.slf4j.LoggerFactory;
 
 
 public class Configuration {
-
 	private static Logger logger = LoggerFactory.getLogger(Configuration.class);
 
 	private static Properties prop = new Properties();
-	
 	private WeakHashMap<String, String> propMap = new WeakHashMap<String, String>();
-	
+	private  volatile static Configuration conf;
+
+
+	public class OSS {
+		public final static String endpoint = "oss.endpoint";
+		public final static String accessKeyId = "oss.accessKeyId";
+		public final static String accessKeySecret = "oss.accessKeySecret";
+		public final static String supportCname ="oss.supportCname";
+		public final static String maxConnections ="oss.maxConnections";
+		public final static String socketTimeout ="oss.socketTimeout";
+		public final static String maxErrorRetry ="oss.maxErrorRetry";
+
+		public final static String useCDN ="useCDN";
+		public final static String useLocalStorager ="useLocalStorager";
+		public final static String useAsynUploader="useAsynUploader";
+	}
+
 	public Configuration(){
 		iterator();
 	}
@@ -49,16 +63,64 @@ public class Configuration {
 			}
 		}
 	}
-	
-	public class OSS {
-		public final static String endpoint = "oss.endpoint";
-		public final static String accessKeyId = "oss.accessKeyId";
-		public final static String accessKeySecret = "oss.accessKeySecret";
-		public final static String supportCname ="oss.supportCname";
-		public final static String maxConnections ="oss.maxConnections";
-		public final static String socketTimeout ="oss.socketTimeout";
-		public final static String maxErrorRetry ="oss.maxErrorRetry";
+
+	public static Configuration getConf(){
+		if(conf==null){
+			synchronized (Configuration.class){
+				if(conf==null){
+					conf=new Configuration();
+				}
+			}
+		}
+		return conf;
 	}
-	
+
+	public static int getMaxErrorRetry() {
+		String str = getConf().getValue(OSS.maxErrorRetry);
+		return Integer.parseInt(str.trim());
+	}
+
+	public static int getSocketTimeout() {
+		String str = getConf().getValue(OSS.socketTimeout);
+		return Integer.parseInt(str.trim());
+	}
+
+	public static int getMaxConnections() {
+		String str = getConf().getValue(OSS.maxConnections);
+		return Integer.parseInt(str.trim());
+	}
+
+	public static boolean supportCname() {
+		String bool = getConf().getValue(OSS.supportCname);
+		return "true".equals(bool.trim());
+	}
+
+	public static String getEndPoint() {
+		return getConf().getValue(OSS.endpoint);
+	}
+
+	public static String getAccessKey() {
+		return getConf().getValue(OSS.accessKeyId);
+	}
+
+	public static String getAccessSecret() {
+		return getConf().getValue(OSS.accessKeySecret);
+	}
+
+
+	public static boolean useStatus(){
+		String bool = getConf().getValue(OSS.useCDN);
+		return "true".equals(bool.trim());
+	}
+
+	public static boolean useLocalStorager(){
+		String bool = getConf().getValue(OSS.useLocalStorager);
+		return "true".equals(bool.trim());
+	}
+
+	public static boolean useAsynUploader(){
+		String bool = getConf().getValue(OSS.useAsynUploader);
+		return "true".equals(bool.trim());
+	}
 	
 }
