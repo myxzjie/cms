@@ -148,7 +148,7 @@ position: absolute;
 						<c:if test="${model.articleId != null}">
 						<div id="WU_FILE_0" class="item upload-state-success">
 						<div class="pic-box">
-						<img width="30" src="${uploadImageWeb}${model.image}">
+						<img width="30" src="${model.image}">
 						</div>
 						<input type="hidden" name="image" value="${model.image}"></div>
 						</c:if>
@@ -211,7 +211,7 @@ function mobanxuanze(){
 			swf: 'lib/webuploader/0.1.5/Uploader.swf',
 		
 			// 文件接收服务端。
-			server: global.basePath+'/upload/image?dir=article',
+			server: global.basePath+'/upload2/image?dir=article',
 		
 			// 选择文件的按钮。可选。
 			// 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -271,7 +271,7 @@ function mobanxuanze(){
 				var $img=$( '#'+file.id ).find('img');
 				$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
 				$( '#'+file.id ).append('<input type="hidden" name="image" value="'+data.webUrl+'">');
-				$img.attr( 'src', $('#uploadImageWeb').val()+data.webUrl );
+				$img.attr( 'src', data.webUrl );
 			}else{
 				$( '#'+file.id ).addClass('upload-state-error').find(".state").text(response.message);
 			}

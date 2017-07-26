@@ -168,7 +168,7 @@ position: absolute;
 			swf: 'lib/webuploader/0.1.5/Uploader.swf',
 		
 			// 文件接收服务端。
-			server: global.basePath+'/upload/image?dir=head_portrait',
+			server: global.basePath+'/upload2/image?dir=avatar',
 		
 			// 选择文件的按钮。可选。
 			// 内部根据当前运行是创建，可能是input元素，也可能是flash.
