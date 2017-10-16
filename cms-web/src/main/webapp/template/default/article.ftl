@@ -25,8 +25,9 @@
 	        </div>        
 	        <div id="content" class="am-article-bd">
 	       
-	         ${model.content}
-	        
+	       <#if model??>
+	         ${(model.content)?default('')}
+	        </#if>
 	       </div>
 	      </article>
 	        
