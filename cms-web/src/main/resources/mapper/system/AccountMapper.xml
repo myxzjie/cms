@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.system.dao.AccountMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.Account" >
+<mapper namespace="com.xzjie.et.system.dao.AccountMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.system.model.Account" >
     <id column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
@@ -19,23 +19,25 @@
     <result column="create_user" property="createUser" jdbcType="BIGINT" />
     <result column="locked" property="locked" jdbcType="INTEGER" />
     <result column="org_id" property="orgId" jdbcType="BIGINT" />
-    <result column="head_portrait" property="headPortrait" jdbcType="VARCHAR" />
-    <result column="nation" property="nation" jdbcType="VARCHAR" />
-    <result column="qq" property="qq" jdbcType="VARCHAR" />
-    <result column="job" property="job" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, name, nick_name, phone, e_mail, state, create_date, remarks, stype, 
-    sex, card, birtn, create_user,  locked, org_id, head_portrait
+    user_id, name, nick_name, phone, e_mail, password, salt, state, create_date, remarks, 
+    stype, sex, card, birtn, create_user, locked, org_id, avatar
   </sql>
-  
-  <select id="getIdMaxValue" resultType="long" >
-  	select max(user_id) from sys_account where user_id>1
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    from sys_account
+    where state='1'
+    <if test="t.name != null and t.name != ''">
+      and name like CONCAT('%',#{t.name,jdbcType=VARCHAR},'%' )
+    </if>
+    order by user_id desc
   </select>
   
-  <select id="exist" resultType="int" parameterType="com.xzjie.gypt.system.model.Account">
+  <select id="exist" resultType="int" parameterType="com.xzjie.et.system.model.Account">
   	select
 	count(1)
 	from sys_account
@@ -54,20 +56,7 @@
 	</if>
   </select>
   
-  <select id="findListPage" resultMap="BaseResultMap" parameterType="PageEntity">
-  	select
-	<include refid="Base_Column_List" />
-	from sys_account
-	where state=1 and name != 'root'
-	<if test="record.stype != null">
-	and stype = #{record.stype,jdbcType=CHAR}
-	</if>
-	<if test="record.name != null">
-	and name like '${record.name}%'
-	</if>
-  </select>
-  
-  <select id="getEntity" resultMap="BaseResultMap" parameterType="com.xzjie.gypt.system.model.Account">
+  <select id="selectAccount" resultMap="BaseResultMap" parameterType="com.xzjie.et.system.model.Account">
 	select
 	<include refid="Base_Column_List" />
 	,password
@@ -87,24 +76,35 @@
 	and phone = #{phone,jdbcType=VARCHAR}
 	</if>
 	<if test="eMail != null">
-		and e_mail = #{eMail,jdbcType=VARCHAR}
+	and e_mail = #{eMail,jdbcType=VARCHAR}
 	</if>
   </select>
   
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    , nation, qq, job, address, login_date
     from sys_account
     where user_id = #{userId,jdbcType=BIGINT}
   </select>
-  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_account
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
- 
-  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Account" useGeneratedKeys="true" keyProperty="userId">
+  <insert id="insert" parameterType="com.xzjie.et.system.model.Account" >
+    insert into sys_account (user_id, name, nick_name, 
+      phone, e_mail, password, 
+      salt, state, create_date, 
+      remarks, stype, sex, card, 
+      birtn, create_user, locked, 
+      org_id, avatar)
+    values (#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{eMail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{stype,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{card,jdbcType=VARCHAR}, 
+      #{birtn,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}, #{locked,jdbcType=INTEGER}, 
+      #{orgId,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.et.system.model.Account" useGeneratedKeys="true" keyProperty="userId">
     insert into sys_account
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -158,8 +158,8 @@
       <if test="orgId != null" >
         org_id,
       </if>
-      <if test="headPortrait != null" >
-        head_portrait,
+      <if test="avatar != null" >
+        avatar,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -181,7 +181,7 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-       <if test="salt != null" >
+      <if test="salt != null" >
         #{salt,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
@@ -214,13 +214,20 @@
       <if test="orgId != null" >
         #{orgId,jdbcType=BIGINT},
       </if>
-      <if test="headPortrait != null" >
-        #{headPortrait,jdbcType=VARCHAR},
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  
-  <update id="update" parameterType="com.xzjie.gypt.system.model.Account" >
+
+  <update id="resetPassword" parameterType="com.xzjie.et.system.model.Account" >
+    update sys_account set
+    password = #{password,jdbcType=VARCHAR},
+    salt = #{salt,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.system.model.Account" >
     update sys_account
     <set >
       <if test="name != null" >
@@ -271,37 +278,20 @@
       <if test="orgId != null" >
         org_id = #{orgId,jdbcType=BIGINT},
       </if>
-      <if test="headPortrait != null" >
-        head_portrait = #{headPortrait,jdbcType=VARCHAR},
-      </if>
-      <if test="nation != null" >
-        nation = #{nation,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null" >
-        qq = #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="job != null" >
-        job = #{job,jdbcType=VARCHAR},
-      </if>
-      <if test="job != null" >
-        job = #{job,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="loginDate != null" >
-        login_date = #{loginDate,jdbcType=TIMESTAMP},
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
       </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.Account" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.system.model.Account" >
     update sys_account
     set name = #{name,jdbcType=VARCHAR},
       nick_name = #{nickName,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       e_mail = #{eMail,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       remarks = #{remarks,jdbcType=VARCHAR},
@@ -312,7 +302,7 @@
       create_user = #{createUser,jdbcType=BIGINT},
       locked = #{locked,jdbcType=INTEGER},
       org_id = #{orgId,jdbcType=BIGINT},
-      head_portrait = #{headPortrait,jdbcType=VARCHAR}
+      avatar = #{avatar,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>

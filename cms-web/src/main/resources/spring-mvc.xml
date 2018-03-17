@@ -13,74 +13,49 @@
 	http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:config.properties" />
-	
+
 	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
 	<mvc:default-servlet-handler />
 
-	<mvc:resources location="/resources/" mapping="/resources/**"/>
-	<mvc:resources location="/download/" mapping="/download/**"/>
-	<mvc:resources location="/upload/" mapping="/upload/**"/>
-	
+	<mvc:resources location="/uploadfile/" mapping="/uploadfile/**" />
+	<mvc:resources location="/ueditor/" mapping="/ueditor/**" />
+	<mvc:resources location="/resources/" mapping="/**" />
+
 	<!-- 定义无Controller的path<->view直接映射 -->
-	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
-	
-	
+	<mvc:view-controller path="/" view-name="redirect:${web.view.index}" />
+
 	<mvc:annotation-driven />
-	
+	<task:annotation-driven />
+
 	<!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
-	<context:component-scan base-package="com.xzjie.gypt.**.**.web" />
-	
-	
-	<!-- <mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-			<mvc:exclude-mapping path="/login/**" />
-			<mvc:exclude-mapping path="/${web.apiPath}/**" />
-			<mvc:exclude-mapping path="/kaptcha/**"/>
-			<mvc:exclude-mapping path="/validate"/>
-			<mvc:exclude-mapping path="/resources/**"/>
-			<bean class="com.xzjie.dsms.core.interceptor.ManagerInterceptor"></bean>			
-		</mvc:interceptor>
-	</mvc:interceptors> -->
+	<context:component-scan base-package="com.xzjie.**.**.web.controller" />
+
 
 	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
 	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<list>
 				<value>application/json;charset=UTF-8</value>
-				
-				<!-- <value>text/html;charset=UTF-8</value>
-				<value>application/x-www-form-urlencoded; charset=UTF-8</value>  -->
 			</list>
 		</property>
 	</bean>
 	<!-- 避免IE执行AJAX时,返回XML出现下载文件 -->
 	<bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-	   <!--  <constructor-arg ref="jaxbMarshaller" /> -->
+		<!--  <constructor-arg ref="jaxbMarshaller" /> -->
 	   <constructor-arg ref="xstreamMarshaller" />
-	   
-	    <property name="supportedMediaTypes" >
-	    	<list>
-	    		<value>application/xml;charset=UTF-8</value>
-			</list> 
-	    </property>
-	
-	</bean>
-	
-	<!-- <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<list>
-				<value>text/plain;charset=UTF-8</value>
-				<value>text/html;charset=UTF-8</value>
+				<value>application/xml;charset=UTF-8</value>
 			</list>
-		</property>  
-	</bean>  -->
+		</property>
+
+	</bean>
+
 
 	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
-				<!-- <ref bean="stringHttpMessageConverter" /> -->
 				<ref bean="mappingJacksonHttpMessageConverter" /><!-- json转换器 -->
 				<ref bean="marshallingHttpMessageConverter" />
 			</list>
@@ -88,48 +63,31 @@
 	</bean>
 
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
-	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/views/" p:suffix=".jsp" /> -->
 
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding">
 			<value>UTF-8</value>
 		</property>
+		<!-- //允许最大可上传的文件大小 -->
 		<property name="maxUploadSize">
-			<value>32505856</value><!-- 上传文件大小限制为31M，31*1024*1024 -->
+			<value>${upload.file.maxSize}</value><!-- 32505856 上传文件大小限制为31M，200*1024*1024 -->
 		</property>
+		<!-- //上传文件超出这个大小就会用于创建临时文件存储，而不使用内存存储 -->
 		<property name="maxInMemorySize">
 			<value>4096</value>
 		</property>
 	</bean>
-	
-	<!-- 根据客户端的不同的请求决定不同的view进行响应, 如 /blog/1.json /blog/1.xml -->  
+
+	<!-- 根据客户端的不同的请求决定不同的view进行响应, 如 /blog/1.json /blog/1.xml -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<!-- 设置为true以忽略对Accept Header的支持 -->  
-        <property name="ignoreAcceptHeader" value="true" />  
-		<!-- 在没有扩展名时即: "/blog/1" 时的默认展现形式 -->  
-        <property name="defaultContentType" value="text/html" />
-        
-         <!-- 扩展名至mimeType的映射,即 /blog.json => application/json -->  
-        <property name="mediaTypes">  
-            <map>  
-                <entry key="html" value="text/html" />  
-                <entry key="pdf" value="application/pdf" />  
-                <entry key="xsl" value="application/vnd.ms-excel" />  
-                <entry key="xml" value="application/xml;charset=UTF-8" />  
-                <entry key="json" value="application/json;charset=UTF-8" />  
-            </map>  
-        </property>  
-        <!-- 以路径扩展名确定请求的媒体类型, 如 info.json -> application/json, 默认为 true -->
-  		<property name="favorPathExtension" value="true" />
- 		<!-- 以参数确定请求的媒体类型, 如 info?format=json -> application/json, 默认为 false -->
-        
-        <!-- 用于开启 /blog/123?format=json 的支持 -->  
-        <!-- value 为true 启动，false 未启动 -->
-        <property name="favorParameter" value="true" />
-        
-        <property name="viewResolvers">  
-            <list>  
-            	<!--===============通用视图解析器 begin===============-->
+
+		<!-- 扩展名至mimeType的映射,即 /blog.json => application/json -->
+		<property name="contentNegotiationManager" ref="contentNegotiationManager" />
+
+		<property name="viewResolvers">
+			<list>
+				<!--===============通用视图解析器 begin===============-->
 				<bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 					<property name="prefix" value="/views/" />
 					<property name="suffix" value=".jsp" />
@@ -146,14 +104,14 @@
 					<property name="suffix" value=".jsp"></property>
 				</bean>
 				
-                <!-- 配置freeMarker视图解析器 -->
+				<!-- 配置freeMarker视图解析器 -->
 				<bean id="viewResolverFtl" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 					<!-- <property name="viewClass" value="com.sojson.core.freemarker.extend.FreeMarkerViewExtend" /> -->
 					<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
 					<property name="requestContextAttribute" value="request" />
 					<!-- 把Freemarker 扩展一下，把相关属性加入进去  -->
 					<property name="cache" value="true" />
-					<property name="suffix" value=".ftl" />
+					<property name="suffix" value=".html" />
 					<property name="order" value="0" />
 					<property name="contentType" value="text/html;charset=utf-8" />
 					<property name="attributes">
@@ -167,33 +125,66 @@
 			        </property>
 			        <property name="attributesMap" ref="freemarkerStaticModels" />
 				</bean>
-            </list>  
-        </property>  
-        
-        <property name="defaultViews">  
-            <list>  
-                <!-- for application/json -->  
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />  
-                <!-- for application/xml --> 
-                <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >
-                	<!-- <constructor-arg ref="jaxbMarshaller" /> -->
+			</list>
+		</property>
+
+		<property name="defaultViews">
+			<list>
+				<!-- for application/json -->
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+				<!-- for application/xml -->
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<!-- <constructor-arg ref="jaxbMarshaller" /> -->
                 	<constructor-arg ref="xstreamMarshaller" />
-                	<property name="contentType" value="application/xml;charset=UTF-8" />
-                </bean>
-            </list>  
-        </property>  
-        
+				</bean>
+			</list>
+		</property>
+
 	</bean>
 	
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<!-- 设置为true以忽略对Accept Header的支持 -->
+		<property name="ignoreAcceptHeader" value="true" />
+		<!-- <property name="useNotAcceptableStatusCode" value="true" /> -->
+		<!-- 在没有扩展名时即: "/blog/1" 时的默认展现形式 -->
+		<property name="defaultContentType" value="text/html" />
+		<!-- 以路径扩展名确定请求的媒体类型, 如 info.json -> application/json, 默认为 true -->
+		<property name="favorPathExtension" value="true" />
+		<!-- 以参数确定请求的媒体类型, 如 info?format=json -> application/json, 默认为 false -->
+		<!-- 用于开启 /blog/123?format=json 的支持  value 为true 启动，false 未启动 -->
+		<property name="favorParameter" value="true" />
+	    <property name="parameterName" value="mediaType" />
+	    <property name="useJaf" value="false"/>
+	 
+	    <property name="mediaTypes">
+	        <map>
+	        	<entry key="html" value="text/html" />
+	            <entry key="json" value="application/json" />
+	            <entry key="xml" value="application/xml" />
+	            <entry key="pdf" value="application/pdf" />
+				<entry key="xsl" value="application/vnd.ms-excel" />
+	       </map>
+	    </property>
+	</bean>
+
 	<!-- 配置freeMarker 拓展-->
-	<!-- <bean id="freemarkerConfig" class="com.sojson.core.freemarker.extend.FreeMarkerConfigExtend"> -->
-	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/template/${template.name}/" />
+	<bean id="freemarkerConfig" class="com.xzjie.common.web.freemarker.DefaultFreeMarkerConfigurer">
+
+		<property name="templateLoaderPath" value="/template/" />
 		<property name="defaultEncoding" value="utf-8" />
+		<property name="defaultTags" ref="etTags" />
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape" />
+			</map>
+		</property>
 		<!-- <property name="freemarkerSettings" ref="freemarkerConfiguration" />  -->
 		<property name="freemarkerSettings">
 			<props><!-- 315360000 -->
 				<prop key="template_update_delay">0</prop>
+				<!--如果为null则转为空值,不需要再用!处理-->
+				<prop key="classic_compatible">true</prop>
 				<prop key="defaultEncoding">UTF-8</prop>
 				<prop key="url_escaping_charset">UTF-8</prop>
 				<prop key="locale">zh_CN</prop>
@@ -201,111 +192,98 @@
 				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
 				<prop key="date_format">yyyy-MM-dd</prop>
 				<prop key="time_format">HH:mm:ss</prop>
-				<!-- <prop key="number_format">0.######</prop> -->
-				<!-- <prop key="number_format">#</prop> -->
 				<prop key="number_format">#.##</prop>
 				<prop key="whitespace_stripping">true</prop>
-				<!-- <prop key="auto_import">
-					/_inc/_layout.ftl as layout
-				</prop> -->
+
 			</props>
 		</property>
-		<property name="freemarkerVariables">
-			<map>
-				<entry key="xml_escape" value-ref="fmXmlEscape" />
-				<!-- <entry key="api" value-ref="api"/> -->
-				<entry key="navs" value-ref="navsDirective" />
-			</map>
-		</property>
 	</bean>
-	<!-- <bean id="freemarkerConfiguration"  
-        class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
-        <property name="location" value="classpath:freemarker.properties" />  
-    </bean>  -->
+
     <bean id="freemarkerStaticModelsProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="location" value="classpath:freemarkerstatic.properties" />
 	</bean>
 	
-	<bean id="freemarkerStaticModels" class="com.xzjie.freemarker.FreemarkerStaticModels" factory-method="getInstance">
+	<bean id="freemarkerStaticModels" class="com.xzjie.common.web.freemarker.FreemarkerStaticModels" factory-method="getInstance">
 		<property name="staticModels" ref="freemarkerStaticModelsProps" />
 	</bean>
 	
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
-	
-	<bean id="navsDirective" class="com.xzjie.freemarker.directive.NavsDirective" />
-	
+
+
+	<bean id="etTags" class="com.xzjie.client.core.freemarker.ETTags"></bean>
+
 	<!--===============通用视图解析器 end===============-->
-	
-	
-	
+
 	<!-- XML 对象配置 -->
-	<!-- <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-    	<property name="packagesToScan" value="com.xzjie.gypt.**.model.*"/> -->
-    	<!-- <property name="classesToBeBound">
-	        <list>
-	            <value>com.xzjie.gypt.common.protocol</value>
-	            <value>com.xzjie.gypt.**.model</value>
-	        </list>
-    	</property>  -->
-   <!--  </bean> -->
-    
-    <bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+	<bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="packagesToScan" value="com.xzjie.et.cms.web.tags.model,com.xzjie.**.common.protocol" />
+	</bean>
+
+	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
         <property name="autodetectAnnotations" value="true"/>
         <property name="streamDriver">
             <!-- <bean class="com.thoughtworks.xstream.io.xml.StaxDriver" /> -->
             <bean class="com.thoughtworks.xstream.io.xml.XppDriver"> 
-
-			<constructor-arg> 
-			
-			<bean class="com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer">
-			
-			<constructor-arg index="0" value="_-"/> 
-			
-			<constructor-arg index="1" value="_"/> 
-			
-			</bean> 
-			
-			</constructor-arg> 
-			
+				<constructor-arg> 
+					<bean class="com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer">
+					<constructor-arg index="0" value="_-"/> 
+					<constructor-arg index="1" value="_"/> 
+					</bean> 
+				</constructor-arg> 
 			</bean> 
         </property>
         <property name="encoding" value="UTF-8" />
     </bean>
-    
-    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
-        <property name="config">  
-            <bean class="com.google.code.kaptcha.util.Config">  
-                <constructor-arg>  
-                    <props>  
-                        <prop key="kaptcha.border">no</prop><!-- yes no -->
-                        <prop key="kaptcha.noise.color">blue</prop>
-                        <prop key="kaptcha.border.color">105,179,90</prop>  
-                        <prop key="kaptcha.textproducer.font.color">blue</prop>  
-                        <prop key="kaptcha.image.width">250</prop>  
-                        <prop key="kaptcha.image.height">90</prop>  
-                        <prop key="kaptcha.textproducer.font.size">80</prop>  
-                        <prop key="kaptcha.session.key">code</prop>  
-                        <prop key="kaptcha.textproducer.char.length">4</prop>  
-                        <!-- <prop key="kaptcha.textproducer.char.space">2</prop>   -->
-                        <prop key="kaptcha.textproducer.font.names">微软雅黑,宋体,楷体,</prop>  
-                       <!--  <prop key="kaptcha.GimpyEngine">WaterRipple</prop>    -->                      
-                    	<!-- <prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise</prop> --> 
-                    	<!-- <prop key="kaptcha.background.clear.to">white</prop>  -->
-                    	<!-- <prop key="kaptcha.border">no</prop>  
-                        <prop key="kaptcha.border.color">105,179,90</prop>  
-                        <prop key="kaptcha.textproducer.font.color">blue</prop>  
-                        <prop key="kaptcha.image.width">250</prop>  
-                        <prop key="kaptcha.textproducer.font.size">80</prop>  
-                        <prop key="kaptcha.image.height">90</prop>  
-                        <prop key="kaptcha.session.key">code</prop>  
-                        <prop key="kaptcha.textproducer.char.length">4</prop>  
-                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>  -->
-                    </props>  
-                </constructor-arg>  
-            </bean>  
-        </property>  
-    </bean>
-    
-    <!-- <import resource="classpath:spring-mvc-shiro.xml"/>      -->
-    
+
+
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+		<property name="config">
+			<bean class="com.google.code.kaptcha.util.Config">
+				<constructor-arg>
+					<props>
+						<prop key="kaptcha.border">no</prop><!-- yes no -->
+						<prop key="kaptcha.noise.color">blue</prop>
+						<prop key="kaptcha.border.color">105,179,90</prop>
+						<prop key="kaptcha.textproducer.font.color">blue</prop>
+						<prop key="kaptcha.image.width">250</prop>
+						<prop key="kaptcha.image.height">90</prop>
+						<prop key="kaptcha.textproducer.font.size">80</prop>
+						<prop key="kaptcha.session.key">code</prop>
+						<prop key="kaptcha.textproducer.char.length">4</prop>
+						<prop key="kaptcha.textproducer.font.names">微软雅黑,宋体,楷体,</prop>
+					</props>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 异常处理方式 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->
+		<property name="defaultErrorView" value="error"></property>
+		<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
+		<property name="exceptionAttribute" value="ex"></property>
+		<!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->
+		<property name="exceptionMappings">
+			<props>
+				<prop key="com.xzjie.et.common.exception.BusinessException">error-business</prop>
+				<prop key="com.xzjie.et.common.exception.ParameterException">error-parameter</prop>
+				<prop key="com.xzjie.et.common.exception.AccessTokenException">error-accessToken</prop>
+			</props>
+		</property>
+
+		<!-- 相关状态码对应的错误页面 -->
+		<property name="statusCodes">
+			<props>
+				<prop key="errors/500">500</prop>
+				<prop key="errors/404">404</prop>
+			</props>
+		</property>
+		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+		<property name="warnLogCategory" value="WARN" />
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500" />
+	</bean>
+
 </beans>

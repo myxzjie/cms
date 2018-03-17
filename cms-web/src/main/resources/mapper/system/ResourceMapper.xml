@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.system.dao.ResourceMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.Resource" >
+<mapper namespace="com.xzjie.et.system.dao.ResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.system.model.Resource" >
     <id column="resource_id" property="resourceId" jdbcType="BIGINT" />
     <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
     <result column="perent_resource_id" property="perentResourceId" jdbcType="BIGINT" />
@@ -15,96 +15,36 @@
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
     <result column="create_user" property="createUser" jdbcType="BIGINT" />
     <result column="permission" property="permission" jdbcType="VARCHAR" />
-    <result column="perent_name" property="perentName" jdbcType="VARCHAR" />
   </resultMap>
-  
-  <resultMap id="ResourceTree" type="com.xzjie.gypt.system.model.Resource" extends="BaseResultMap">
-  	<collection column="resource_id" property="children" ofType="com.xzjie.gypt.system.model.Resource" javaType="java.util.ArrayList" select="findChildren" />
-  
-  </resultMap>
-  
-  <resultMap id="BaseResourceUser" type="com.xzjie.gypt.system.model.Resource" extends="BaseResultMap">
-  	<collection column="{resourceId=resource_id,userId=user_id}" property="children" ofType="com.xzjie.gypt.system.model.Resource" javaType="java.util.ArrayList" select="findResourceUserChildren" />
-  
-  </resultMap>
-  
   <sql id="Base_Column_List" >
     resource_id, resource_name, perent_resource_id, resource_url, resource_icon, resource_order, 
     resource_type, resource_desc, create_date, state, group_id, create_user, permission
   </sql>
-  
-  <select id="findResourceUserByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-  	select r.*,b.user_id from  sys_resource r,(select rr.resource_id,a.user_id from sys_account a, sys_account_role ar
-	,sys_role_resource rr 
-	where a.user_id=ar.user_id
-	and ar.role_id=rr.role_id
-	and a.user_id=#{userId,jdbcType=BIGINT}) b
-	where r.state=1 
-	and r.resource_id=b.resource_id
+
+  <select id="selectResourceByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select a.* from sys_resource a inner join sys_role_resource b
+    on a.resource_id = b.resource_id
+    where b.role_id = #{roleId,jdbcType=BIGINT}
   </select>
-  
-  <select id="findResourceUser" resultMap="BaseResourceUser" parameterType="java.lang.Long">
-  	select 
-    <include refid="Base_Column_List" />
-    , #{userId,jdbcType=BIGINT} user_id
-    from sys_resource
-  	where state=1 and perent_resource_id=0
-  	
-  </select>
-  
-  <select id="findResourceUserChildren" resultMap="BaseResourceUser" parameterType="java.util.Map" >
-  	select r.*,b.user_id from  sys_resource r,(select rr.resource_id,a.user_id from sys_account a, sys_account_role ar
-	,sys_role_resource rr 
-	where a.user_id=ar.user_id
-	and ar.role_id=rr.role_id
-	and a.user_id=#{userId,jdbcType=BIGINT}) b
-	where r.state=1 
-	and r.resource_id=b.resource_id
-	and r.perent_resource_id=#{resourceId,jdbcType=BIGINT} 
-  </select>
- 
-  
-  <select id="findListPage" resultMap="BaseResultMap" parameterType="pageEntity">
-  	select a.*,b.resource_name perent_name
-	from sys_resource a left join sys_resource b
-	on b.resource_id=a.perent_resource_id
-	where a.state=1 and a.perent_resource_id>0
-	<if test="record.resourceName!=null and record.resourceName!=''">
-    and a.resource_name like '${record.resourceName}%'
-    </if>
-	order by a.resource_id,a.perent_resource_id
-  </select>
-  
-  <!-- 查询资料树 -->
-  <select id="findResourceTree" resultMap="ResourceTree" parameterType="java.lang.Long">
-  	select 
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.system.model.Resource" >
+    select
     <include refid="Base_Column_List" />
     from sys_resource
-  	where state=1 and perent_resource_id=0
+    where state=1
   </select>
-  
-  <select id="findChildren" resultMap="ResourceTree" parameterType="java.util.Map" >
-  	select 
-    <include refid="Base_Column_List" />
-    from sys_resource
-  	where state=1 
-  	and perent_resource_id=#{resource_id,jdbcType=BIGINT}
-  </select>
-  
-  <!-- /查询资料树 -->
-  
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from sys_resource
-    where resource_id = #{id,jdbcType=BIGINT}
+    where resource_id = #{resourceId,jdbcType=BIGINT}
   </select>
-  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_resource
     where resource_id = #{resourceId,jdbcType=BIGINT}
   </delete>
- <!--  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Resource" >
+  <insert id="insert" parameterType="com.xzjie.et.system.model.Resource" >
     insert into sys_resource (resource_id, resource_name, perent_resource_id, 
       resource_url, resource_icon, resource_order, 
       resource_type, resource_desc, create_date, 
@@ -115,8 +55,8 @@
       #{resourceType,jdbcType=INTEGER}, #{resourceDesc,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{state,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{createUser,jdbcType=BIGINT}, 
       #{permission,jdbcType=VARCHAR})
-  </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Resource" >
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.et.system.model.Resource" >
     insert into sys_resource
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="resourceId != null" >
@@ -201,7 +141,7 @@
       </if>
     </trim>
   </insert>
-  <update id="update" parameterType="com.xzjie.gypt.system.model.Resource" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.system.model.Resource" >
     update sys_resource
     <set >
       <if test="resourceName != null" >
@@ -243,7 +183,7 @@
     </set>
     where resource_id = #{resourceId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.Resource" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.system.model.Resource" >
     update sys_resource
     set resource_name = #{resourceName,jdbcType=VARCHAR},
       perent_resource_id = #{perentResourceId,jdbcType=BIGINT},

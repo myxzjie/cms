@@ -11,8 +11,10 @@ import com.baidu.ueditor.define.State;
 import com.baidu.ueditor.hunter.FileManager;
 import com.baidu.ueditor.hunter.ImageHunter;
 import com.baidu.ueditor.upload.Uploader;
+import com.xzjie.local.ueditor.LocalImageHunter;
 import com.xzjie.oss.conf.Configuration;
 import com.xzjie.oss.ueditor.OSSFileManager;
+import com.xzjie.oss.ueditor.OSSImageHunter;
 
 public class ActionEnter {
 	
@@ -85,7 +87,13 @@ public class ActionEnter {
 			case ActionMap.CATCH_IMAGE:
 				conf = configManager.getConfig( actionCode );
 				String[] list = this.request.getParameterValues( (String)conf.get( "fieldName" ) );
-				state = new ImageHunter( conf ).capture( list );
+
+				if(Configuration.useStatus()) {//使用阿里云oss 存储
+					state = new OSSImageHunter(conf).capture(list);
+				}else {
+					//state = new ImageHunter(conf).capture(list);
+					state = new LocalImageHunter(conf).capture(list);
+				}
 				break;
 				
 			case ActionMap.LIST_IMAGE:

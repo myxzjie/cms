@@ -1,0 +1,176 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <@head />
+</head>
+
+<body>
+    <@layout>
+        <nav class="breadcrumb">
+            <!-- <i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 -->
+            <a class="btn btn-success btn-refresh radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+                title="刷新">
+                <i class="Hui-iconfont">&#xe68f;</i>
+            </a>
+        </nav>
+        <div class="pd-20">
+            <div class="text-l">
+                <form id="query_form">
+                    <input type="text" class="input-text" style="width:250px" placeholder="输入名称" id="" name="title">
+                    <button type="button" class="btn btn-success" id="btn_query">
+                        <i class="Hui-iconfont">&#xe665;</i> 查询</button>
+                </form>
+            </div>
+
+            <div class="cl pd-5 bg-1 bk-gray mt-20">
+                <span class="l">
+                    <a href="javascript:;" onclick="tgridObj.add();" class="btn btn-primary radius">
+                        <i class="Hui-iconfont">&#xe600;</i> 添加</a>
+                    <a href="javascript:;" onclick="tgridObj.edit();" class="btn btn-primary radius">
+                        <i class="Hui-iconfont">&#xe60c;</i> 编辑</a>
+                    <a href="javascript:;" onclick="tgridObj.del();" class="btn btn-danger radius">
+                        <i class="Hui-iconfont">&#xe605;</i>删除</a>
+                </span>
+                <span class="r">共有数据：
+                    <strong class="total">0</strong> 条</span>
+            </div>
+            <table id="datatable"></table>
+            <div id="pagination" class="cl pd-10 r"></div>
+
+
+        </div>
+    </@layout>
+
+    <@tablejs />
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('#btn_query').click(function (e) {
+                var params = {};
+                params = $('#query_form').serializeJSON();
+
+                $('#datatable').tgrid('load', params);
+            })
+            tgridObj.init();
+
+        });
+
+
+        var tgridObj = {
+            init: function () {
+                $('#datatable').tgrid({
+                    columns: tgridObj.columns,
+                    checkbox: true,
+                    url: global.adminPath + '/article/datapage'
+                });
+            },
+            load: function () {
+                var params = {};
+                params = $('#query_form').serializeJSON();
+                $('#datatable').tgrid('load', params);
+            },
+            columns: [{
+                width: '80',
+                align: 'center',
+                title: '编号',
+                field: 'articleId'
+            }, {
+                width: '80',
+                align: 'center',
+                title: '标题',
+                field: 'title'
+            }, {
+                width: '80',
+                title: '分类',
+                align: 'center',
+                field: 'categoryName'
+            }, {
+                width: '80',
+                align: 'center',
+                title: '排序',
+                field: 'sort'
+            }/*,{
+            width : '80',
+            align : 'center',
+            title : '浏览次数',
+            field : 'countView'
+        },{
+            width : '80',
+            align : 'center',
+            title : '评论数',
+            field : 'countComment'
+        }*/, {
+                width: '120',
+                align: 'center',
+                title: '创建时间',
+                field: 'createDate',
+                formatter: function (value, row, index) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            }],
+            add: function () {
+                var url = global.adminPath + '/article/addview';
+                layer_full('添加', url);
+            },
+            edit: function () {
+                var obj = $('#datatable').tgrid('getSelections');
+
+                if (obj.length != 1) {
+                    layer.alert('请选择一条', {
+                        icon: 7
+                    });
+                    return false;
+                }
+
+                var url = global.adminPath + '/article/edit/' + obj[0].articleId;
+                layer_full('编辑', url);
+            },
+            del: function () {
+
+                var obj = $('#datatable').tgrid('getSelections');
+
+                if (obj.length != 1) {
+                    layer.alert('请选择一条', {
+                        icon: 7
+                    });
+                    return false;
+                }
+
+                layer.confirm('确认要删除吗？', function (index) {
+                    var data = {};
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        dataType: 'json',
+                        url: global.adminPath + '/article/delete/' + obj[0].articleId,
+                        success: function (res) {
+                            if (res.success) {
+                                tgridObj.load();
+                                layer.alert('已删除!', {
+                                    icon: 1
+                                });
+                            } else {
+                                layer.alert(res.message, {
+                                    icon: 2
+                                });
+                            }
+                        }
+                    });
+
+                });
+            }
+
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

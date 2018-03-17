@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.cms.dao.CategoryMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.cms.model.Category" >
+<mapper namespace="com.xzjie.et.cms.dao.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.cms.model.Category" >
     <id column="category_id" property="categoryId" jdbcType="BIGINT" />
     <result column="site_id" property="siteId" jdbcType="BIGINT" />
     <result column="category_p_id" property="categoryPId" jdbcType="BIGINT" />
@@ -15,78 +15,33 @@
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="show_modes" property="showModes" jdbcType="VARCHAR" />
-    <result column="perent_name" property="perentName" jdbcType="VARCHAR" />
-    <result column="is_show" property="isShow" jdbcType="VARCHAR" />
+    <result column="show_modes" property="showModes" jdbcType="CHAR" />
+    <result column="template" property="template" jdbcType="VARCHAR" />
   </resultMap>
-  
-  <resultMap id="CategoryTree" type="com.xzjie.gypt.cms.model.Category" extends="BaseResultMap">
-  	<collection column="{categoryId=category_id,siteId=site_id,isShow=is_show}" property="children" ofType="com.xzjie.gypt.cms.model.Category" javaType="java.util.ArrayList" select="findChildren" />
-  </resultMap>
-  
   <sql id="Base_Column_List" >
     category_id, site_id, category_p_id, category_name, image, href, target, keywords, 
-    description, category_order, state, create_date, update_date, show_modes
+    description, category_order, state, create_date, update_date, show_modes, template
   </sql>
-  
-  <select id="findCategoryChild" resultMap="BaseResultMap" parameterType="com.xzjie.gypt.cms.model.Category" >
-    select 
-    category_id, category_name
-    from cms_category a
-    where state=1 
-    and category_p_id>0
-    and site_id = #{siteId,jdbcType=BIGINT}    
-  </select>
-  
-  <select id="findCategoryTree" resultMap="CategoryTree" parameterType="com.xzjie.gypt.cms.model.Category">
-  	select 
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.cms.model.Category" >
+    select
     <include refid="Base_Column_List" />
-    , '${isShow}' is_show
-	from cms_category
-	where category_p_id=0 and site_id =	#{siteId,jdbcType=BIGINT}
-	<if test="isShow != null">
-	and show_modes = #{isShow,jdbcType=VARCHAR}
-	</if>
-	order by category_order 
-  </select>
-  
-  <select id="findChildren" resultMap="CategoryTree" parameterType="java.util.Map">
-  	select 
-    <include refid="Base_Column_List" />
-    , '${isShow}' is_show
     from cms_category
-  	where category_p_id=#{categoryId,jdbcType=BIGINT}
-  	and site_id = #{siteId,jdbcType=BIGINT}
-  	<if test="isShow != null and isShow != ''">
-	and show_modes = #{isShow,jdbcType=VARCHAR}
-	</if>
-  	order by category_order 
-  </select>
-  
-  <select id="findList" resultMap="BaseResultMap" parameterType="com.xzjie.gypt.cms.model.Category" >
-    select 
-    <include refid="Base_Column_List" />
-    from cms_category a
-    where state=1 
-    and site_id = #{siteId,jdbcType=BIGINT}
-  </select>
-  
-  <select id="findListPage" resultMap="BaseResultMap" parameterType="pageEntity" >
-    select 
-    <include refid="Base_Column_List" />
-    ,(select category_name from cms_category b where b.category_id=a.category_p_id ) perent_name
-    from cms_category a
-    where state=1 
-    <if test="record.categoryId != null" >
-    and category_id = #{record.categoryId,jdbcType=BIGINT}
+    where state=1 and site_id = #{siteId,jdbcType=BIGINT}
+    <if test="showModes != null and showModes != ''">
+    and show_modes = #{showModes,jdbcType=CHAR}
     </if>
-    <if test="record.siteId != null" >
-    and site_id = #{record.siteId,jdbcType=BIGINT}
-    </if>
-    
   </select>
-  
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    from cms_category
+    where state=1 and site_id = #{t.siteId,jdbcType=BIGINT}
+    order by category_id desc
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from cms_category
@@ -96,19 +51,19 @@
     delete from cms_category
     where category_id = #{categoryId,jdbcType=BIGINT}
   </delete>
-  <!-- <insert id="insert" parameterType="com.xzjie.gypt.cms.model.Category" >
+  <insert id="insert" parameterType="com.xzjie.et.cms.model.Category" >
     insert into cms_category (category_id, site_id, category_p_id, 
       category_name, image, href, 
       target, keywords, description, 
       category_order, state, create_date, 
-      update_date)
+      update_date, show_modes)
     values (#{categoryId,jdbcType=BIGINT}, #{siteId,jdbcType=BIGINT}, #{categoryPId,jdbcType=BIGINT}, 
       #{categoryName,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR}, 
       #{target,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{categoryOrder,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
-  </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.cms.model.Category" >
+      #{updateDate,jdbcType=TIMESTAMP}, #{showModes,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.et.cms.model.Category" >
     insert into cms_category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="categoryId != null" >
@@ -150,8 +105,11 @@
       <if test="updateDate != null" >
         update_date,
       </if>
-      <if test="showModes != null">
-      	show_modes,
+      <if test="showModes != null" >
+        show_modes,
+      </if>
+      <if test="template != null">
+        template,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -194,13 +152,15 @@
       <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="showModes != null">
-      	#{showModes,jdbcType=VARCHAR},
+      <if test="showModes != null" >
+        #{showModes,jdbcType=CHAR},
+      </if>
+      <if test="template != null">
+        #{template,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  
-  <update id="update" parameterType="com.xzjie.gypt.cms.model.Category" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.cms.model.Category" >
     update cms_category
     <set >
       <if test="siteId != null" >
@@ -239,14 +199,16 @@
       <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="showModes != null">
-      	show_modes = #{showModes,jdbcType=VARCHAR},
+      <if test="showModes != null" >
+        show_modes = #{showModes,jdbcType=CHAR},
+      </if>
+      <if test="template != null">
+        template = #{template,jdbcType=VARCHAR},
       </if>
     </set>
     where category_id = #{categoryId,jdbcType=BIGINT}
   </update>
-  
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.cms.model.Category" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.cms.model.Category" >
     update cms_category
     set site_id = #{siteId,jdbcType=BIGINT},
       category_p_id = #{categoryPId,jdbcType=BIGINT},
@@ -259,7 +221,8 @@
       category_order = #{categoryOrder,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      show_modes = #{showModes,jdbcType=CHAR}
     where category_id = #{categoryId,jdbcType=BIGINT}
   </update>
 </mapper>

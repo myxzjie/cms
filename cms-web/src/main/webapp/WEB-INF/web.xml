@@ -4,12 +4,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-	<display-name>demo-web</display-name>
+	<display-name>cms-web</display-name>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring-context.xml</param-value>
 	</context-param>
-   
+
 	<filter>
 		<description>字符集过滤器</description>
 		<filter-name>encodingFilter</filter-name>
@@ -27,32 +27,63 @@
 	<listener>
 		<description>spring监听器</description>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-		<!-- <listener-class>org.radp.xzjie.core.listener.WebContextListener</listener-class> -->
+		<!-- <listener-class>com.xzjie.gypt.common.listener.WebContextListener</listener-class> -->
 	</listener>
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
-	
-	<!-- shiro 安全过滤器 -->
-    <!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
-    <filter>
-        <filter-name>shiroFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <async-supported>true</async-supported>
-        <init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
 
-    <!-- Make sure any request you want accessible to Shiro is filtered. /* catches all -->
-    <!-- requests.  Usually this filter mapping is defined first (before all others) to -->
-    <!-- ensure that Shiro works in subsequent filters in the filter chain:             -->
-    <filter-mapping>
-        <filter-name>shiroFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-	
+	<!-- shiro 安全过滤器 -->
+	<!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<!-- Make sure any request you want accessible to Shiro is filtered. /* 
+		catches all -->
+	<!-- requests. Usually this filter mapping is defined first (before all 
+		others) to -->
+	<!-- ensure that Shiro works in subsequent filters in the filter chain: -->
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- log4j -->
+	<context-param>
+		<param-name>isLog4jAutoInitializationDisabled</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<!-- 默认就会找这个文件，不需要额外配置引用 -->
+	<!-- <context-param>
+		<param-name>log4jConfiguration</param-name>
+		<param-value>classpath:log4j2.xml</param-value>
+	</context-param> -->
+	<listener>
+		<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>log4jServletFilter</filter-name>
+		<filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>log4jServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+		<dispatcher>ASYNC</dispatcher><!-- Servlet 3.0 w/ disabled auto-initialization 
+			only; not supported in 2.5 -->
+	</filter-mapping>
+	<!-- log4j end -->
 	<servlet>
 		<description>spring mvc servlet</description>
 		<servlet-name>springMvc</servlet-name>
@@ -68,62 +99,23 @@
 		<servlet-name>springMvc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>springMvc</servlet-name>
+		<url-pattern>*.jpg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springMvc</servlet-name>
+		<url-pattern>*.js</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springMvc</servlet-name>
+		<url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+
 	<session-config>
 		<session-timeout>300</session-timeout>
 	</session-config>
-
-	<filter>
-		<filter-name>DruidWebStatFilter</filter-name>
-		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
-		<init-param>
-			<param-name>exclusions</param-name>
-			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.jsp,/druid/*,/download/*</param-value>
-		</init-param>
-		<init-param>
-			<param-name>sessionStatMaxCount</param-name>
-			<param-value>2000</param-value>
-		</init-param>
-		<init-param>
-			<param-name>sessionStatEnable</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>principalSessionName</param-name>
-			<param-value>session_user_key</param-value>
-		</init-param>
-		<init-param>
-			<param-name>profileEnable</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>DruidWebStatFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<!-- 配置 Druid 监控信息显示页面 -->
-	<servlet>
-		<servlet-name>DruidStatView</servlet-name>
-		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
-		<init-param>
-			<!-- 允许清空统计数据 -->
-			<param-name>resetEnable</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<!-- 用户名 -->
-			<param-name>loginUsername</param-name>
-			<param-value>druid</param-value>
-		</init-param>
-		<init-param>
-			<!-- 密码 -->
-			<param-name>loginPassword</param-name>
-			<param-value>druid</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DruidStatView</servlet-name>
-		<url-pattern>/druid/*</url-pattern>
-	</servlet-mapping>
 
 	<error-page>
 		<exception-type>IOException</exception-type>
@@ -150,18 +142,9 @@
 		<location>/error/500.jsp</location>
 	</error-page>
 
-	<!-- <security-constraint>
-		 <web-resource-collection>
-        <web-resource-name>securedapp</web-resource-name>
-        <url-pattern>/*</url-pattern>
-        <user-data-constraint>
-        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-    </web-resource-collection>
-	</security-constraint> -->
-	
 	<welcome-file-list>
-		<!-- <welcome-file>index.html</welcome-file> <welcome-file>index.htm</welcome-file> -->
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>default.html</welcome-file>
 		<welcome-file>default.htm</welcome-file>

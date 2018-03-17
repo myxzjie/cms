@@ -1,0 +1,76 @@
+﻿<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html" />
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <@head title="后台登录" />
+  <link href="/assets/static/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <@layout>
+    <div class="loginWraper">
+      <div id="loginform" class="loginBox">
+        <form class="form form-horizontal" action="${ctx_admin}/login" method="post">
+          <div class="row cl">
+            <label class="form-label col-xs-3"></label>
+            <div class="formControls col-xs-8">
+
+            </div>
+          </div>
+          <div class="row cl">
+            <label class="form-label col-xs-3">
+              <i class="Hui-iconfont">&#xe60d;</i>
+            </label>
+            <div class="formControls col-xs-8">
+              <input id="username" name="username" type="text" placeholder="账户" class="input-text size-L">
+            </div>
+          </div>
+          <div class="row cl">
+            <label class="form-label col-xs-3">
+              <i class="Hui-iconfont">&#xe60e;</i>
+            </label>
+            <div class="formControls col-xs-8">
+              <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
+            </div>
+          </div>
+          <div class="row cl">
+            <div class="formControls col-xs-8 col-xs-offset-3">
+              <input name="captcha" class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}"
+                onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
+              <img id="captcha-img" src="/kaptcha/image" style="width: 100px;height: 35px;">
+              <a id="btn-kaptcha" href="javascript:;">看不清，换一张</a>
+            </div>
+          </div>
+          <div class="row cl">
+            <div class="formControls col-xs-8 col-xs-offset-3">
+              <label for="rememberMe">
+                <input type="checkbox" id="rememberMe" name="rememberMe">记住密码
+              </label>
+            </div>
+          </div>
+          <div class="row cl">
+            <div class="formControls col-xs-8 col-xs-offset-3">
+              <input type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+              <input type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer">Copyright 你的公司名称 by XXX</div>
+  </@layout>
+
+  <script type="text/javascript">
+    $(function () {
+      $('#btn-kaptcha').click(function () {
+        $('#captcha-img').attr('src', '/kaptcha/image');
+      });
+    })
+
+  </script>
+
+</body>
+
+</html>

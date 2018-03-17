@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.cms.dao.ArticleMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.cms.model.Article" >
+<mapper namespace="com.xzjie.et.cms.dao.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.cms.model.Article" >
     <id column="article_id" property="articleId" jdbcType="BIGINT" />
     <result column="category_id" property="categoryId" jdbcType="BIGINT" />
     <result column="title" property="title" jdbcType="VARCHAR" />
@@ -27,37 +27,60 @@
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
     <result column="show_modes" property="showModes" jdbcType="INTEGER" />
+    <result column="site_id" property="siteId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     article_id, category_id, title, href, image, keywords, description, author, create_date, 
     update_date, count_view, count_comment, sort, status, approve_status, publish_date, 
     publish_author, start_time, end_time, remarks, recommend_type, show_modes
   </sql>
-  
-  <select id="findListPage" resultMap="BaseResultMap" parameterType="pageEntity" >
-  	select a.*,b.category_name 
-  	,(select name from sys_account where user_id = a.author) author_name
-  	from cms_article a , cms_category b ,cms_site c
-  	where a.status=1
-  	and a.category_id=b.category_id and b.site_id=c.site_id
-  	and c.site_id=#{record.siteId,jdbcType=BIGINT}
-    <if test="record.categoryId != null" >
-    and b.category_id = #{record.categoryId,jdbcType=BIGINT}
-    </if>
-    <if test="record.recommendType != null">
-    and a.recommend_type = #{record.recommendType,jdbcType=BIGINT}
-    </if>
-    <if test="record.author != null">
-    and a.author = #{record.author,jdbcType=BIGINT}
-    </if>
-    <if test="record.approveStatus != null">
-    and a.approve_status = #{record.approveStatus,jdbcType=BIGINT}
-    </if>
-    order by a.create_date desc
+
+  <select id="selectRecommendList" resultMap="BaseResultMap" parameterType="com.xzjie.et.cms.model.Article">
+    SELECT a.* from cms_article a INNER JOIN cms_category c
+    on a.category_id=c.category_id
+    WHERE c.category_id=#{categoryId,jdbcType=BIGINT}
+    and a.recommend_type=#{recommendType,jdbcType=INTEGER}
   </select>
   
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity" >
+    select
+    <include refid="Base_Column_List" />
+    from cms_article where status=1
+    <if test="t.categoryId != null" >
+    and category_id = #{t.categoryId,jdbcType=BIGINT}
+    </if>
+    <if test="t.title != null and t.title != ''">
+    and title like CONCAT('%',#{t.title,jdbcType=VARCHAR},'%' )
+    </if>
+    <if test="t.siteId != null">
+    and site_id = #{t.siteId,jdbcType=BIGINT}
+    </if>
+    order by create_date desc
+  </select>
+
+  <select id="selectArticleListPage" resultMap="BaseResultMap" parameterType="entity" >
+    select
+    a.*, b.`name`, b.nick_name,b.avatar, c.category_name
+    from cms_article a
+    INNER JOIN cms_category c ON a.category_id = c.category_id
+    INNER JOIN sys_account b ON a.author = b.user_id
+    where a.status=1
+    <if test="t.siteId != null">
+      and a.site_id = #{t.siteId,jdbcType=BIGINT}
+    </if>
+    <if test="t.categoryId != null">
+    and find_in_set(a.category_id,f_children_category(#{t.categoryId,jdbcType=BIGINT}))
+    </if>
+    <if test="t.recommendType != null">
+    and a.recommend_type = #{t.recommendType,jdbcType=INTEGER}
+    </if>
+    order by a.sort desc,a.create_date desc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
     <include refid="Base_Column_List" />
     ,(select name from sys_account where user_id = author) author_name
     ,(select content from cms_article_content b where b.article_id = a.article_id) content
@@ -69,7 +92,7 @@
     delete from cms_article
     where article_id = #{articleId,jdbcType=BIGINT}
   </delete>
-  <!-- <insert id="insert" parameterType="com.xzjie.gypt.cms.model.Article" >
+  <!-- <insert id="insert" parameterType="com.xzjie.et.cms.model.Article" >
     insert into cms_article (article_id, category_id, title, 
       href, image, keywords, 
       description, author, create_date, 
@@ -87,7 +110,7 @@
       #{endTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{recommendType,jdbcType=INTEGER}
       )
   </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.cms.model.Article" useGeneratedKeys="true" keyProperty="articleId">
+  <insert id="insertSelective" parameterType="com.xzjie.et.cms.model.Article" useGeneratedKeys="true" keyProperty="articleId">
     insert into cms_article
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="articleId != null" >
@@ -152,6 +175,9 @@
       </if>
       <if test="recommendType != null" >
         recommend_type,
+      </if>
+      <if test="siteId != null">
+        site_id
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -218,10 +244,13 @@
       <if test="recommendType != null" >
         #{recommendType,jdbcType=INTEGER},
       </if>
+      <if test="siteId != null" >
+        #{siteId,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
   
-  <update id="update" parameterType="com.xzjie.gypt.cms.model.Article" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.cms.model.Article" >
     update cms_article
     <set >
       <if test="categoryId != null" >
@@ -287,7 +316,7 @@
     </set>
     where article_id = #{articleId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.cms.model.Article" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.cms.model.Article" >
     update cms_article
     set category_id = #{categoryId,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},

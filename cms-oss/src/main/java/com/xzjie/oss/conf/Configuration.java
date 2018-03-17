@@ -28,6 +28,9 @@ public class Configuration {
 		public final static String maxErrorRetry ="oss.maxErrorRetry";
 
 		public final static String useCDN ="useCDN";
+		private  final static String localPath="local.path";
+		private final static String localURL="local.url";
+
 		public final static String useLocalStorager ="useLocalStorager";
 		public final static String useAsynUploader="useAsynUploader";
 	}
@@ -122,5 +125,12 @@ public class Configuration {
 		String bool = getConf().getValue(OSS.useAsynUploader);
 		return "true".equals(bool.trim());
 	}
-	
+
+	public static String getLocalPath(){
+		return getConf().getValue(OSS.localPath);
+	}
+
+	public static String getLocalURL() {
+		return getConf().getValue(OSS.localURL);
+	}
 }

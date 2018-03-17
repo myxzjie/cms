@@ -1,0 +1,28 @@
+<#include "/admin/_inc/_header.html"/>
+<#include "/admin/_inc/_footer.html"/>
+<#include "/admin/_inc/_script.html" />
+
+<#macro layout>
+    <@header />
+
+    <#nested />
+
+    <@footer />
+    <@script />
+</#macro>
+
+<#macro tablejs>
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="/assets/lib/bootstrap-table/bootstrap-table.js"></script>
+    <script type="text/javascript" src="/assets/lib/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <script type="text/javascript" src="/assets/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.tgrid.js"></script>
+    <script type="text/javascript" src="/assets/lib/laypage/1.2/laypage.js"></script>
+</#macro>
+
+<#macro editjs>
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="/assets/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="/assets/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="/assets/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+</#macro>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.cms.dao.ArticleContentMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.cms.model.ArticleContent" >
+<mapper namespace="com.xzjie.et.cms.dao.ArticleContentMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.cms.model.ArticleContent" >
     <id column="content_id" property="contentId" jdbcType="BIGINT" />
     <result column="article_id" property="articleId" jdbcType="BIGINT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.xzjie.gypt.cms.model.ArticleContent" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.xzjie.et.cms.model.ArticleContent" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -15,7 +15,7 @@
     content
   </sql>
   
-  <select id="findContentByArticleId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+  <select id="selectArticleContent" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
   	select 
     <include refid="Base_Column_List" />
     ,
@@ -37,13 +37,13 @@
     delete from cms_article_content
     where content_id = #{contentId,jdbcType=BIGINT}
   </delete>
-  <!-- <insert id="insert" parameterType="com.xzjie.gypt.cms.model.ArticleContent" >
+  <!-- <insert id="insert" parameterType="com.xzjie.et.cms.model.ArticleContent" >
     insert into cms_article_content (content_id, article_id, content
       )
     values (#{contentId,jdbcType=BIGINT}, #{articleId,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.cms.model.ArticleContent" >
+  <insert id="insertSelective" parameterType="com.xzjie.et.cms.model.ArticleContent" >
     insert into cms_article_content
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="contentId != null" >
@@ -69,13 +69,13 @@
     </trim>
   </insert>
   
-  <update id="updateByArticleId" parameterType="com.xzjie.gypt.cms.model.ArticleContent">
+  <update id="updateByArticleId" parameterType="com.xzjie.et.cms.model.ArticleContent">
   	update cms_article_content
   	set content = #{content,jdbcType=LONGVARCHAR}
   	 where article_id = #{articleId,jdbcType=BIGINT}
   </update>
   
-  <update id="update" parameterType="com.xzjie.gypt.cms.model.ArticleContent" >
+  <update id="update" parameterType="com.xzjie.et.cms.model.ArticleContent" >
     update cms_article_content
     <set >
       <if test="articleId != null" >
@@ -87,13 +87,13 @@
     </set>
     where content_id = #{contentId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xzjie.gypt.cms.model.ArticleContent" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xzjie.et.cms.model.ArticleContent" >
     update cms_article_content
     set article_id = #{articleId,jdbcType=BIGINT},
       content = #{content,jdbcType=LONGVARCHAR}
     where content_id = #{contentId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.cms.model.ArticleContent" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.cms.model.ArticleContent" >
     update cms_article_content
     set article_id = #{articleId,jdbcType=BIGINT}
     where content_id = #{contentId,jdbcType=BIGINT}

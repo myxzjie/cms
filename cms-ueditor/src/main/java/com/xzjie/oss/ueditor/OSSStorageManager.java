@@ -3,6 +3,7 @@ package com.xzjie.oss.ueditor;
 import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.State;
+import com.baidu.ueditor.upload.StorageManager;
 import com.xzjie.oss.OSSUploadUtils;
 import org.apache.commons.io.FileUtils;
 
@@ -52,15 +53,31 @@ public class OSSStorageManager {
             if(is.available() > maxSize) {
                 return new BaseState(false, AppInfo.MAX_SIZE);
             }
+            return saveFileByInputStream(is,path);
 
+//            OSSUploadUtils.upload(path,is);
+//            state = new BaseState(true);
+//            state.putInfo( "size", is.available() );
+//            state.putInfo( "title", "" );
+//            return state;
+        } catch (IOException e) {
+        }
+
+        return new BaseState(false, AppInfo.IO_ERROR);
+    }
+
+    public static State saveFileByInputStream(InputStream is, String path) {
+        State state = null;
+
+        try {
             OSSUploadUtils.upload(path,is);
             state = new BaseState(true);
             state.putInfo( "size", is.available() );
             state.putInfo( "title", "" );
+
             return state;
         } catch (IOException e) {
         }
-
         return new BaseState(false, AppInfo.IO_ERROR);
     }
 

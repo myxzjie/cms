@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzjie.et.ad.dao.AdPositionMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.ad.model.AdPosition" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+    <result column="ad_width" property="adWidth" jdbcType="SMALLINT" />
+    <result column="ad_height" property="adHeight" jdbcType="SMALLINT" />
+    <result column="position_model" property="positionModel" jdbcType="VARCHAR" />
+    <result column="position_desc" property="positionDesc" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="site_id" property="siteId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.xzjie.et.ad.model.AdPosition" extends="BaseResultMap" >
+    <result column="position_style" property="positionStyle" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, position_name, ad_width, ad_height, position_model, position_desc, enabled, 
+    theme, create_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    position_style
+  </sql>
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    from et_ad_position
+    where site_id = #{t.siteId,jdbcType=BIGINT}
+    order by id desc
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from et_ad_position
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from et_ad_position
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xzjie.et.ad.model.AdPosition" useGeneratedKeys="true" keyProperty="id">
+    insert into et_ad_position (id, user_id, position_name,
+      ad_width, ad_height, position_model, 
+      position_desc, enabled, theme, 
+      create_date, position_style)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{positionName,jdbcType=VARCHAR}, 
+      #{adWidth,jdbcType=SMALLINT}, #{adHeight,jdbcType=SMALLINT}, #{positionModel,jdbcType=VARCHAR}, 
+      #{positionDesc,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{theme,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{positionStyle,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.et.ad.model.AdPosition" >
+    insert into et_ad_position
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="positionName != null" >
+        position_name,
+      </if>
+      <if test="adWidth != null" >
+        ad_width,
+      </if>
+      <if test="adHeight != null" >
+        ad_height,
+      </if>
+      <if test="positionModel != null" >
+        position_model,
+      </if>
+      <if test="positionDesc != null" >
+        position_desc,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="theme != null" >
+        theme,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="positionStyle != null" >
+        position_style,
+      </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="positionName != null" >
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="adWidth != null" >
+        #{adWidth,jdbcType=SMALLINT},
+      </if>
+      <if test="adHeight != null" >
+        #{adHeight,jdbcType=SMALLINT},
+      </if>
+      <if test="positionModel != null" >
+        #{positionModel,jdbcType=VARCHAR},
+      </if>
+      <if test="positionDesc != null" >
+        #{positionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="theme != null" >
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="positionStyle != null" >
+        #{positionStyle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.ad.model.AdPosition" >
+    update et_ad_position
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="positionName != null" >
+        position_name = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="adWidth != null" >
+        ad_width = #{adWidth,jdbcType=SMALLINT},
+      </if>
+      <if test="adHeight != null" >
+        ad_height = #{adHeight,jdbcType=SMALLINT},
+      </if>
+      <if test="positionModel != null" >
+        position_model = #{positionModel,jdbcType=VARCHAR},
+      </if>
+      <if test="positionDesc != null" >
+        position_desc = #{positionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="theme != null" >
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="positionStyle != null" >
+        position_style = #{positionStyle,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xzjie.et.ad.model.AdPosition" >
+    update et_ad_position
+    set user_id = #{userId,jdbcType=BIGINT},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      ad_width = #{adWidth,jdbcType=SMALLINT},
+      ad_height = #{adHeight,jdbcType=SMALLINT},
+      position_model = #{positionModel,jdbcType=VARCHAR},
+      position_desc = #{positionDesc,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=BIT},
+      theme = #{theme,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      position_style = #{positionStyle,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.ad.model.AdPosition" >
+    update et_ad_position
+    set user_id = #{userId,jdbcType=BIGINT},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      ad_width = #{adWidth,jdbcType=SMALLINT},
+      ad_height = #{adHeight,jdbcType=SMALLINT},
+      position_model = #{positionModel,jdbcType=VARCHAR},
+      position_desc = #{positionDesc,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=BIT},
+      theme = #{theme,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

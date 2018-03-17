@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.system.dao.RoleMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.Role" >
+<mapper namespace="com.xzjie.et.system.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.system.model.Role" >
     <id column="role_id" property="roleId" jdbcType="BIGINT" />
     <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
@@ -12,56 +12,58 @@
     <result column="create_user" property="createUser" jdbcType="BIGINT" />
     <result column="org_id" property="orgId" jdbcType="BIGINT" />
     <result column="role_level" property="roleLevel" jdbcType="INTEGER" />
-    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     role_id, role_code, role_name, role_type, role_desc, state, create_date, create_user, 
     org_id, role_level
   </sql>
-  
-  <select id="findUserRoles" resultMap="BaseResultMap" parameterType="java.util.Map">
-  	select r.* from sys_role r,sys_account_role ar
-	where r.role_id= ar.role_id
-	
-	and ar.user_id=#{userId,jdbcType=BIGINT}
-  </select><!-- and r.org_id=#{orgId,jdbcType=BIGINT} -->
-  
-  <select id="findListPage" resultMap="BaseResultMap" parameterType="pageEntity">
-   select 
-    <include refid="Base_Column_List" />
-    ,(select o.org_name from sys_org o where o.org_id=a.org_id) org_name
-    from sys_role a
-    where a.state=1
-    <if test="record.orgId!=null">
-    and a.org_id = #{record.orgId,jdbcType=BIGINT}
+  <!--<![CDATA[ ]]>-->
+  <select id="exist" resultType="boolean" parameterType="com.xzjie.et.system.model.Role">
+    select
+    count(1)
+    from sys_role
+    where state=1
+    <if test="roleCode != null" >
+      and role_code =  #{roleCode,jdbcType=VARCHAR}
     </if>
-    <if test="record.roleName!=null and record.roleName!=''">
-    and a.role_name like '${record.roleName}%'
-    </if>
-    <if test="record.roleCode!=null and record.roleCode!=''">
-    and a.role_code like '${record.roleCode}%'
-    </if>
+
   </select>
-  
-  <select id="findList" resultMap="BaseResultMap" parameterType="pageEntity">
-   select 
-    <include refid="Base_Column_List" />
-    ,(select o.org_name from sys_org o where o.org_id=a.org_id) org_name
-    from sys_role a
-    where a.state=1
+
+  <select id="selectRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select b.* from sys_account_role a inner join sys_role b on a.role_id=b.role_id
+    where a.user_id = #{userId,jdbcType=BIGINT}
   </select>
-  
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.system.model.Role">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    where state=1
+  </select>
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    where state=1
+    <if test="t.roleName != null and t.roleName != ''">
+      and role_name like CONCAT('%',#{t.roleName,jdbcType=VARCHAR},'%' )
+    </if>
+    order by role_id desc
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from sys_role
-    where role_id = #{id,jdbcType=BIGINT}
+    where role_id = #{roleId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_role
     where role_id = #{roleId,jdbcType=BIGINT}
   </delete>
-  <!-- <insert id="insert" parameterType="com.xzjie.gypt.system.model.Role" >
+
+  <insert id="insert" parameterType="com.xzjie.et.system.model.Role" >
     insert into sys_role (role_id, role_code, role_name, 
       role_type, role_desc, state, 
       create_date, create_user, org_id, 
@@ -70,8 +72,9 @@
       #{roleType,jdbcType=INTEGER}, #{roleDesc,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, 
       #{roleLevel,jdbcType=INTEGER})
-  </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.system.model.Role" >
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xzjie.et.system.model.Role" >
     insert into sys_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="roleId != null" >
@@ -138,7 +141,8 @@
       </if>
     </trim>
   </insert>
-  <update id="update" parameterType="com.xzjie.gypt.system.model.Role" >
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.system.model.Role" >
     update sys_role
     <set >
       <if test="roleCode != null" >
@@ -171,7 +175,7 @@
     </set>
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.Role" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.system.model.Role" >
     update sys_role
     set role_code = #{roleCode,jdbcType=VARCHAR},
       role_name = #{roleName,jdbcType=VARCHAR},

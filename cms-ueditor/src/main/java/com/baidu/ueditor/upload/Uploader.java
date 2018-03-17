@@ -1,9 +1,12 @@
 package com.baidu.ueditor.upload;
 
 import com.baidu.ueditor.define.State;
+import com.xzjie.local.ueditor.LocalBase64Uploader;
+import com.xzjie.local.ueditor.LocalBinaryUploader;
 import com.xzjie.oss.conf.Configuration;
 import com.xzjie.oss.ueditor.OSSBase64Uploader;
 import com.xzjie.oss.ueditor.OSSUploader;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +31,16 @@ public class Uploader {
 				state = OSSUploader.save(this.request, this.conf);
 			}
 		}else{
+			/* date:2017-10-7 14:34:27
+            *  xzjie
+            *  修改保存本地的文件路径
+            * */
 			if ("true".equals(this.conf.get("isBase64"))) {
-				state = Base64Uploader.save(this.request.getParameter(filedName),this.conf);
+				//state = Base64Uploader.save(this.request.getParameter(filedName),this.conf);
+				state = LocalBase64Uploader.save(this.request.getParameter(filedName),this.conf);
 			} else {
-				state = BinaryUploader.save(this.request, this.conf);
+				//state = BinaryUploader.save(this.request, this.conf);
+				state = LocalBinaryUploader.save(this.request, this.conf);
 			}
 		}
 

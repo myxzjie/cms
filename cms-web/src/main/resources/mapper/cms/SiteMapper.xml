@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.cms.dao.SiteMapper" >
+<mapper namespace="com.xzjie.et.cms.dao.SiteMapper" >
   
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.cms.model.Site" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.cms.model.Site" >
     <id column="site_id" property="siteId" jdbcType="BIGINT" />
     <result column="org_id" property="orgId" jdbcType="BIGINT" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
     <result column="site_name" property="siteName" jdbcType="VARCHAR" />
     <result column="site_url" property="siteUrl" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="keywords" property="keywords" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="copyright" property="copyright" jdbcType="VARCHAR" />
@@ -15,14 +17,21 @@
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
   </resultMap>
   
   <sql id="Base_Column_List" >
-    site_id, org_id, site_name, site_url, keywords, description, copyright, site_style, 
-    site_mobile_style, create_date, update_date, state
+    site_id, org_id, logo, site_name, site_url, title, keywords, description, copyright, site_style,
+    site_mobile_style, create_date, update_date, state, theme
   </sql>
+
+  <select id="selectSiteByAppId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select a.* from cms_site a inner join cms_site_account b on a.`site_id`=b.`site_id`
+    inner join sys_oauth_client_account c on b.`user_id`=c.`user_id`
+    where c.`app_id`=#{appId,jdbcType=BIGINT}
+  </select>
   
-  <select id="getEntity" resultMap="BaseResultMap" parameterType="com.xzjie.gypt.cms.model.Site">
+  <select id="getEntity" resultMap="BaseResultMap" parameterType="com.xzjie.et.cms.model.Site">
  	select 
     <include refid="Base_Column_List" />
     from cms_site
@@ -32,7 +41,7 @@
     </if>
   </select>
   
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from cms_site
@@ -43,7 +52,7 @@
     delete from cms_site
     where site_id = #{siteId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.xzjie.gypt.cms.model.Site" >
+  <insert id="insert" parameterType="com.xzjie.et.cms.model.Site" >
     insert into cms_site (site_id, org_id, site_name, 
       site_url, keywords, description, 
       copyright, site_style, site_mobile_style, 
@@ -55,7 +64,7 @@
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xzjie.gypt.cms.model.Site" >
+  <insert id="insertSelective" parameterType="com.xzjie.et.cms.model.Site" >
     insert into cms_site
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="siteId != null" >
@@ -69,6 +78,9 @@
       </if>
       <if test="siteUrl != null" >
         site_url,
+      </if>
+      <if test="title != null" >
+        title
       </if>
       <if test="keywords != null" >
         keywords,
@@ -94,6 +106,9 @@
       <if test="state != null" >
         state,
       </if>
+      <if test="theme != null">
+        theme,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="siteId != null" >
@@ -107,6 +122,9 @@
       </if>
       <if test="siteUrl != null" >
         #{siteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
       </if>
       <if test="keywords != null" >
         #{keywords,jdbcType=VARCHAR},
@@ -132,19 +150,28 @@
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
+      <if test="theme != null">
+        #{theme,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.gypt.cms.model.Site" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.cms.model.Site" >
     update cms_site
     <set >
       <if test="orgId != null" >
         org_id = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="logo != null">
+        logo = #{logo,jdbcType=VARCHAR},
       </if>
       <if test="siteName != null" >
         site_name = #{siteName,jdbcType=VARCHAR},
       </if>
       <if test="siteUrl != null" >
         site_url = #{siteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="keywords != null" >
         keywords = #{keywords,jdbcType=VARCHAR},
@@ -170,10 +197,13 @@
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
+      <if test="theme != null">
+        theme =#{theme,jdbcType=VARCHAR}
+      </if>
     </set>
     where site_id = #{siteId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.cms.model.Site" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.cms.model.Site" >
     update cms_site
     set org_id = #{orgId,jdbcType=BIGINT},
       site_name = #{siteName,jdbcType=VARCHAR},

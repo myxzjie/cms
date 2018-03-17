@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzjie.et.ad.dao.AdSenseMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.ad.model.AdSense" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="from_ad" property="fromAd" jdbcType="BIGINT" />
+    <result column="referer" property="referer" jdbcType="VARCHAR" />
+    <result column="clicks" property="clicks" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, from_ad, referer, clicks
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from et_ad_sense
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from et_ad_sense
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xzjie.et.ad.model.AdSense" >
+    insert into et_ad_sense (id, from_ad, referer,
+      clicks)
+    values (#{id,jdbcType=BIGINT}, #{fromAd,jdbcType=BIGINT}, #{referer,jdbcType=VARCHAR}, 
+      #{clicks,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.et.ad.model.AdSense" >
+    insert into et_ad_sense
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fromAd != null" >
+        from_ad,
+      </if>
+      <if test="referer != null" >
+        referer,
+      </if>
+      <if test="clicks != null" >
+        clicks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="fromAd != null" >
+        #{fromAd,jdbcType=BIGINT},
+      </if>
+      <if test="referer != null" >
+        #{referer,jdbcType=VARCHAR},
+      </if>
+      <if test="clicks != null" >
+        #{clicks,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.ad.model.AdSense" >
+    update et_ad_sense
+    <set >
+      <if test="fromAd != null" >
+        from_ad = #{fromAd,jdbcType=BIGINT},
+      </if>
+      <if test="referer != null" >
+        referer = #{referer,jdbcType=VARCHAR},
+      </if>
+      <if test="clicks != null" >
+        clicks = #{clicks,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.ad.model.AdSense" >
+    update et_ad_sense
+    set from_ad = #{fromAd,jdbcType=BIGINT},
+      referer = #{referer,jdbcType=VARCHAR},
+      clicks = #{clicks,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

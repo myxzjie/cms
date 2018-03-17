@@ -4,13 +4,11 @@
 
 var ue ;
 $(function() { 
-	
-	$('#recommendType').val($('#h_recommendType').val());
+
 	ue = UE.getEditor('editor');
 	
 	categoryTree.getPerentCategory();
-	
-	
+
 	toolObj.submit();
 }); 
 
@@ -20,34 +18,33 @@ var toolObj={
 			this.edit();
 		},
 		edit:function(){
-			$("#form_add").Validform({
-				tiptype:2,
-				ajaxPost:true,
-				showAllError:true,
-				beforeSubmit:function(curform){
-					var data={};
-					data=curform.serializeJSON();
-					data.content=ue.getContent();
-					$.ajax({
-						type: "POST",
-						data: data,
-						dataType: 'json',
-						url:curform[0].action,
-						success: function(res){
-							if(res.success){
-								layer.alert(res.message, {icon: 1});
-								var index = parent.layer.getFrameIndex(window.name);
-								parent.location.href=global.basePath+'/article/index';
-								parent.layer.close(index);
-							}else{
-								layer.alert(res.message, {icon: 2});
-							}
-						}
-					});
-					return false;
-				}
-			
-			});
+            $("#form-add").validate({
+                onkeyup:false,
+                focusCleanup:true,
+                success:"valid",
+                submitHandler:function(form){
+                    form.content.value=ue.getContent();
+                    $(form).ajaxSubmit({
+                        type: 'post',
+                        url: form.action ,
+                        success: function(data){
+                            if(data.success){
+                                layer.msg(data.message, {icon: 1,time: 2000 }, function(){
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    //parent.$('.btn-refresh').click();
+                                    parent.tgridObj.load();
+                                    parent.layer.close(index);
+                                });
+                            }else{
+                                layer.msg(data.message, {icon: 2,time: 3000 }, function(){});
+                            }
+                        },
+                        error: function(XmlHttpRequest, textStatus, errorThrown){
+                            layer.msg('error!', {icon: 2,time: 3000 }, function(){});
+                        }
+                    });
+                }
+            });
 			
 		}
 }
@@ -62,7 +59,7 @@ var categoryTree={
 					type: "POST",
 					data: data,
 					dataType: 'json',
-					url: global.basePath+'/category/tree',
+					url: global.adminPath+'/category/tree',
 					success: function(res){
 						$("#categoryId").droptree({
 							items:res.data , 

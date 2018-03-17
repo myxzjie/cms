@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.system.dao.AccountRoleMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.AccountRole" >
+<mapper namespace="com.xzjie.et.system.dao.AccountRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.system.model.AccountRole" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="role_id" property="roleId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -10,7 +10,7 @@
     id, role_id, user_id
   </sql>
   
-  <select id="findAccountRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long"  >
+  <select id="selectAccountRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long"  >
   	 select 
     <include refid="Base_Column_List" />
     from sys_account_role
@@ -33,13 +33,15 @@
     delete from sys_account_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <!-- <insert id="insert" parameterType="com.xzjie.gypt.system.model.AccountRole" >
+
+  <insert id="insert" parameterType="com.xzjie.et.system.model.AccountRole" >
     insert into sys_account_role (id, role_id, user_id
       )
     values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}
       )
-  </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.system.model.AccountRole" >
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xzjie.et.system.model.AccountRole" >
     insert into sys_account_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +66,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.gypt.system.model.AccountRole" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.system.model.AccountRole" >
     update sys_account_role
     <set >
       <if test="roleId != null" >
@@ -76,10 +78,18 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.AccountRole" >
+
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.system.model.AccountRole" >
     update sys_account_role
     set role_id = #{roleId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="updateByUserId" parameterType="com.xzjie.et.system.model.AccountRole">
+    update sys_account_role
+    set role_id = #{roleId,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
 </mapper>

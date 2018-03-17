@@ -1,0 +1,10 @@
+<#assign lang="zh-CN" />
+<#assign siteId="${cid}" />
+<@et.site id="${siteId}">
+<#assign ctx="${site.siteUrl}" />
+<#assign logo="${site.logo?default('img/logo.png')}" />
+<#assign site_name="${site.siteName?default('鹰视科技')}" />
+<#assign site_title="${site.title?default('')}" />
+</@et.site>
+<#assign cdn="${resources}/resources/assets" />
+<#assign f_ctx="${ctx}/f" />

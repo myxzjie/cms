@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzjie.gypt.system.dao.RoleResourceMapper" >
-  <resultMap id="BaseResultMap" type="com.xzjie.gypt.system.model.RoleResource" >
+<mapper namespace="com.xzjie.et.system.dao.RoleResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.system.model.RoleResource" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="role_id" property="roleId" jdbcType="BIGINT" />
     <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
@@ -9,12 +9,28 @@
   <sql id="Base_Column_List" >
     id, role_id, resource_id
   </sql>
+
+  <select id="exist" resultType="boolean" parameterType="com.xzjie.et.system.model.RoleResource">
+    select
+    count(1)
+    from sys_role_resource
+    where 1=1
+    <if test="roleId != null">
+      and role_id = #{roleId,jdbcType=BIGINT}
+    </if>
+    <if test="resourceId != null">
+      and resource_id = #{resourceId,jdbcType=BIGINT}
+    </if>
+  </select>
   
-  <select id="findRoleResourceByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.system.model.RoleResource" >
   	select 
     <include refid="Base_Column_List" />
     from sys_role_resource
-    where role_id = #{roleId,jdbcType=BIGINT}
+    where 1=1
+    <if test="roleId != null">
+    and role_id = #{roleId,jdbcType=BIGINT}
+    </if>
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -24,22 +40,25 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   
-  <delete id="deleteRoleResourceByRoleId">
+  <delete id="deleteByRoleIdAndResourceId" parameterType="com.xzjie.et.system.model.RoleResource">
   	delete from sys_role_resource
   	where role_id = #{roleId,jdbcType=BIGINT}
+  	and resource_id = #{resourceId,jdbcType=BIGINT}
   </delete>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_role_resource
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <!-- <insert id="insert" parameterType="com.xzjie.gypt.system.model.RoleResource" >
+
+  <insert id="insert" parameterType="com.xzjie.et.system.model.RoleResource" >
     insert into sys_role_resource (id, role_id, resource_id
       )
     values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT}
       )
-  </insert> -->
-  <insert id="insert" parameterType="com.xzjie.gypt.system.model.RoleResource" >
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xzjie.et.system.model.RoleResource" >
     insert into sys_role_resource
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +83,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.gypt.system.model.RoleResource" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.system.model.RoleResource" >
     update sys_role_resource
     <set >
       <if test="roleId != null" >
@@ -76,7 +95,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xzjie.gypt.system.model.RoleResource" >
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.system.model.RoleResource" >
     update sys_role_resource
     set role_id = #{roleId,jdbcType=BIGINT},
       resource_id = #{resourceId,jdbcType=BIGINT}

@@ -9,12 +9,9 @@
         <property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
     </bean>
     
-    <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <bean id="ehcacheCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcacheManager"/>
     </bean>
-    
-   <!--  <bean id="systemCacheManager" class="com.xzjie.cache.SystemCacheManager">
-        <property name="cacheManager" ref="springCacheManager"/>
-    </bean> -->
+
 
 </beans>

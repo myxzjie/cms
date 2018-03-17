@@ -3,7 +3,7 @@
 
 <configuration>
     <settings>
-	    
+	    <setting name="logImpl" value="LOG4J2"/>
         <setting name="cacheEnabled" value="true" />
 		<!-- disable lazy loading for testing as we do not want CGLIB on our classpath -->
 	    <setting name="lazyLoadingEnabled" value="false"/>
@@ -17,10 +17,10 @@
         <setting name="defaultStatementTimeout" value="25000" />
     </settings>
     <typeAliases>
-		<typeAlias type="com.xzjie.gypt.common.page.PageEntity" alias="pageEntity"/>  <!-- 分页 -->
+		<typeAlias type="com.xzjie.mybatis.page.PageEntity" alias="entity"/>  <!-- 分页 -->
 	</typeAliases>
     <plugins>
-        <plugin interceptor="com.xzjie.gypt.common.page.PagePlugin">
+        <plugin interceptor="com.xzjie.mybatis.page.PagePlugin">
             <property name="dialect" value="mysql" />
             <property name="pageSqlId" value=".*ListPage" />
         </plugin>

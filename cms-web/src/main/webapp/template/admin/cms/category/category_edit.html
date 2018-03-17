@@ -1,0 +1,131 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <@head />
+    <link href="/assets/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .mfs-container {
+            /* min-width: 150px;max-height: 100px;  */
+            /* position: relative; */
+        }
+
+        .mfs-selected-option {
+            border: 1px #ccc solid;
+            display: inline-block;
+            width: 100%;
+            font-size: 14px;
+            height: 31px;
+            line-height: 2.42857;
+            padding-left: 4px;
+        }
+
+        .mfs-options {
+            position: absolute;
+            border: 1px #ccc solid;
+            /* border-top:0px; */
+            width: 100%;
+            margin: 0;
+            padding: 0px;
+            color: #333;
+            overflow: auto;
+            min-height: 100px;
+            max-height: 300px;
+            background: #ffffff;
+            z-index: 9;
+            margin-top: -6px;
+        }
+    </style>
+</head>
+
+<body>
+    <@layout>
+        <div class="pd-20">
+
+            <form action="<#if model?exists>${ctx_admin}/category/update<#else>${ctx_admin}/category/add</#if>" method="post" class="form form-horizontal"
+                id="form-add">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">上级栏目：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="hidden" name="categoryId" value="${model.categoryId}">
+                        <input type="hidden" id="siteId" value="${model.siteId}">
+                        <input type="text" class="input-text" id="categoryPId" name="categoryPId" placeholder="" readonly="readonly" value="${model.categoryPId?default('')}">
+                    </div>
+                    <div class="col-4"> </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">
+                        <span class="c-red">*</span>栏目名称：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" placeholder="" name="categoryName" datatype="*" nullmsg="栏目名称" value="${model.categoryName}">
+                    </div>
+                    <div class="col-4"> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">
+                        <span class="c-red">*</span>排序：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" placeholder="" name="categoryOrder" datatype="*" nullmsg="不能为空" value="${model.categoryOrder}">
+                    </div>
+                    <div class="col-4"> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">关键字：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" placeholder="" name="keywords" value="${model.keywords}">
+                    </div>
+                    <div class="col-4"> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">
+                        <span class="c-red">*</span>是否显示：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input id="h_showModes" type="hidden" value="${model.showModes}">
+                        <span class="select-box" style="width:150px;">
+                            <select class="select" id="showModes" name="showModes" size="1" datatype="*" nullmsg="不能为空">
+                                <option value="1">显示</option>
+                                <option value="0">隐藏</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="col-4"> </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">描述说明：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea name="description" cols="" rows="" class="textarea" placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="textarealength(this,100)">${model.description}</textarea>
+                        <p class="textarea-numberbar">
+                            <em class="textarea-length">0</em>/100</p>
+                    </div>
+                    <div class="col-4"> </div>
+                </div>
+
+
+                <div class="row cl">
+                    <div class="col-9 col-offset-3">
+                        <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                    </div>
+                </div>
+
+            </form>
+
+            <div id="resourceContent" class="resourceContent">
+                <ul id="resourceTree" class="ztree selectZtree" style="margin-top: 0; width: 160px;"></ul>
+            </div>
+        </div>
+    </@layout>
+
+    <@editjs />
+
+    <script type="text/javascript" src="/assets/lib/zTree/v3/js/jquery.ztree.all-3.5.js"></script>
+    <script type="text/javascript" src="/assets/js/droptree.js"></script>
+    <script type="text/javascript" src="/assets/js/cms/category/category_edit.js"></script>
+</body>
+
+</html>
