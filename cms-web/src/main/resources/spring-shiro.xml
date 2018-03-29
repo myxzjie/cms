@@ -15,10 +15,6 @@
 	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
 
-    <bean id="cacheManager" class="com.xzjie.cache.ehcache.service.CacheManagerWrapper">
-        <property name="cacheManager" ref="ehcacheCacheManager"/>
-    </bean>
-
     <bean id="credentialsMatcher" class="com.xzjie.et.core.security.credentials.EhcacheRetryLimitHashedCredentialsMatcher">
         <constructor-arg ref="cacheManager"/>
         <property name="hashAlgorithmName" value="md5"/>

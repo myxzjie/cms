@@ -7,7 +7,7 @@
         <groupId>com.xzjie</groupId>
         <artifactId>cms</artifactId>
         <relativePath>..</relativePath>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
 
     <artifactId>cms-common</artifactId>

@@ -1,0 +1,187 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <@head />
+    <link href="/assets/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+
+        .mfs-selected-option {
+            border: 1px #ccc solid;
+            display: inline-block;
+            width: 100%;
+            font-size: 14px;
+            height: 31px;
+            line-height: 2.42857;
+            padding-left: 4px;
+        }
+
+        .mfs-options {
+            position: absolute;
+            border: 1px #ccc solid;
+            /* border-top:0px; */
+            width: 100%;
+            margin: 0;
+            padding: 0px;
+            color: #333;
+            overflow: auto;
+            min-height: 100px;
+            max-height: 300px;
+            background: #ffffff;
+            z-index: 9;
+            margin-top: -6px;
+        }
+    </style>
+</head>
+
+<body>
+<@layout>
+<div class="pd-20">
+
+    <form action="<#if model?exists>${ctx_admin}/wx-button/update<#else>${ctx_admin}/wx-button/add</#if>" method="post" class="form form-horizontal"
+          id="form-add">
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">上级菜单：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="hidden" name="id" value="${model.id}">
+                <input type="text" class="input-text" id="pId" name="pId" placeholder="" readonly="readonly"   value="${model.id?default('')}">
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="" name="name" datatype="*" nullmsg="菜单名称" value="${model.name}">
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单标识：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" placeholder="" autocomplete="off" class="input-text " datatype="*" nullmsg="不能为空" name="buttonKey" value="${model.buttonKey}">
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单类型：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input id="h_sex" type="hidden" value="${model.stype}">
+                <span class="select-box" style="width:150px;">
+                    <select class="select" id="type" name="type" size="1" datatype="*" nullmsg="不能为空" >
+					<!-- <option value="click">消息触发类</option> -->
+					<option value="view">网页链接类</option>
+                        <!-- <option value="scancode_push">扫码推事件</option>
+                        <option value="scancode_waitmsg">扫码带提示</option>
+                        <option value="pic_sysphoto">系统拍照发图</option>
+                        <option value="pic_photo_or_album">拍照或者相册发图</option>
+                        <option value="pic_weixin">微信相册发图</option>
+                        <option value="location_select">发送位置</option>
+                        <option value="media_id">图片</option>
+                        <option value="view_limited">图文消息</option> -->
+				</select>
+
+				</span>
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>URL：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" placeholder="" autocomplete="off" class="input-text " name="url" value="${model.url}">
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>排序：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="" name="orders" datatype="*" nullmsg="不能为空"  value="${model.orders}" >
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-9 col-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+
+    </form>
+
+    <div id="resourceContent" class="resourceContent">
+        <ul id="resourceTree" class="ztree selectZtree" style="margin-top: 0; width: 160px;"></ul>
+    </div>
+</div>
+</@layout>
+
+<@editjs />
+<script type="text/javascript" src="/assets/lib/zTree/v3/js/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/assets/js/droptree.js"></script>
+<script type="text/javascript">
+    $(function () {
+        wxbuttonTree.getPerentButton();
+
+        $("#form-add").validate({
+            onkeyup: false,
+            focusCleanup: true,
+            success: "valid",
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    type: 'post',
+                    url: form.action,
+                    success: function (data) {
+                        if (data.success) {
+                            layer.msg(data.message, { icon: 1, time: 2000 }, function () {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.$('.btn-refresh').click();
+                                //parent.initTable();
+                                parent.layer.close(index);
+                            });
+                        } else {
+                            layer.msg(data.message, { icon: 2, time: 3000 }, function () { });
+                        }
+                    },
+                    error: function (XmlHttpRequest, textStatus, errorThrown) {
+                        layer.msg('error!', { icon: 2, time: 3000 }, function () { });
+                    }
+                });
+            }
+        });
+
+    });
+
+    var wxbuttonTree={
+        getPerentButton:function(){
+            $.ajax({
+                type: "POST",
+                data: {},
+                dataType: 'json',
+                url: global.adminPath+'/wx-button/tree',
+                success: function(res){
+                    //$.fn.zTree.init($("#resourceTree"), resourceTree.setting, res.data);
+                    $("#pId").droptree({
+                        items:res.data ,
+                        transition:"ztree",
+                        idLabel:"id",
+                        textLabel:"name",
+                        pidLabel:"pId",
+                        rootPId:0
+                    });
+                }
+            });
+        }
+
+    }
+</script>
+
+
+</body>
+
+</html>

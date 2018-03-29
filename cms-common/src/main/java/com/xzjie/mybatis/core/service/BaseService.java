@@ -42,7 +42,7 @@ public abstract interface BaseService<T,Obj extends Serializable> {
 	
 	/**
 	 * 分页查询数据列表
-	 * @param entity
+	 * @param pageEntity
 	 * @return
 	 */
 	PageEntity<T> getListPage(PageEntity<T> pageEntity);

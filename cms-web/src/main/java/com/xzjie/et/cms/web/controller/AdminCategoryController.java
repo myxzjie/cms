@@ -76,7 +76,7 @@ public class AdminCategoryController extends BaseController {
         model.setSiteId(getSiteId());
         List<Category> list = categoryService.getList(model);
 
-        return MapResult.mapOK(list, "0");
+        return MapResult.mapOK(list);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)

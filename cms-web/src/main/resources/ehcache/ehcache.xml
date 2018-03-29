@@ -60,7 +60,7 @@
     </cache>
     
     <cache name="system-cache"
-    	   maxElementsInMemory="10000"
+    	   maxElementsInMemory="7200"
     	   eternal="true"
     	   overflowToDisk="true"
     	   diskPersistent="true"

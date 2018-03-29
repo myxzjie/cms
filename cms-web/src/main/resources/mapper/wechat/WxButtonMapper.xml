@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xzjie.et.wechat.dao.WxButtonMapper" >
+  <resultMap id="BaseResultMap" type="com.xzjie.et.wechat.model.WxButton" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="p_id" property="pId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="button_key" property="buttonKey" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="media_id" property="mediaId" jdbcType="VARCHAR" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="perent_name" property="perentName" jdbcType="VARCHAR" />
+    <result column="site_id" property="siteId" jdbcType="BIGINT" />
+  </resultMap>
+
+  <resultMap id="WXButtonTree" type="com.xzjie.et.wechat.model.WxButton" extends="BaseResultMap">
+    <collection column="{buttonId=button_id,userId=user_id}" property="children" ofType="com.xzjie.et.wechat.model.WxButton" javaType="java.util.ArrayList" select="findChildren" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, p_id, site_id, name, button_key, type, url, media_id, orders, create_date
+  </sql>
+
+  <!-- 查询树 -->
+  <select id="findWXButtonTree" resultMap="WXButtonTree" parameterType="com.xzjie.et.wechat.model.WxButton">
+    select
+    button_id, user_id, p_button_id, name, orders
+    from wx_button
+    where p_button_id=0 and user_id = #{userId,jdbcType=BIGINT}
+    order by orders
+  </select>
+
+  <select id="selectTree" resultMap="BaseResultMap" parameterType="com.xzjie.et.wechat.model.WxButton">
+    select
+    id, user_id, p_id, name, orders
+    from wx_button
+    order by orders
+  </select>
+  <!-- /查询树 -->
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    ,(select name from wx_button b where b.id=a.p_id) perent_name
+    from wx_button a
+    where site_id = #{t.siteId,jdbcType=BIGINT}
+    order by orders
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.wechat.model.WxButton">
+    select
+    <include refid="Base_Column_List" />
+    from wx_button a
+    where 1=1
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="siteId != null">
+      and site_id = #{siteId,jdbcType=BIGINT}
+    </if>
+    <if test="pId != null">
+      and p_id = #{pId,jdbcType=BIGINT}
+    </if>
+    order by orders
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from wx_button
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.xzjie.et.wechat.model.WxButton">
+    delete from wx_button
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.xzjie.et.wechat.model.WxButton" >
+    insert into wx_button (id, p_id, name,
+      button_key, type, url,
+      media_id, orders)
+    values (#{id,jdbcType=BIGINT}, #{pId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},
+      #{buttonKey,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{mediaId,jdbcType=VARCHAR}, #{orders,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xzjie.et.wechat.model.WxButton" >
+    insert into wx_button
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="buttonKey != null" >
+        button_key,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="mediaId != null" >
+        media_id,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="siteId != null" >
+        site_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonKey != null" >
+        #{buttonKey,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaId != null" >
+        #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="siteId != null" >
+        #{siteId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.wechat.model.WxButton" >
+    update wx_button
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonKey != null" >
+        button_key = #{buttonKey,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaId != null" >
+        media_id = #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- <update id="updateByPrimaryKey" parameterType="com.xzjie.et.wechat.model.WxButton" >
+    update wx_button
+    set p_button_id = #{pButtonId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      button_key = #{buttonKey,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      media_id = #{mediaId,jdbcType=VARCHAR},
+      orders = #{orders,jdbcType=INTEGER}
+    where button_id = #{buttonId,jdbcType=BIGINT}
+  </update> -->
+</mapper>

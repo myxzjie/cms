@@ -13,5 +13,13 @@
         <property name="cacheManager" ref="ehcacheManager"/>
     </bean>
 
+    <bean id="cacheManager" class="com.xzjie.cache.ehcache.service.CacheManagerWrapper">
+        <property name="cacheManager" ref="ehcacheCacheManager"/>
+    </bean>
+
+    <bean id="systemCacheManager" class="com.xzjie.cache.ehcache.service.SystemCacheManager">
+        <constructor-arg ref="ehcacheCacheManager"/>
+    </bean>
+
 
 </beans>

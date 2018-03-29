@@ -7,6 +7,8 @@ public class ConstantsUtils extends com.xzjie.common.utils.ConstantsUtils {
 	public final static String PASSWORD_RETRY_EXPIRETIME="CACHE_PASSWORD_RETRY_KEY";
 	public final static String ENABLED="1";
 
+	public final static String WECHAT_ACCESS_TOKEN="ACCESS_TOKEN_";
+
 	private final static String  REDIS_ACOUNT="acount_";
 
 

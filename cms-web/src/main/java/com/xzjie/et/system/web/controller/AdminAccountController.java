@@ -1,10 +1,8 @@
 package com.xzjie.et.system.web.controller;
 
+import com.xzjie.common.web.utils.MapResult;
 import com.xzjie.core.utils.RegexUtils;
 import com.xzjie.core.utils.StringUtils;
-import com.xzjie.et.cms.model.Article;
-import com.xzjie.et.core.utils.ConstantsUtils;
-import com.xzjie.common.web.utils.MapResult;
 import com.xzjie.et.core.web.BaseController;
 import com.xzjie.et.system.model.Account;
 import com.xzjie.et.system.model.Role;
