@@ -1,28 +1,31 @@
-#cms 
+###  **cms网站 ** 
 
-网站地址：http://www.dev56.com/
 
-#1.功能
+地址：[http://www.dev56.com/](http://www.dev56.com/)
 
-1.cms 网站 
-2.系统权限
-3.微信公众号管理
+**关注公众号**
+ 
+![输入图片说明](https://gitee.com/uploads/images/2018/0504/153407_f8d34a53_411145.jpeg "qrcode_for_gh_955550ad6334_258.jpg")
 
-#2.使用技术：
-spring4 + shrio + ehcache + mybatis + MYSQL + H-ui.admin + Amaze UI
+ **1.cms网站** 
+完整开源建站平台。cms网站，拥有微信公众号模块，可以加入微信公众号使用。用于咨询网站、企业网网站，个人小网站等等。可以自己开发模板放在template目录文件夹下。也适合二次开发，完整的权限系统。
 
-#3.编译
+ **2.使用技术** 
+spring4 +freemarker+ shrio + ehcache + mybatis + MYSQL + H-ui.admin + Amaze UI，可以在Tomcat，jetty跑。
+3.环境要求：maven 版本3.3.9+，JDK1.7+(推荐1.8），mysql5.6+
+
+ **3.编译** 
 运行 run.bat
 或者
 mvn clean install -Plocal -Dmaven.test.skip=true
 
-#4.MYSQL数据模型：
+ **4.MYSQL数据模型：** 
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093504_7ea0e4a1_411145.png "数据库模型1")
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093601_a87043e3_411145.png "数据库模型2")
 
-#5.网站地址
+ **5.网站地址** 
 
 http://www.dev56.com/
 
