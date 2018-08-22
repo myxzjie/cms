@@ -10,3 +10,4 @@ target/
 /cms-web/src/main/webapp/*.txt
 .idea
 *.iml
+*.versionsBackup
