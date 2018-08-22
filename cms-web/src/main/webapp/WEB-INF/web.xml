@@ -7,7 +7,7 @@
 	<display-name>cms-web</display-name>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring-context.xml</param-value>
+		<param-value>classpath:spring/spring-context.xml</param-value>
 	</context-param>
 
 	<filter>
@@ -91,7 +91,7 @@
 		<init-param>
 			<description>spring mvc 配置文件</description>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring-mvc.xml</param-value>
+			<param-value>classpath:spring/spring-mvc.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

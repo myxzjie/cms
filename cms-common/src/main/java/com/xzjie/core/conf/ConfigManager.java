@@ -15,7 +15,7 @@ import java.util.WeakHashMap;
 public class ConfigManager {
     private static final Logger LOG = LogManager.getLogger(ConfigManager.class);
     private  volatile static ConfigManager conf;
-    private static String CONF_FILE="config.properties";
+    private static String CONF_FILE="conf/config.properties";
     private static Properties prop = new Properties();
 
     private WeakHashMap<String, String> propMap = new WeakHashMap<String, String>();
@@ -38,6 +38,7 @@ public class ConfigManager {
             prop.load(fis);
 
         } catch (Exception e) {
+            e.printStackTrace();
             LOG.error("系统未找到指定文件：[{}]",CONF_FILE);
         }
     }
