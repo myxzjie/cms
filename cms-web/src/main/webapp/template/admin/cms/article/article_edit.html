@@ -5,9 +5,8 @@
 
 <head>
     <@head />
-    <!--<link href="/admin/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />-->
-    <link href="/assets/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/assets/js/plugins/zTree/v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .mfs-container {
             /* min-width: 150px;max-height: 100px;  */
@@ -44,152 +43,190 @@
 
 <body>
     <@layout>
-        <div class="pd-20">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
 
-            <form action="<#if model?exists>${ctx_admin}/article/update<#else>${ctx_admin}/article/add</#if>" method="post" class="form form-horizontal"
-                id="form-add">
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">
-                        <span class="c-red">*</span>文章标题：</label>
-                    <div class="formControls col-xs-8 col-sm-5">
-                        <input type="hidden" name="articleId" value="${model.articleId}">
-                        <input type="text" class="input-text" placeholder="" id="title" name="title" value="${model.title}">
-                    </div>
-                    <!--<label class="form-label col-xs-4 col-sm-1"></label>-->
-                    <div class="formControls col-xs-8 col-sm-4">
-                        <input type="checkbox" value="1" name="recommendType" id="service1" <#if model.recommendType==1> checked="checked"</#if> >
-                        <label for="service1">
-                            推荐
-                        </label>
-                    </div>
-                </div>
+                <div class="ibox-content">
+                    <form id="form" role="form" action="<#if model?exists>${ctx_admin}/article/update<#else>${ctx_admin}/article/add</#if>" method="post">
 
-                <div class="row cl">
-                    <label class="form-label col-xs-2 col-sm-2">
-                        <span class="c-red">*</span>分类栏目：</label>
-                    <div class="formControls col-xs-2 col-sm-4">
-                        <!-- <span class="select-box"> -->
+                        <div class="row">
 
-                        <input type="text" class="input-text" id="categoryId" name="categoryId" placeholder="" readonly="readonly" value="${model.categoryId?default('')}">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="title">
+                                        文章标题：<span class="symbol required" aria-required="true"></span>
+                                    </label>
 
-                    </div>
+                                    <input type="hidden" id="articleId" name="articleId" value="${model.articleId}">
+                                    <input id="title" type="text" class="form-control required" placeholder="" name="title"
+                                           value="${model.title}">
+                                </div>
 
-                    <label class="form-label col-xs-1 col-sm-1">排序值：</label>
-                    <div class="formControls col-xs-2 col-sm-4">
-                        <input type="text" class="input-text" value="${model.sort}" placeholder="" id="sort" name="sort">
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">关键词：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="${model.keywords}" placeholder="" id="" name="keywords">
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">文章摘要：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <textarea name="description" cols="" rows="" class="textarea" placeholder="说点什么...最少输入10个字符" datatype="*10-200" dragonfly="true"
-                            nullmsg="备注不能为空！" onKeyUp="textarealength(this,200)">${model.description}</textarea>
-                        <p class="textarea-numberbar">
-                            <em class="textarea-length">0</em>/200</p>
-                    </div>
-                </div>
-                <!-- <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">文章作者：</label>
-            <div class="formControls col-2">
-                <input type="text" class="input-text" value="0" placeholder="" id="" name="">
-            </div>
-            <label class="form-label col-xs-4 col-sm-2">文章来源：</label>
-            <div class="formControls col-2">
-                <input type="text" class="input-text" value="0" placeholder="" id="" name="">
-            </div>
-        </div> -->
-                <!-- <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">允许评论：</label>
-            <div class="formControls col-2 skin-minimal">
-                <div class="check-box">
-                    <input type="checkbox" id="checkbox-pinglun">
-                    <label for="checkbox-pinglun">&nbsp;</label>
-                </div>
-            </div>
-            <label class="form-label col-xs-4 col-sm-2">评论开始日期：</label>
-            <div class="formControls col-2">
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate">
-            </div>
-            <label class="form-label col-xs-4 col-sm-2">评论结束日期：</label>
-            <div class="formControls col-2">
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}'})" id="datemax" class="input-text Wdate">
-            </div>
-        </div> -->
-                <!-- <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">使用独立模版：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <div class="check-box">
-                    <input type="checkbox" id="checkbox-moban">
-                    <label for="checkbox-moban">&nbsp;</label>
-                </div>
-                <button onClick="mobanxuanze()" class="btn btn-default radius ml-10">选择模版</button>
-            </div>
-        </div> -->
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">缩略图：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <div class="uploader-thum-container">
-                            <div id="fileList" class="uploader-list">
-                                <#if model?exists>
-                                    <#if model.image?exists>
-                                        <div id="WU_FILE_0" class="item upload-state-success">
-                                            <div class="pic-box">
-                                                <img width="30" src="${model.image}">
-                                            </div>
-                                            <input type="hidden" name="image" value="${model.image}">
-                                        </div>
-                                    </#if>
-                                </#if>
+                                <div class="form-group">
+                                    <label class="control-label" for="categoryId">
+                                        分类栏目：<span class="symbol required" aria-required="true"></span>
+                                    </label>
+                                    <input type="text" class="categoryPId form-control required" id="categoryId"
+                                           name="categoryId" placeholder="" readonly="readonly" value="${model.categoryId}">
+                                </div>
+
+                                <!--<div class="form-group">-->
+                                <!--<label class="control-label" for="sort">-->
+                                <!--排序：-->
+                                <!--</label>-->
+                                <!--<input type="text" id="sort" name="sort" placeholder="排序" class="form-control" value="${model.sort}">-->
+                                <!--</div>-->
+
+                                <div class="form-group">
+                                    <label class=" control-label" for="">
+                                        缩略图：
+                                    </label>
+
+                                    <input type="text" id="image" name="image" value="${model.image}"
+                                           class="form-control" readonly required aria-required="true"
+                                           style="display: inline-block; vertical-align: middle;">
+
+                                    <span class="btn btn-primary fileinput-button">
+                                    <i class="fa fa-cloud-upload"></i>
+                                    <span>上传图片</span>
+                                    <input id="fileupload" type="file" name="file" multiple>
+                                    </span>
+
+
+                                </div>
+
                             </div>
-                            <div id="filePicker">选择图片</div>
-                            <button id="btn-star" type="button" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+
+                                    </label>
+                                    <div class="checkbox i-checks">
+                                        <input class="" type="checkbox" value="1" name="recommendType" <#if model.recommendType==1> checked="checked"</#if> >推荐
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="sort">
+                                                排序：
+                                            </label>
+                                            <input type="text" id="sort" name="sort" placeholder="排序" class="form-control"
+                                                   value="${model.sort}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <label class=" control-label" for="keywords">
+                                                关键字：
+                                            </label>
+                                            <input id="keywords" type="text" name="keywords" placeholder="关键字"
+                                                   class="form-control" value="${model.keywords}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        <div class="form-group">
+                                            <label class="control-label" for="description">
+                                                文章摘要：
+                                            </label>
+                                            <textarea id="description" rows="5" name="description"
+                                                      placeholder="说点什么...最少输入10个字符" class="form-control">${model.description}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+    <input type="hidden" name="content" id="content">
+                                            <script id="editor" type="text/plain" style="width: 100%;"></script>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7">
+                                <p>
+
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary btn-wide pull-right" type="submit">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
                 </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">文章内容：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="hidden" name="content" id="content">
-                        <script id="editor" type="text/plain"></script>
-                        <!--<script id="editor" type="text/plain" style="width:100%;height:400px;">${model.content}</script>-->
-                    </div>
-                </div>
-                <div class="row cl">
-                    <div class="col-10 col-offset-2">
-                        <button class="btn btn-primary radius" type="submit">
-                            <i class="Hui-iconfont">&#xe632;</i> 保存并发布</button>
-                        <!-- <button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
-                <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button> -->
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
+    </div>
+
+
     </@layout>
 
-    <@editjs />
+<script src="/assets/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/assets/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/assets/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/assets/js/plugins/jquery.form/jquery.form.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/zTree/v3/js/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="/assets/js/droptree.js"></script>
 
-    <!--<script type="text/javascript" src="/admin/lib/icheck/jquery.icheck.min.js"></script>-->
-    <script type="text/javascript" src="/assets/lib/webuploader/0.1.5/webuploader.js"></script>
-    <script type="text/javascript" src="/ueditor/ueditor.config.js"> </script>
-    <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
-    <script type="text/javascript" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script type="text/javascript" src="/assets/lib/zTree/v3/js/jquery.ztree.all-3.5.js"></script>
-    <script type="text/javascript" src="/assets/js/droptree.js"></script>
+<script type="text/javascript" charset="utf-8" src="ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.min.js"></script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<script src="/assets/js/plugins/jquery-file-upload/vendor/jquery.ui.widget.js"></script>
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<script src="/assets/js/plugins/javascript-Load-Image/load-image.all.min.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload.js"></script>
+<!-- The File Upload processing plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-process.js"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-image.js"></script>
+<!-- The File Upload audio preview plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-audio.js"></script>
+<!-- The File Upload video preview plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-video.js"></script>
+<!-- The File Upload validation plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-validate.js"></script>
+<!-- The File Upload user interface plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-ui.js"></script>
+
     <script type="text/javascript" src="/assets/js/cms/article/article_edit.js"></script>
     <script type="text/javascript">
+        $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
         $(function () {
-            $('.skin-minimal input').iCheck({
-                checkboxClass: 'icheckbox-blue',
-                radioClass: 'iradio-blue',
-                increaseArea: '20%'
-            });
-
             $.ajax({
                 type: "POST",
                 data: {},
@@ -211,127 +248,66 @@
                 }
             });
 
-        });
-
-        function mobanxuanze() {
-
-        }
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            $list = $("#fileList"),
-                $btn = $("#btn-star"),
-                state = "pending",
-                uploader;
-
-            var uploader = WebUploader.create({
-                auto: true,
-                swf: 'lib/webuploader/0.1.5/Uploader.swf',
-
-                // 文件接收服务端。
-                server: global.basePath + 'upload/image',
-
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '#filePicker',
-
-                // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-                resize: false,
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                }
-            });
-            uploader.on('fileQueued', function (file) {
-                var $li = $(
-                    '<div id="' + file.id + '" class="item">' +
-                    '<div class="pic-box"><img width="30"></div>' +
-                    '<div class="info">' + file.name + '</div>' +
-                    '<p class="state">等待上传...</p>' +
-                    '</div>'
-                ),
-                    //debugger
-                    $img = $li.find('img');
-                $list.html('');
-                $list.append($li);
-
-                // 创建缩略图
-                // 如果为非图片文件，可以不用调用此方法。
-                // thumbnailWidth x thumbnailHeight 为 100 x 100
-                /* uploader.makeThumb( file, function( error, src ) {
-                    if ( error ) {
-                        $img.replaceWith('<span>不能预览</span>');
-                        return;
+            $('#fileupload').fileupload({
+                //inputid:'fileupload',//我要实例化哪个标签
+                url: '/upload/article',//服务端的地址
+                dataType: 'json',//数据格式，ajax你懂的
+                autoUpload: true,//是否选了文件就直接自动上传
+                maxNumberOfFiles: 1,//最多同时上传几个文件
+                maxFileSize: 5000000,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                //maxChunkSize:10000,//最大接收文件大小
+                done: function (e, data) {//上传完了干嘛
+                    var res = data.result;
+                    if (res.success) {
+                        $('#image').val(res.url);
+                        layer.msg(res.message, {icon: 1, time: 2000}, function () {
+                        });
+                    } else {
+                        layer.msg(res.message, {icon: 2, time: 3000}, function () {
+                        });
                     }
-    
-                    $img.attr( 'src', src );
-                }, thumbnailWidth, thumbnailHeight ); */
-            });
-            // 文件上传过程中创建进度条实时显示。
-            uploader.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress-box .sr-only');
 
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo($li).find('.sr-only');
+                },
+                progressall: function (e, data) {//上传过程中，隔段时间就会调起的回调函数，这个东西，主要是用来返回进度的，你看里面的引用，没错，它带回来的参数值，只有total、loaded这种数字。
+
+                },
+                processalways: function (e, data) {
                 }
-                $li.find(".state").text("上传中");
-                $percent.css('width', percentage * 100 + '%');
-            });
+            }).prop('disabled', !$.support.fileInput)
+                    .parent().addClass($.support.fileInput ? undefined : 'disabled');//不用猜了，就是看看是不是支持jqueryajax上传方式。就是上面说的那个frame东东。
 
-            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-            uploader.on('uploadSuccess', function (file, response) {
-                if (response.success) {
-                    var data = response;
-                    var $img = $('#' + file.id).find('img');
-                    $('#' + file.id).addClass('upload-state-success').find(".state").text("已上传");
-                    $('#' + file.id).append('<input type="hidden" name="image" value="' + data.url + '">');
-                    $img.attr('src', data.url);
-                } else {
-                    $('#' + file.id).addClass('upload-state-error').find(".state").text(response.message);
-                }
 
-            });
 
-            // 文件上传失败，显示上传出错。
-            uploader.on('uploadError', function (file) {
-
-                $('#' + file.id).addClass('upload-state-error').find(".state").text("上传出错");
-            });
-
-            // 完成上传完了，成功或者失败，先删除进度条。
-            uploader.on('uploadComplete', function (file) {
-                $('#' + file.id).find('.progress-box').fadeOut();
-            });
-            uploader.on('all', function (type) {
-                if (type === 'startUpload') {
-                    state = 'uploading';
-                } else if (type === 'stopUpload') {
-                    state = 'paused';
-                } else if (type === 'uploadFinished') {
-                    state = 'done';
-                }
-
-                if (state === 'uploading') {
-                    $btn.text('暂停上传');
-                } else {
-                    $btn.text('开始上传');
-                }
-            });
-
-            $btn.on('click', function () {
-                if (state === 'uploading') {
-                    uploader.stop();
-                } else {
-                    uploader.upload();
+            $("#form").validate({
+                submitHandler:function(form){
+                    form.content.value=ue.getContent();
+                    $(form).ajaxSubmit({
+                        type: 'post',
+                        url: form.action ,
+                        success: function(data){
+                            if(data.success){
+                                layer.msg(data.message, {icon: 1,time: 2000 }, function(){
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.$table.bootstrapTable('destroy');
+                                    parent.initTable();
+                                    parent.layer.close(index);
+                                });
+                            }else{
+                                layer.msg(data.message, {icon: 2,time: 3000 }, function(){});
+                            }
+                        },
+                        error: function(XmlHttpRequest, textStatus, errorThrown){
+                            layer.msg('error!', {icon: 2,time: 3000 }, function(){});
+                        }
+                    });
                 }
             });
         });
 
+
     </script>
+
 
 </body>
 

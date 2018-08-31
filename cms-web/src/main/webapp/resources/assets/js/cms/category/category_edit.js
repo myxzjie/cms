@@ -3,7 +3,7 @@
  */
 
 $(function() {
-
+    $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
 	$('#showModes').val($('#h_showModes').val());
 	
 	categoryTree.getPerentCategory();
@@ -17,7 +17,7 @@ var toolObj={
 			this.edit();
 		},
 		edit:function(){
-            $("#form-add").validate({
+            $("#form").validate({
                 onkeyup:false,
                 focusCleanup:true,
                 success:"valid",
@@ -30,7 +30,7 @@ var toolObj={
                                 layer.msg(data.message, {icon: 1,time: 2000 }, function(){
                                     var index = parent.layer.getFrameIndex(window.name);
                                     //parent.$('.btn-refresh').click();
-                                    parent.tgridObj.load();
+                                    parent.location.reload();
                                     parent.layer.close(index);
                                 });
                             }else{

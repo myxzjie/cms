@@ -5,162 +5,198 @@
 
 <head>
     <@head />
-    <link href="/assets/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        .mfs-container {
-            /* min-width: 150px;max-height: 100px;  */
-            /* position: relative; */
-        }
-
-        .mfs-selected-option {
-            border: 1px #ccc solid;
-            display: inline-block;
-            width: 100%;
-            font-size: 14px;
-            height: 31px;
-            line-height: 2.42857;
-            padding-left: 4px;
-        }
-
-        .mfs-options {
-            position: absolute;
-            border: 1px #ccc solid;
-            /* border-top:0px; */
-            width: 100%;
-            margin: 0;
-            padding: 0px;
-            color: #333;
-            overflow: auto;
-            min-height: 100px;
-            max-height: 300px;
-            background: #ffffff;
-            z-index: 9;
-            margin-top: -6px;
-        }
-    </style>
+    <link href="/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
 </head>
 
 <body>
     <@layout>
-        <div class="pd-20">
 
-            <form action="<#if model?exists>${ctx_admin}/ad/update<#else>${ctx_admin}/ad/add</#if>" method="post" class="form form-horizontal"
-                id="form-add">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
 
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">
-                        <span class="c-red">*</span>名称：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="hidden" name="id" value="${model.id}" />
-                        <input type="text" class="input-text" placeholder="" name="adName" datatype="*" nullmsg="名称" value="${model.adName}">
-                    </div>
-                    <div class="col-4"> </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">
-                        <span class="c-red">*</span>位置：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <select class="select" name="positionId">
-                            <option value="18">首页大轮播图</option>
-                        </select>
-                    </div>
-                    <div class="col-4"> </div>
-                </div>
-
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">
-                        <span class="c-red">*</span>起止时间：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
-                            id="datemin" name="startTime" value="<#if model?exists>${model.startTime?string('yyyy-MM-dd HH:mm:ss')}</#if>"
-                            class="input-text Wdate" style="width:180px;"> ~
-                        <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax"
-                            name="endTime" value="<#if model?exists>${model.endTime?string('yyyy-MM-dd HH:mm:ss')}</#if>" class="input-text Wdate"
-                            style="width:180px;">
-                    </div>
-                </div>
-
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">
-                        <span class="c-red">*</span>链接：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" id="adLink" name="adLink" placeholder="http://" datatype="*" nullmsg="链接" value="${model.adLink}">
-                    </div>
-                    <div class="col-4"> </div>
-                </div>
-
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">图片：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <div class="uploader-thum-container">
-                            <div id="fileList" class="uploader-list">
-                                <#if model?exists>
-                                    <#if model.image?exists>
-                                        <div id="WU_FILE_0" class="item upload-state-success">
-                                            <div class="pic-box">
-                                                <img width="30" src="${model.image}">
-                                            </div>
-                                        </div>
-                                    </#if>
-                                </#if>
+                    <div class="ibox-content">
+                        <form id="form" class="form-horizontal m-t" method="post"
+                              action="<#if model?exists>${ctx_admin}/ad/update<#else>${ctx_admin}/ad/add</#if>">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    名称
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="hidden" name="id" value="${model.id}" />
+                                    <input type="text" class="form-control" required="" aria-required="true" name="adName" value="${model.adName}">
+                                </div>
                             </div>
-                            <div id="filePicker">选择图片</div>
-                            <button id="btn-star" type="button" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
-                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    位置
+                                </label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="positionId"  required="" aria-required="true">
+                                        <option value="18">首页大轮播图</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    起止时间
+                                </label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input id="startTime" name="startTime" class="laydate-icon form-control required" required="" aria-required="true" value="<#if model?exists>${model.startTime?string('yyyy-MM-dd HH:mm:ss')}</#if>">
+                                        <span class="input-group-addon bg-primary">~</span>
+                                        <input id="endTime" name="endTime" class="laydate-icon form-control required" required="" aria-required="true" value="<#if model?exists>${model.endTime?string('yyyy-MM-dd HH:mm:ss')}</#if>">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    链接
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="adLink" name="adLink" placeholder="http://" required="" aria-required="true" value="${model.adLink}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    图片地址
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="adCode" name="adCode" value="${model.adCode}"
+                                           class="form-control" required="" aria-required="true"
+                                           style="display: inline-block; width: auto; vertical-align: middle;">
+                                    <span class="btn btn-primary fileinput-button" style="">
+                                    <i class="fa fa-cloud-upload"></i>
+                                    <span>上传图片</span>
+                                    <input id="btn_adCode" type="file" name="file" multiple>
+                                </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    是否显示
+                                </label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline radio i-checks">
+                                        <input id="enabled0" type="radio" name="enabled" value="0" <#if model.enabled==false> checked="checked" </#if>>
+                                        否
+                                    </label>
+                                    <label class="radio-inline i-checks">
+                                        <input id="enabled1" type="radio" name="enabled" value="1" <#if model.enabled==true> checked="checked" </#if>>
+                                        是
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-3 text-center">
+                                    <button id="btn-submit" class="btn btn-primary" type="submit">提交</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
-
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">
-                        <span class="c-red">*</span>图片地址：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" id="adCode" placeholder="" name="adCode" datatype="*" nullmsg="不能为空" value="${model.adCode}">
-                    </div>
-                    <div class="col-4"> </div>
-                </div>
-
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">
-                        <span class="c-red">*</span>是否显示：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input id="enabled0" type="radio" name="enabled" value="0" <#if model.enabled==false> checked="checked" </#if>>
-
-                        <label for="enabled0">否</label>
-                        &nbsp;&nbsp;
-                        <input id="enabled1" type="radio" name="enabled" value="1" <#if model.enabled==true> checked="checked" </#if>>
-                        <label for="enabled1">是</label>
-                    </div>
-                    <div class="col-4"> </div>
-                </div>
-
-
-                <div class="row cl">
-                    <div class="col-9 col-offset-3">
-                        <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-                    </div>
-                </div>
-
-            </form>
-
-            <div id="resourceContent" class="resourceContent">
-                <ul id="resourceTree" class="ztree selectZtree" style="margin-top: 0; width: 160px;"></ul>
             </div>
+
         </div>
+
     </@layout>
 
-    <@editjs />
+<script src="/assets/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/assets/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/assets/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/assets/js/plugins/jquery.form/jquery.form.js"></script>
+<script src="/assets/js/plugins/laydate/laydate.js"></script>
 
-    <script type="text/javascript" src="/assets/lib/webuploader/0.1.5/webuploader.js"></script>
-    <script type="text/javascript" src="/assets/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script src="/assets/js/plugins/jquery-file-upload/vendor/jquery.ui.widget.js"></script>
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<script src="/assets/js/plugins/javascript-Load-Image/load-image.all.min.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload.js"></script>
+<!-- The File Upload processing plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-process.js"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-image.js"></script>
+<!-- The File Upload audio preview plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-audio.js"></script>
+<!-- The File Upload video preview plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-video.js"></script>
+<!-- The File Upload validation plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-validate.js"></script>
+<!-- The File Upload user interface plugin -->
+<script src="/assets/js/plugins/jquery-file-upload/jquery.fileupload-ui.js"></script>
 
     <script type="text/javascript">
+        laydate.skin('danlan');
+        laydate({
+            elem: '#startTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+            event: 'focus', //响应事件。如果没有传入event，则按照默认的click
+            format: 'YYYY/MM/DD hh:mm:ss',
+            min: laydate.now(), //设定最小日期为当前日期
+            max: '2099-06-16 23:59:59', //最大日期
+            istime: true,
+            istoday: false,
+            choose: function(datas){
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas //将结束日的初始值设定为开始日
+            }
+        });
+        laydate({
+            elem: '#endTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+            event: 'focus', //响应事件。如果没有传入event，则按照默认的click
+            format: 'YYYY/MM/DD hh:mm:ss',
+            min: laydate.now(),
+            max: '2099-06-16 23:59:59',
+            istime: true,
+            istoday: false,
+            choose: function(datas){
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            }
+        });
+
         $(function () {
-            $("#form-add").validate({
-                onkeyup: false,
-                focusCleanup: true,
-                success: "valid",
+            $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
+
+
+            $('#btn_adCode').fileupload({
+                //inputid:'fileupload',//我要实例化哪个标签
+                url: '/upload/ad',//服务端的地址
+                dataType: 'json',//数据格式，ajax你懂的
+                autoUpload: true,//是否选了文件就直接自动上传
+                maxNumberOfFiles: 1,//最多同时上传几个文件
+                maxFileSize: 5000000,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                //maxChunkSize:10000,//最大接收文件大小
+                done: function (e, data) {//上传完了干嘛
+                    var res = data.result;
+                    if (res.success) {
+                        $('#adCode').val(res.url);
+                        layer.msg(res.message, {icon: 1, time: 2000}, function () {
+                        });
+                    } else {
+                        layer.msg(res.message, {icon: 2, time: 3000}, function () {
+                        });
+                    }
+
+                },
+                progressall: function (e, data) {//上传过程中，隔段时间就会调起的回调函数，这个东西，主要是用来返回进度的，你看里面的引用，没错，它带回来的参数值，只有total、loaded这种数字。
+
+                },
+                processalways: function (e, data) {
+                }
+            }).prop('disabled', !$.support.fileInput)
+                    .parent().addClass($.support.fileInput ? undefined : 'disabled');//不用猜了，就是看看是不是支持jqueryajax上传方式。就是上面说的那个frame东东。
+
+
+            $("#form").validate({
                 submitHandler: function (form) {
                     $(form).ajaxSubmit({
                         type: 'post',
@@ -169,8 +205,8 @@
                             if (data.success) {
                                 layer.msg(data.message, { icon: 1, time: 2000 }, function () {
                                     var index = parent.layer.getFrameIndex(window.name);
-                                    //parent.$('.btn-refresh').click();
-                                    parent.tgridObj.load();
+                                    parent.$table.bootstrapTable('destroy');
+                                    parent.initTable();
                                     parent.layer.close(index);
                                 });
                             } else {
@@ -186,122 +222,7 @@
 
         });
     </script>
-    <script type="text/javascript">
-        $(function () {
-            $list = $("#fileList"),
-                $btn = $("#btn-star"),
-                state = "pending",
-                uploader;
 
-            var uploader = WebUploader.create({
-                auto: true,
-                swf: 'lib/webuploader/0.1.5/Uploader.swf',
-
-                // 文件接收服务端。
-                server: global.basePath + 'upload/image',
-
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '#filePicker',
-
-                // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-                resize: false,
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                }
-            });
-            uploader.on('fileQueued', function (file) {
-                var $li = $(
-                    '<div id="' + file.id + '" class="item">' +
-                    '<div class="pic-box"><img width="30"></div>' +
-                    '<div class="info">' + file.name + '</div>' +
-                    '<p class="state">等待上传...</p>' +
-                    '</div>'
-                ),
-                    //debugger
-                    $img = $li.find('img');
-                $list.html('');
-                $list.append($li);
-
-                // 创建缩略图
-                // 如果为非图片文件，可以不用调用此方法。
-                // thumbnailWidth x thumbnailHeight 为 100 x 100
-                /* uploader.makeThumb( file, function( error, src ) {
-                    if ( error ) {
-                        $img.replaceWith('<span>不能预览</span>');
-                        return;
-                    }
-    
-                    $img.attr( 'src', src );
-                }, thumbnailWidth, thumbnailHeight ); */
-            });
-            // 文件上传过程中创建进度条实时显示。
-            uploader.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress-box .sr-only');
-
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo($li).find('.sr-only');
-                }
-                $li.find(".state").text("上传中");
-                $percent.css('width', percentage * 100 + '%');
-            });
-
-            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-            uploader.on('uploadSuccess', function (file, response) {
-                if (response.success) {
-                    var data = response;
-                    var $img = $('#' + file.id).find('img');
-                    $('#' + file.id).addClass('upload-state-success').find(".state").text("已上传");
-                    //$( '#'+file.id ).append('<input type="hidden" name="image" value="'+data.url+'">');
-                    $img.attr('src', data.url);
-                    $('#adCode').val(data.url);
-                } else {
-                    $('#' + file.id).addClass('upload-state-error').find(".state").text(response.message);
-                }
-
-            });
-
-            // 文件上传失败，显示上传出错。
-            uploader.on('uploadError', function (file) {
-
-                $('#' + file.id).addClass('upload-state-error').find(".state").text("上传出错");
-            });
-
-            // 完成上传完了，成功或者失败，先删除进度条。
-            uploader.on('uploadComplete', function (file) {
-                $('#' + file.id).find('.progress-box').fadeOut();
-            });
-            uploader.on('all', function (type) {
-                if (type === 'startUpload') {
-                    state = 'uploading';
-                } else if (type === 'stopUpload') {
-                    state = 'paused';
-                } else if (type === 'uploadFinished') {
-                    state = 'done';
-                }
-
-                if (state === 'uploading') {
-                    $btn.text('暂停上传');
-                } else {
-                    $btn.text('开始上传');
-                }
-            });
-
-            $btn.on('click', function () {
-                if (state === 'uploading') {
-                    uploader.stop();
-                } else {
-                    uploader.upload();
-                }
-            });
-        });
-
-    </script>
 </body>
 
 </html>

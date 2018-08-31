@@ -1,44 +1,31 @@
 <#include "/admin/_inc/_common.html"/>
 <#macro head title="" keywords="" description="">
-      <meta charset="utf-8">
-      <meta name="renderer" content="webkit|ie-comp|ie-stand">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-      <meta http-equiv="Cache-Control" content="no-siteapp" />
-      <link rel="Bookmark" href="/favicon.ico">
-      <link rel="Shortcut Icon" href="/favicon.ico" />
-      <!--[if lt IE 9]>
-      <script type="text/javascript" src="/assets/lib/html5shiv.js"></script>
-      <script type="text/javascript" src="/assets/lib/respond.min.js"></script>
-      <![endif]-->
-      <link rel="stylesheet" type="text/css" href="/assets/static/h-ui/css/H-ui.min.css" />
-      <link rel="stylesheet" type="text/css" href="/assets/static/h-ui.admin/css/H-ui.admin.css" />
-      <link rel="stylesheet" type="text/css" href="/assets/lib/Hui-iconfont/1.0.8/iconfont.css" />
-      <link rel="stylesheet" type="text/css" href="/assets/static/h-ui.admin/skin/default/skin.css" id="skin" />
-      <link rel="stylesheet" type="text/css" href="/assets/static/h-ui.admin/css/style.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>
+      <#if title!=''>${title}<#else>鹰视科技</#if>
+    </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
 
-      <link rel="stylesheet" type="text/css" href="/assets/lib/bootstrap-table/bootstrap-table.css" />
-      <style>
-            .table>thead>tr>th,
-            .table>tbody>tr>th,
-            .table>tfoot>tr>th,
-            .table>thead>tr>td,
-            .table>tbody>tr>td,
-            .table>tfoot>tr>td {
-                  padding: 8px;
-                  line-height: 1.42857143;
-                  vertical-align: top;
-                  border-top: 1px solid #ddd;
-            }
-      </style>
-      <!--[if IE 6]>
-      <script type="text/javascript" src="/assets/lib/DD_belatedPNG_0.0.8a-min.js"></script>
-      <script>DD_belatedPNG.fix('*');</script>
-      <![endif]-->
-      <title>后台</title>
-      <meta name="keywords" content="">
-      <meta name="description" content="">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
 
-      <base href="${ctx}">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/assets/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/assets/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="/assets/css/animate.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/assets/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <base href="${ctx}">
+<style type="text/css">
+    .treegrid tr.selected {
+        background: #e7e7e9;
+        color: #777 !important;
+    }
+</style>
 
 </#macro>

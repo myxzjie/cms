@@ -29,7 +29,7 @@ function DropTree(target,options){
 DropTree.prototype._init = function(){ 
     var self = this;    
     this.$target.hide(); 
-    this.$wrap = this.$target.wrap('<div class="mfs-container">').parent();     
+    this.$wrap = this.$target.wrap('<div class="mfs-container">').parent();
     this.$selected = $('<a class="mfs-selected-option" href="#" />').prependTo(this.$wrap); 
     
     //this.$selected.css("height",15); 

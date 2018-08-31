@@ -36,8 +36,9 @@
                 }else {
                     return;
                 }
-
+                $('.loader').show();
                 $(container).load(url, function(response, status, xhr) {
+                    $('.loader').hide();
 //                $(".content").resize(function() {
 //                });
                 });
@@ -91,12 +92,19 @@
                     var data = res.data;
                     if (data && data.length > 0) {
                         $this.treemenu('renderBody', data);
-                        $this.on('click', 'a', function () {
-                            var $open = $(this).attr('_open');
-                            window.location.hash = $open;
+                        $("#side-menu").metisMenu();
+                        $(".J_menuItem").each(function (k) {
+                            if (!$(this).attr("data-index")) {
+                                $(this).attr("data-index", k)
+                            }
                         });
-                        $this.find('li').first().addClass('active');
-                        $this.find('li').first().addClass('open');
+                        $(".J_menuItem").on("click", c);
+                        // $this.on('click', 'a', function () {
+                        //     var $open = $(this).attr('_open');
+                        //     window.location.hash = $open;
+                        // });
+                        // $this.find('li').first().addClass('active');
+                        // $this.find('li').first().addClass('open');
                     }
                 }
             });
@@ -111,17 +119,17 @@
             var iconColumn = $this.treemenu('getSetting', 'iconColumn');
             var sortColumn = $this.treemenu('getSetting', 'sortColumn');
             var rootNodes = $this.treemenu('rootNodesDataSort', data, parentColumn, sortColumn);
+
             $.each(rootNodes, function (i, item) {
-                //var $li = $('<li><a><div class="item-content"><div class="item-media"><i class=""></i></div><div class="item-inner"><span class="title"></span><i class="icon-arrow"></i></div></div></a></li>');
-                var $li = $('<dl id="menu-"'+item[idColumn]+'><dt><i class="Hui-iconfont">'+item[iconColumn]+'</i> '+item[nameColumn]+'<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt></dl>');
+                var $li = $('<li><a href="#"><i class="fa fa-sticky-note-o"></i><span class="nav-label"></span><span class="fa arrow"></span></a></li>');
 
-                $this.treemenu('childNodes', data, item, item[idColumn], $li);
+                //$li.find('a').attr('_open', item[urlColumn]);
+                //$li.find('a .item-media i').addClass(item[iconColumn]);
+               // $li.find('a .title').html(item[nameColumn]);
+                $li.find('a > .nav-label').html(item[nameColumn]);
+
+                $this.treemenu('childNodes', data, item, item[idColumn], $li,1);
                 $this.append($li);
-            });
-
-            $(".Hui-aside").Huifold({
-                titCell:'.menu_dropdown dl dt',
-                mainCell:'.menu_dropdown dl dd',
             });
 
         },
@@ -132,9 +140,10 @@
          * @param parentIndex
          * @param tbody
          */
-        childNodes: function (data, parentNode, parentIndex, li) {
+        childNodes: function (data, parentNode, parentIndex, li, level) {
+
             var $this = (this);
-            var $ul = $('<dd><ul class="sub-menu"></ul></dd>');
+            var $ul = level>1?$('<ul class="nav nav-third-level"></ul>'):$('<ul class="nav nav-second-level"></ul>');
             var idColumn = $this.treemenu('getSetting', 'idColumn');
             var parentColumn = $this.treemenu('getSetting', 'parentColumn');
             var nameColumn = $this.treemenu('getSetting', 'nameColumn');
@@ -142,21 +151,24 @@
             var iconColumn = $this.treemenu('getSetting', 'iconColumn');
             var sortColumn = $this.treemenu('getSetting', 'sortColumn');
             var nodes = $this.treemenu('childNodesDataSort', data, parentColumn, parentIndex, sortColumn);
+
             if (nodes.length > 0) {
                 $.each(nodes, function (i, item) {
                     if (item[parentColumn] == parentNode[idColumn]) {
                         var nowParentIndex = item[idColumn];
-                        var $li = $('<li><a href="javascript:void(0)">'+item[nameColumn]+'</a></li>');
-                        $li.find('a').attr('data-href', item[urlColumn]);
-                        $li.find('a').attr('data-title',item[nameColumn]);
+                        var $li = $('<li><a><span class="nav-label"></span><span class="fa arrow"></span></a></li>');
+                        //$li.find('a').attr('_open', item[urlColumn]);
+                        $li.find('a .nav-label').html(item[nameColumn]);
 
-                        $ul.find('ul').append($li);
-                        $this.treemenu('childNodes', data, item, nowParentIndex, $li)
+                        $ul.append($li);
+                        $this.treemenu('childNodes', data, item, nowParentIndex, $li,level+1)
                     }
                 });
                 li.append($ul);
             }else {
-                li.find('.icon-arrow').remove();
+                li.find('a').addClass('J_menuItem');
+                li.find('a').attr('href',parentNode[urlColumn]);
+                li.find('a > span.arrow').remove();
             }
         },
         childNodesDataSort: function (data, parentCol, parentIndex, sortCol) {
@@ -189,6 +201,73 @@
             return result;
         },
     };
+
+    function c() {
+        var o = $(this).attr("href"), m = $(this).data("index"), l = $.trim($(this).text()), k = true;
+        if (o == undefined || $.trim(o).length == 0) {
+            return false
+        }
+        $(".J_menuTab").each(function () {
+            if ($(this).data("id") == o) {
+                if (!$(this).hasClass("active")) {
+                    $(this).addClass("active").siblings(".J_menuTab").removeClass("active");
+                    g(this);
+                    $(".J_mainContent .J_iframe").each(function () {
+                        if ($(this).data("id") == o) {
+                            $(this).show().siblings(".J_iframe").hide();
+                            return false
+                        }
+                    })
+                }
+                k = false;
+                return false
+            }
+        });
+        if (k) {
+            var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + o + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
+            $(".J_menuTab").removeClass("active");
+            var n = '<iframe class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
+            $(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
+            $(".J_menuTabs .page-tabs-content").append(p);
+            g($(".J_menuTab.active"))
+        }
+        return false
+    }
+
+    function f(l) {
+        var k = 0;
+        $(l).each(function () {
+            k += $(this).outerWidth(true)
+        });
+        return k
+    }
+
+    function g(n) {
+        var o = f($(n).prevAll()), q = f($(n).nextAll());
+        var l = f($(".content-tabs").children().not(".J_menuTabs"));
+        var k = $(".content-tabs").outerWidth(true) - l;
+        var p = 0;
+        if ($(".page-tabs-content").outerWidth() < k) {
+            p = 0
+        } else {
+            if (q <= (k - $(n).outerWidth(true) - $(n).next().outerWidth(true))) {
+                if ((k - $(n).next().outerWidth(true)) > q) {
+                    p = o;
+                    var m = n;
+                    while ((p - $(m).outerWidth()) > ($(".page-tabs-content").outerWidth() - k)) {
+                        p -= $(m).prev().outerWidth();
+                        m = $(m).prev()
+                    }
+                }
+            } else {
+                if (o > (k - $(n).outerWidth(true) - $(n).prev().outerWidth(true))) {
+                    p = o - $(n).prev().outerWidth(true)
+                }
+            }
+        }
+        $(".page-tabs-content").animate({marginLeft: 0 - p + "px"}, "fast")
+    }
+
     $.fn.treemenu = function(method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));

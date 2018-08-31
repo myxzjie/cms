@@ -9,58 +9,76 @@
 
 <body>
     <@layout>
-        <nav class="breadcrumb">
-            <!-- <i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 -->
-            <a class="btn btn-success btn-refresh radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
-                title="刷新">
-                <i class="Hui-iconfont">&#xe68f;</i>
-            </a>
-        </nav>
-        <div class="pd-20">
-            <div class="text-l">
-                <form id="query-form">
-                    <input type="text" class="input-text" style="width:250px" placeholder="输入名称" id="name" name="name">
-                    <button type="button" class="btn btn-success" id="btn-query">
-                        <i class="Hui-iconfont">&#xe665;</i> 查询
-                    </button>
-                </form>
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox ">
+
+                    <div class="ibox-content">
+                        <div class="example-wrap">
+                            <div class="example">
+                                <div class="alert alert-danger" id="examplebtTableEventsResult" role="alert" style="display: none">
+                                    事件结果
+                                </div>
+                                <div>
+                                    <form  id="query_form" class="form-inline">
+                                        <input name="name" type="text" class="form-control" placeholder="输入名称">
+                                        <button id="btn_query" type="button" class="btn btn-info btn-sm">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                            查询
+                                        </button>
+                                    </form>
+
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="btn-group hidden-xs" id="toolbar" role="group">
+
+                                    <button id="btn_add" type="button" class="btn btn-info btn-sm">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        添加
+                                    </button>
+
+                                    <button id="btn_edit" type="button" class="btn btn-info btn-sm" >
+                                        <i class="fa fa-paste" aria-hidden="true"></i> 编辑
+                                    </button>
+
+                                    <button id="btn_sync" type="button" class="btn btn-info btn-sm" >
+                                        <i class="fa fa-circle-o-notch" aria-hidden="true"></i>
+                                        菜单同步到微信
+                                    </button>
+
+                                    <button id="btn_remove" type="button" class="btn btn-info btn-sm">
+                                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                        移除
+                                    </button>
+                                </div>
+                            <#--<div class="hr-line-dashed"></div>-->
+                                <table id="data-table"  data-mobile-responsive="true">
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
-            <div class="cl pd-5 bg-1 bk-gray mt-20">
-                <span class="l">
-                    <a href="javascript:;" onclick="tgridObj.add();" class="btn btn-primary radius">
-                        <i class="Hui-iconfont">&#xe600;</i> 添加
-                    </a>
-                    <a href="javascript:;" onclick="tgridObj.edit();" class="btn btn-primary radius">
-                        <i class="Hui-iconfont">&#xe60c;</i> 编辑
-                    </a>
-                    <a href="javascript:;" onclick="tgridObj.sync();" class="btn btn-primary radius">
-                        <i class="Hui-iconfont">&#xe6ab;</i>菜单同步到微信
-                    </a>
-                    <a href="javascript:;" onclick="tgridObj.del();" class="btn btn-danger radius">
-                        <i class="Hui-iconfont">&#xe6e2;</i> 删除
-                    </a>
-
-                </span>
-                <span class="r">共有数据：
-                    <strong class="total">0</strong> 条</span>
-            </div>
-            <table id="data-table" class="table table-bg table-hover"></table>
-            <div id="pagination" class="cl pd-10 r"></div>
         </div>
+    </div>
+
     </@layout>
 
-    <@tablejs />
+<script src="/assets/js/plugins/bootstrap-table/bootstrap-table.js"></script>
+<script src="/assets/js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js"></script>
+<script src="/assets/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
     <script type="text/javascript">
         var $table = null;
 
         $(function () {
-            //toolbar();
-            initTable()
-            $('#btn-query').click(function () {
-                $table.bootstrapTable('destroy');
-                initTable();
-            });
+            initTable();
+            btnEvent();
         });
 
         function initTable() {
@@ -75,9 +93,10 @@
                 sortable: false,   //是否启用排序
                 sortOrder: "desc",   //排序方式
                 queryParams: function queryParams(params) { //传递参数（*）
-                    params.currentPage = params.offset;
+                    var pars=$('#query_form').serializeJSON();
+                    params = $.extend({}, params, pars);
+                    params.currentPage=(params.offset/params.limit)+1;
                     params.showCount = params.limit;
-                    //params.name = $('#name').val();
                     return params;
                 },
                 sidePagination: "server",  //分页方式：client客户端分页，server服务端分页（*）
@@ -137,15 +156,17 @@
             });
         }
 
-
-
-
-        var tgridObj = {
-            add: function () {
+        function btnEvent() {
+            $('#btn_query').click(function () {
+                $table.bootstrapTable('destroy');
+                initTable();
+            });
+            $('#btn_add').click(function () {
                 var url = global.adminPath + '/wx-button/addview';
-                layer_show('添加', url, 800, 500);
-            },
-            edit: function () {
+                layer_show('添加', url, 800, 600);
+            });
+
+            $('#btn_edit').click(function () {
                 var obj = $table.bootstrapTable('getSelections');
 
                 if (obj.length != 1) {
@@ -156,9 +177,10 @@
                 }
 
                 var url = global.adminPath + '/wx-button/edit/' + obj[0].id;
-                layer_full('编辑', url);
-            },
-            sync:function(){
+                layer_show('编辑', url, 800, 600);
+            });
+
+            $('#btn_sync').click(function () {
                 var url= global.adminPath+'/wx-button/sync';
                 $.ajax({
                     type: "POST",
@@ -171,25 +193,17 @@
                                 icon: 1,
                                 time: 2000, ///2秒关闭（如果不配置，默认是3秒）
                             }, function () {
-                                location.reload();
+                                $table.bootstrapTable('destroy');
+                                initTable();
                             });
                         }else{
                             layer.msg(res.message, { icon: 2 });
                         }
                     }
                 });
+            });
 
-//			var obj=$('#datatable').tgrid('getSelections');
-//			var buttonId='';
-//			if(obj.length>1){
-//				buttonId=obj[0].buttonId
-//			}
-//
-//			var url= global.basePath+'/wxbutton/sync?id='+buttonId;
-//			layer_show('菜单同步到微信',url,800,500);
-            },
-            del: function () {
-
+            $('#btn_remove').click(function () {
                 var obj = $table.bootstrapTable('getSelections');
 
                 if (obj.length != 1) {
@@ -213,7 +227,8 @@
                                     icon: 1,
                                     time: 2000, ///2秒关闭（如果不配置，默认是3秒）
                                 }, function () {
-                                    location.reload();
+                                    $table.bootstrapTable('destroy');
+                                    initTable();
                                 });
                             } else {
                                 layer.msg(res.message, { icon: 2 });
@@ -222,8 +237,7 @@
                     });
 
                 });
-            }
-
+            });
         }
 
     </script>
