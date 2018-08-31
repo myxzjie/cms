@@ -1,7 +1,7 @@
 package com.xzjie.et.core.web;
 
 import com.xzjie.core.utils.DateUtils;
-import com.xzjie.et.core.security.SystemAuthorizingRealm;
+import com.xzjie.et.core.security.Principal;
 import com.xzjie.et.core.utils.ConstantsUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -78,7 +78,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	public Long getUserId() {
-		SystemAuthorizingRealm.Principal principal = getPrincipal();
+		Principal principal = getPrincipal();
 		if (principal != null) {
 			return principal.getUserId();
 		}
@@ -90,7 +90,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	public String getUsername() {
-		SystemAuthorizingRealm.Principal principal = getPrincipal();
+		Principal principal = getPrincipal();
 		if (principal != null) {
 			return principal.getUsername();
 		}
@@ -123,10 +123,10 @@ public abstract class BaseController {
 	/**
 	 * 获取当前登录者对象
 	 */
-	public SystemAuthorizingRealm.Principal getPrincipal() {
+	public Principal getPrincipal() {
 		try {
 			Subject subject = SecurityUtils.getSubject();
-			SystemAuthorizingRealm.Principal principal = (SystemAuthorizingRealm.Principal) subject.getPrincipal();
+			Principal principal = (Principal) subject.getPrincipal();
 			if (principal != null) {
 				return principal;
 			}

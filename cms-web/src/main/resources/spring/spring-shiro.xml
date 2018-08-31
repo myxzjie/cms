@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+
+
 	http://www.springframework.org/schema/util 
-	http://www.springframework.org/schema/util/spring-util-4.0.xsd
-	http://www.springframework.org/schema/task
-	http://www.springframework.org/schema/task/spring-task-4.0.xsd
-	http://www.springframework.org/schema/aop 
-	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 
     <bean id="credentialsMatcher" class="com.xzjie.et.core.security.credentials.EhcacheRetryLimitHashedCredentialsMatcher">
@@ -29,6 +24,28 @@
         <property name="authenticationCacheName" value="authenticationCache"/>
         <property name="authorizationCachingEnabled" value="true"/>
         <property name="authorizationCacheName" value="authorizationCache"/>
+    </bean>
+
+    <bean id="clientAuthorizingRealm" class="com.xzjie.client.core.security.ClientAuthorizingRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <property name="cachingEnabled" value="false"/>
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="authenticationCache"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>
+    </bean>
+
+    <!--多个realm 的集中管理  -->
+    <bean id="defineModularRealmAuthenticator" class=" com.xzjie.et.core.security.DefineModularRealmAuthenticator">
+        <property name="definedRealms">
+            <map>
+                <entry key="systemAuthorizingRealm" value-ref="systemAuthorizingRealm" />
+                <entry key="clientAuthorizingRealm" value-ref="clientAuthorizingRealm" />
+            </map>
+        </property>
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy" />
+        </property>
     </bean>
 
     <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
@@ -75,7 +92,14 @@
     </bean>
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="systemAuthorizingRealm"/>
+        <!--<property name="realm" ref="systemAuthorizingRealm"/>-->
+        <!--<property name="realms"  >
+            <list>
+                <bean id="systemAuthorizingRealm" class="com.xzjie.et.core.security.SystemAuthorizingRealm" />
+                <bean id="clientAuthorizingRealm" class="com.xzjie.client.core.security.ClientAuthorizingRealm" />
+            </list>
+        </property>-->
+        <property name="authenticator" ref="defineModularRealmAuthenticator" />
         <property name="sessionManager" ref="sessionManager"/>
         <property name="cacheManager" ref="cacheManager"/>
         <property name="rememberMeManager" ref="rememberMeManager"/>
@@ -86,9 +110,9 @@
         <property name="arguments" ref="securityManager"/>
     </bean>
 
-    <bean id="systemPathMatchingFilter" class="com.xzjie.client.core.security.SystemPathMatchingFilter"/>
+    <bean id="clientPathMatchingFilter" class="com.xzjie.client.core.security.ClientPathMatchingFilter"/>
 
-    <bean id="authcFilter" class="com.xzjie.et.core.security.FormAuthenticationCaptchaFilter">
+    <bean id="systemAuthFilter" class="com.xzjie.et.core.security.FormAuthenticationCaptchaFilter">
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
         <property name="captchaParam" value="captcha"/>
@@ -97,6 +121,19 @@
         <property name="rememberMeParam" value="rememberMe"/>
         <property name="failureKeyAttribute" value="shiroLoginFailure"/>
         <property name="loginUrl" value="/${web.adminPath}/login"/>
+        <property name="successUrl" value="/${web.adminPath}/index" />
+    </bean>
+
+    <bean id="clientAuthFilter" class="com.xzjie.et.core.security.FormAuthenticationCaptchaFilter">
+        <property name="usernameParam" value="username"/>
+        <property name="passwordParam" value="password"/>
+        <property name="captchaParam" value="captcha"/>
+        <property name="stypeParam" value="stype"/>
+        <property name="isMobileParam" value="isMobile" />
+        <property name="rememberMeParam" value="rememberMe"/>
+        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/index" />
     </bean>
 
 
@@ -111,8 +148,9 @@
         <property name="unauthorizedUrl" value="/unauthorized.jsp" />
         <property name="filters">
             <util:map>
-                <entry key="authc" value-ref="authcFilter"/>
-                <entry key="sys" value-ref="systemPathMatchingFilter"/>
+                <entry key="system_authc" value-ref="systemAuthFilter"/>
+                <entry key="authc" value-ref="clientAuthFilter"/>
+                <entry key="client_authc" value-ref="clientPathMatchingFilter"/>
                 <entry key="logout" value-ref="logout" />
             </util:map>
         </property>
@@ -123,9 +161,10 @@
                 /logout = logout
                 /${web.apiPath}/oauth/token = anon
                 /${web.apiPath}/** = anon
-                /${web.adminPath}/login = authc
+                /login = authc
+                /${web.adminPath}/login = system_authc
                 /${web.adminPath}/** = user
-                /** = sys
+                /** = client_authc
                 <!--/authorize=anon
                 /authenticated = authc-->
             </value>

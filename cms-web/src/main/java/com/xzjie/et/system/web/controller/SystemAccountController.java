@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${web.adminPath}/account")
-public class AdminAccountController extends BaseController {
+public class SystemAccountController extends BaseController {
 
     private final Logger LOG = LogManager.getLogger(getClass());
 
@@ -52,7 +52,9 @@ public class AdminAccountController extends BaseController {
         Account account = accountService.get(id);
         Role role = roleService.getRoleByUserId(id);
         model.addAttribute("model", account);
-        model.addAttribute("roleId", role.getRoleId());
+        if (role != null) {
+            model.addAttribute("roleId", role.getRoleId());
+        }
         return getRemoteView("account/account_edit");
     }
 
@@ -62,7 +64,7 @@ public class AdminAccountController extends BaseController {
     }
 
     @RequestMapping(value = {"change-password"})
-    public String changePassword(Map<String,Object> modelView){
+    public String changePassword(Map<String, Object> modelView) {
         return getRemoteView("account/change_password");
     }
 
@@ -181,7 +183,7 @@ public class AdminAccountController extends BaseController {
 //		}
 
         try {
-            if (accountService.updateAccount(model,roleId)) {
+            if (accountService.updateAccount(model, roleId)) {
 
                 return MapResult.mapOK("300");
             }

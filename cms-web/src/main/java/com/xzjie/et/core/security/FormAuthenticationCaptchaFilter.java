@@ -109,7 +109,6 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
                                      ServletResponse response) throws Exception {
-        // TODO Auto-generated method stub
         Session session = subject.getSession();
 
         session.removeAttribute(getLoginIncorrectNumberKeyAttribute());
@@ -126,6 +125,18 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
         request.setAttribute(getFailureKeyAttribute(), e.getClass().getName());
         request.setAttribute("message", e.getMessage());
         return true;
+    }
+
+    @Override
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        //没退出登录，问题
+        if(isLoginRequest(request, response) && isLoginSubmission(request, response)){
+            if(LOG.isDebugEnabled()){
+                LOG.debug("Login submission detected.  Attempting to execute login.");
+            }
+            return false;
+        }
+        return super.isAccessAllowed(request, response, mappedValue);
     }
 
     @Override
@@ -167,6 +178,16 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
         } else {
             request.setAttribute(getFailureKeyAttribute(), "服务器出现异常");
         }
+    }
+
+    @Override
+    public void setLoginUrl(String loginUrl) {
+        super.setLoginUrl(loginUrl);
+    }
+
+    @Override
+    public void setSuccessUrl(String successUrl) {
+        super.setSuccessUrl(successUrl);
     }
 
     public String getCaptchaParam() {

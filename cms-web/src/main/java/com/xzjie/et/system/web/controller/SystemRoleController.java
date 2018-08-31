@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${web.adminPath}/role")
-public class AdminRoleController extends BaseController {
+public class SystemRoleController extends BaseController {
 
     private final Logger LOG = LogManager.getLogger(getClass());
 

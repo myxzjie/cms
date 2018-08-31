@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${web.adminPath}/resource")
-public class AdminResourceController extends BaseController{
+public class SystemResourceController extends BaseController{
     private final Logger LOG = LogManager.getLogger(getClass());
     @Autowired
     private ResourceService resourceService;

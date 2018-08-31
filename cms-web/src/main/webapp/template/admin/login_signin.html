@@ -31,13 +31,15 @@
                 <div class="form-group">
                     <input name="password" type="password" class="form-control" placeholder="密码" required="">
                 </div>
+                <#--登录次数-->
+                <#if incorrectNumber gt 1>
                 <div class="form-group text-left">
                     <input name="captcha" class="form-control" type="text" placeholder="验证码"
                            style="width:150px;display: inline-block;vertical-align: middle;">
                     <img id="captcha-img" src="/kaptcha/image" style="width: 100px;height: 35px;">
                     <a id="btn-kaptcha" href="javascript:;">换一张</a>
-
                 </div>
+                </#if>
                 <div class="form-group text-left">
                     <label class="hover" for="rememberMe">
                         <input class="i-checks" type="checkbox" id="rememberMe" name="rememberMe">记住密码

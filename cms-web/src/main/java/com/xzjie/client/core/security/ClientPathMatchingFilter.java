@@ -21,7 +21,7 @@ import java.util.Enumeration;
  * @create 2016年6月3日 下午11:41:44 
  * @version V0.0.1 
  */
-public class SystemPathMatchingFilter extends PathMatchingFilter{
+public class ClientPathMatchingFilter extends PathMatchingFilter{
 
 //	@Autowired
 //	private RedisService redisService;

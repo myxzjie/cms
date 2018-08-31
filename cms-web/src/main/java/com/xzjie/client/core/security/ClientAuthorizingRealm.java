@@ -1,6 +1,9 @@
-package com.xzjie.et.core.security;
+package com.xzjie.client.core.security;
 
 import com.alibaba.fastjson.JSON;
+import com.xzjie.et.core.security.Principal;
+import com.xzjie.et.core.security.RoleException;
+import com.xzjie.et.core.security.UsernamePasswordCaptchaToken;
 import com.xzjie.et.core.utils.ConstantsUtils;
 import com.xzjie.et.system.model.Account;
 import com.xzjie.et.system.model.Role;
@@ -16,7 +19,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class SystemAuthorizingRealm extends AuthorizingRealm {
+public class ClientAuthorizingRealm extends AuthorizingRealm {
 
     private final Logger LOG = LogManager.getLogger(getClass());
 
@@ -104,4 +107,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         clearAllCachedAuthenticationInfo();
         clearAllCachedAuthorizationInfo();
     }
+
+
 }

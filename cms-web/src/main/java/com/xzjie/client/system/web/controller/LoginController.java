@@ -1,8 +1,8 @@
-package com.xzjie.et.system.web.controller;
+package com.xzjie.client.system.web.controller;
 
 import com.xzjie.et.core.security.CaptchaException;
 import com.xzjie.et.core.security.FormAuthenticationCaptchaFilter;
-import com.xzjie.et.core.web.BaseController;
+import com.xzjie.client.core.web.BaseController;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -15,19 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by xzjie on 2017/8/29.
- */
 @Controller
-public class AdminLoginController extends BaseController{
+public class LoginController extends BaseController {
 
-    @RequestMapping("${web.adminPath}/login")
+    @RequestMapping("login")
     public String login( Model model){
-        model.addAttribute("action",  true);
-       return getRemoteView("login_signin");
+        return getRemoteView("login");
     }
 
-    @RequestMapping(value = "${web.adminPath}/login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public String showLoginForm(HttpServletRequest request, Model model) {
         String error = null;
         String exceptionClassName = (String)request.getAttribute(FormAuthenticationCaptchaFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
@@ -50,7 +46,7 @@ public class AdminLoginController extends BaseController{
 
         model.addAttribute("error",  error);
 
-
-        return "redirect:/"+getTemplate()+"/login";
+        return getRemoteView("login");
+//        return "redirect:/"+getTemplate()+"/login";
     }
 }
