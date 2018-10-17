@@ -3,9 +3,10 @@
 
 地址：[http://www.dev56.com/](http://www.dev56.com/)
 
-**关注公众号**
+**关注公众号**  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **小程序**
  
 ![输入图片说明](https://gitee.com/uploads/images/2018/0504/153407_f8d34a53_411145.jpeg "qrcode_for_gh_955550ad6334_258.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1017/164259_af6b2137_411145.jpeg "mmexport1539765653517.jpg")
 
 在项目上有什么问题或bug ，可以联系：
 
@@ -18,6 +19,14 @@
 
 
 更新：
+ 
+2018-10-17
+ 
+1. spring-core 高严重性安全漏洞升级4.3.18
+
+2. jackson-databind 高严重性安全漏洞升级2.8.11.1
+
+
  2018-8-31
  1. 后台UI更换，使用新版的UI页面
  2. 前端台登录
