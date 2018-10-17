@@ -225,7 +225,7 @@
             <!-- <bean class="com.thoughtworks.xstream.io.xml.StaxDriver" /> -->
             <bean class="com.thoughtworks.xstream.io.xml.XppDriver"> 
 				<constructor-arg> 
-					<bean class="com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer">
+					<bean class="com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder">
 					<constructor-arg index="0" value="_-"/> 
 					<constructor-arg index="1" value="_"/> 
 					</bean> 

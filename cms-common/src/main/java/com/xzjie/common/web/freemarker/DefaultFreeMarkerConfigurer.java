@@ -16,9 +16,9 @@ import java.io.IOException;
 public class DefaultFreeMarkerConfigurer extends FreeMarkerConfigurer {
 	
     private final Logger LOG = LogManager.getLogger(getClass());
-    
+
     private final String DEFAULT_TAG_NAME ="et";
-    
+
     private String defaultTagName = null;
 
     private AbstractDefaultTags defaultTags = new AbstractDefaultTags();
@@ -26,9 +26,9 @@ public class DefaultFreeMarkerConfigurer extends FreeMarkerConfigurer {
     @Override
     public void afterPropertiesSet() throws IOException, TemplateException {
         super.afterPropertiesSet();
-        this.getConfiguration().setSharedVariable("shiro", new ShiroTags());        
+        this.getConfiguration().setSharedVariable("shiro", new ShiroTags());
         this.getConfiguration().setSharedVariable(getDefaultTagName(),defaultTags);
-    }    
+    }
 
     @PostConstruct
     public void init(){
