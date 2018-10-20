@@ -18,14 +18,13 @@
         <mail.version>1.6.0</mail.version>
         <dubbo.version>2.5.3</dubbo.version>
         <zkclient.version>0.10</zkclient.version>
-        <spring.version>4.3.18.RELEASE</spring.version>
+        <spring.version>4.3.19.RELEASE</spring.version>
         <redis.version>2.9.0</redis.version>
         <shiro.version>1.3.2</shiro.version>
         <log4j.version>2.7</log4j.version>
         <servlet.version>3.1.0</servlet.version>
         <kaptcha.version>2.3.2</kaptcha.version>
-        <jackson.version>2.8.11</jackson.version>
-        <jackson.databind.version>2.8.11.1</jackson.databind.version>
+        <jackson.version>2.9.5</jackson.version>
         <xstream.version>1.4.9</xstream.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-fileupload.version>1.3</commons-fileupload.version>
@@ -233,7 +232,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson.databind.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
 
             <dependency>
@@ -355,9 +354,17 @@
                     <artifactId>tomcat7-maven-plugin</artifactId>
                     <version>2.2</version>
                 </plugin>
+
+
+
+
             </plugins>
+
         </pluginManagement>
+
+
     </build>
+
 
     <profiles>
         <!-- for Local (Development) -->

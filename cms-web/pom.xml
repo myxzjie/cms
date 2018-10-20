@@ -354,6 +354,7 @@
 					<contextReloadable>true</contextReloadable>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>
