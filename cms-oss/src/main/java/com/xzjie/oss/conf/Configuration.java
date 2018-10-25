@@ -44,7 +44,7 @@ public class Configuration {
 		if (cL == null) {
 			cL = Configuration.class.getClassLoader();
 		}
-		String path = cL.getResource("oss.properties").getPath().trim();
+		String path = cL.getResource("conf/oss.properties").getPath().trim();
 		logger.debug(">> loading {}",path);
 		FileInputStream fis = null;
 		try {

@@ -32,7 +32,7 @@
         <commons-lang3.version>3.0</commons-lang3.version>
         <commons-codec.version>1.9</commons-codec.version>
         <httpclient.version>4.5.2</httpclient.version>
-        <fastjson.version>1.2.6</fastjson.version>
+        <fastjson.version>1.2.49</fastjson.version>
         <fastdfs-client.version>1.25</fastdfs-client.version>
         <hessian.version>4.0.7</hessian.version>
         <jetty.version>6.1.26</jetty.version>
