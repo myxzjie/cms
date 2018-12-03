@@ -1,25 +1,23 @@
 package com.xzjie.et.wechat.web.controller;
 
-import com.xzjie.common.web.utils.MapResult;
-import com.xzjie.core.utils.StringUtils;
-import com.xzjie.et.cms.model.Site;
-import com.xzjie.et.cms.service.SiteService;
-import com.xzjie.et.core.web.BaseController;
-import com.xzjie.et.wechat.model.WxAccount;
-import com.xzjie.et.wechat.service.WxAccountService;
-import com.xzjie.mybatis.page.Page;
-import com.xzjie.mybatis.page.PageEntity;
+import java.util.Date;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.Map;
+import com.xzjie.common.web.utils.MapResult;
+import com.xzjie.core.utils.StringUtils;
+import com.xzjie.et.core.web.BaseController;
+import com.xzjie.et.wechat.model.WxAccount;
+import com.xzjie.et.wechat.service.WxAccountService;
+import com.xzjie.mybatis.page.Page;
+import com.xzjie.mybatis.page.PageEntity;
 
 @Controller
 @RequestMapping("${web.adminPath}/wx-account")
@@ -160,7 +158,7 @@ public class AdminWxAccountController extends BaseController {
             }
 
         } catch (Exception e) {
-            LOG.error("修改公众帐号错误：{}", e.getMessage());
+            LOG.error("修改公众帐号错误：{}", e);
         }
 
         return MapResult.mapError("1312");

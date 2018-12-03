@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xzjie.et.wechat.dao.WxMessageMapper">
+  <resultMap id="BaseResultMap" type="com.xzjie.et.wechat.model.WxMessage">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="site_id" jdbcType="BIGINT" property="siteId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="msgtype" jdbcType="VARCHAR" property="msgtype" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="thumb_media_id" jdbcType="VARCHAR" property="thumbMediaId" />
+    <result column="media_id" jdbcType="VARCHAR" property="mediaId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, site_id, user_id, msgtype, title, description, thumb_media_id, media_id, content, 
+    create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wx_message
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wx_message
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xzjie.et.wechat.model.WxMessage">
+    insert into wx_message (id, site_id, user_id, 
+      msgtype, title, description, 
+      thumb_media_id, media_id, content, 
+      create_date, update_date)
+    values (#{id,jdbcType=BIGINT}, #{siteId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{msgtype,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{thumbMediaId,jdbcType=VARCHAR}, #{mediaId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xzjie.et.wechat.model.WxMessage">
+    insert into wx_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="msgtype != null">
+        msgtype,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="thumbMediaId != null">
+        thumb_media_id,
+      </if>
+      <if test="mediaId != null">
+        media_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="msgtype != null">
+        #{msgtype,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbMediaId != null">
+        #{thumbMediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaId != null">
+        #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.wechat.model.WxMessage">
+    update wx_message
+    <set>
+      <if test="siteId != null">
+        site_id = #{siteId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="msgtype != null">
+        msgtype = #{msgtype,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbMediaId != null">
+        thumb_media_id = #{thumbMediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaId != null">
+        media_id = #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xzjie.et.wechat.model.WxMessage">
+    update wx_message
+    set site_id = #{siteId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      msgtype = #{msgtype,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      thumb_media_id = #{thumbMediaId,jdbcType=VARCHAR},
+      media_id = #{mediaId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

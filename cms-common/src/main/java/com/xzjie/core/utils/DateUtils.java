@@ -212,11 +212,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		}
 		return null;
 	}
-	
-	public static String dateFormat(long timeMillis,String pattern){
+
+	@Deprecated
+	public static String dateFormat(long timeMillis, String pattern) {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		String date=sdf.format(new Date(timeMillis * 1000L));
+		String date = sdf.format(new Date(timeMillis * 1000L));
 		return date;
+	}
+
+	public static String timestampToDateTostring(String timestamp, String pattern) {
+
+		SimpleDateFormat format = new SimpleDateFormat(pattern);
+		if (timestamp.length() == 13) {
+			String date = format.format(new Date(Long.parseLong(timestamp)));
+			return date;
+		} else {
+			String date = format.format(new Date(Integer.parseInt(timestamp) * 1000L));
+			return date;
+		}
+	}
+
+	public static Date timestampToDate(String timestamp, String pattern) {
+		Date date = parseDate(timestampToDateTostring(timestamp, pattern));
+		return date;
+
 	}
 
 	/**
@@ -287,8 +306,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @param format
 	 *            日期格式，如yyyy-MM-dd
 	 * @see SimpleDateFormat#format(Date)
-	 * @return String 返回格式化后的日期，格式由参数<code>format</code>
-	 *         定义，如yyyy-MM-dd，如2006-02-15
+	 * @return String 返回格式化后的日期，格式由参数<code>format</code> 定义，如yyyy-MM-dd，如2006-02-15
 	 */
 	public static String getFormatDate(Date currDate, String format) {
 		if (currDate == null) {
@@ -439,10 +457,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		 * System.out.println(compareToDate(first, second,"yyyy-MM-dd"));
 		 */
 
-		//System.out.println(DateUtils.formatDate(new Date(), "yyyyMMddHH"));
-		long d=getTimeMillis();
+		// System.out.println(DateUtils.formatDate(new Date(), "yyyyMMddHH"));
+		long d = getTimeMillis();
 		System.out.println(d);
-		
-		System.out.println(dateFormat(d,"yyyy-MM-dd"));
+
+		System.out.println(dateFormat(d, "yyyy-MM-dd"));
 	}
 }
