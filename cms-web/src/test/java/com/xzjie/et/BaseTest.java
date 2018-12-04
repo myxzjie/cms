@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @version V0.0.1 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring-context.xml"/*,"classpath:spring-mybatis.xml"*/ })
+@ContextConfiguration(locations = { "classpath:spring/spring-context.xml"/*,"classpath:spring-mybatis.xml"*/ })
 public class BaseTest {
 
 	/**

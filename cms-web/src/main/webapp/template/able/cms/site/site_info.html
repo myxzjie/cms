@@ -1,5 +1,5 @@
-<#include "/admin/_inc/_head.html"/>
-<#include "/admin/_inc/_layout.html"/>
+<#include "/able/_inc/_head.html"/>
+<#include "/able/_inc/_layout.html"/>
 
 <!DOCTYPE HTML>
 <!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
@@ -228,7 +228,7 @@
                     errorHandler.hide();
                     $.ajax({
                         type:'post',
-                        url:'/site/update',
+                        url: global.adminPath + '/site/update',
                         async:false, //同步方法，如果用异步的话，flag永远为1
                         dataType:'json',
                         data:$(form).serialize(),
@@ -286,7 +286,7 @@
                     errorHandler.hide();
                     $.ajax({
                         type:'post',
-                        url:'/site/update',
+                        url: global.adminPath + '/site/update',
                         async:false, //同步方法，如果用异步的话，flag永远为1
                         dataType:'json',
                         data:$(form).serialize(),
@@ -349,33 +349,12 @@
 
                     }
                 });
-//                $.each(data.result, function (index, file) {
-//                    $('#'+data.inputid).prev('span').text('重新上传');
-//                    $('#'+data.inputid).attr('value',file.url);
-//                });
             },
             progressall: function (e, data) {//上传过程中，隔段时间就会调起的回调函数，这个东西，主要是用来返回进度的，你看里面的引用，没错，它带回来的参数值，只有total、loaded这种数字。
-//                var progress = parseInt(data.loaded / data.total * 100, 10);
-//                $('#progress_'+$(this).fileupload('option', 'inputid')+' .progress-bar').css(
-//                    'width',
-//                    progress + '%'
-//                ).next('.progress-text').children('.progress-percent-text').text('上传进度：'+progress + '%');
+
             },
             processalways:function (e, data) {//这货是干嘛的呢？就是上传之前调起的函数。没错，如果你选择了自动上传，那么当你点选完了文件，这个货就会被调起。
-//                $('#progress_'+$(this).fileupload('option', 'inputid')+' .progress-bar').css(
-//                    'width',
-//                    '0'
-//                ).next('.progress-text').children('.progress-filename-text').empty().next('.progress-percent-text').empty();
-//
-//                $('#'+$(this).fileupload('option', 'inputid')).attr('value','').prev('span').text('上传文件');
-//                var index = data.index,
-//                    file = data.files[index];
-//                var file_name=file.name.length > 8? file.name.substr(0, 3) + "..." + file.name.substr(file.name.length-5, 5) : file.name;
-//                $('#progress_'+$(this).fileupload('option', 'inputid')+' .progress-text .progress-filename-text').text(file_name);
-//                if (file.error)
-//                {
-//                    $('#error_'+$(this).fileupload('option', 'inputid')).children('p').text(file.error).css('color','#f60941');
-//                }
+
             }
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');//不用猜了，就是看看是不是支持jqueryajax上传方式。就是上面说的那个frame东东。

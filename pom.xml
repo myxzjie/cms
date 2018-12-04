@@ -47,7 +47,7 @@
         <spring-data-redis.version>1.7.7.RELEASE</spring-data-redis.version>
         <freemarker.version>2.3.23</freemarker.version>
         <shiro-freemarker-tags.version>1.0.0</shiro-freemarker-tags.version>
-        <quartz.version>1.8.6</quartz.version>
+        <quartz.version>2.2.1</quartz.version>
         <org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
         <oss.version>2.7.0</oss.version>
     </properties>
@@ -277,7 +277,11 @@
                 <version>${mybatis.version}</version>
             </dependency>
 
-
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

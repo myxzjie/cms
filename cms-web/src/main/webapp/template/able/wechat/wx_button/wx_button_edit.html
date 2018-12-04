@@ -1,5 +1,5 @@
-<#include "/default/_inc/_head.html"/>
-<#include "/default/_inc/_layout.html"/>
+<#include "/able/_inc/_head.html"/>
+<#include "/able/_inc/_layout.html"/>
 
 <!DOCTYPE HTML>
 <!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
@@ -17,7 +17,7 @@
 <section id="page-title" >
     <div class="row">
         <div class="col-sm-8">
-            <a href="#/category" class="btn btn-o btn-primary" style="border-radius: 50px;padding: 5px 8px"><i class="fa fa-reply"></i></a>
+            <a href="${ctx_admin}/category" class="btn btn-o btn-primary" style="border-radius: 50px;padding: 5px 8px"><i class="fa fa-reply"></i></a>
             <label>内容管理 - 栏目</label>
         </div>
 
@@ -47,7 +47,7 @@
 
             <div class="col-lg-2 col-md-12"></div>
             <div class="col-lg-8 col-md-12">
-                <form id="form" role="form" class="form-horizontal" action="<#if model?exists>/wx-button/update<#else>/wx-button/add</#if>" method="post">
+                <form id="form" role="form" class="form-horizontal" action="${ctx_admin}<#if model?exists>/wx-button/update<#else>/wx-button/add</#if>" method="post">
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">
                             菜单名称：<span class="symbol required" aria-required="true"></span>
@@ -130,7 +130,7 @@
             type: "POST",
             data: {},
             dataType: 'json',
-            url: '/wx-button/tree',
+            url: global.adminPath + '/wx-button/tree',
             success: function(res){
                 $("#pId").droptree({
                     items:res.data ,
@@ -202,7 +202,7 @@
                                     icon: 1,
                                     time: 2000, ///2秒关闭（如果不配置，默认是3秒）
                                 }, function(){
-                                    location.href = "/index#/wx-button";
+                                    location.href = global.adminPath + "/wx-button";
                                 });
                             }else{
                                 layer.msg(res.message, {icon: 2});

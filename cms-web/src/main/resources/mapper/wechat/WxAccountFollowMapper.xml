@@ -25,6 +25,37 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
+
+  <sql id="Base_Column_List">
+    id, open_id, subscribe, nick_name, sex, city, country, province, `language`, avatar, subscribe_date,
+    unionid, remark, groupid, tagid_list, subscribe_scene, qr_scene, qr_scene_str, site_id, user_id, create_date, status
+  </sql>
+
+    <select id="exist" resultType="int" parameterType="com.xzjie.et.wechat.model.WxAccountFollow">
+        select
+        count(1)
+        from wx_account_follow
+        where status=1
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="siteId != null and siteId != ''">
+            and site_id = #{siteId,jdbcType=BIGINT}
+        </if>
+        <if test="openId != null and openId != ''">
+            and open_id = #{openId,jdbcType=VARCHAR}
+        </if>
+
+    </select>
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    from wx_account_follow a
+    where site_id = #{t.siteId,jdbcType=BIGINT}
+    order by create_date desc
+  </select>
+
   <insert id="insert" parameterType="com.xzjie.et.wechat.model.WxAccountFollow">
     insert into wx_account_follow (id, open_id, subscribe, 
       nick_name, sex, city, 
@@ -43,6 +74,7 @@
       #{siteId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=INTEGER})
   </insert>
+
   <insert id="insertSelective" parameterType="com.xzjie.et.wechat.model.WxAccountFollow">
     insert into wx_account_follow
     <trim prefix="(" suffix=")" suffixOverrides=",">

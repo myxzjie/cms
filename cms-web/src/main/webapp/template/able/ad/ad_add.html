@@ -1,5 +1,5 @@
-<#include "/admin/_inc/_head.html"/>
-<#include "/admin/_inc/_layout.html"/>
+<#include "/able/_inc/_head.html"/>
+<#include "/able/_inc/_layout.html"/>
 
 <!DOCTYPE HTML>
 <!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
@@ -346,13 +346,10 @@
                                     time: 500, ///2秒关闭（如果不配置，默认是3秒）
                                     //btn: ['明白了', '知道了']
                                 }, function(){
-                                    location.href="/index#/ad";
+                                    location.href= global.adminPath + "/ad";
                                 });
-                                //swal("", res.message, "success");
-                                //
                             }else{
                                 layer.msg(res.message, {icon: 1});
-                                //swal("", res.message, "error");
                             }
                         }
                     });

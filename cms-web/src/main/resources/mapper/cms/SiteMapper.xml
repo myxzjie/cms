@@ -31,14 +31,11 @@
     where c.`app_id`=#{appId,jdbcType=BIGINT}
   </select>
   
-  <select id="getEntity" resultMap="BaseResultMap" parameterType="com.xzjie.et.cms.model.Site">
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.cms.model.Site">
  	select 
     <include refid="Base_Column_List" />
     from cms_site
-    where 1=1
-    <if test="orgId != null">
-    and org_id = #{orgId,jdbcType=BIGINT}
-    </if>
+    where state=1
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

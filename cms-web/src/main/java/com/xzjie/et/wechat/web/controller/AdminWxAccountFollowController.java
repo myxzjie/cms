@@ -2,6 +2,8 @@ package com.xzjie.et.wechat.web.controller;
 
 import java.util.Map;
 
+import com.xzjie.et.wechat.model.WxAccountFollow;
+import com.xzjie.et.wechat.service.WxAccountFollowService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class AdminWxAccountFollowController  extends BaseController {
 	private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired
-    private WxAccountService wxAccountService;
+    private WxAccountFollowService wxAccountFollowService;
 
     @RequestMapping(value = {"", "/", "index"})
     public String index(Map<String, Object> modelView) {
@@ -32,16 +34,18 @@ public class AdminWxAccountFollowController  extends BaseController {
     
     @RequestMapping("datapage")
     @ResponseBody
-    public Map<String, Object> dataPage(WxAccount model, Page page) {
-        PageEntity<WxAccount> pageEntity = new PageEntity<WxAccount>();
+    public Map<String, Object> dataPage(WxAccountFollow model, Page page) {
+        PageEntity<WxAccountFollow> pageEntity = new PageEntity<WxAccountFollow>();
+
+        model.setSiteId(getSiteId());
         pageEntity.setT(model);
         pageEntity.setPage(page);
         try {
-            PageEntity<WxAccount> res = wxAccountService.getListPage(pageEntity);
+            PageEntity<WxAccountFollow> res = wxAccountFollowService.getListPage(pageEntity);
 
             return MapResult.bootPage(res.getRows(), res.getPage());
         } catch (Exception e) {
-            LOG.error("获得数据错误：{}", e.getMessage());
+            LOG.error("获得数据错误：{}", e);
         }
         return MapResult.mapError("601");
     }

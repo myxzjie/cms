@@ -1,5 +1,5 @@
-<#include "/default/_inc/_head.html"/>
-<#include "/default/_inc/_layout.html"/>
+<#include "/able/_inc/_head.html"/>
+<#include "/able/_inc/_layout.html"/>
 
 <!DOCTYPE HTML>
 <!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
@@ -53,7 +53,7 @@
                         <div class="row">
                             <div class="col-lg-8 col-md-12">
                                 <form id="form" role="form" class="form-horizontal"
-                                      action="<#if model?exists>/wx-account/update<#else>/wx-account/add</#if>"
+                                      action="${ctx_admin}<#if model?exists>/wx-account/update<#else>/wx-account/add</#if>"
                                       method="post">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="name">

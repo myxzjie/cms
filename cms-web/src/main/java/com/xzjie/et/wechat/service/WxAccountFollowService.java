@@ -5,4 +5,5 @@ import com.xzjie.mybatis.core.service.BaseService;
 
 public interface WxAccountFollowService extends BaseService<WxAccountFollow, Long> {
 
+    void batchSyncAccountFollow(Long siteId, String nextOpenId);
 }

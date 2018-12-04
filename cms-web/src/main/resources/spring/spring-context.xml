@@ -38,4 +38,5 @@
 	<import resource="classpath:spring/spring-cache.xml"/>
 	<import resource="classpath:spring/spring-shiro.xml"/>
 	<import resource="classpath:spring/spring-mybatis.xml"/>
+	<import resource="classpath:spring/spring-quartz.xml"/>
 </beans>

@@ -50,6 +50,9 @@ public class AdminWxAccountController extends BaseController {
     @ResponseBody
     public Map<String, Object> dataPage(WxAccount model, Page page) {
         PageEntity<WxAccount> pageEntity = new PageEntity<WxAccount>();
+
+        model.setSiteId(getSiteId());
+
         pageEntity.setT(model);
         pageEntity.setPage(page);
         try {

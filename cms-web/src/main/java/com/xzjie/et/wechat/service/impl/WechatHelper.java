@@ -1,9 +1,7 @@
 package com.xzjie.et.wechat.service.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +96,7 @@ public class WechatHelper {
         return true;
     }
     
-    public List<WxAccountFollow> getAccountFollowList(String accessToken,String nextOpenId) throws Exception  {
+    public Map<String,Object> getAccountFollowList(String accessToken, String nextOpenId) throws Exception  {
     	String url = wechatUrl + "cgi-bin/user/get?access_token=" + accessToken + "&next_openid=" + nextOpenId;
         logger.info("同步粉丝入参消息如下:" + url);
         String json = HttpUtils.doGet(url);
@@ -107,8 +105,10 @@ public class WechatHelper {
         if (jsonObject.containsKey("errcode")) {
         	throw new Exception("获得用户错误。");
         }
+        Map<String,Object> map =new HashMap<>();
         List<WxAccountFollow> accountFollows = new ArrayList<WxAccountFollow>();
         if (jsonObject.containsKey("data")) {
+            map.put("next_openid", jsonObject.getString("next_openid"));
             if (jsonObject.getJSONObject("data").containsKey("openid")) {
                 JSONArray openidArr = jsonObject.getJSONObject("data").getJSONArray("openid");
                 int length = openidArr.size();
@@ -119,9 +119,10 @@ public class WechatHelper {
                     //fans.setAccount(WxMemoryCacheClient.getAccount());
                     accountFollows.add(accountFollow);
                 }
+                map.put("accountFollows",accountFollows);
             }
         }
-        return accountFollows;
+        return map;
     }
     
 	public WxAccountFollow getAccountFollow(String accessToken, String openId) throws Exception {
