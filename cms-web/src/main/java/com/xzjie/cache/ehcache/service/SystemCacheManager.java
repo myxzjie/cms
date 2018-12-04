@@ -11,24 +11,34 @@ public class SystemCacheManager {
         SystemCacheManager.cache = cacheManager.getCache("system-cache");
     }
 
-    public static Object get(String key){
-        return cache.get(key).get();
+    public static Object get(String key) {
+        try {
+            return cache.get(key).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T get(String key, Class<T> cls) {
-        return (T) cache.get(key).get();
+        try {
+            return (T) cache.get(key).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static void put(String key, Object value){
+    public static void put(String key, Object value) {
         cache.put(key, value);
     }
 
-    public static void evict(String key){
+    public static void evict(String key) {
         cache.evict(key);
     }
 
-    public static void clear(){
+    public static void clear() {
         cache.clear();
     }
 }

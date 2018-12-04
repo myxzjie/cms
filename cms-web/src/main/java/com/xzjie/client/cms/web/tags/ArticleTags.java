@@ -1,5 +1,6 @@
 package com.xzjie.client.cms.web.tags;
 
+import com.xzjie.common.annotation.freemarker.FreemarkerComponent;
 import com.xzjie.common.utils.SpringUtils;
 import com.xzjie.common.web.freemarker.AbstractTemplateDirectiveModel;
 import com.xzjie.et.cms.model.Article;
@@ -11,16 +12,19 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@FreemarkerComponent("article")
 public class ArticleTags extends AbstractTemplateDirectiveModel {
     private final Logger LOG = LogManager.getLogger(getClass());
     private final static String DICT_CODE = "ARTICLE_CATEGORY_ID";
 
-    private ArticleService articleService = SpringUtils.getBean(ArticleService.class);
+    @Autowired
+    private ArticleService articleService;
 
 
     @Override
@@ -31,7 +35,7 @@ public class ArticleTags extends AbstractTemplateDirectiveModel {
         SimpleScalar type = (SimpleScalar) params.get("type");
         SimpleScalar showCountParms = (SimpleScalar) params.get("showCount");
         Integer showCount = showCountParms == null ? 10 : Integer.parseInt(showCountParms.toString());
-        SimpleScalar nameParms = (SimpleScalar)params.get("alias");
+        SimpleScalar nameParms = (SimpleScalar) params.get("alias");
         String name = nameParms == null ? "article" : nameParms.toString();
 
         List<Article> list = null;

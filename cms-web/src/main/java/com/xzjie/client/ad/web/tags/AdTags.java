@@ -1,5 +1,6 @@
 package com.xzjie.client.ad.web.tags;
 
+import com.xzjie.common.annotation.freemarker.FreemarkerComponent;
 import com.xzjie.common.utils.SpringUtils;
 import com.xzjie.common.web.freemarker.AbstractTemplateDirectiveModel;
 import com.xzjie.et.ad.model.Ad;
@@ -18,14 +19,16 @@ import java.util.Map;
 /**
  * Created by xzjie on 2017/8/18.
  */
+@FreemarkerComponent("ad")
 public class AdTags extends AbstractTemplateDirectiveModel {
 
-    private AdService adService = SpringUtils.getBean(AdService.class);
+    @Autowired
+    private AdService adService;
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         SimpleScalar id = (SimpleScalar) params.get("id");
-        List<Ad> ads= adService.getAdByPositionId(Long.parseLong(id.toString()));
+        List<Ad> ads = adService.getAdByPositionId(Long.parseLong(id.toString()));
 
         env.setVariable("ads", wrap(ads));
         if (body != null) {

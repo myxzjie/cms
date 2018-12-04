@@ -29,7 +29,7 @@
 	<task:annotation-driven />
 
 	<!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
-	<context:component-scan base-package="com.xzjie.**.**.web.controller" />
+	<context:component-scan base-package="com.xzjie.**.**.web" />
 
 
 	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
@@ -174,7 +174,6 @@
 
 		<property name="templateLoaderPath" value="/template/" />
 		<property name="defaultEncoding" value="utf-8" />
-		<property name="defaultTags" ref="etTags" />
 		<property name="freemarkerVariables">
 			<map>
 				<entry key="xml_escape" value-ref="fmXmlEscape" />
