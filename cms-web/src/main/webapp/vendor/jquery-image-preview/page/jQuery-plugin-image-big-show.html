@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="description" content="图片放大显示的jQuery插件演示页面" />
+<meta name="description" content="张鑫旭web前端学习之css" />
+<meta name="keywords" content="张鑫旭,鑫空间-鑫生活,博客,web前端,css,demo页面,学习,jQuery,插件" />
+<meta name="author" content="张鑫旭,zhangxixnu" />
+<title>图片放大显示的jQuery插件演示页面</title>
+<link rel="shortcut icon" href="http://www.zhangxinxu.com/zxx_ico.png" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" />
+<script type="text/javascript" src="../js/jquery-1.2.6.pack.js"></script>
+<script type="text/javascript" src="../js/jquery.imagePreview.1.0.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("a.preview").preview();	  
+});
+</script>
+<style type="text/css">
+html{overflow-y:scroll;}
+a.preview,a.preview:hover{text-decoration:none;}
+a.preview img{margin:20px 10px;}
+</style>
+</head>
+
+<body>
+<div class="zxx_out_box">
+    <div class="zxx_in_box">
+        <div class="zxx_header">
+            <a href="http://www.zhangxinxu.com/">
+                <img class="l" src="http://www.zhangxinxu.com/wordpress/wp-content/themes/default/images/index_logo.gif" />
+            </a>
+            <span class="zxx_author_time">by zhangxinxu 2009-10-17 16:26</span>
+        </div>
+        <h3 class="zxx_title">图片放大显示的jQuery插件演示页面</h3>
+        <div class="zxx_main_con">
+			<div class="zxx_test_list">
+            	<a class="preview" href="http://image.zhangxinxu.com/image/study/s/s256/mm1.jpg" title="张含韵">
+                	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm1.jpg" />
+                </a>
+                <a class="preview" href="http://image.zhangxinxu.com/image/study/s/s256/mm2.jpg" title="某不知名美女">
+                	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm2.jpg" />
+                </a>
+                <a class="preview" href="http://image.zhangxinxu.com/image/study/s/s256/mm3.jpg" title="某不知名美女">
+                	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm3.jpg" />
+                </a>
+                <a class="preview" href="http://image.zhangxinxu.com/image/study/s/s256/mm4.jpg" title="某不知名美女">
+                	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm4.jpg" />
+                </a>
+                <a class="preview" href="http://image.zhangxinxu.com/image/study/s/s256/mm5.jpg" title="某不知名美女">
+                	<img src="http://image.zhangxinxu.com/image/study/s/s128/mm5.jpg" />
+                </a>
+                <p>
+                	<a class="preview" href="http://www.zhangxinxu.com" title="张鑫旭-鑫空间-鑫生活">请勿点击！</a>
+                </p>
+            </div>           
+        </div>
+        <div class="zxx_footer">
+            &copy;<a href="http://www.zhangxinxu.com/">张鑫旭-鑫空间-鑫生活</a>
+            |
+            <a href="http://www.zhangxinxu.com/wordpress/?p=281">该篇相关文章</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

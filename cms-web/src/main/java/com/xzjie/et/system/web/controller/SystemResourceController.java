@@ -26,7 +26,7 @@ public class SystemResourceController extends BaseController{
 
     @RequestMapping(value={"","/","index"})
     public String index(Map<String, Object> modelView){
-        return "resource/resource_index";
+        return getRemoteView("resource/resource_index");
     }
 
 

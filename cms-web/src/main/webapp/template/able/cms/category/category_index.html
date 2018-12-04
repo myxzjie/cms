@@ -1,0 +1,172 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title" >
+    <div class="row">
+        <div class="col-sm-8">
+            <label>内容管理 - 栏目列表</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+<div class="container-fluid container-fullw bg-white">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>该页面展示了商城所有的广告。</li>
+                    <li>可搜索广告名称关键词进行查询，侧边栏可进行高级搜索。</li>
+                </ul>
+            </div>
+
+            <div id="toolbar">
+                <a id="btn-add" href="${ctx_admin}/category/addview" class="btn btn-o btn-danger">添加</a>
+                <!--<button id="btn-update" type="button" class="btn btn-primary">修改</button>
+                <button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
+                <button id="btn-scene" type="button" class="btn btn-primary">设置监控点</button>-->
+            </div>
+            <table class="table treegrid table-bordered table-condensed table-hover col-xs-12"></table>
+        </div>
+    </div>
+</div>
+
+
+
+
+</@layout>
+
+
+<script type="text/javascript" >
+
+    var $table = null;
+
+    $(function () {
+        //toolbar();
+        initTable();
+        $('#btn-query').click(function () {
+            $table.bootstrapTable('destroy');
+            initTable();
+        });
+        $('a.preview').preview();
+    });
+
+    function initTable() {
+
+        $('.treegrid').treegrid({
+            server:true,
+            type: "GET", //请求数据的ajax类型
+            url: global.adminPath + '/category/tree',    //请求数据的ajax的url
+            initialState: 'collapsed',
+            idColumn: 'categoryId',
+            parentColumn: 'categoryPId',
+            sortColumn: 'categoryOrder',
+            saveState: true,
+            expanderExpandedClass: 'glyphicon glyphicon-chevron-down',
+            expanderCollapsedClass: 'glyphicon glyphicon-chevron-right',
+            columns:[{
+                title: '栏目名称',
+                field: 'categoryName',
+            },{
+                title:'URL连接',
+                field:'href',
+                formatter:function (value, row, index) {
+                    return value;
+                }
+            },{
+                title: '连接类型',
+                field: 'target',
+                formatter:function (value, row, index) {
+                    return value;
+                }
+            },{
+                title:'排序',
+                field:'categoryOrder'
+            },{
+                title: '图片',
+                field: 'image',
+                formatter:function (value, row, index) {
+                    if(!value)return'';
+                    var html='<a href="'+value+'" target="_blank" title="" class="preview btn btn-o btn-danger btn-xs">\
+                            <i class="fa fa-image"></i>\
+                            </a>';
+
+                    return html;
+                }
+            },{
+                title: '是否显示',
+                field: 'showModes',
+                formatter:function (value, row, index) {
+                    if(value==0){
+                        return '隐藏';
+                    }else {
+                        return '显示';
+                    }
+                }
+            },{
+                title: '操作',
+                field: '',
+                formatter:function (value, row, index) {
+                    return [
+                        '<a class="btn btn-o btn-default" href="${ctx_admin}/category/edit/'+row.categoryId+'"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
+                        /*'<a class="btn btn-o btn-default" href="#/ad/position'+row.id+'"><i class="fa fa-pencil-square-o"></i> 编辑</a>',*/
+                        '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del('+row.categoryId+')"><i class="fa fa-trash"></i> 移除</button>'
+                    ].join('');
+                }
+            }
+            ]
+        });
+
+
+    }
+
+    var tgridObj={
+        del:function (id) {
+            layer.confirm('确定要删除吗？同时也会删除子栏目。', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    data:{},
+                    type:'post',
+                    dataType:'json',
+                    url: global.adminPath + '/category/delete/'+id,
+                    success:function (res) {
+                        if(res.success){
+                            layer.msg(res.message, {
+                                icon: 1,
+                                time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.msg(res.message, {icon: 2});
+                        }
+                    }
+                });
+
+            }, function(){
+//                取消
+            });
+
+        }
+    };
+
+</script>

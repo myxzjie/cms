@@ -1,0 +1,217 @@
+<#include "/default/_inc/_head.html"/>
+<#include "/default/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title" >
+    <div class="row">
+        <div class="col-sm-8">
+            <label>内容管理 - 文章列表</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+<div class="container-fluid container-fullw bg-white">
+    <div class="row">
+        <div class="col-md-12">
+            <!--<div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>展示网站所有的广告位置。</li>
+                    <li>点击查看可查看广告位置相关广告位的广告。</li>
+                    <li>可搜索关键词进行查询，侧边栏可进行高级搜索。</li>
+                </ul>
+            </div>-->
+
+            <div class="panel panel-white">
+                <div class="panel-body">
+                    <form id="query_form" class="form-inline">
+                        <div class="form-group">
+                            <label class="control-label" >标题：</label>
+                            <input class="form-control" type="text" name="title" id="title">
+                        </div>
+
+                        <button id="btn_query" class="btn btn-primary" type="button">
+                            查询
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div id="toolbar">
+                <a id="btn-add" href="#/wx-button/addview" class="btn btn-o btn-danger">添加</a>
+                <!--<button id="btn-update" type="button" class="btn btn-primary">修改</button>
+                <button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>-->
+                <button id="btn-synchro" type="button" class="btn btn-o btn-danger">一键同步菜单</button>
+            </div>
+            <table id="data-table" class="table table-hover col-xs-12" data-toolbar="#toolbar"></table>
+        </div>
+    </div>
+</div>
+</@layout>
+<script type="text/javascript" >
+
+    var $table = null;
+    //    router.set('/ad/position/addview',function () {
+    //    });
+
+    $(function () {
+        //toolbar();
+        initTable()
+        $('#btn_query').click(function () {
+            $table.bootstrapTable('destroy');
+            initTable();
+        });
+        $('#btn-synchro').click(function () {
+            $.ajax({
+                type: "POST",
+                data: {},
+                dataType: 'json',
+                url:'/wx-button/sync',
+                success: function(res){
+                    if(res.success){
+                        layer.msg(res.message, {
+                            icon: 1,
+                            time: 2000,
+                        }, function () {
+
+                        });
+                    }else{
+                        layer.msg(res.message, { icon: 2 });
+                    }
+                }
+            });
+        });
+    });
+
+    function initTable() {
+        $table = $('#data-table').bootstrapTable({
+            url: '/wx-button/datapage',  //请求后台的URL（*）
+            method: 'get',   //请求方式（*）
+            //toolbar: '#toolbar',  //工具按钮用哪个容器
+            striped: false,   //是否显示行间隔色
+            cache: false,   //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,   //是否显示分页（*）
+            sortable: false,   //是否启用排序
+            sortOrder: "desc",   //排序方式
+            queryParams: function queryParams(params) { //传递参数（*）
+                var pars=$('#query_form').serializeJSON();
+                params = $.extend({}, params, pars);
+                params.showCount=params.limit;
+                params.currentPage=(params.offset/params.limit)+1;
+                return params;
+            },
+            sidePagination: "server",  //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,   //初始化加载第一页，默认第一页
+            pageSize: 10,   //每页的记录行数（*）
+            pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+            search: false,   //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: false,   //是否显示所有的列
+            showRefresh: false,   //是否显示刷新按钮
+            minimumCountColumns: 2,  //最少允许的列数
+            clickToSelect: true,  //是否启用点击选中行
+            //height: 400,   //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",   //每一行的唯一标识，一般为主键列
+            showToggle: false,   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,   //是否显示详细视图
+            detailView: false,   //是否显示父子表
+            columns: [
+                {
+                    checkbox: true
+                },{
+                    field: 'name',
+                    title: '菜单名称'
+                },{
+                    field: 'perentName',
+                    title: '上级菜单'
+                },
+                {
+                    field: 'buttonKey',
+                    title: '菜单标识'
+                },{
+                    title: '排序',
+                    field: 'orders'
+                }, {
+                    field: 'type',
+                    title: '菜单类型',
+                    formatter: function (value, row, index) {
+                        if (value == 'click') {
+                            return '消息触发类';
+                        } else if (value == 'view') {
+                            return '网页链接类';
+                        }
+                    }
+                },{
+                    title: '创建时间',
+                    field: 'createDate',
+                    formatter: function (value, row, index) {
+                        return new Date(value).format("yyyy-MM-dd");
+                    }
+                },{
+                    title: 'URL',
+                    field: 'url'
+                },{
+                    title: '操作',
+                    formatter:function (value, row, index) {
+                        return [
+                            '<a class="btn btn-o btn-default" href="#/wx-button/edit/'+row.id+'"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
+                            '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del('+row.id+')"><i class="fa fa-trash"></i> 移除</button>'
+                        ].join('');
+                    }
+                }
+            ]
+        });
+    }
+
+    var tgridObj={
+        del:function (id) {
+            layer.confirm('确定要删除吗？同时也会删除子菜单。', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    data:{},
+                    type:'post',
+                    dataType:'json',
+                    url:'/wx-button/delete/'+id,
+                    success:function (res) {
+                        if(res.success){
+                            layer.msg(res.message, {
+                                icon: 1,
+                                time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.msg(res.message, {icon: 2});
+                        }
+                    }
+                });
+            }, function(){
+//                取消
+            });
+        }
+    };
+
+
+
+
+
+</script>

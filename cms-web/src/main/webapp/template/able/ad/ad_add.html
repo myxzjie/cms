@@ -1,0 +1,376 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title" >
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="${ctx_admin}/ad" class="btn btn-o btn-primary" style="border-radius: 50px;padding: 5px 8px"><i class="fa fa-reply"></i></a>
+            <label>广告 - 添加广告</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+
+<div class="container-fluid container-fullw bg-white">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!--<h5 class="over-title margin-bottom-15">Basic <span class="text-bold">Table</span></h5>-->
+            <!--<p>-->
+            <!--For basic styling&mdash;light padding and only horizontal dividers&mdash;add the base class <code>.table</code> to any <code>&lt;table&gt;</code>. It may seem super redundant, but given the widespread use of tables for other plugins like calendars and date pickers, we've opted to isolate our custom table styles.-->
+            <!--</p>-->
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>上传广告图片时请注意图片尺寸问题。</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-12"></div>
+            <div class="col-lg-8 col-md-12">
+                <form id="form" role="form" class="form-horizontal">
+
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label" for="positionName">-->
+                            <!--广告类型：<span class="symbol required" aria-required="true"></span>-->
+                        <!--</label>-->
+                        <!--<div class="col-sm-7">-->
+                            <!--<input type="text" name="positionName" placeholder="广告位名称"  class="form-control required"  value="${model.positionName}" >-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="adName">
+                            广告名称：<span class="symbol required" aria-required="true"></span>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="hidden" id="id" name="id" value="${model.id}">
+                            <input type="text" id="adName" name="adName" placeholder="广告名称"  class="form-control required"  value="${model.adName}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="positionId">
+                            广告位置：<span class="symbol required" aria-required="true"></span>
+                        </label>
+                        <div class="col-sm-7">
+                            <select id="positionId" name="positionId" class="form-control required">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="startTime">
+                            起止日期：<span class="symbol required" aria-required="true"></span>
+                        </label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input id="startTime" name="startTime" class="laydate-icon form-control required" value="<#if model?exists>${model.startTime?string('yyyy-MM-dd HH:mm:ss')}</#if>">
+                                <span class="input-group-addon bg-primary">~</span>
+                                <input id="endTime" name="endTime" class="laydate-icon form-control required" value="<#if model?exists>${model.endTime?string('yyyy-MM-dd HH:mm:ss')}</#if>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="adLink">
+                            广告链接：
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" id="adLink" name="adLink" placeholder="http://" class="form-control" value="${model.adLink}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="adCode">
+                            上传图片：
+                        </label>
+                        <div class="col-sm-7">
+
+                            <span class="btn btn-primary fileinput-button">
+                                <i class="fa fa-cloud-upload"></i>
+                                <span>上传图片</span>
+                                <input id="fileupload" type="file" name="file" multiple>
+                            </span>
+                            <a href="${model.adCode}" target="_blank" title="" class="preview btn btn-o btn-danger btn-xs">
+                                <i class="fa fa-image"></i>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="adCode">
+                            或图片网址：<span class="symbol required" aria-required="true"></span>
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="adCode" type="text" name="adCode" placeholder="图片网址" class="form-control required" value="${model.adCode}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="man">
+                            广告联系人：
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="man" type="text" name="man" placeholder="联系人" class="form-control" value="${model.man}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="email">
+                            联系人Email：
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="email" type="text" name="email" placeholder="Email" class="form-control" value="${model.email}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="phone">
+                            联系电话：
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="phone" type="text" name="phone" placeholder="电话" class="form-control" value="${model.phone}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">
+                            是否开启：
+                        </label>
+                        <div class="col-sm-7">
+                            <div class="clip-radio radio-primary">
+                                <input id="enabled0" type="radio" name="enabled" value="0" <#if model.enabled==false> checked="checked" </#if>>
+                                <label for="enabled0">
+                                    否
+                                </label>
+                                <input id="enabled1" type="radio" name="enabled" value="1" <#if model.enabled==true> checked="checked" </#if>>
+                                <label for="enabled1">
+                                    是
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group margin-bottom-0">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-primary" type="submit">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-12"></div>
+        </div>
+    </div>
+</div>
+
+    </@layout>
+<!-- The main application script -->
+<!--<script src="vendor/jquery-file-upload/main.js"></script>-->
+<script type="text/javascript" src="/assets/js/ad/ad-add.js"></script>
+<script>
+    var data={};
+    <#if position??>
+    data.id=${position.id};
+    data.text='${position.positionName}';
+    </#if>
+    jQuery(document).ready(function() {
+        $("a.preview").preview();
+
+
+//        $("#positionId").select2({data: [{id: 18, text: '9999999'}],});
+        var example  =$("#positionId").select2({
+            //minimumResultsForSearch: Infinity,
+            placeholder: "选择广告位置",
+            tags:false,
+            createTag: function(term) { // 创建搜索结果（使用户可以输入匹配值以外的其它值）
+                debugger
+                return {
+                    id: term.mid,
+                    text: term.name
+                };
+            },
+//            matcher: function (params, data) {
+//             // debugger
+//            },
+            minimumResultsForSearch:25,
+            allowClear:true,
+            //width: '220px',
+            //allowClear: false,
+            data: [data],
+            ajax: {
+                url: global.adminPath+"/ad/position/datapage",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    var obj = []
+                    var rows=data.rows;
+                    for(var i in data.rows){
+                        obj.push({text:rows[i]['positionName'], id:rows[i]['id']});
+                    }
+
+                    return {
+                        results: obj,
+                        pagination: {
+                            more: (params.page * 30) < data.total
+                        }
+                    };
+
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 0,
+//            templateResult: function (state) {
+//                var $state = $(
+//                    '<span><img src="vendor/images/flags/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>'
+//                );
+//                return state;
+//            }, // omitted for brevity, see the source of this page
+            //templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+        }).on('select2:open',function (evt) {
+            //debugger
+        });
+        $("#positionId").val('18').trigger("change");
+    });
+</script>
+<script type="text/javascript">
+
+    var validateCheckRadio = function (val) {
+        $("input[type='radio'], input[type='checkbox']").on('ifChecked', function(event) {
+            $(this).parent().closest(".has-error").removeClass("has-error").addClass("has-success").find(".help-block").hide().end().find('.symbol').addClass('ok');
+        });
+    };
+    var FormValidator = function () {
+        "use strict";
+        // function to initiate Validation Sample 2
+        var runValidator2 = function () {
+            var form2 = $('#form');
+            var errorHandler2 = $('.errorHandler', form2);
+            var successHandler2 = $('.successHandler', form2);
+            $.validator.addMethod("getEditorValue", function () {
+                $("#editor1").val($('#form2 .summernote').code());
+                if ($("#editor1").val() != "" && $("#editor1").val().replace(/(<([^>]+)>)/ig, "") != "") {
+                    $('#editor1').val('');
+                    return true;
+                } else {
+                    return false;
+                }
+            }, 'This field is required.');
+            form2.validate({
+                errorElement: "span", // contain the error msg in a small tag
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    if (element.attr("type") == "radio" || element.attr("type") == "checkbox") { // for chosen elements, need to insert the error after the chosen container
+                        error.insertAfter($(element).closest('.form-group').children('div').children().last());
+                    } else if (element.hasClass("ckeditor")) {
+                        error.appendTo($(element).closest('.form-group'));
+                    } else {
+                        error.insertAfter(element);
+                        // for other inputs, just perform default behavior
+                    }
+                },
+                ignore: "",
+                rules: {
+                },
+                messages: {
+
+                },
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    successHandler2.hide();
+                    errorHandler2.show();
+                },
+                highlight: function (element) {
+                    $(element).closest('.help-block').removeClass('valid');
+                    // display OK icon
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+                    // add the Bootstrap error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element).closest('.form-group').removeClass('has-error');
+                    // set error class to the control group
+                },
+                success: function (label, element) {
+                    label.addClass('help-block valid');
+                    // mark the current input as valid and display OK icon
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
+                },
+                submitHandler: function (form) {
+                    successHandler2.show();
+                    errorHandler2.hide();
+                    // submit form
+                    //$('#form2').submit();
+                    var id=$(form.id).val();
+                    var url='/ad/add';
+                    if(id){
+                        url='ad/update';
+                    }
+                    $.ajax({
+                        type:'post',
+                        url:url,
+                        async:false, //同步方法，如果用异步的话，flag永远为1
+                        dataType:'json',
+                        data:$(form).serialize(),
+                        success: function(res){
+                            if(res.success){
+                                layer.msg(res.message, {
+                                    icon: 1,
+                                    time: 500, ///2秒关闭（如果不配置，默认是3秒）
+                                    //btn: ['明白了', '知道了']
+                                }, function(){
+                                    location.href="/index#/ad";
+                                });
+                                //swal("", res.message, "success");
+                                //
+                            }else{
+                                layer.msg(res.message, {icon: 1});
+                                //swal("", res.message, "error");
+                            }
+                        }
+                    });
+                }
+            });
+            //CKEDITOR.disableAutoInline = true;
+            //$('textarea.ckeditor').ckeditor();
+        };
+        return {
+            //main function to initiate template pages
+            init: function () {
+                validateCheckRadio();
+                runValidator2();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        FormValidator.init();
+    });
+</script>

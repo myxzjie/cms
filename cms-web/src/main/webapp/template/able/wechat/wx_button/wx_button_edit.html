@@ -1,0 +1,227 @@
+<#include "/default/_inc/_head.html"/>
+<#include "/default/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title" >
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="#/category" class="btn btn-o btn-primary" style="border-radius: 50px;padding: 5px 8px"><i class="fa fa-reply"></i></a>
+            <label>内容管理 - 栏目</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+
+<div class="container-fluid container-fullw bg-white">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!--<h5 class="over-title margin-bottom-15">Basic <span class="text-bold">Table</span></h5>-->
+            <!--<p>-->
+            <!--For basic styling&mdash;light padding and only horizontal dividers&mdash;add the base class <code>.table</code> to any <code>&lt;table&gt;</code>. It may seem super redundant, but given the widespread use of tables for other plugins like calendars and date pickers, we've opted to isolate our custom table styles.-->
+            <!--</p>-->
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>上传广告图片时请注意图片尺寸问题。</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-12"></div>
+            <div class="col-lg-8 col-md-12">
+                <form id="form" role="form" class="form-horizontal" action="<#if model?exists>/wx-button/update<#else>/wx-button/add</#if>" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="name">
+                            菜单名称：<span class="symbol required" aria-required="true"></span>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="hidden" id="id" name="id" value="${model.id}">
+                            <input id="name"  name="name" type="text" class="form-control required" placeholder="" value="${model.name}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="pId">
+                            上级菜单：<span class="symbol required" aria-required="true"></span>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control required" id="pId" name="categoryPId" placeholder="" readonly="readonly"   value="${model.pId}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="buttonKey">
+                            菜单标识：
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="buttonKey" type="text" name="buttonKey" placeholder="菜单标识" class="form-control" value="${model.buttonKey}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="type">
+                            菜单类型：
+                        </label>
+                        <div class="col-sm-7">
+                            <select id="type" name="type" size="1" class="form-control required" >
+                                <option value="view">网页链接类</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="url">
+                            URL：
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="url" type="text" name="url" placeholder="URL" class="form-control" value="${model.url}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="orders">
+                            排序：
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" id="orders" name="orders" placeholder="排序" class="form-control" value="${model.orders}">
+                        </div>
+                    </div>
+
+                    <div class="form-group margin-bottom-0">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn  btn-primary" type="submit">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+        </form>
+    </div>
+    <div class="col-lg-2 col-md-12"></div>
+</div>
+</div>
+</div>
+</@layout>
+<!-- The main application script -->
+<!--<script src="vendor/jquery-file-upload/main.js"></script>-->
+<!-- <script type="text/javascript" src="assets/js/ad/ad-add.js"></script> -->
+<script>
+
+    jQuery(document).ready(function() {
+
+        $.ajax({
+            type: "POST",
+            data: {},
+            dataType: 'json',
+            url: '/wx-button/tree',
+            success: function(res){
+                $("#pId").droptree({
+                    items:res.data ,
+                    transition:"ztree",
+                    idLabel:"id",
+                    textLabel:"name",
+                    pidLabel:"pId",
+                    rootPId:0
+                });
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+
+
+    var FormValidator = function () {
+        "use strict";
+        // function to initiate Validation Sample 2
+        var runValidator2 = function () {
+            var form2 = $('#form');
+            var errorHandler2 = $('.errorHandler', form2);
+            var successHandler2 = $('.successHandler', form2);
+
+
+            form2.validate({
+                errorElement: "span", // contain the error msg in a small tag
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                },
+                ignore: "",
+                rules: {
+
+                },
+                messages: {
+
+                },
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    successHandler2.hide();
+                    errorHandler2.show();
+                },
+                highlight: function (element) {
+                    $(element).closest('.help-block').removeClass('valid');
+                    // display OK icon
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+                    // add the Bootstrap error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element).closest('.form-group').removeClass('has-error');
+                    // set error class to the control group
+                },
+                success: function (label, element) {
+                    label.addClass('help-block valid');
+                    // mark the current input as valid and display OK icon
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
+                },
+                submitHandler: function (form) {
+                    successHandler2.show();
+                    errorHandler2.hide();
+                    $.ajax({
+                        type:'post',
+                        url:form.action,
+                        async:false, //同步方法，如果用异步的话，flag永远为1
+                        dataType:'json',
+                        data:$(form).serialize(),
+                        success: function(res){
+                            if(res.success){
+                                layer.msg(res.message, {
+                                    icon: 1,
+                                    time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    location.href = "/index#/wx-button";
+                                });
+                            }else{
+                                layer.msg(res.message, {icon: 2});
+                            }
+                        }
+                    });
+                }
+            });
+
+        };
+        return {
+            //main function to initiate template pages
+            init: function () {
+                runValidator2();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        FormValidator.init();
+    });
+</script>

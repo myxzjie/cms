@@ -60,12 +60,12 @@ public class AdminAdController extends BaseController {
      */
     @RequestMapping(value = {"position", "position/index"})
     public String position() {
-        return "ad/ad_position_index";
+        return getRemoteView("ad/ad_position_index");
     }
 
     @RequestMapping("position/addview")
     public String positionView() {
-        return "ad/ad_position_add";
+        return getRemoteView("ad/ad_position_add");
     }
 
 
@@ -81,7 +81,7 @@ public class AdminAdController extends BaseController {
 
         AdPosition model = adPositionService.get(id);
         map.put("model", model);
-        return "ad/ad_position_add";
+        return getRemoteView("ad/ad_position_add");
     }
 
     @RequestMapping("add")
@@ -110,7 +110,7 @@ public class AdminAdController extends BaseController {
             adService.save(model);
             return MapResult.mapOK("451");
         } catch (Exception e) {
-            LOG.error("添加广告错误：{}", e.getMessage());
+            LOG.error("添加广告错误：{}", e);
         }
         return MapResult.mapError("452");
     }
@@ -152,7 +152,7 @@ public class AdminAdController extends BaseController {
             Long id = adPositionService.save2(model);
             return MapResult.mapOK(id, "400");
         } catch (Exception e) {
-            LOG.error("添加广告位错误：{}", e.getMessage());
+            LOG.error("添加广告位错误：{}", e);
         }
         return MapResult.mapError("401");
     }
@@ -164,7 +164,7 @@ public class AdminAdController extends BaseController {
             adPositionService.delete(id);
             return MapResult.mapOK(id, "403");
         } catch (Exception e) {
-            LOG.error("删除广告位错误：{}", e.getMessage());
+            LOG.error("删除广告位错误：{}", e);
         }
         return MapResult.mapError("404");
     }
@@ -193,7 +193,7 @@ public class AdminAdController extends BaseController {
 
             return MapResult.bootPage(res.getRows(), res.getPage());
         } catch (Exception e) {
-            LOG.error("获得广告数据错误：{}", e.getMessage());
+            LOG.error("获得广告数据错误：{}", e);
         }
         return MapResult.mapError("450");
     }

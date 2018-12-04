@@ -1,0 +1,371 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+
+<!-- start: PAGE TITLE -->
+<section id="page-title">
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="${ctx_admin}/article" class="btn btn-o btn-primary" style="border-radius: 50px;padding: 5px 8px"><i
+                    class="fa fa-reply"></i></a>
+            <label>内容管理 - 文章</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+
+<div class="container-fluid container-fullw bg-white">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!--<h5 class="over-title margin-bottom-15">Basic <span class="text-bold">Table</span></h5>-->
+            <!--<p>-->
+            <!--For basic styling&mdash;light padding and only horizontal dividers&mdash;add the base class <code>.table</code> to any <code>&lt;table&gt;</code>. It may seem super redundant, but given the widespread use of tables for other plugins like calendars and date pickers, we've opted to isolate our custom table styles.-->
+            <!--</p>-->
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>上传图片时请注意图片尺寸问题。</li>
+                </ul>
+            </div>
+
+            <!--<div class="col-lg-2 col-md-12"></div>-->
+            <div class="col-lg-12 col-md-12">
+                <form id="form" role="form" method="post" action="${ctx_admin}<#if model?exists>/article/update<#else>/article/add</#if>">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="title">
+                                    文章标题：<span class="symbol required" aria-required="true"></span>
+                                </label>
+
+                                <input type="hidden" id="articleId" name="articleId" value="${model.articleId}">
+                                <input id="title" type="text" class="form-control required" placeholder="" name="title"
+                                       value="${model.title}">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label" for="categoryId">
+                                    分类栏目：<span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <input type="text" class="categoryPId form-control required" id="categoryId"
+                                       name="categoryId" placeholder="" readonly="readonly" value="${model.categoryId}">
+                            </div>
+
+                            <!--<div class="form-group">-->
+                            <!--<label class="control-label" for="sort">-->
+                            <!--排序：-->
+                            <!--</label>-->
+                            <!--<input type="text" id="sort" name="sort" placeholder="排序" class="form-control" value="${model.sort}">-->
+                            <!--</div>-->
+
+                            <div class="form-group">
+                                <label class="control-label" for="">
+                                    缩略图：
+                                </label>
+
+                                <span class="btn btn-primary fileinput-button">
+                                    <i class="fa fa-cloud-upload"></i>
+                                    <span>上传图片</span>
+                                    <input id="fileupload" type="file" name="file" multiple>
+                                    <input id="image" name="image" type="hidden" value="${model.image}">
+                                </span>
+                                <a href="${model.image}" target="_blank" title=""
+                                   class="preview btn btn-o btn-danger btn-xs">
+                                    <i class="fa fa-image"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">
+
+                                </label>
+                                <div class="checkbox clip-check check-primary">
+                                    <input type="checkbox" value="1" name="recommendType" id="service1" <#if model.recommendType==1> checked="checked"</#if> >
+                                    <label for="service1">
+                                        推荐
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="sort">
+                                            排序：
+                                        </label>
+                                        <input type="text" id="sort" name="sort" placeholder="排序" class="form-control"
+                                               value="${model.sort}">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label class=" control-label" for="keywords">
+                                            关键字：
+                                        </label>
+                                        <input id="keywords" type="text" name="keywords" placeholder="关键字"
+                                               class="form-control" value="${model.keywords}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <div class="form-group">
+                                        <label class="control-label" for="description">
+                                            文章摘要：
+                                        </label>
+                                        <textarea id="description" rows="5" name="description"
+                                                  placeholder="说点什么...最少输入10个字符" class="form-control">${model.description}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <!--Ckeditor <span class="symbol required"></span>-->
+                                        </label>
+                                        <script id="editor" type="text/plain"></script>
+                                        <!--<textarea  class="editor form-control" id="editor2" name="editor2" cols="10" rows="10"></textarea>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <p>
+                                By clicking REGISTER, you are agreeing to the Policy and Terms &amp; Conditions.
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-wide pull-right" type="submit">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-12"></div>
+        </div>
+    </div>
+</div>
+
+    </@layout>
+
+<script type="text/javascript" charset="utf-8" src="ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.min.js"></script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="UTF-8" src="assets/js/article/article-edit.js"></script>
+
+<script>
+    var ue = UE.getEditor('editor');
+    var data = {};
+
+    jQuery(document).ready(function () {
+        $("a.preview").preview();
+
+        $.ajax({
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            url: global.adminPath + '/category/tree',
+            success: function (res) {
+                $("#categoryId").droptree({
+                    items: res.data,
+                    transition: "ztree",
+                    idLabel: "categoryId",
+                    textLabel: "categoryName",
+                    pidLabel: "categoryPId",
+                    rootPId: 0
+                });
+            }
+        });
+
+        if ($('#articleId').val() != '') {
+            $.ajax({
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                url: global.adminPath + '/article/content/' + $('#articleId').val(),
+                success: function (res) {
+                    if (res.success) {
+
+                        var data = res.data;
+                        if (!data || !data.content) {
+                            return;
+                        }
+
+                        ue.ready(function () {
+                            ue.setContent(encodeEscape.escape2Html(data.content));
+//                        ue.addListener("contentchange", function () {
+//                            $("#introdution").html(ue.getContent());
+//                        })
+                        });
+                    }
+                }
+            });
+        }
+    });
+</script>
+<script type="text/javascript">
+
+    var validateCheckRadio = function (val) {
+        $("input[type='radio'], input[type='checkbox']").on('ifChecked', function (event) {
+            $(this).parent().closest(".has-error").removeClass("has-error").addClass("has-success").find(".help-block").hide().end().find('.symbol').addClass('ok');
+        });
+    };
+    var FormValidator = function () {
+        "use strict";
+        // function to initiate Validation Sample 2
+        var runValidator2 = function () {
+            var form2 = $('#form');
+            var errorHandler2 = $('.errorHandler', form2);
+            var successHandler2 = $('.successHandler', form2);
+            $.validator.addMethod("getEditorValue", function () {
+                $("#editor1").val($('#form2 .summernote').code());
+                if ($("#editor1").val() != "" && $("#editor1").val().replace(/(<([^>]+)>)/ig, "") != "") {
+                    $('#editor1').val('');
+                    return true;
+                } else {
+                    return false;
+                }
+            }, 'This field is required.');
+            $.validator.addMethod("categoryPId", function () {
+                //$("#categoryPId").val($('#form2 .summernote').code());
+                //$("#categoryPId").parents('.mfs-container'),find('')
+
+                if ($("#categoryPId").val() != "") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }, 'This field is required.');
+            form2.validate({
+                errorElement: "span", // contain the error msg in a small tag
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) { // render error placement for each input type
+
+                    if (element.attr("type") == "radio" || element.attr("type") == "checkbox") { // for chosen elements, need to insert the error after the chosen container
+                        error.insertAfter($(element).closest('.form-group').children('div').children().last());
+                    } else if (element.hasClass("ckeditor")) {
+                        error.appendTo($(element).closest('.form-group'));
+                    } else if (element.hasClass("categoryPId")) {
+                        error.appendTo($(element).closest('.form-group'));
+                    } else {
+                        error.insertAfter(element);
+                        // for other inputs, just perform default behavior
+                    }
+                },
+                ignore: "",
+                rules: {
+                    categoryPId: 'categoryPId',
+                    description: {maxlength: 256}
+                },
+                messages: {},
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    successHandler2.hide();
+                    errorHandler2.show();
+                },
+                highlight: function (element) {
+                    $(element).closest('.help-block').removeClass('valid');
+                    // display OK icon
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+                    // add the Bootstrap error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element).closest('.form-group').removeClass('has-error');
+                    // set error class to the control group
+                },
+                success: function (label, element) {
+                    label.addClass('help-block valid');
+                    // mark the current input as valid and display OK icon
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
+                },
+                submitHandler: function (form) {
+                    successHandler2.show();
+                    errorHandler2.hide();
+
+                    var data = $(form).serializeJSON();
+                    data.content = ue.getContent();
+                    $.ajax({
+                        type:form.method,
+                        url:form.action,
+                        async:false, //同步方法，如果用异步的话，flag永远为1
+                        dataType: 'json',
+                        data: data,
+                        success: function (res) {
+                            if (res.success) {
+                                layer.msg(res.message, {
+                                    icon: 1,
+                                    time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                                }, function () {
+                                    location.href = global.adminPath+"/article";
+                                });
+
+                            } else {
+                                layer.msg(res.message, {icon: 2});
+                            }
+
+                        }
+                    });
+                }
+            });
+            //CKEDITOR.disableAutoInline = true;
+            //$('textarea.ckeditor').ckeditor();
+        };
+        return {
+            //main function to initiate template pages
+            init: function () {
+                validateCheckRadio();
+                runValidator2();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function () {
+        FormValidator.init();
+    });
+</script>

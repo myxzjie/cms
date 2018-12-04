@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+body{padding:0; margin:0; font-size:84%; background:#eeeeee; color:#333333; font-family:'宋体',Verdana, Geneva, sans-serif;}
+ul,li,form,h1,h2,h3,h4,h5,h6,p{padding:0; margin:0; list-style-type:none;}
+i,cite{font-style:normal;}
+a{color:#34538b; text-decoration:underline;}a:hover{color:#F30; text-decoration:underline;}
+.l{float:left;}.r{float:right;}.cl{clear:both;}img{border:0; max-width:100%;}
+.tc{text-align:center;}.tr{text-align:right;}
+.vm{vertical-align:middle;}.vtb{vertical-align:text-bottom;}.vt{vertical-align:top;}
+.ml2{margin-left:2px;}.ml5{margin-left:5px;}.ml10{margin-left:10px;}.ml20{margin-left:20px;}.mr2{margin-right:2px;}.mr5{margin-right:5px;},mr10{margin-right:10px;}.mr20{margin-right:20px;}.mt2{margin-top:2px;}.mt5{margin-top:5px;}.mt10{margin-top:10px;}.mt20{margin-top:20px;}.mb2{margin-bottom:2px;}.mb5{margin-bottom:5px;}.mb10{margin-bottom:10px;}.mb20{margin-bottom:20px;}
+.f9{font-size:0.9em;}.f10{font-size:1em;}.f11{font-size:1.1em;}f12{font-size:1.2em;}f13{font-size:1.3em;}f14{font-size:1.4em;}f15{font-size:1.5em;}f16{font-size:1.6em;}
+.fix{zoom:1;}.fix:after,.fix:before{display:block; content:"clear"; height:0; clear:both; overflow:hidden; visibility:hidden;}
+.rel{position:relative;}.abs{position:absolute;}
+.zxx_out_box{width:70%; min-width:700px; border-left:1px solid white; border-right:1px solid white; margin:0 auto;}
+.zxx_in_box{min-height:550px; _height:550px; border-left:1px solid #cccccc; border-right:1px solid #cccccc; background:white; padding:1em 2.5em 0;}
+.zxx_header{padding:10px 20px 5px; border-bottom:1px solid #cccccc; overflow:hidden; zoom:1;}
+.zxx_author_time{float:right; margin-top:34px; color:#787878; font-family:"Courier New", Courier, monospace;}
+.zxx_title{font-size:1.6em; text-align:center; margin:20px 0;}
+.zxx_main_con{padding:0 20px 20px;}
+.zxx_footer{padding-bottom:25px; text-align:center;}
+.zxx_test_list{padding:1em; font-size:1.1em; border-bottom:1px dashed #cccccc; line-height:1.4; overflow:hidden; zoom:1;}
+.zxx_code{display:block; padding:10px; margin:5px 0; background:#eeeeee; border:1px dashed #cccccc; clear:both; zoom:1;}
+.zxx_code xmp{margin:0; color:#00F; font-size:12px; white-space:pre-wrap; word-wrap:break-word;}
+.zxx_btn{display:inline-block; background:url(../image/down_btn.png) no-repeat; padding-left:25px;}
+.zxx_btn span{display:inline-block; height:45px; line-height:45px; background:url(../image/down_btn.png) no-repeat right top; padding:0 45px 0 20px; cursor:pointer;}
+.zxx_btn:hover{text-decoration:none; color:#34538b;}
+

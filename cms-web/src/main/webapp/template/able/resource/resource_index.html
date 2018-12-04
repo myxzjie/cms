@@ -1,0 +1,100 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title">
+	<div class="row">
+		<div class="col-sm-8">
+			<label>系统管理 - 资源管理</label>
+		</div>
+	</div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: DYNAMIC TABLE -->
+<div class="container-fluid container-fullw bg-white">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="alert alert-info">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<div><i class="fa fa-question-circle"></i>操作提示</div>
+				<ul>
+					<li>该页面展示了商城所有的广告。</li>
+					<li>可搜索广告名称关键词进行查询，侧边栏可进行高级搜索。</li>
+				</ul>
+			</div>
+
+			<div id="toolbar">
+				<#--<a id="btn-add" href="#/ad/addview" class="btn btn-o btn-danger">添加</a>-->
+				<!--<button id="btn-update" type="button" class="btn btn-primary">修改</button>
+				<button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
+				<button id="btn-scene" type="button" class="btn btn-primary">设置监控点</button>-->
+			</div>
+
+			<table class="table treegrid table-bordered table-condensed table-hover col-xs-12">
+
+			</table>
+
+		</div>
+	</div>
+</div>
+<!-- end: DYNAMIC TABLE -->
+
+    </@layout>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        $('.treegrid').treegrid({
+            server:true,
+            type: "GET", //请求数据的ajax类型
+            url: global.adminPath+'/resource/tree',    //请求数据的ajax的url
+            initialState: 'collapsed',
+            idColumn: 'resourceId',
+            parentColumn: 'perentResourceId',
+            sortColumn: 'resourceOrder',
+            saveState: true,
+            expanderExpandedClass: 'glyphicon glyphicon-chevron-down',
+            expanderCollapsedClass: 'glyphicon glyphicon-chevron-right',
+            columns:[{
+                title: '菜单名称',
+                field: 'resourceName'
+            },{
+                title:'图标',
+                field:'resourceIcon'
+            },{
+                title:'排序',
+                field:'resourceOrder'
+            },{
+                title: '资源路径',
+                field: 'resourceUrl',
+                formatter:function (value, row, index) {
+                    return value;
+                }
+            },{
+                title: '权限',
+                field: 'permission'
+            },{
+                title: '备注',
+                field: 'resourceDesc'
+            }
+            ]
+        });
+
+
+    });
+
+
+</script>

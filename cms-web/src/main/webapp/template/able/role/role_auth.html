@@ -1,0 +1,248 @@
+<#include "/admin/_inc/_head.html"/>
+<#include "/admin/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title" >
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="${ctx_admin}/role" class="bread-left btn btn-o btn-primary" ><i class="fa fa-angle-left"></i></a>
+            <label>角色 -全限设置</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+<div class="container-fluid container-fullw bg-white">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>展示网站所有的广告位置。</li>
+                    <li>点击查看可查看广告位置相关广告位的广告。</li>
+                    <li>可搜索关键词进行查询，侧边栏可进行高级搜索。</li>
+                </ul>
+            </div>
+
+            <div>
+                <input id="roleId" type="hidden" value="${roleId}">
+                <ul id="tree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </@layout>
+<script type="text/javascript" >
+
+    var zTree = null,treeNodes=null;
+    var setting = {
+        check: {
+            enable: true,
+            autoCheckTrigger: true
+        },
+        data: {
+            key : {
+                //name : "resourceName",
+            },
+            simpleData: {
+                enable:true,
+                //idKey: "resourceId",
+                //pIdKey: "perentResourceId",
+                //rootPId: ""
+            }
+        },
+        view: {
+            //expandSpeed: "slow",
+            showIcon: true
+        },
+        callback:{
+            onCheck:function (event, treeId, treeNode) {
+                //alert(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+                var data={};
+                data.resourceId=treeNode.id;
+                data.checked=treeNode.checked;
+                $.ajax({
+                    type: "POST",
+                    data:data,
+                    dataType: 'json',
+                    url: global.adminPath + '/role/auth/edit/'+$('#roleId').val(),
+                    success: function(res){
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0, //不显示关闭按钮
+                            shade: [0],
+                            area: ['300px', '200px'],
+                            offset: 'rb', //右下角弹出
+                            time: 2000, //2秒后自动关闭
+                            anim: 2,
+                            content: res.message, //iframe的url，no代表不显示滚动条
+                            end: function(){ //此处用于演示
+
+                            }
+                        });
+                        console.log(res);
+                    }
+                });
+            }
+        }
+    };
+
+
+    $(function () {
+        $.ajax({
+            async : false,
+            cache:false,
+            type: 'POST',
+            dataType : "json",
+            url: global.adminPath + '/role/auth/'+$('#roleId').val(),//请求的action路径
+            error: function () {//请求失败处理函数
+                alert('请求失败');
+            },
+            success:function(res){ //请求成功后处理函数。
+                treeNodes = res.data;   //把后台封装好的简单Json格式赋给treeNodes
+            }
+        });
+        zTree =$("#tree");
+         /*treeNodes = [
+            {"id":1, "pId":0, "name":"test1",iconSkin :"ti-home"},
+            {"id":11, "pId":1, "name":"test11"},
+            {"id":12, "pId":1, "name":"test12"},
+            {"id":111, "pId":11, "name":"test111"},
+        ];*/
+        zTree = $.fn.zTree.init(zTree, setting, treeNodes);
+
+//        $.ajax({
+//            type: "POST",
+//            async : false,
+//            cache:false,
+//            dataType: 'json',
+//            url: '/role/auth/'+$('#roleId').val(),
+//            success: function(res){
+//                var data=res.data;
+//                for(var i=0;i<data.length;i++){
+//                    var roleresource= data[i];
+//                    var nodes = zTree.getNodesByParam("resourceId", roleresource.resourceId, null);
+//                    if(nodes.length>0){
+//                        //treeObj.selectNode(nodes[0],true);
+//                        zTree.checkNode(nodes[0], true, true);
+//                        //treeObj.expandNode(nodeId, true, true, true);
+//                    }
+//                }
+//            }
+//        });
+        zTree.expandAll(true);
+
+    });
+
+    function initTable() {
+
+        $table = $('#data-table').bootstrapTable({
+            url: global.adminPath + '/role/datapage',  //请求后台的URL（*）
+            method: 'get',   //请求方式（*）
+            //toolbar: '#toolbar',  //工具按钮用哪个容器
+            striped: false,   //是否显示行间隔色
+            cache: false,   //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,   //是否显示分页（*）
+            sortable: false,   //是否启用排序
+            sortOrder: "desc",   //排序方式
+            queryParams: function queryParams(params) { //传递参数（*）
+                params.username = $('#usrename').val();
+                return params;
+            },
+            sidePagination: "server",  //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,   //初始化加载第一页，默认第一页
+            pageSize: 10,   //每页的记录行数（*）
+            pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+            search: false,   //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: false,   //是否显示所有的列
+            showRefresh: false,   //是否显示刷新按钮
+            minimumCountColumns: 2,  //最少允许的列数
+            clickToSelect: true,  //是否启用点击选中行
+            //height: 400,   //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",   //每一行的唯一标识，一般为主键列
+            showToggle: false,   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,   //是否显示详细视图
+            detailView: false,   //是否显示父子表
+            columns: [
+                {
+                    checkbox: true
+                },{
+                    field: 'roleCode',
+                    title: '角色CODE'
+                },{
+                    field: 'roleName',
+                    title: '角色名称'
+                },
+                {
+                    field: 'roleType',
+                    title: '角色类型',
+                    formatter:function (value, row, index) {
+                        if(value=='1'){
+                            return '系统'
+                        }else{
+
+                        }
+                        return '未分'
+                    }
+                },
+                {
+                    field: 'roleLevel',
+                    title: '角色级别'
+                },{
+                    title: '操作',
+                    formatter:function (value, row, index) {
+
+                        return [
+                            '<a class="btn btn-o btn-default" href="#/role/auth/'+row.roleId+'"><i class="fa fa-pencil-square-o"></i>权限设置</a>',
+                            '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del('+row.id+')"><i class="fa fa-trash"></i> 移除</button>'
+                        ].join('');
+                    }
+                }
+            ]
+        });
+    }
+
+    var tgridObj={
+        del:function (id) {
+            $.ajax({
+                data:{},
+                type:'post',
+                dataType:'json',
+                url:'/role/position/delete/'+id,
+                success:function (res) {
+                    debugger
+                    if(res.success){
+                        swal("", res.message, "success");
+                        location.reload();
+                    }else{
+                        swal("", res.message, "error");
+                    }
+                }
+            });
+        }
+    };
+
+
+
+
+
+</script>

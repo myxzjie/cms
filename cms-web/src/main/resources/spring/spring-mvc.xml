@@ -19,7 +19,8 @@
 
 	<mvc:resources location="/uploadfile/" mapping="/uploadfile/**" />
 	<mvc:resources location="/ueditor/" mapping="/ueditor/**" />
-	<mvc:resources location="/resources/" mapping="/**" />
+	<mvc:resources location="/vendor/" mapping="/vendor/**" />
+	<mvc:resources location="/assets/" mapping="/assets/**" />
 
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}" />
