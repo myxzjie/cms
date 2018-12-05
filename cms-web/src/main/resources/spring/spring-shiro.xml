@@ -75,7 +75,7 @@
     </bean>
 
 
-    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+    <bean id="sessionValidationScheduler" class="com.xzjie.common.core.shiro.session.Quartz2SessionValidationScheduler">
         <property name="sessionValidationInterval" value="1800000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>

@@ -43,7 +43,7 @@
 
         <property name="triggers">
             <list>
-               <ref bean="wxAccountFollowTrigger"/>
+               <!--<ref bean="wxAccountFollowTrigger"/>-->
                 <!--  <ref bean="settlementTrigger"/>-->
                 <!--<ref bean="pollingTrigger"/>-->
             </list>

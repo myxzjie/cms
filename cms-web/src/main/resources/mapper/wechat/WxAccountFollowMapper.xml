@@ -214,4 +214,113 @@
       </if>
     </trim>
   </insert>
+
+  <update id="updateByOpenId" parameterType="com.xzjie.et.wechat.model.WxAccountFollow">
+    update wx_account_follow
+    <set >
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribe != null">
+        subscribe = #{subscribe,jdbcType=INTEGER},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null">
+        `language` = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeDate != null">
+        subscribe_date = #{subscribeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unionid != null">
+        unionid,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="groupid != null">
+        groupid,
+      </if>
+      <if test="tagidList != null">
+        tagid_list,
+      </if>
+      <if test="subscribeScene != null">
+        subscribe_scene,
+      </if>
+      <if test="qrScene != null">
+        qr_scene,
+      </if>
+      <if test="qrSceneStr != null">
+        qr_scene_str,
+      </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </set>
+
+    ----
+
+      <if test="subscribeDate != null">
+
+      </if>
+      <if test="unionid != null">
+        #{unionid,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null">
+        #{groupid,jdbcType=VARCHAR},
+      </if>
+      <if test="tagidList != null">
+        #{tagidList,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeScene != null">
+        #{subscribeScene,jdbcType=VARCHAR},
+      </if>
+      <if test="qrScene != null">
+        #{qrScene,jdbcType=VARCHAR},
+      </if>
+      <if test="qrSceneStr != null">
+        #{qrSceneStr,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </update>
 </mapper>
