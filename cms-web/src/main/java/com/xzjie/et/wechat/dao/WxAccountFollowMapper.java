@@ -6,4 +6,6 @@ import com.xzjie.mybatis.core.dao.BaseMapper;
 public interface WxAccountFollowMapper extends BaseMapper<WxAccountFollow, Long> {
 
     int exist(WxAccountFollow accountFollow);
+
+    int updateByOpenId(WxAccountFollow accountFollow);
 }

@@ -218,9 +218,6 @@
   <update id="updateByOpenId" parameterType="com.xzjie.et.wechat.model.WxAccountFollow">
     update wx_account_follow
     <set >
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=VARCHAR},
-      </if>
       <if test="subscribe != null">
         subscribe = #{subscribe,jdbcType=INTEGER},
       </if>
@@ -249,78 +246,39 @@
         subscribe_date = #{subscribeDate,jdbcType=TIMESTAMP},
       </if>
       <if test="unionid != null">
-        unionid,
+        unionid = #{unionid,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
-        remark,
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="groupid != null">
-        groupid,
+        groupid = #{groupid,jdbcType=VARCHAR},
       </if>
       <if test="tagidList != null">
-        tagid_list,
+        tagid_list = #{tagidList,jdbcType=VARCHAR},
       </if>
       <if test="subscribeScene != null">
-        subscribe_scene,
+        subscribe_scene = #{subscribeScene,jdbcType=VARCHAR},
       </if>
       <if test="qrScene != null">
-        qr_scene,
+        qr_scene = #{qrScene,jdbcType=VARCHAR},
       </if>
       <if test="qrSceneStr != null">
-        qr_scene_str,
+        qr_scene_str = #{qrSceneStr,jdbcType=VARCHAR},
       </if>
       <if test="siteId != null">
-        site_id,
+        site_id = #{siteId,jdbcType=BIGINT},
       </if>
       <if test="userId != null">
-        user_id,
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="createDate != null">
-        create_date,
+        create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
-        status,
+        status = #{status,jdbcType=INTEGER},
       </if>
     </set>
-
-    ----
-
-      <if test="subscribeDate != null">
-
-      </if>
-      <if test="unionid != null">
-        #{unionid,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="groupid != null">
-        #{groupid,jdbcType=VARCHAR},
-      </if>
-      <if test="tagidList != null">
-        #{tagidList,jdbcType=VARCHAR},
-      </if>
-      <if test="subscribeScene != null">
-        #{subscribeScene,jdbcType=VARCHAR},
-      </if>
-      <if test="qrScene != null">
-        #{qrScene,jdbcType=VARCHAR},
-      </if>
-      <if test="qrSceneStr != null">
-        #{qrSceneStr,jdbcType=VARCHAR},
-      </if>
-      <if test="siteId != null">
-        #{siteId,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-    </trim>
+    where open_id = #{openId,jdbcType=VARCHAR}
   </update>
 </mapper>

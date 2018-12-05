@@ -30,20 +30,19 @@
     <!-- end Task -->
 
 
-
     <!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
-    <bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <!--<property name="jobDetails">
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
             <list>
-                <ref bean="reconciliationDetail"/>
-                <ref bean="settlementDetail" />
-                <ref bean="pollingDetail" />
+                <ref bean="wxAccountFollowDetail"/>
+                <!--<ref bean="settlementDetail" />
+                <ref bean="pollingDetail" />-->
             </list>
-        </property>-->
+        </property>
 
         <property name="triggers">
             <list>
-               <!--<ref bean="wxAccountFollowTrigger"/>-->
+                <!--<ref bean="wxAccountFollowTrigger"/>-->
                 <!--  <ref bean="settlementTrigger"/>-->
                 <!--<ref bean="pollingTrigger"/>-->
             </list>

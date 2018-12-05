@@ -17,7 +17,7 @@
 <section id="page-title">
     <div class="row">
         <div class="col-sm-8">
-            <label>内容管理 - 文章列表</label>
+            <label>公众号管理 - 公众号用户</label>
         </div>
 
     </div>
@@ -39,21 +39,7 @@
                 </ul>
             </div>-->
 
-            <div class="panel panel-white">
-                <div class="panel-body">
-                    <form id="query_form" class="form-inline">
-                        <div class="form-group">
-                            <label class="control-label">标题：</label>
-                            <input class="form-control" type="text" name="title" id="title">
-                        </div>
 
-                        <button id="btn_query" class="btn btn-primary" type="button">
-                            查询
-                        </button>
-                    </form>
-                </div>
-
-            </div>
 
             <div id="toolbar">
                 <#--<a id="btn-add" href="#/article/addview" class="btn btn-o btn-danger">添加</a>-->
@@ -113,21 +99,40 @@
                     {
                         checkbox: true
                     }, {
-                        field: 'title',
-                        title: '文章标题'
+                        field: 'avatar',
+                        title: '头像',
+                        formatter: function (value, row, index) {
+                            return '<img style="width: 72px; height: 72px;" src=' +value + ' />';
+                        }
                     }, {
-                        field: 'categoryId',
-                        title: '分类'
+                        field: 'nickName',
+                        title: '昵称'
                     },
                     {
-                        field: 'sort',
-                        title: '排序'
+                        field: 'sex',
+                        title: '性别',
+                        formatter: function (value, row, index) {
+                            switch (value) {
+                                case 1:
+                                    return '男';
+                                case 2:
+                                    return '女';
+                                default:
+                                    return '未知';
+                            }
+                        }
                     }, {
-                        field: 'countView',
-                        title: '浏览次数'
+                        field: 'city',
+                        title: '省/市',
+                        formatter: function (value, row, index) {
+                            return (row.province + '-' + row.city);
+                        }
                     }, {
-                        field: 'countComment',
-                        title: '评论数'
+                        field: 'subscribeDate',
+                        title: '关注时间',
+                        formatter: function (value, row, index) {
+                            return new Date(value).format("yyyy-MM-dd HH:mm:ss");
+                        }
                     }, {
                         title: '操作',
                         formatter: function (value, row, index) {

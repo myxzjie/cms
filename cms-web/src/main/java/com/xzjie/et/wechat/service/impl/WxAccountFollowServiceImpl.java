@@ -47,12 +47,12 @@ public class WxAccountFollowServiceImpl extends AbstractBaseService<WxAccountFol
             }
             String next_openid = map.get("next_openid").toString();
             List<WxAccountFollow> accountFollows = (List<WxAccountFollow>) map.get("accountFollows");
-            if (accountFollows != null || accountFollows.size() > 0) {
+            if (accountFollows != null && accountFollows.size() > 0) {
                 // 批量插入
                 for (WxAccountFollow accountFollow : accountFollows) {
                     accountFollow.setSiteId(siteId);
                     if (wxAccountFollowMapper.exist(accountFollow) > 0) {
-                        this.update(accountFollow);
+                        wxAccountFollowMapper.updateByOpenId(accountFollow);
                     } else {
                         this.save(accountFollow);
                     }
