@@ -81,8 +81,7 @@ public class AdminWxButtonController extends BaseController {
             wxButtonService.save(model);
             return MapResult.mapOK("1400");
         } catch (Exception e) {
-            e.printStackTrace();
-            LOG.error("添加公众菜单错误：{}", e.getMessage());
+            LOG.error("添加公众菜单错误.", e);
         }
 
         return MapResult.mapError("1406");
@@ -110,25 +109,22 @@ public class AdminWxButtonController extends BaseController {
 
         try {
             if (wxButtonService.update(model)) {
-
                 return MapResult.mapOK("1407");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            LOG.error("修改公众号菜单错误:{}", e.getMessage());
+            LOG.error("修改公众号菜单错误.", e);
         }
         return MapResult.mapError("1408");
     }
 
     @RequestMapping("delete/{id}")
     @ResponseBody
-    public Map<String, Object> dataPage(@PathVariable Long id) {
+    public Map<String, Object> delete(@PathVariable Long id) {
         try {
             wxButtonService.delete(id);
             return MapResult.mapOK("1410");
         } catch (Exception e) {
-            e.printStackTrace();
-            LOG.error("公众号菜单删除错误:{}", e.getMessage());
+            LOG.error("公众号菜单删除错误.", e);
         }
 
         return MapResult.mapError("1409");
@@ -141,8 +137,7 @@ public class AdminWxButtonController extends BaseController {
             wxButtonService.syncButton(getSiteId());
             return MapResult.mapOK("1411");
         } catch (Exception e) {
-            e.printStackTrace();
-            LOG.error("公众号菜单同步错误:{}", e.getMessage());
+            LOG.error("公众号菜单同步错误.", e);
         }
 
         return MapResult.mapError("1412");

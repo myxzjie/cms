@@ -17,7 +17,7 @@
 <section id="page-title">
     <div class="row">
         <div class="col-sm-8">
-            <label>内容管理 - 文章列表</label>
+            <label>公众号管理 - 文本信息</label>
         </div>
 
     </div>
@@ -39,7 +39,7 @@
                 </ul>
             </div>-->
 
-            <div class="panel panel-white">
+            <#--<div class="panel panel-white">
                 <div class="panel-body">
                     <form id="query_form" class="form-inline">
                         <div class="form-group">
@@ -53,10 +53,10 @@
                     </form>
                 </div>
 
-            </div>
+            </div>-->
 
             <div id="toolbar">
-            <#--<a id="btn-add" href="#/article/addview" class="btn btn-o btn-danger">添加</a>-->
+                <a id="btn-add" href="${ctx_admin}/wx-message/addview" class="btn btn-o btn-danger">添加</a>
                 <!--<button id="btn-update" type="button" class="btn btn-primary">修改</button>
                 <button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
                 <button id="btn-scene" type="button" class="btn btn-primary">设置监控点</button>-->
@@ -114,27 +114,23 @@
                         checkbox: true
                     }, {
                         field: 'title',
-                        title: '文章标题'
+                        title: '标题'
                     }, {
-                        field: 'categoryId',
-                        title: '分类'
-                    },
-                    {
-                        field: 'sort',
-                        title: '排序'
+                        field: 'content',
+                        title: '内容'
                     }, {
-                        field: 'countView',
-                        title: '浏览次数'
-                    }, {
-                        field: 'countComment',
-                        title: '评论数'
+                        field: 'createDate',
+                        title: '创建时间',
+                        formatter: function (value, row, index) {
+                            return new Date(value).format("yyyy-MM-dd HH:mm:ss");
+                        }
                     }, {
                         title: '操作',
                         formatter: function (value, row, index) {
 
                             return [
-                                '<a class="btn btn-o btn-default" href="#/article/edit/' + row.articleId + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
-                                '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.articleId + ')"><i class="fa fa-trash"></i> 移除</button>'
+                                '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-message/edit/' + row.id + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
+                                '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.id + ')"><i class="fa fa-trash"></i> 移除</button>'
                             ].join('');
                         }
                     }
@@ -144,21 +140,22 @@
 
         var tgridObj = {
             del: function (id) {
-                layer.confirm('确定要删除吗？同时也会删除子栏目。', {
+                layer.confirm('确定要删除吗？', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.ajax({
                         data: {},
                         type: 'post',
                         dataType: 'json',
-                        url: '/article/delete/' + id,
+                        url: global.adminPath + '/wx-message/delete/' + id,
                         success: function (res) {
                             if (res.success) {
                                 layer.msg(res.message, {
                                     icon: 1,
                                     time: 2000, ///2秒关闭（如果不配置，默认是3秒）
                                 }, function () {
-                                    location.reload();
+                                    $table.bootstrapTable('destroy');
+                                    initTable();
                                 });
                             } else {
                                 layer.msg(res.message, {icon: 2});

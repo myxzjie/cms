@@ -18,6 +18,15 @@
     id, site_id, user_id, msgtype, title, description, thumb_media_id, media_id, content, 
     create_date, update_date
   </sql>
+
+  <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
+    select
+    <include refid="Base_Column_List" />
+    from wx_message a
+    where site_id = #{t.siteId,jdbcType=BIGINT}
+    order by create_date desc
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
