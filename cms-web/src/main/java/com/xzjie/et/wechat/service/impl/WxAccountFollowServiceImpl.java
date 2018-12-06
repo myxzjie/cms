@@ -62,7 +62,7 @@ public class WxAccountFollowServiceImpl extends AbstractBaseService<WxAccountFol
                 this.batchSyncAccountFollow(siteId, next_openid);
             }
         } catch (Exception e) {
-            LOG.error("批量同步公众号用户错误.{}", e);
+            LOG.error("批量同步公众号用户错误.", e);
         }
 
 

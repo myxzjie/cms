@@ -22,9 +22,12 @@
      </bean>-->
 
     <!--Cron表达式触发器-->
+
     <bean id="wxAccountFollowTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="wxAccountFollowDetail"/>
-        <property name="cronExpression" value="0/5 * * * * ?"/>
+        <!--<property name="cronExpression" value="* */5 * * * ?"/>-->
+        <!-- 每周1，1点0分0秒执行一次-->
+        <property name="cronExpression" value="0 0 1 ? * 1"/>
     </bean>
 
     <!-- end Task -->
@@ -42,7 +45,7 @@
 
         <property name="triggers">
             <list>
-                <!--<ref bean="wxAccountFollowTrigger"/>-->
+                <ref bean="wxAccountFollowTrigger"/>
                 <!--  <ref bean="settlementTrigger"/>-->
                 <!--<ref bean="pollingTrigger"/>-->
             </list>
