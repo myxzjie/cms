@@ -216,7 +216,7 @@ public class WechatHelper {
     }
 
     public void messageTemplateSend(String accessToken,String params){
-        String url = wechatUrl + "/cgi-bin/message/template/send?access_token=="+accessToken;
+        String url = wechatUrl + "/cgi-bin/message/template/send?access_token="+accessToken;
         String json = HttpUtils.doPost(url,params);
         if (logger.isInfoEnabled()) {
             logger.info("\n 结果:" + json);
