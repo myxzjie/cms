@@ -68,7 +68,7 @@ public class WechatHelperTest extends BaseTest {
                 .setTouser("oDJmCwW3A5oEkL9HRc6VF6h8LZl0")
                 .setTemplate_id("0eykeX1xRER1byoxXYSqSzbP-1jgFFRqS129VkV8V_4")
                 .setTopcolor("#93b7f3")
-                .setUrl("https://www.dev56.info")
+                .setUrl("https://www.dev56.com")
                 .add("first", "欢迎关注我们的公众号", "#173177")
                 .add("message", "鹰视科技", "#173177")
                 .add("remark", "感谢您的光临", "#173177")
