@@ -140,6 +140,12 @@
                 <groupId>net.mingsoft</groupId>
                 <artifactId>shiro-freemarker-tags</artifactId>
                 <version>${shiro-freemarker-tags.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.shiro</groupId>
+                        <artifactId>shiro-all</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
 

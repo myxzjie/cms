@@ -5,12 +5,15 @@ import com.xzjie.et.BaseTest;
 import com.xzjie.et.wechat.entity.TemplateData;
 import com.xzjie.et.wechat.entity.TemplateMessage;
 import com.xzjie.et.wechat.entity.WxAccessToken;
+import com.xzjie.et.wechat.enums.MediaType;
 import com.xzjie.et.wechat.model.WxAccount;
 import com.xzjie.et.wechat.service.impl.WechatHelper;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +30,14 @@ public class WechatHelperTest extends BaseTest {
     private WechatHelper wechatHelper;
     @Autowired
     private WxAccountService wxAccountService;
+
+    private WxAccessToken accessToken;
+
+    @Before
+    public void getAccessToken(){
+        WxAccount wxAccount = wxAccountService.getWxAccountBySiteId(1L);
+        accessToken = wechatHelper.getAccessToken(wxAccount);
+    }
 
     @Test
     public void getTemplate() {
@@ -76,7 +87,21 @@ public class WechatHelperTest extends BaseTest {
 
 
         wechatHelper.messageTemplateSend(accessToken.getAccess_token(), json);
+    }
 
+    @Test
+    public void addMateria(){
+        File file =new File("E:\\resource\\发布图片\\2018-11-4\\111-600x400.jpg");
+        wechatHelper.addMateria(accessToken.getAccess_token(),"image",file);
+    }
 
+    @Test
+    public void getMaterial(){
+        wechatHelper.getMaterial(accessToken.getAccess_token(),"XQRUgXjSqS1YbqZHwmoWWYgRXTTjMU4TsmL1RcbseU8");
+    }
+
+    @Test
+    public void batchgetMaterial(){
+        wechatHelper.batchgetMaterial(accessToken.getAccess_token(),MediaType.image,0,20);
     }
 }

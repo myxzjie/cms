@@ -20,7 +20,7 @@ import com.xzjie.mybatis.page.PageEntity;
 
 @Controller
 @RequestMapping("${web.adminPath}/wx-account/follow")
-public class AdminWxAccountFollowController  extends BaseController {
+public class SystemWxAccountFollowController extends BaseController {
 	
 	private final Logger LOG = LogManager.getLogger(getClass());
 

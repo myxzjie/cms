@@ -26,8 +26,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${web.adminPath}/category")
-public class AdminCategoryController extends BaseController {
-    private final Logger LOG = LogManager.getLogger(AdminCategoryController.class);
+public class SystemCategoryController extends BaseController {
+    private final Logger LOG = LogManager.getLogger(getClass());
     @Autowired
     private CategoryService categoryService;
 

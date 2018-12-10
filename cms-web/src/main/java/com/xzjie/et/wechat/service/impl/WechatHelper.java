@@ -1,8 +1,10 @@
 package com.xzjie.et.wechat.service.impl;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.*;
 
+import com.xzjie.et.wechat.enums.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -184,8 +186,8 @@ public class WechatHelper {
 
     }
 
-    public void getTemplate(String accessToken){
-        String url = wechatUrl + "cgi-bin/template/api_add_template?access_token="+accessToken+"";
+    public void getTemplate(String accessToken) {
+        String url = wechatUrl + "cgi-bin/template/api_add_template?access_token=" + accessToken + "";
 
         String json = HttpUtils.doGet(url);
         if (logger.isInfoEnabled()) {
@@ -195,8 +197,8 @@ public class WechatHelper {
     }
 
 
-    public void getTemplateList(String accessToken){
-        String url = wechatUrl + "/cgi-bin/template/get_all_private_template?access_token="+accessToken;
+    public void getTemplateList(String accessToken) {
+        String url = wechatUrl + "/cgi-bin/template/get_all_private_template?access_token=" + accessToken;
 
         String json = HttpUtils.doGet(url);
         if (logger.isInfoEnabled()) {
@@ -205,23 +207,59 @@ public class WechatHelper {
         JSONObject jsonObject = JSONObject.parseObject(json);
     }
 
-    public void setIndustry(String accessToken,Map<String,Object> params){
-        String url = wechatUrl + "/cgi-bin/template/api_set_industry?access_token="+accessToken;
+    public void setIndustry(String accessToken, Map<String, Object> params) {
+        String url = wechatUrl + "/cgi-bin/template/api_set_industry?access_token=" + accessToken;
 
-        String json = HttpUtils.doPost(url,params);
+        String json = HttpUtils.doPost(url, params);
         if (logger.isInfoEnabled()) {
             logger.info("\n 结果:" + json);
         }
         JSONObject jsonObject = JSONObject.parseObject(json);
     }
 
-    public void messageTemplateSend(String accessToken,String params){
-        String url = wechatUrl + "/cgi-bin/message/template/send?access_token="+accessToken;
-        String json = HttpUtils.doPost(url,params);
+    public void messageTemplateSend(String accessToken, String params) {
+        String url = wechatUrl + "/cgi-bin/message/template/send?access_token=" + accessToken;
+        String json = HttpUtils.doPost(url, params);
         if (logger.isInfoEnabled()) {
             logger.info("\n 结果:" + json);
         }
         JSONObject jsonObject = JSONObject.parseObject(json);
+    }
+
+    public void addMateria(String accessToken, String type, File file) {
+        String url = wechatUrl + "/cgi-bin/material/add_material?access_token=" + accessToken + "&type=" + type + "";
+
+        String result = HttpUtils.doPostFile(url, file, "media");
+        if (logger.isInfoEnabled()) {
+            logger.info("\n 结果:" + result);
+        }
+        JSONObject jsonObject = JSONObject.parseObject(result);
+    }
+
+    public void getMaterial(String accessToken, String mediaId) {
+        String url = wechatUrl + "/cgi-bin/material/get_material?access_token=" + accessToken;
+        Map<String, Object> params = new HashMap<>();
+        params.put("media_id", mediaId);
+
+        String result = HttpUtils.doPost(url, JSON.toJSONString(params));
+        if (logger.isInfoEnabled()) {
+            logger.info("\n 结果:" + result);
+        }
+        JSONObject jsonObject = JSONObject.parseObject(result);
+    }
+
+    public void batchgetMaterial(String accessToken, MediaType type, int offset, int count) {
+        String url = wechatUrl + "/cgi-bin/material/batchget_material?access_token=" + accessToken;
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", type.name());
+        params.put("offset", offset);
+        params.put("count", count);
+
+        String result = HttpUtils.doPost(url, JSON.toJSONString(params));
+        if (logger.isInfoEnabled()) {
+            logger.info("\n 结果:" + result);
+        }
+        JSONObject jsonObject = JSONObject.parseObject(result);
     }
 
     /**

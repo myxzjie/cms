@@ -129,6 +129,7 @@
                         formatter: function (value, row, index) {
 
                             return [
+                                '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-group/view/' + row.id + '"><i class="fa fa-pencil-square-o"></i> 群发</a>',
                                 '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-message/edit/' + row.id + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
                                 '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.id + ')"><i class="fa fa-trash"></i> 移除</button>'
                             ].join('');

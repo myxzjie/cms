@@ -23,9 +23,9 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("${web.adminPath}/ad")
-public class AdminAdController extends BaseController {
+public class SystemAdController extends BaseController {
 
-    private final Logger LOG = LogManager.getLogger(AdminAdController.class);
+    private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired
     private AdService adService;

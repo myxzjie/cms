@@ -24,7 +24,7 @@ import com.xzjie.mybatis.page.PageEntity;
 
 @Controller
 @RequestMapping("${web.adminPath}/wx-button")
-public class AdminWxButtonController extends BaseController {
+public class SystemWxButtonController extends BaseController {
 
     private final Logger LOG = LogManager.getLogger(getClass());
 

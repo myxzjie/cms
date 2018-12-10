@@ -4,13 +4,16 @@ import com.xzjie.common.web.utils.MapResult;
 import com.xzjie.core.utils.StringUtils;
 import com.xzjie.et.wechat.model.WxAccountFollow;
 import com.xzjie.et.wechat.model.WxButton;
+import com.xzjie.et.wechat.model.WxGroup;
 import com.xzjie.et.wechat.model.WxMessage;
+import com.xzjie.et.wechat.service.WxGroupService;
 import com.xzjie.et.wechat.service.WxMessageService;
 import com.xzjie.mybatis.page.Page;
 import com.xzjie.mybatis.page.PageEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,15 +23,18 @@ import com.xzjie.et.core.web.BaseController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("${web.adminPath}/wx-message")
-public class AdminWxMessageController extends BaseController {
+public class SystemWxMessageController extends BaseController {
     private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired
     private WxMessageService wxMessageService;
+    @Autowired
+    private WxGroupService wxGroupService;
 
     @RequestMapping(value = {"", "/", "index"})
     public String indexView() {
@@ -47,6 +53,15 @@ public class AdminWxMessageController extends BaseController {
         model.addAttribute("model", message);
         return getRemoteView("wechat/wx_message/wx_message_edit");
     }
+
+//    @RequestMapping("groupview/{id}")
+//    public String groupView(@PathVariable Long id, Model model) {
+//        WxMessage message = wxMessageService.get(id);
+//        List<WxGroup> groups = wxGroupService.getList(new WxGroup());
+//        model.addAttribute("model", message);
+//        model.addAttribute("groups", groups);
+//        return getRemoteView("wechat/wx_message/wx_group_message");
+//    }
 
     @RequestMapping("datapage")
     @ResponseBody

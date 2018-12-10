@@ -1,0 +1,154 @@
+<#include "/able/_inc/_head.html"/>
+<#include "/able/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+
+<!-- start: BASIC TABLE -->
+
+<div class="container-fluid container-fullw bg-white">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-lg-2 col-md-12"></div>
+            <div class="col-lg-8 col-md-12">
+                <form id="form" role="form" class="form-horizontal" action="${ctx_admin}<#if model?exists>/wx-message/update<#else>/wx-message/add</#if>" method="post">
+
+                    <input type="hidden" id="id" name="id" value="${model.id}">
+                    <input type="hidden" name="msgtype" value="text">
+
+                <#--<div class="form-group">
+                    <label class="col-sm-3 control-label" for="buttonKey">
+                        关键字：
+                    </label>
+                    <div class="col-sm-7">
+                        <input id="buttonKey" type="text" name="buttonKey" placeholder="关键字" class="form-control" value="" >
+                    </div>
+                </div>-->
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="title">
+                            标题：
+                        </label>
+                        <div class="col-sm-7">
+                            <input id="title" type="text" name="title" placeholder="标题" class="form-control" value="${model.title}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="content">
+                            内容：
+                        </label>
+                        <div class="col-sm-7">
+                            <textarea id="content" rows="5" name="content"
+                                      placeholder="说点什么...最少输入10个字符" class="form-control">${model.content}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group margin-bottom-0">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn  btn-primary" type="submit">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-12"></div>
+        </div>
+    </div>
+</div>
+</@layout>
+    <!-- The main application script -->
+    <!--<script src="vendor/jquery-file-upload/main.js"></script>-->
+    <!-- <script type="text/javascript" src="assets/js/ad/ad-add.js"></script> -->
+
+    <script type="text/javascript">
+        var FormValidator = function () {
+            "use strict";
+            // function to initiate Validation Sample 2
+            var runValidator2 = function () {
+                var form2 = $('#form');
+                var errorHandler2 = $('.errorHandler', form2);
+                var successHandler2 = $('.successHandler', form2);
+
+
+                form2.validate({
+                    errorElement: "span", // contain the error msg in a small tag
+                    errorClass: 'help-block',
+                    errorPlacement: function (error, element) {
+                    },
+                    ignore: "",
+                    rules: {
+
+                    },
+                    messages: {
+
+                    },
+                    invalidHandler: function (event, validator) { //display error alert on form submit
+                        successHandler2.hide();
+                        errorHandler2.show();
+                    },
+                    highlight: function (element) {
+                        $(element).closest('.help-block').removeClass('valid');
+                        // display OK icon
+                        $(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+                        // add the Bootstrap error class to the control group
+                    },
+                    unhighlight: function (element) { // revert the change done by hightlight
+                        $(element).closest('.form-group').removeClass('has-error');
+                        // set error class to the control group
+                    },
+                    success: function (label, element) {
+                        label.addClass('help-block valid');
+                        // mark the current input as valid and display OK icon
+                        $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
+                    },
+                    submitHandler: function (form) {
+                        successHandler2.show();
+                        errorHandler2.hide();
+                        $.ajax({
+                            type: form.method,
+                            url:form.action,
+                            async:false, //同步方法，如果用异步的话，flag永远为1
+                            dataType:'json',
+                            data:$(form).serialize(),
+                            success: function(res){
+                                if(res.success){
+                                    layer.msg(res.message, {
+                                        icon: 1,
+                                        time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        location.href = global.adminPath + "/wx-message";
+                                    });
+                                }else{
+                                    layer.msg(res.message, {icon: 2});
+                                }
+                            }
+                        });
+                    }
+                });
+
+            };
+            return {
+                //main function to initiate template pages
+                init: function () {
+                    runValidator2();
+                }
+            };
+        }();
+
+        jQuery(document).ready(function() {
+            FormValidator.init();
+        });
+    </script>

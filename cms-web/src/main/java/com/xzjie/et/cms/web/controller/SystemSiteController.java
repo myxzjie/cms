@@ -19,8 +19,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${web.adminPath}/site")
-public class AdminSiteController extends BaseController {
-    private final Logger LOG = LogManager.getLogger(AdminSiteController.class);
+public class SystemSiteController extends BaseController {
+    private final Logger LOG = LogManager.getLogger(getClass());
     @Autowired
     private SiteService siteService;
 

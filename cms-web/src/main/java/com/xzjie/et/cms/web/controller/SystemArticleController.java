@@ -26,8 +26,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${web.adminPath}/article")
-public class AdminArticleController extends BaseController {
-    private final Logger LOG = LogManager.getLogger(AdminArticleController.class);
+public class SystemArticleController extends BaseController {
+    private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired
     private ArticleService articleService;

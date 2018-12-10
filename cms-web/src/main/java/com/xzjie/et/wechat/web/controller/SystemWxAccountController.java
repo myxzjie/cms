@@ -21,7 +21,7 @@ import com.xzjie.mybatis.page.PageEntity;
 
 @Controller
 @RequestMapping("${web.adminPath}/wx-account")
-public class AdminWxAccountController extends BaseController {
+public class SystemWxAccountController extends BaseController {
     private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired

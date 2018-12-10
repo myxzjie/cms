@@ -335,7 +335,7 @@
 							<goal>start</goal>
 						</goals>
 						<configuration>
-							<scanIntervalSeconds>0</scanIntervalSeconds>
+							<scanIntervalSeconds>5</scanIntervalSeconds>
 							<!--<daemon>true</daemon> -->
 						</configuration>
 					</execution>
