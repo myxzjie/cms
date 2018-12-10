@@ -24,6 +24,10 @@
                     <p class="email-options-title no-margin" style="font-size: 18px;">
                         <span>全部群</span>
                         <span class="pull-right">
+                            <a href="#/group/page?projectId=${project.projectId}" class="btn btn-warning btn-xs" >
+                                <i class="fa fa-th-large" ></i>
+                                管理
+                            </a>
                             <a id="btn_addview" class="btn btn-primary btn-xs" >
                                 <i class="fa fa-plus" ></i>
                                 新增
@@ -31,29 +35,18 @@
                         </span>
                     </p>
                     <ul class="main-options padding-15">
-                        <li>
-                            <a href="javascript:;">
-                                <span class="title">群1</span>
-                                <span class="badge pull-right">10</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="title"><i class="ti-upload"></i> Sent</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="title"><i class="ti-na"></i> Spam</span>
-                                <span class="badge pull-right">1</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="title"><i class="ti-star"></i> Starred</span>
-                                <span class="badge pull-right">2</span>
-                            </a>
-                        </li>
+                        <#if groups?exists && groups?size gt 0>
+                                <#list groups as group>
+                                    <li <#if groupId == group.groupId >class="active"</#if> groupId="${groupInfo.groupId}" >
+                                        <a href="#/group?projectId=${project.projectId}&groupId=${group.groupId}" >
+                                            <span class="title">${group.name}</span>
+                                        <#if group.total gt 0>
+                                        <span class="badge pull-right">${group.total}</span>
+                                        </#if>
+                                        </a>
+                                    </li>
+                                </#list>
+                        </#if>
                     </ul>
                 </div>
             </div>
@@ -347,9 +340,8 @@
     $(function () {
         $('#btn_addview').click(function () {
             var url=global.adminPath+'/wx-group/addview';
-            layer_show("添加",url);
+            layer_show("添加",url,600,400);
         });
-
     });
 </script>
 </body>

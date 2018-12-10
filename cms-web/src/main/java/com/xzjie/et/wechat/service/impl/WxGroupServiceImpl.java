@@ -8,6 +8,8 @@ import com.xzjie.mybatis.core.service.AbstractBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 鹰视视科技: www.dev56.com
  *
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @create: 2018-12-09 20:10
  **/
 @Service("wxGroupService")
-public class WxGroupServiceImpl extends AbstractBaseService<WxGroup,Long> implements WxGroupService {
+public class WxGroupServiceImpl extends AbstractBaseService<WxGroup, Long> implements WxGroupService {
 
     @Autowired
     private WxGroupMapper wxGroupMapper;
@@ -26,4 +28,10 @@ public class WxGroupServiceImpl extends AbstractBaseService<WxGroup,Long> implem
     }
 
 
+    @Override
+    public List<WxGroup> getWxGroupList(Long siteId) {
+        WxGroup group = new WxGroup();
+        group.setSiteId(siteId);
+        return getList(group);
+    }
 }

@@ -14,6 +14,8 @@ public class WxGroup implements Serializable {
 
     private Integer state;
 
+    private Long siteId;
+
     public Long getId() {
         return id;
     }
@@ -52,5 +54,13 @@ public class WxGroup implements Serializable {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Long getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(Long siteId) {
+        this.siteId = siteId;
     }
 }

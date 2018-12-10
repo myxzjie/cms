@@ -7,6 +7,7 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="site_id" jdbcType="BIGINT" property="siteId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, name, avatar, create_date, state
@@ -52,6 +53,9 @@
       <if test="state != null">
         state,
       </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -68,6 +72,9 @@
       </if>
       <if test="state != null">
         #{state,jdbcType=INTEGER},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
