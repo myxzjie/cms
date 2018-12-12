@@ -17,7 +17,7 @@
 <section id="page-title">
     <div class="row">
         <div class="col-sm-8">
-            <label>公众号管理 - 文本信息</label>
+            <label>公众号管理 - 公众号用户</label>
         </div>
 
     </div>
@@ -39,24 +39,8 @@
                 </ul>
             </div>-->
 
-            <#--<div class="panel panel-white">
-                <div class="panel-body">
-                    <form id="query_form" class="form-inline">
-                        <div class="form-group">
-                            <label class="control-label">标题：</label>
-                            <input class="form-control" type="text" name="title" id="title">
-                        </div>
-
-                        <button id="btn_query" class="btn btn-primary" type="button">
-                            查询
-                        </button>
-                    </form>
-                </div>
-
-            </div>-->
-
             <div id="toolbar">
-                <a id="btn-add" href="${ctx_admin}/wx-message/addview" class="btn btn-o btn-danger">添加</a>
+                <a id="btn-add" class="btn btn-o btn-danger">添加</a>
                 <!--<button id="btn-update" type="button" class="btn btn-primary">修改</button>
                 <button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
                 <button id="btn-scene" type="button" class="btn btn-primary">设置监控点</button>-->
@@ -79,7 +63,7 @@
 
         function initTable() {
             $table = $('#data-table').bootstrapTable({
-                url: global.adminPath + '/wx-message/datapage',  //请求后台的URL（*）
+                url: global.adminPath + '/wx-account/follow/datapage',  //请求后台的URL（*）
                 method: 'get',   //请求方式（*）
                 //toolbar: '#toolbar',  //工具按钮用哪个容器
                 striped: false,   //是否显示行间隔色
@@ -113,14 +97,37 @@
                     {
                         checkbox: true
                     }, {
-                        field: 'title',
-                        title: '标题'
+                        field: 'avatar',
+                        title: '头像',
+                        formatter: function (value, row, index) {
+                            return '<img style="width: 72px; height: 72px;" src=' +value + ' />';
+                        }
                     }, {
-                        field: 'content',
-                        title: '内容'
+                        field: 'nickName',
+                        title: '昵称'
+                    },
+                    {
+                        field: 'sex',
+                        title: '性别',
+                        formatter: function (value, row, index) {
+                            switch (value) {
+                                case 1:
+                                    return '男';
+                                case 2:
+                                    return '女';
+                                default:
+                                    return '未知';
+                            }
+                        }
                     }, {
-                        field: 'createDate',
-                        title: '创建时间',
+                        field: 'city',
+                        title: '省/市',
+                        formatter: function (value, row, index) {
+                            return (row.province + '-' + row.city);
+                        }
+                    }, {
+                        field: 'subscribeDate',
+                        title: '关注时间',
                         formatter: function (value, row, index) {
                             return new Date(value).format("yyyy-MM-dd HH:mm:ss");
                         }
@@ -129,9 +136,8 @@
                         formatter: function (value, row, index) {
 
                             return [
-                                '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-group?messageId=' + row.id + '"><i class="fa fa-pencil-square-o"></i> 群发</a>',
-                                '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-message/edit/' + row.id + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
-                                '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.id + ')"><i class="fa fa-trash"></i> 移除</button>'
+                                '<a class="btn btn-o btn-default" href="#/article/edit/' + row.articleId + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
+                                '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.articleId + ')"><i class="fa fa-trash"></i> 移除</button>'
                             ].join('');
                         }
                     }
@@ -141,22 +147,21 @@
 
         var tgridObj = {
             del: function (id) {
-                layer.confirm('确定要删除吗？', {
+                layer.confirm('确定要删除吗？同时也会删除子栏目。', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.ajax({
                         data: {},
                         type: 'post',
                         dataType: 'json',
-                        url: global.adminPath + '/wx-message/delete/' + id,
+                        url: '/article/delete/' + id,
                         success: function (res) {
                             if (res.success) {
                                 layer.msg(res.message, {
                                     icon: 1,
                                     time: 2000, ///2秒关闭（如果不配置，默认是3秒）
                                 }, function () {
-                                    $table.bootstrapTable('destroy');
-                                    initTable();
+                                    location.reload();
                                 });
                             } else {
                                 layer.msg(res.message, {icon: 2});

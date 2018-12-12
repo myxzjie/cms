@@ -35,12 +35,13 @@ public class SystemWxGroupController extends BaseController {
     @Autowired
     private WxGroupService wxGroupService;
 
-    @RequestMapping("view/{id}")
-    public String groupView(@PathVariable Long id, Model model) {
-        WxMessage message = wxMessageService.get(id);
+    @RequestMapping(value = {"", "/", "index"})
+    public String groupView(Long messageId, Model model) {
+        WxMessage message = wxMessageService.get(messageId);
         List<WxGroup> groups = wxGroupService.getWxGroupList(getSiteId());
         model.addAttribute("model", message);
         model.addAttribute("groups", groups);
+        model.addAttribute("messageId", messageId);
         return getRemoteView("wechat/wx_group/wx_group");
     }
 

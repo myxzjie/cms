@@ -38,7 +38,7 @@
                         <#if groups?exists && groups?size gt 0>
                                 <#list groups as group>
                                     <li <#if groupId == group.groupId >class="active"</#if> groupId="${groupInfo.groupId}" >
-                                        <a href="#/group?projectId=${project.projectId}&groupId=${group.groupId}" >
+                                        <a href="${ctx_admin}/wx-group?messageId=${messageId}&groupId=${group.groupId}" >
                                             <span class="title">${group.name}</span>
                                         <#if group.total gt 0>
                                         <span class="badge pull-right">${group.total}</span>
@@ -115,7 +115,7 @@
                                                     管理
                                                 </a>
                                                 </#if>
-                                        <a href="#/document/addview/${project.projectId}" class="btn btn-primary btn-xs">
+                                        <a id="btn_follow" class="btn btn-primary btn-xs">
                                                 <i class="fa fa-plus" ></i>
                                                 新增
                                                 </a>
@@ -364,6 +364,11 @@
 
     $(function () {
         $('#btn_addview').click(function () {
+            var url=global.adminPath+'/wx-group/addview';
+            layer_show("添加",url,600,400);
+        });
+
+        $('#btn_follow').click(function () {
             var url=global.adminPath+'/wx-group/addview';
             layer_show("添加",url,600,400);
         });

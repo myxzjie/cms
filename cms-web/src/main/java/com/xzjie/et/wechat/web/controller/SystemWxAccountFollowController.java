@@ -31,6 +31,11 @@ public class SystemWxAccountFollowController extends BaseController {
     public String index(Map<String, Object> modelView) {
         return getRemoteView("wechat/wx_account_follow/wx_account_follow");
     }
+
+    @RequestMapping(value = "popup")
+    public String followPopup(Map<String, Object> modelView) {
+        return getRemoteView("wechat/wx_account_follow/wx_account_follow_popup");
+    }
     
     @RequestMapping("datapage")
     @ResponseBody
