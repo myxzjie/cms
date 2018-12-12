@@ -96,9 +96,34 @@
                                 <i class="ti-close"></i>
                             </button>
                         </div>
-                        <div class="messages-search">
+                        <div class="messages-search" style="padding-top: 5px;padding-bottom:1px;">
+                            <div class="">
+                                <h3 style="margin-bottom:1px;">${project.projectName}-
+                                    <small>
+                                                <#if groupId == -1>
+                                                    全部
+                                                <#elseif groupId == 0>
+                                                    默认分组
+                                                <#else>
+                                                    ${groupInfo.name}
+                                                </#if>
+                                    </small>
+                                    <span class="pull-right">
+                                                <#if groupInfo?exists>
+                                                <a href="#/document?projectId=${project.projectId}&groupId=${groupId}" class="btn btn-warning btn-xs">
+                                                    <i class="fa fa-th-large" ></i>
+                                                    管理
+                                                </a>
+                                                </#if>
+                                        <a href="#/document/addview/${project.projectId}" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-plus" ></i>
+                                                新增
+                                                </a>
+                                    </span>
+                                </h3>
+                            </div>
                             <form>
-                                <input type="text" placeholder="Search messages..." class="form-control underline">
+                                <input type="text" placeholder="Search messages..." class="form-control underline" style="font-size: 12px;padding: 2px 3px;border: 0px solid #c8c7cc">
                             </form>
                         </div>
                     </div>
