@@ -19,6 +19,14 @@
     delete from wx_group_follow
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
+    insert into  wx_group_follow (id, group_id, follow_id)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{followId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
   <insert id="insert" parameterType="com.xzjie.et.wechat.model.WxGroupFollow">
     insert into wx_group_follow (id, group_id, follow_id
       )

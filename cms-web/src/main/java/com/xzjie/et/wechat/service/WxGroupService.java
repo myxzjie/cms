@@ -1,6 +1,7 @@
 package com.xzjie.et.wechat.service;
 
 import com.xzjie.et.wechat.model.WxGroup;
+import com.xzjie.et.wechat.model.WxGroupFollow;
 import com.xzjie.mybatis.core.service.BaseService;
 
 import java.util.List;
@@ -14,4 +15,6 @@ import java.util.List;
 public interface WxGroupService extends BaseService<WxGroup, Long> {
 
     List<WxGroup> getWxGroupList(Long siteId);
+
+    boolean batchGroupFollow(Long groupId, List<Long> followids);
 }

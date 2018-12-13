@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -105,5 +106,12 @@ public class SystemWxGroupController extends BaseController {
         }
 
         return MapResult.mapError("1409");
+    }
+
+    @RequestMapping("follow/add")
+    @ResponseBody
+    public Map<String, Object> addGroupFollow(@RequestParam("groupId") Long groupId, @RequestParam("followIds[]") List<Long> followIds) {
+        wxGroupService.batchGroupFollow(groupId, followIds);
+        return MapResult.mapOK();
     }
 }
