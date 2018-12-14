@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,7 +34,8 @@ public class SystemWxAccountFollowController extends BaseController {
     }
 
     @RequestMapping(value = "popup")
-    public String followPopup(Map<String, Object> modelView) {
+    public String followPopup(Long groupId, ModelMap modelMap) {
+        modelMap.put("groupId",groupId);
         return getRemoteView("wechat/wx_account_follow/wx_account_follow_popup");
     }
     

@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-12">
             <div id="toolbar">
-                <a id="btn-add" class="btn btn-o btn-danger">添加</a>
+                <a id="btn-add" data-group_id="${groupId}" class="btn btn-o btn-danger">添加</a>
             </div>
 
             <table id="data-table" class="table table-hover col-xs-12" data-toolbar="#toolbar"></table>
@@ -44,6 +44,7 @@
                     followIds.push(obj[i].id);
                 }
                 data.followIds=followIds;
+                data.groupId=$(this).data('group_id');
                 $.ajax({
                     data: data,
                     type: 'post',
@@ -53,9 +54,11 @@
                         if (res.success) {
                             layer.msg(res.message, {
                                 icon: 1,
-                                time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function () {
-                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.location.reload();
+                                parent.layer.close(index);
                             });
                         } else {
                             layer.msg(res.message, {icon: 2});

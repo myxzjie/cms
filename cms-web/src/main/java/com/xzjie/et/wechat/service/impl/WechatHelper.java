@@ -186,6 +186,22 @@ public class WechatHelper {
 
     }
 
+    public void message(String accessToken, String params) throws Exception {
+        String url = wechatUrl + "cgi-bin/message/mass/send?access_token=" + accessToken;
+        String json = HttpUtils.doPost(url, params);
+        JSONObject jsonObject = JSONObject.parseObject(json);
+
+        if (null == jsonObject) {
+            throw new Exception("获得用户错误。");
+        }
+        // logger.info("获取用户信息接口返回结果：" + jsonObject.toString());
+        if (jsonObject.containsKey("errcode")) {
+            throw new Exception(
+                    "信息数据失败！错误码为：" + jsonObject.getIntValue("errcode") + "错误信息为：" + jsonObject.getString("errmsg"));
+        }
+        return ;
+    }
+
     public void getTemplate(String accessToken) {
         String url = wechatUrl + "cgi-bin/template/api_add_template?access_token=" + accessToken + "";
 

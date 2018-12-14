@@ -41,14 +41,28 @@ public class WxGroupServiceImpl extends AbstractBaseService<WxGroup, Long> imple
     }
 
     @Override
-    public boolean batchGroupFollow(Long groupId ,List<Long> followids) {
-        List<WxGroupFollow> list =new ArrayList<>();
-        for (Long followId:followids){
-            WxGroupFollow model=new WxGroupFollow();
+    public boolean batchGroupFollow(Long groupId, List<Long> followids) {
+        List<WxGroupFollow> list = new ArrayList<>();
+        for (Long followId : followids) {
+            //已存在
+            if (exist(groupId, followId)) {
+                continue;
+            }
+            WxGroupFollow model = new WxGroupFollow();
             model.setFollowId(followId);
             model.setGroupId(groupId);
             list.add(model);
         }
+        if (list.size() < 1) {
+            return false;
+        }
         return wxGroupFollowMapper.batchInsert(list) > 0;
+    }
+
+    public boolean exist(Long groupId, Long followId) {
+        WxGroupFollow model = new WxGroupFollow();
+        model.setFollowId(followId);
+        model.setGroupId(groupId);
+        return wxGroupFollowMapper.exist(model) > 0;
     }
 }

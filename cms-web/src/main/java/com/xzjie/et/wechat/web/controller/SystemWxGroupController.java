@@ -3,8 +3,10 @@ package com.xzjie.et.wechat.web.controller;
 import com.xzjie.common.web.utils.MapResult;
 import com.xzjie.core.utils.StringUtils;
 import com.xzjie.et.core.web.BaseController;
+import com.xzjie.et.wechat.model.WxAccountFollow;
 import com.xzjie.et.wechat.model.WxGroup;
 import com.xzjie.et.wechat.model.WxMessage;
+import com.xzjie.et.wechat.service.WxAccountFollowService;
 import com.xzjie.et.wechat.service.WxGroupService;
 import com.xzjie.et.wechat.service.WxMessageService;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,14 +38,26 @@ public class SystemWxGroupController extends BaseController {
     private WxMessageService wxMessageService;
     @Autowired
     private WxGroupService wxGroupService;
+    @Autowired
+    private WxAccountFollowService wxAccountFollowService;
 
     @RequestMapping(value = {"", "/", "index"})
-    public String groupView(Long messageId, Model model) {
+    public String groupView(Long messageId, Long groupId, ModelMap model) {
         WxMessage message = wxMessageService.get(messageId);
         List<WxGroup> groups = wxGroupService.getWxGroupList(getSiteId());
-        model.addAttribute("model", message);
-        model.addAttribute("groups", groups);
-        model.addAttribute("messageId", messageId);
+        if (groups.size() > 0 && groupId == null) {
+            groupId = groups.get(0).getId();
+        }
+        WxGroup group = wxGroupService.get(groupId);
+
+        List<WxAccountFollow> accountFollows = wxAccountFollowService.getAccountFollowByGroupId(groupId);
+
+        model.put("model", message);
+        model.put("groups", groups);
+        model.put("messageId", messageId);
+        model.put("groupId", groupId);
+        model.put("group", group);
+        model.put("accountFollows", accountFollows);
         return getRemoteView("wechat/wx_group/wx_group");
     }
 
@@ -111,7 +126,18 @@ public class SystemWxGroupController extends BaseController {
     @RequestMapping("follow/add")
     @ResponseBody
     public Map<String, Object> addGroupFollow(@RequestParam("groupId") Long groupId, @RequestParam("followIds[]") List<Long> followIds) {
-        wxGroupService.batchGroupFollow(groupId, followIds);
-        return MapResult.mapOK();
+        if (groupId == null || followIds.size() < 1) {
+            return MapResult.mapError("23");
+        }
+        try {
+            if (wxGroupService.batchGroupFollow(groupId, followIds)) {
+                return MapResult.mapOK();
+            } else {
+                return MapResult.mapError("20");
+            }
+        } catch (Exception e) {
+            LOG.error("group follow add error.", e);
+        }
+        return MapResult.mapError();
     }
 }

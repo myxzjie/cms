@@ -64,7 +64,10 @@ public class WxAccountFollowServiceImpl extends AbstractBaseService<WxAccountFol
         } catch (Exception e) {
             LOG.error("批量同步公众号用户错误.", e);
         }
+    }
 
-
+    @Override
+    public List<WxAccountFollow> getAccountFollowByGroupId(Long groupId) {
+        return wxAccountFollowMapper.selectAccountFollowByGroupId(groupId);
     }
 }

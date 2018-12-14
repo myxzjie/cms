@@ -103,7 +103,7 @@ public class SystemWxMessageController extends BaseController {
             return MapResult.mapOK("1400");
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error("添加公众菜单错误.", e);
+            LOG.error("错误.", e);
         }
 
         return MapResult.mapError("1406");
@@ -131,7 +131,7 @@ public class SystemWxMessageController extends BaseController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error("修改公众号菜单错误.", e);
+            LOG.error("错误.", e);
         }
         return MapResult.mapError("1408");
     }
@@ -141,11 +141,23 @@ public class SystemWxMessageController extends BaseController {
     public Map<String, Object> delete(@PathVariable Long id) {
         try {
             wxMessageService.delete(id);
-            return MapResult.mapOK("1410");
+            return MapResult.mapOK();
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error("公众号菜单删除错误.", e);
+            LOG.error("错误.", e);
         }
-        return MapResult.mapError("1409");
+        return MapResult.mapError("22");
+    }
+
+    @RequestMapping("send")
+    @ResponseBody
+    public Map<String, Object> send(Long groupId, Long messageId) {
+        try {
+            wxMessageService.send(getSiteId(), groupId, messageId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("错误.", e);
+        }
+        return MapResult.mapError("22");
     }
 }

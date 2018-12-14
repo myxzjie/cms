@@ -9,6 +9,20 @@
   <sql id="Base_Column_List">
     id, group_id, follow_id
   </sql>
+
+  <select id="exist" resultType="int" parameterType="com.xzjie.et.wechat.model.WxGroupFollow">
+    select
+    count(1)
+    from wx_group_follow
+    where 1=1
+    <if test="groupId != null">
+      and group_id = #{groupId,jdbcType=BIGINT}
+    </if>
+    <if test="followId != null">
+      and follow_id = #{followId,jdbcType=BIGINT}
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -21,10 +35,10 @@
   </delete>
 
   <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
-    insert into  wx_group_follow (id, group_id, follow_id)
+    insert into  wx_group_follow (group_id, follow_id)
     values
     <foreach collection="list" item="item" index="index" separator="," >
-      (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{followId,jdbcType=BIGINT})
+      (#{item.groupId,jdbcType=BIGINT}, #{item.followId,jdbcType=BIGINT})
     </foreach>
   </insert>
   <insert id="insert" parameterType="com.xzjie.et.wechat.model.WxGroupFollow">
