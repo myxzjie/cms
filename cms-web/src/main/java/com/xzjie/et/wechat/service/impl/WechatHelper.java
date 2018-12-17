@@ -1,6 +1,7 @@
 package com.xzjie.et.wechat.service.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -186,20 +187,20 @@ public class WechatHelper {
 
     }
 
-    public void message(String accessToken, String params) throws Exception {
+    public boolean message(String accessToken, String params) {
         String url = wechatUrl + "cgi-bin/message/mass/send?access_token=" + accessToken;
         String json = HttpUtils.doPost(url, params);
-        JSONObject jsonObject = JSONObject.parseObject(json);
+        JSONObject result = JSONObject.parseObject(json);
 
-        if (null == jsonObject) {
-            throw new Exception("获得用户错误。");
+        if (null == result) {
+            throw new RuntimeException("发送信息返回数据错误.");
         }
-        // logger.info("获取用户信息接口返回结果：" + jsonObject.toString());
-        if (jsonObject.containsKey("errcode")) {
-            throw new Exception(
-                    "信息数据失败！错误码为：" + jsonObject.getIntValue("errcode") + "错误信息为：" + jsonObject.getString("errmsg"));
+
+        if (result.getIntValue("errcode") == 0) {
+            return true;
         }
-        return ;
+
+        throw new RuntimeException(json);
     }
 
     public void getTemplate(String accessToken) {

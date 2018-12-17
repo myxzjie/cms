@@ -1,0 +1,33 @@
+@import '../var';
+
+
+/*普通按钮样式及状态*/
+.edui-toolbar .edui-button {
+
+    .edui-button-wrap {
+        border: @btn-border;
+        padding: @btn-padding;
+        position: relative;
+        -moz-transition: border,background-color 0.3s ease-in-out;
+        -o-transition: border,background-color 0.3s ease-in-out;
+        -webkit-transition: border,background-color 0.3s ease-in-out;
+        transition: border,background-color 0.3s ease-in-out;
+
+        &:hover {
+            background-color: @btn-bg-hover;
+            border-color: @btn-border-hover-color;
+        }
+
+        &:active {
+            background-color: @btn-bg-color;
+            border-color: @btn-border-active-color;
+        }
+    }
+
+    .edui-state-checked {
+        .edui-button-wrap {
+            background-color: @btn-bg-active;
+            border-color: @btn-border-checked-color;
+        }
+    }
+}

@@ -10,6 +10,8 @@ import com.xzjie.et.wechat.service.WxAccountService;
 import com.xzjie.et.wechat.service.impl.WechatHelper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -30,7 +32,7 @@ import java.util.Map;
 
 @Controller
 public class WechatController extends BaseController {
-
+    private final Logger LOG = LogManager.getLogger(getClass());
     @Autowired
     private WxAccountService wxAccountService;
 
@@ -87,24 +89,25 @@ public class WechatController extends BaseController {
 
             String res = IOUtils.toString(inputStream);
 
-            System.out.println("接收来自微信发来的消息>>." + res);
+            LOG.info("接收来自微信发来的消息>>{}", res);
             PrintWriter writer = response.getWriter();
             writer.print(res);
             writer.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("接收来自微信发来的消息错误", e);
         }
     }
 
     /**
      * 解析微信请求并读取XML
+     *
      * @param request
      * @return
      * @throws IOException
      * @throws DocumentException
      */
-    public static Map<String,String> readWeixinXml(HttpServletRequest request) throws IOException, DocumentException {
-        Map<String,String> map = new HashMap<String,String>();
+    public static Map<String, String> readWeixinXml(HttpServletRequest request) throws IOException, DocumentException {
+        Map<String, String> map = new HashMap<String, String>();
         //获取输入流
         InputStream input = request.getInputStream();
         //使用dom4j的SAXReader读取（org.dom4j.io.SAXReader;）
@@ -116,7 +119,7 @@ public class WechatController extends BaseController {
         @SuppressWarnings("unchecked")
         List<Element> elementList = root.elements();
         //遍历所有节点并将其放进map
-        for(Element e : elementList){
+        for (Element e : elementList) {
             map.put(e.getName(), e.getText());
         }
         //释放资源
@@ -127,17 +130,16 @@ public class WechatController extends BaseController {
     }
 
 
-
     @RequestMapping(value = "wechat/message")
     @ResponseBody
     public Map<String, Object> messageTemplateSend() {
         WxAccount wxAccount = wxAccountService.getWxAccountBySiteId(1L);
         WxAccessToken accessToken = wechatHelper.getAccessToken(wxAccount);
 
-        String json = TemplateData.New()
+        String json = TemplateData.builder()
                 .setTouser("oDJmCwW3A5oEkL9HRc6VF6h8LZl0")
                 .setTemplate_id("0eykeX1xRER1byoxXYSqSzbP-1jgFFRqS129VkV8V_4")
-                .setTopcolor("#93b7f3")
+                .setColor("#93b7f3")
                 .setUrl("https://www.dev56.info")
                 .add("first", "欢迎关注我们的公众号", "#173177")
                 .add("message", "鹰视科技", "#173177")

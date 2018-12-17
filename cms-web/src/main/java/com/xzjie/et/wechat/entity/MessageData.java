@@ -3,15 +3,19 @@ package com.xzjie.et.wechat.entity;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MessageData {
 
     private List<String> touser;
     private String msgtype;
 
-    private Map<String, Object> text;
+    private ItemMap text;
+
+    private MessageData() {
+        text = new ItemMap();
+    }
 
     public static MessageData builder() {
         return new MessageData();
@@ -25,8 +29,9 @@ public class MessageData {
         touser.add(openId);
         return this;
     }
-    public MessageData add(String content){
-        text.put("content",content);
+
+    public MessageData add(String content) {
+        text.put("content", content);
         return this;
     }
 
@@ -46,11 +51,17 @@ public class MessageData {
         this.msgtype = msgtype;
     }
 
-    public Map<String, Object> getText() {
+    public ItemMap getText() {
         return text;
     }
 
-    public void setText(Map<String, Object> text) {
-        this.text = text;
+    public class ItemMap extends HashMap<String, String> {
+
+        public ItemMap() {
+        }
+
+        public ItemMap(String key, String value) {
+            this.put(key, value);
+        }
     }
 }

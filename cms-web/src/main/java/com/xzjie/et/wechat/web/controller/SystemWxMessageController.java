@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 @Controller
 @RequestMapping("${web.adminPath}/wx-message")
@@ -103,7 +104,7 @@ public class SystemWxMessageController extends BaseController {
             return MapResult.mapOK("1400");
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error("错误.", e);
+            LOG.error("添加信息错误.", e);
         }
 
         return MapResult.mapError("1406");
@@ -131,7 +132,7 @@ public class SystemWxMessageController extends BaseController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error("错误.", e);
+            LOG.error("修改信息错误.", e);
         }
         return MapResult.mapError("1408");
     }
@@ -144,7 +145,7 @@ public class SystemWxMessageController extends BaseController {
             return MapResult.mapOK();
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error("错误.", e);
+            LOG.error("删除信息错误.", e);
         }
         return MapResult.mapError("22");
     }
@@ -153,11 +154,13 @@ public class SystemWxMessageController extends BaseController {
     @ResponseBody
     public Map<String, Object> send(Long groupId, Long messageId) {
         try {
-            wxMessageService.send(getSiteId(), groupId, messageId);
+            if (wxMessageService.send(getSiteId(), groupId, messageId)) {
+                return MapResult.mapOK();
+            }
+            return MapResult.mapError("24");
         } catch (Exception e) {
-            e.printStackTrace();
-            LOG.error("错误.", e);
+            LOG.error("发送信息错误.", e);
+            return MapResult.mapError("22", e.getMessage());
         }
-        return MapResult.mapError("22");
     }
 }

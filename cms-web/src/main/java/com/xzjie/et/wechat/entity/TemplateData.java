@@ -14,10 +14,10 @@ public class TemplateData {
     private String touser;
     private String template_id;
     private String url;
-    private String topcolor;
+    private String color;
     private TemplateItem data;
 
-    public static TemplateData New() {
+    public static TemplateData builder() {
         return new TemplateData();
     }
 
@@ -52,12 +52,12 @@ public class TemplateData {
         return this;
     }
 
-    public String getTopcolor() {
-        return topcolor;
+    public String getColor() {
+        return color;
     }
 
-    public TemplateData setTopcolor(String topcolor) {
-        this.topcolor = topcolor;
+    public TemplateData setColor(String color) {
+        this.color = color;
         return this;
     }
 

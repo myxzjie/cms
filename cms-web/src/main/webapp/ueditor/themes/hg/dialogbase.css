@@ -1,0 +1,78 @@
+/*弹出对话框页面样式组件
+*/
+
+/*reset
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+body {
+    line-height: 1;
+    background-color: #fff;
+    color: #363636;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+ins {
+    text-decoration: none;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+
+/*tab*/
+.tabhead {
+    position: relative;
+    z-index: 10;
+}
+
+.tabhead span {
+    font-size: 0.8em;
+    display: inline-block;
+    padding: 1em;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+}
+
+.tabhead span.focus {
+    border-bottom: none;
+    position: relative;
+    border-bottom: 1px solid #fff;
+    background-color: #fff;
+}
+
+.tabbody {
+    position: relative;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+}

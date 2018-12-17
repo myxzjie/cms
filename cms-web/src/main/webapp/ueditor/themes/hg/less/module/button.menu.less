@@ -1,0 +1,208 @@
+@import '../var';
+
+.edui-list {
+
+    .edui-state-hover {
+        position: relative;
+        background-color: @btn-bg-color;
+        border-color: @border-hover-color;
+    }
+
+    .edui-listitem {
+        white-space: nowrap;
+
+        &.edui-state-hover {
+            color: @menu-item-hover-color;
+            background-color: @menu-item-hover-bg;
+            border-color: @border-hover-color;
+        }
+
+        .edui-listitem-label {
+            font-size: 0.75em;
+            padding: 0.5em;
+        }
+    }
+}
+
+/* MENU */
+.edui-menu {
+    z-index: 3000;
+
+    .edui-hassubmenu {
+        .edui-arrow {
+            height: 1em;
+            width: 1em;
+            float: right;
+        }
+    }
+
+    .edui-menu-body {
+        min-width: @menu-body-minwidth;
+
+        .edui-menuitem:not(.edui-menuseparator) {
+            padding: @menu-item-padding;
+            cursor: default;
+            vertical-align: top;
+
+            &.edui-state-hover {
+                color: @menu-item-hover-color;
+                background-color: @menu-item-hover-bg;
+                border-color: @border-hover-color;
+            }
+
+            .edui-icon {
+                width: 1em;
+                height: 1em;
+                top: 0.25em;
+                font-size: 0.75em;
+            }
+
+            .edui-label {
+                font-size: 0.8em;
+                line-height: 1.5;
+                padding-left: 10px;
+            }
+        }
+    }
+
+    .edui-menuseparator {
+        margin: 2px 0;
+        height: 1px;
+        overflow: hidden;
+
+        .edui-menuseparator-inner {
+            border-bottom: 1px solid #e2e3e3;
+            margin-left: 2em;
+        }
+    }
+}
+
+/* COMBOX */
+.edui-combox {
+
+    .edui-combox-body {
+        padding: @btn-padding;
+
+        .edui-button-body {
+            white-space: nowrap;
+            width: @btn-combox-width;
+            line-height: @btn-combox-line-height;
+            font-size: @btn-combox-font-size;
+        }
+
+        .edui-splitborder {
+            display: none;
+        }
+    }
+}
+
+
+.edui-for-fontfamily .edui-listitem-label {
+    min-width: 130px;
+}
+
+.edui-for-insertcode .edui-listitem-label {
+    min-width: 120px;
+}
+
+.edui-for-underline .edui-listitem-label {
+    min-width: 120px;
+}
+
+.edui-for-fontsize .edui-listitem-label {
+    padding: 10px !important;
+    min-width: 100px;
+}
+
+.edui-for-paragraph .edui-listitem-label {
+    min-width: 120px;
+}
+
+.edui-for-rowspacingtop,
+.edui-for-rowspacingbottom {
+    .edui-listitem-label {
+        min-width: 53px;
+    }
+}
+
+.edui-for-lineheight .edui-listitem-label {
+    min-width: 53px;
+}
+
+.edui-for-customstyle .edui-listitem-label {
+    min-width: 120px;
+}
+
+
+/* STATE */
+
+.edui-state-checked {
+    .edui-combox-body {
+        background-color: @btn-bg-checked;
+        border-color: @border-checked-color;
+    }
+}
+
+.edui-state-disabled {
+
+    .edui-label {
+        color: #ccc;
+    }
+
+    .edui-icon, .edui-arrow {
+        opacity: 0.3;
+    }
+
+    .edui-menuitem-label {
+        color: gray;
+    }
+
+    .edui-combox-body {
+        opacity: 0.3;
+    }
+}
+
+.edui-state-hover {
+    .edui-combox-body {
+        background-color: @btn-bg-hover;
+        border-color: @border-hover-color;
+    }
+}
+
+.edui-state-opened {
+
+    .edui-combox-body,
+    .edui-splitbutton-body,
+    .edui-menubutton-body {
+        .edui-arrow {
+            top: 0.5em;
+
+            &::before {
+                border-right-color: transparent;
+                border-top-color: @arrow-color;
+            }
+        }
+    }
+}
+
+.edui-combox-body,
+.edui-splitbutton-body,
+.edui-menubutton-body {
+    border: @border;
+
+    .edui-arrow {
+        position: relative;
+        top: 0.35em;
+        margin-left: 0.5em;
+
+        &::before {
+            position: relative;
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border: 0.4em solid transparent;
+            border-right-color: @arrow-color;
+        }
+    }
+}

@@ -23,12 +23,7 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
   box-sizing: content-box;
-
-  -webkit-background-clip: content-box;
   background-clip: content-box;
 }
 
@@ -65,3 +60,5 @@
   height: 40px;
   width: 40px;
 }
+
+

@@ -118,28 +118,28 @@
 	</session-config>
 
 	<error-page>
-		<exception-type>IOException</exception-type>
-		<location>/error/404.jsp</location>
-	</error-page>
-
-	<error-page>
 		<error-code>403</error-code>
-		<location>/error/404.jsp</location>
+		<location>/error/error.html</location>
 	</error-page>
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/error/404.jsp</location>
+		<location>/error/404.html</location>
 	</error-page>
 
 	<error-page>
 		<error-code>405</error-code>
-		<location>/error/404.jsp</location>
+		<location>/error/error.html</location>
 	</error-page>
 
 	<error-page>
 		<error-code>500</error-code>
-		<location>/error/500.jsp</location>
+		<location>/error/500.html</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>com.xzjie.common.web.exception.ViewException</exception-type>
+		<location>/error/error.html</location>
 	</error-page>
 
 	<welcome-file-list>

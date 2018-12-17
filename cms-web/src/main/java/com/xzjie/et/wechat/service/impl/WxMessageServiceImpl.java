@@ -38,7 +38,7 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
     }
 
     @Override
-    public void send(Long siteId, Long groupId, Long messageId) throws Exception {
+    public boolean send(Long siteId, Long groupId, Long messageId) {
         WxAccount wxAccount = wxAccountService.getWxAccountBySiteId(siteId);
         WxAccessToken accessToken = wechatHelper.getAccessToken(wxAccount);
 
@@ -53,6 +53,6 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
         messageData.setMsgtype("text");
         messageData.setTouser(touser);
 
-        wechatHelper.message(accessToken.getAccess_token(),messageData.build());
+        return wechatHelper.message(accessToken.getAccess_token(),messageData.build());
     }
 }

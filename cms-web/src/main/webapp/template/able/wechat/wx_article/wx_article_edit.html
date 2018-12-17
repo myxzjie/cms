@@ -1,0 +1,340 @@
+<#include "/able/_inc/_head.html"/>
+<#include "/able/_inc/_layout.html"/>
+
+<!DOCTYPE HTML>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="${lang}">
+
+<head>
+    <@head />
+    <link href="/vendor/switchery/switchery.css">
+    <style type="text/css">
+        .template {
+            background: #f8f8f8;
+        }
+
+        .content .content-item{
+            position: relative;height: 70px;width: 320px;margin:0 auto;border: 1px solid #d9dadc; padding-top: 10px; padding-bottom: 10px;
+        }
+        .content .content-default{
+            margin:0 auto;
+            width: 320px;height:180px;position: relative;overflow: hidden;
+            padding: 0;
+            border: 0px solid #d9dadc;
+        }
+
+        .content .content-item > img{
+            width: 50px;
+            height: 50px;
+            float: right;
+            margin-right: 10px;
+
+        }
+        .content .content-default > img {
+            width: 100%;
+            height: auto;
+            margin-right: 0;
+        }
+
+        .content .content-item > p{
+            overflow: hidden;
+            font-size: 14px;
+            line-height: 50px;
+            height: 50px;
+            color: #333;
+        }
+
+        .content .content-default > p {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            line-height: 25px;
+            height: 25px;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .template .add{
+            line-height: 100px;
+            height: 100px;
+            border: 2px dotted #d9dadc;width: 320px;margin:2px auto;text-align: center;
+        }
+        .template .add > i{
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<@layout>
+<div class="wrap-content" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title" >
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="${ctx_admin}/category" class="btn btn-o btn-primary" style="border-radius: 50px;padding: 5px 8px"><i class="fa fa-reply"></i></a>
+            <label>文本信息 - 公众号管理</label>
+        </div>
+
+    </div>
+</section>
+<!-- end: PAGE TITLE -->
+<!-- start: BASIC TABLE -->
+
+<div class="container-fluid container-fullw bg-white">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!--<h5 class="over-title margin-bottom-15">Basic <span class="text-bold">Table</span></h5>-->
+            <!--<p>-->
+            <!--For basic styling&mdash;light padding and only horizontal dividers&mdash;add the base class <code>.table</code> to any <code>&lt;table&gt;</code>. It may seem super redundant, but given the widespread use of tables for other plugins like calendars and date pickers, we've opted to isolate our custom table styles.-->
+            <!--</p>-->
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div><i class="fa fa-question-circle"></i>操作提示</div>
+                <ul>
+                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>上传图片时请注意图片尺寸问题。</li>
+                </ul>
+            </div>
+
+            <div class="col-md-12">
+
+                <form action="#" role="form" id="form" novalidate="novalidate">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="errorHandler alert alert-danger no-display">
+                                <i class="fa fa-times-sign"></i> You have some form errors. Please check below.
+                            </div>
+                            <div class="successHandler alert alert-success no-display">
+                                <i class="fa fa-ok"></i> Your form validation is successful!
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="template">
+                            <div class="content">
+                                <div class="content-item content-default" data-index="1">
+                                    <img src="/assets/images/default.png" alt="" >
+                                    <p>请输入标题</p>
+                                </div>
+
+                                <div id="template" class="content-item" >
+                                    <img src="/assets/images/default.png" alt="" >
+                                    <p style="">请输入标题</p>
+                                    <button class="layui-btn layui-btn-danger" style="display: none;
+    position: absolute;
+    top: 20px;
+    right: 10px;">删除</button></div>
+
+                            </div>
+                            <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    标题 <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <input type="text" placeholder="标题" class="form-control" id="firstname" name="firstname">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    作者 <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <input type="text" placeholder="作者" class="form-control" id="lastname" name="lastname">
+                            </div>
+
+                            <div class="form-group">
+                                <label class=" control-label" for="avatar">
+                                    封面图：<span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <div class="">
+                                    <input id="avatar" name="avatar" type="hidden">
+                                    <span class="btn btn-primary fileinput-button">
+                                <i class="fa fa-cloud-upload"></i>
+                                <span>封面图</span>
+                                <input id="fileupload" type="file" name="file" multiple>
+                                </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    原文链接 <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <input type="text" placeholder="原文链接" class="form-control" id="email" name="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    留言 <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <div class="checkbox-inline">
+                                    <input type="checkbox" class="js-switch" checked />
+                                    <label for="newsletter_no">
+
+                                    </label>
+                                </div>
+                                <div class="radio clip-radio radio-primary radio-inline">
+                                    <input type="radio" value="" name="newsletter" id="newsletter_no">
+                                    <label for="newsletter_no">
+                                        所有人可留言
+                                    </label>
+
+                                </div>
+                                <div class="radio clip-radio radio-primary radio-inline">
+                                    <input type="radio" value="" name="newsletter" id="newsletter_yes">
+                                    <label for="newsletter_yes">
+                                        仅粉丝可留言
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    <!--Ckeditor <span class="symbol required"></span>-->
+                                </label>
+                                <script id="editor" type="text/plain"></script>
+                                <!--<textarea  class="editor form-control" id="editor2" name="editor2" cols="10" rows="10"></textarea>-->
+                            </div>
+
+
+                            <div class="form-group">
+                                <hr>
+                                <label class="control-label">
+                                </label>
+                                <button class="btn btn-primary">提交</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div>
+                                <span class="symbol required" aria-required="true"></span>Required Fields
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>
+                                By clicking REGISTER, you are agreeing to the Policy and Terms &amp; Conditions.
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-wide pull-right" type="submit">
+                                Register <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</@layout>
+    <script type="text/javascript" src="/vendor/switchery/switchery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"></script>
+
+<script type="text/javascript">
+
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem);
+    var ue = UE.getEditor('editor');
+    var FormValidator = function () {
+        "use strict";
+        // function to initiate Validation Sample 2
+        var runValidator2 = function () {
+            var form2 = $('#form');
+            var errorHandler2 = $('.errorHandler', form2);
+            var successHandler2 = $('.successHandler', form2);
+
+
+            form2.validate({
+                errorElement: "span", // contain the error msg in a small tag
+                errorClass: 'help-block',
+                errorPlacement: function (error, element) {
+                },
+                ignore: "",
+                rules: {
+
+                },
+                messages: {
+
+                },
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    successHandler2.hide();
+                    errorHandler2.show();
+                },
+                highlight: function (element) {
+                    $(element).closest('.help-block').removeClass('valid');
+                    // display OK icon
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+                    // add the Bootstrap error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element).closest('.form-group').removeClass('has-error');
+                    // set error class to the control group
+                },
+                success: function (label, element) {
+                    label.addClass('help-block valid');
+                    // mark the current input as valid and display OK icon
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
+                },
+                submitHandler: function (form) {
+                    successHandler2.show();
+                    errorHandler2.hide();
+                    $.ajax({
+                        type: form.method,
+                        url:form.action,
+                        async:false, //同步方法，如果用异步的话，flag永远为1
+                        dataType:'json',
+                        data:$(form).serialize(),
+                        success: function(res){
+                            if(res.success){
+                                layer.msg(res.message, {
+                                    icon: 1,
+                                    time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    location.href = global.adminPath + "/wx-message";
+                                });
+                            }else{
+                                layer.msg(res.message, {icon: 2});
+                            }
+                        }
+                    });
+                }
+            });
+
+        };
+        return {
+            //main function to initiate template pages
+            init: function () {
+                runValidator2();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        FormValidator.init();
+
+        $('#btn_add_template').click(function () {
+           var template = $('#template').clone();
+            template.appendTo('.content');
+        })
+    });
+
+
+</script>

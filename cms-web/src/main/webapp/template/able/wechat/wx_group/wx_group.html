@@ -126,7 +126,7 @@
                         <li class="messages-item" style="padding: 5px 15px 5px 15px;">
                             <a href="javascript:;" style="display: inline-block;">
                                 <#--<span class="messages-item-star" title="Mark as starred"><i class="fa fa-star"></i></span>-->
-                                <img class="messages-item-avatar bordered border-primary" style="border: 1px solid #eee;" alt="${accountFollow.nickName}" src="${accountFollow.avatar}">
+                                <img class="messages-item-avatar bordered border-primary" style="border: 1px solid #eeeeee;" alt="${accountFollow.nickName}" src="${accountFollow.avatar}">
                                 <span class="messages-item-from">${accountFollow.nickName}</span>
                                 <div class="messages-item-time">
                                 <span class="text"></span>
@@ -204,7 +204,8 @@
 
         $('#btn-send').click(function () {
             var data={};
-            data.groupId=$('#btn_follow').data('group_id');
+            data.groupId = $('#btn_follow').data('group_id');
+            data.messageId = $('#btn_follow').data('message_id');
             $.ajax({
                 data: data,
                 type: 'post',
