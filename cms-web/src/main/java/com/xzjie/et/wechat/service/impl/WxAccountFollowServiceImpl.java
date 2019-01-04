@@ -40,7 +40,7 @@ public class WxAccountFollowServiceImpl extends AbstractBaseService<WxAccountFol
             WxAccount wxAccount = wxAccountService.getWxAccountBySiteId(siteId);
             WxAccessToken accessToken = wechatHelper.getAccessToken(wxAccount);
 
-            Map<String, Object> map = wechatHelper.getAccountFollowList(accessToken.getAccess_token(), "");
+            Map<String, Object> map = wechatHelper.getAccountFollowList(accessToken.getAccess_token(), nextOpenId);
             if (map == null || map.size() < 1) {
                 LOG.debug(">>return 返回");
                 return;

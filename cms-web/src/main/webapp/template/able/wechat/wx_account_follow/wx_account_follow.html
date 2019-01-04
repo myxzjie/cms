@@ -43,8 +43,8 @@
 
             <div id="toolbar">
                 <#--<a id="btn-add" href="#/article/addview" class="btn btn-o btn-danger">添加</a>-->
-                <!--<button id="btn-update" type="button" class="btn btn-primary">修改</button>
-                <button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
+                <button id="btn-sync" type="button" class="btn btn-o btn-danger"><i class="fa fa-refresh"></i> 同步关注用户</button>
+                <!--<button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
                 <button id="btn-scene" type="button" class="btn btn-primary">设置监控点</button>-->
             </div>
             <table id="data-table" class="table table-hover col-xs-12" data-toolbar="#toolbar"></table>
@@ -60,6 +60,28 @@
             $('#btn_query').click(function () {
                 $table.bootstrapTable('destroy');
                 initTable();
+            });
+
+            $('#btn-sync').click(function () {
+                $.ajax({
+                    data: {},
+                    type: 'post',
+                    dataType: 'json',
+                    url: global.adminPath + '/wx-account/follow/sync',
+                    success: function (res) {
+                        if (res.success) {
+                            layer.msg(res.message, {
+                                icon: 1,
+                                time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                $table.bootstrapTable('destroy');
+                                initTable();
+                            });
+                        } else {
+                            layer.msg(res.message, {icon: 2});
+                        }
+                    }
+                });
             });
         });
 
@@ -136,9 +158,7 @@
                     }, {
                         title: '操作',
                         formatter: function (value, row, index) {
-
                             return [
-                                '<a class="btn btn-o btn-default" href="#/article/edit/' + row.articleId + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
                                 '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.articleId + ')"><i class="fa fa-trash"></i> 移除</button>'
                             ].join('');
                         }
@@ -147,34 +167,7 @@
             });
         }
 
-        var tgridObj = {
-            del: function (id) {
-                layer.confirm('确定要删除吗？同时也会删除子栏目。', {
-                    btn: ['确定', '取消'] //按钮
-                }, function () {
-                    $.ajax({
-                        data: {},
-                        type: 'post',
-                        dataType: 'json',
-                        url: '/article/delete/' + id,
-                        success: function (res) {
-                            if (res.success) {
-                                layer.msg(res.message, {
-                                    icon: 1,
-                                    time: 2000, ///2秒关闭（如果不配置，默认是3秒）
-                                }, function () {
-                                    location.reload();
-                                });
-                            } else {
-                                layer.msg(res.message, {icon: 2});
-                            }
-                        }
-                    });
-                }, function () {
-//                取消
-                });
-            }
-        };
+
 
 
     </script>

@@ -22,8 +22,8 @@ import com.xzjie.mybatis.page.PageEntity;
 @Controller
 @RequestMapping("${web.adminPath}/wx-account/follow")
 public class SystemWxAccountFollowController extends BaseController {
-	
-	private final Logger LOG = LogManager.getLogger(getClass());
+
+    private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired
     private WxAccountFollowService wxAccountFollowService;
@@ -35,10 +35,10 @@ public class SystemWxAccountFollowController extends BaseController {
 
     @RequestMapping(value = "popup")
     public String followPopup(Long groupId, ModelMap modelMap) {
-        modelMap.put("groupId",groupId);
+        modelMap.put("groupId", groupId);
         return getRemoteView("wechat/wx_account_follow/wx_account_follow_popup");
     }
-    
+
     @RequestMapping("datapage")
     @ResponseBody
     public Map<String, Object> dataPage(WxAccountFollow model, Page page) {
@@ -55,6 +55,18 @@ public class SystemWxAccountFollowController extends BaseController {
             LOG.error("获得数据错误：{}", e);
         }
         return MapResult.mapError("601");
+    }
+
+    @RequestMapping("sync")
+    @ResponseBody
+    public Map<String, Object> syncFollow() {
+        try {
+            wxAccountFollowService.batchSyncAccountFollow(getSiteId(), "");
+            return MapResult.mapOK();
+        } catch (Exception e) {
+            LOG.error("sync follow error.", e);
+        }
+        return MapResult.mapError();
     }
 
 }
