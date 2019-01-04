@@ -46,6 +46,16 @@
             color: #333;
         }
 
+        .content .content-item .btn-delete{
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 10px;
+        }
+
+        .content .content-item:hover .btn-delete{
+            display: block;
+        }
         .content .content-default > p {
             position: absolute;
             left: 0;
@@ -106,7 +116,7 @@
 
             <div class="col-md-12">
 
-                <form action="#" role="form" id="form" novalidate="novalidate">
+                <form action="#" role="form" id="form" data-index="1" novalidate="novalidate">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="errorHandler alert alert-danger no-display">
@@ -123,15 +133,6 @@
                                     <img src="/assets/images/default.png" alt="" >
                                     <p>请输入标题</p>
                                 </div>
-
-                                <div id="template" class="content-item" >
-                                    <img src="/assets/images/default.png" alt="" >
-                                    <p style="">请输入标题</p>
-                                    <button class="layui-btn layui-btn-danger" style="display: none;
-    position: absolute;
-    top: 20px;
-    right: 10px;">删除</button></div>
-
                             </div>
                             <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
                             </div>
@@ -143,14 +144,14 @@
                                 <label class="control-label">
                                     标题 <span class="symbol required" aria-required="true"></span>
                                 </label>
-                                <input type="text" placeholder="标题" class="form-control" id="firstname" name="firstname">
+                                <input type="text" placeholder="标题" class="form-control" id="title" name="title">
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">
                                     作者 <span class="symbol required" aria-required="true"></span>
                                 </label>
-                                <input type="text" placeholder="作者" class="form-control" id="lastname" name="lastname">
+                                <input type="text" placeholder="作者" class="form-control" id="author" name="author">
                             </div>
 
                             <div class="form-group">
@@ -158,7 +159,7 @@
                                     封面图：<span class="symbol required" aria-required="true"></span>
                                 </label>
                                 <div class="">
-                                    <input id="avatar" name="avatar" type="hidden">
+                                    <input id="mediaId" name="mediaId" type="hidden">
                                     <span class="btn btn-primary fileinput-button">
                                 <i class="fa fa-cloud-upload"></i>
                                 <span>封面图</span>
@@ -185,14 +186,14 @@
 
                                     </label>
                                 </div>
-                                <div class="radio clip-radio radio-primary radio-inline">
+                                <div class="comment-type radio clip-radio radio-primary radio-inline">
                                     <input type="radio" value="" name="newsletter" id="newsletter_no">
                                     <label for="newsletter_no">
                                         所有人可留言
                                     </label>
 
                                 </div>
-                                <div class="radio clip-radio radio-primary radio-inline">
+                                <div class="comment-type radio clip-radio radio-primary radio-inline">
                                     <input type="radio" value="" name="newsletter" id="newsletter_yes">
                                     <label for="newsletter_yes">
                                         仅粉丝可留言
@@ -218,26 +219,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div>
-                                <span class="symbol required" aria-required="true"></span>Required Fields
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <p>
-                                By clicking REGISTER, you are agreeing to the Policy and Terms &amp; Conditions.
-                            </p>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary btn-wide pull-right" type="submit">
-                                Register <i class="fa fa-arrow-circle-right"></i>
-                            </button>
-                        </div>
-                    </div>
+
                 </form>
             </div>
         </div>
@@ -250,9 +232,19 @@
 
 <script type="text/javascript">
 
+    var contents=[{index:1}];
     var elem = document.querySelector('.js-switch');
     var switchery = new Switchery(elem);
     var ue = UE.getEditor('editor');
+
+    elem.onchange = function () {
+        if(elem.checked){
+            $(".comment-type").show();
+        }else{
+            $(".comment-type").hide();
+        }
+    };
+
     var FormValidator = function () {
         "use strict";
         // function to initiate Validation Sample 2
@@ -327,13 +319,138 @@
         };
     }();
 
+    function getTemplate(index){
+        return '<div class="content-item" data-index="'+index+'">\n' +
+                '<img src="/assets/images/default.png" alt="" >\n' +
+                '<p style="">请输入标题</p>\n' +
+                '<button class="btn-delete btn btn-danger" >删除</button>\n' +
+                '</div>';
+    }
+
     jQuery(document).ready(function() {
         FormValidator.init();
 
+        $('.content').delegate('.btn-delete','click',function () {
+            $(this).parents('.content-item').remove();
+        });
+
         $('#btn_add_template').click(function () {
-           var template = $('#template').clone();
-            template.appendTo('.content');
-        })
+            if (contents.length > 8) {
+                layer.msg("多图文最多8条");
+                return false;
+            }
+            syncData();
+            var index = contents.length + 1;
+            var template = getTemplate(index);
+            $(template).appendTo('.content');
+            contents.push({index: index});
+            showData(index);
+        });
+
+        //回显表单
+        function showData(index) {
+            $.each(contents, function (i, e) {
+
+                if (e.index == index) {
+                    var data = $('#form')[0];
+                    data.title = e.title?e.title:'';
+                    data.author = e.author?e.author:'';
+//
+//                     $("#add_thumbMediaId").val(v.thumbMediaId ? v.thumbMediaId : "");
+//                     $("#add_picpath").val(v.picpath ? v.picpath : "");
+//                     $("#add_showpic").prop("checked", v.showpic ? true : false);
+//                     $("#uploader").html(
+//                             v.picpath
+//                                     ? '<img src="' + v.picpath + '" style="width: 150px;height: 150px;"/><p>点击重新上传，或将文件拖拽到此处</p>'
+//                                     : '<i class="layui-icon"></i><p>点击上传，或将文件拖拽到此处</p>'
+//                     );
+//
+// //                     $("#add_digest").val(v.brief ? v.brief : "");
+//                     $("#add_fromurl").val(v.fromurl ? v.fromurl : "");
+//
+//                     $("#add_open_comment").prop("checked",v.open_comment?true:false);
+//                     v.open_comment?$("#add_comment_type").show():$("#add_comment_type").hide();
+//                     $("input[name=fans_can_comment][value="+v.fans_can_comment+"]").prop("checked",true);
+//                     $("#content").html(v.description ? v.description : "");
+//
+//                     form.render();
+//                     layeditIndex = layedit.build('content');
+//
+//                     $(".wxmp-doclist div[data-t=" + t + "]").addClass("active").siblings(".active").removeClass("active");
+                    $("#form").data("index", index);
+                    return false;
+                }
+            });
+        }
+
+        function syncData(){
+           var data = $('#form').serializeJSON();
+
+            var index = $("#form").data("index");
+
+            $.each(contents, function (index, ele) {
+                if (ele.index == index) {
+                    data.index = index;
+                    ele = data;
+                //     v.title = title;
+                //     v.author = author;
+                //     v.multType = 2;//多图文标识
+                //     v.newsIndex = t;//图文顺序
+                //     v.thumbMediaId = thumbMediaId;
+                //     v.picpath = picpath;
+                //     v.showpic = showpic;
+                //
+                //     v.brief = "";
+                //     v.fromurl = fromurl;
+                //     v.opencomment=open_comment;
+                //     v.fanscancomment=fans_can_comment;
+                //
+                //     v.description = description;
+                //
+                    return false;
+                }
+            });
+
+        }
+
+        $('#fileupload').fileupload({
+            inputid: 'fileupload',//我要实例化哪个标签
+            url: 'upload/wx_article',//服务端的地址
+            dataType: 'json',//数据格式，ajax你懂的
+            autoUpload: true,//是否选了文件就直接自动上传
+            maxNumberOfFiles: 1,//最多同时上传几个文件
+            maxFileSize: 5000000,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            //maxChunkSize:10000,//最大接收文件大小
+            done: function (e, data) {//上传完了干嘛
+                var res = data.result;
+                if (res.success) {
+                    $('#mediaId').val(res.url);
+                    var index = $("#form").data('index');
+                    $('.content-item[data-index="'+index+'"] img').attr('src',res.url);
+                }
+
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0, //不显示关闭按钮
+                    shade: [0],
+                    area: ['300px', '200px'],
+                    offset: 'rb', //右下角弹出
+                    time: 2000, //2秒后自动关闭
+                    anim: 2,
+                    content: res.message, //iframe的url，no代表不显示滚动条
+                    end: function () { //此处用于演示
+                    }
+                });
+            },
+            progressall: function (e, data) {//上传过程中，隔段时间就会调起的回调函数，这个东西，主要是用来返回进度的，你看里面的引用，没错，它带回来的参数值，只有total、loaded这种数字。
+            },
+            processalways: function (e, data) {//这货是干嘛的呢？就是上传之前调起的函数。没错，如果你选择了自动上传，那么当你点选完了文件，这个货就会被调起。
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');//不用猜了，就是看看是不是支持jqueryajax上传方式。就是上面说的那个frame东东。
+
+
     });
 
 

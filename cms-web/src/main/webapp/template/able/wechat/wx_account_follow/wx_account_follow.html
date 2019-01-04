@@ -167,7 +167,35 @@
             });
         }
 
-
+        var tgridObj = {
+            del: function (id) {
+                layer.confirm('确定要删除吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    $.ajax({
+                        data: {},
+                        type: 'post',
+                        dataType: 'json',
+                        url: global.adminPath + '/wx-account/follow/delete/' + id,
+                        success: function (res) {
+                            if (res.success) {
+                                layer.msg(res.message, {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function () {
+                                    $table.bootstrapTable('destroy');
+                                    initTable();
+                                });
+                            } else {
+                                layer.msg(res.message, {icon: 2});
+                            }
+                        }
+                    });
+                }, function () {
+//                取消
+                });
+            }
+        };
 
 
     </script>
