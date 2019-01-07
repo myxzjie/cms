@@ -120,6 +120,35 @@
       </if>
     </trim>
   </insert>
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
+    insert into  wx_message (
+        site_id,
+        user_id,
+        msgtype,
+        title,
+        description,
+        thumb_media_id,
+        media_id,
+        content,
+        create_date,
+        update_date,
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+          #{siteId,jdbcType=BIGINT},
+          #{userId,jdbcType=BIGINT},
+          #{msgtype,jdbcType=VARCHAR},
+          #{title,jdbcType=VARCHAR},
+          #{description,jdbcType=VARCHAR},
+          #{thumbMediaId,jdbcType=VARCHAR},
+          #{mediaId,jdbcType=VARCHAR},
+          #{content,jdbcType=VARCHAR},
+          #{createDate,jdbcType=TIMESTAMP},
+          #{updateDate,jdbcType=TIMESTAMP},
+    </foreach>
+  </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.wechat.model.WxMessage">
     update wx_message
     <set>

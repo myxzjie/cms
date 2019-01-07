@@ -120,7 +120,7 @@
 
             <div class="col-md-12">
 
-                <form action="${ctx_admin}<#if model?exists>/wx-article/update<#else>/wx-article/add</#if>" role="form" id="form" data-index="1" novalidate="novalidate">
+                <form action="${ctx_admin}<#if model?exists>/wx-article/update<#else>/wx-article/add</#if>" method="post" role="form" id="form" data-index="1" novalidate="novalidate">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="errorHandler alert alert-danger no-display">
@@ -159,18 +159,48 @@
                             </div>
 
                             <div class="form-group">
-                                <label class=" control-label" for="avatar">
+                                <label class="control-label">
+                                    类型 <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <select id="msgtype" name="msgtype" class="form-control">
+                                    <option value="news">图文消息</option>
+                                    <#--<option value="image">图片</option>-->
+                                    <option value="voice">语音</option>
+                                    <option value="video">视频</option>
+                                    <#--<option value="thumb">和缩略图</option>-->
+                                </select>
+                                <input id="mediaId" name="mediaId" type="hidden">
+                                <input name="thumbMediaId" id="thumbMediaId" type="hidden">
+                            </div>
+
+                            <div class="form-group">
+                                <label class=" control-label" for="fileupload">
                                     封面图：<span class="symbol required" aria-required="true"></span>
                                 </label>
-                                <div class="">
-                                    <input id="mediaId" name="mediaId" type="hidden">
+                                <div class="" style="display: inline-block">
                                     <span class="btn btn-primary fileinput-button">
-                                <i class="fa fa-cloud-upload"></i>
-                                <span>封面图</span>
-                                <input id="fileupload" type="file" name="file" multiple>
-                                </span>
-
+                                    <i class="fa fa-cloud-upload"></i>
+                                    <span>封面图</span>
+                                    <input id="fileupload" type="file" name="file" multiple>
+                                    </span>
                                 </div>
+
+                                <div id="upload_media_box" style="visibility:hidden;display: inline-block;margin-left: 10px">
+                                <label class=" control-label" for="upload_media">
+                                    媒体文件：<span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <div class="" style="display: inline-block">
+                                    <span class="btn btn-primary fileinput-button">
+                                    <i class="fa fa-cloud-upload"></i>
+                                    <span>媒体文件</span>
+                                    <input id="upload_media" type="file" name="file" multiple>
+                                    </span>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
                             </div>
 
                             <div class="form-group">
@@ -216,12 +246,12 @@
                                 <label class="control-label">
                                 </label>
                                 <button class="btn btn-primary">提交</button>
-
                             </div>
                         </div>
                     </div>
 
                 </form>
+                <form id="temp_form"></form>
             </div>
         </div>
     </div>
@@ -329,6 +359,25 @@
 
     }
 
+    var objectToFormData =function(data, arr, namespace) {
+        if(arr instanceof Array){
+            for(var i=0; i<arr.length;i++){
+                var item = arr[i];
+                this.objectToFormData(data, item, namespace+'['+i+']');
+            }
+        } else{
+            for(var property in arr) {
+                if(arr.hasOwnProperty(property) && arr[property]) {
+                    if(namespace) {
+                        // 若是对象，则这样
+                        var key = namespace + '.' + property ;
+                        data[key] =arr[property];
+                    }
+                }
+            }
+        }
+    };
+
     var FormValidator = function () {
         "use strict";
         // function to initiate Validation Sample 2
@@ -373,32 +422,36 @@
                     errorHandler2.hide();
 
                     syncData();
-
+                    var data={};
                     for(var i=0;i<contents.length;i++){
-                        var data = contents[i];
-                        if(data.title == ""){
+                        var content = contents[i];
+                        if(content.title == ""){
                             layer.msg("请完善标题信息");
-                            showData(data.index);
+                            showData(content.index);
                             return false;
                         }
-                        if(data.author == ""){
+                        if(content.author == ""){
                             layer.msg("请完善作者信息");
-                            showData(data.index);
+                            showData(content.index);
                             return false;
                         }
-                        if(data.content == ""){
+                        if(content.content == ""){
                             layer.msg("请完善图文正文信息");
-                            showData(data.index);
+                            showData(content.index);
                             return false;
                         }
+                        // data['messages['+i+'].title']=content.title;
+                        // data['messages['+i+'].author']=content.author;
+                        // data['messages['+i+'].content']=content.content;
                     }
-
+                    objectToFormData(data,contents,'messages');
+                    debugger
                     $.ajax({
                         type: form.method,
                         url:form.action,
                         async:false, //同步方法，如果用异步的话，flag永远为1
                         dataType:'json',
-                        data:contents,
+                        data:data,
                         success: function(res){
                             if(res.success){
                                 layer.msg(res.message, {
@@ -429,7 +482,7 @@
     jQuery(document).ready(function() {
         FormValidator.init();
 
-        $('.content').delegate('.btn-delete','click',function () {
+        $('.content').delegate('.btn-delete', 'click', function () {
 
             var item = $(this).parents('.content-item');
             var index = item.data("index");
@@ -446,7 +499,7 @@
             return false;
         });
 
-        $('.content').delegate('.content-item','click',function () {
+        $('.content').delegate('.content-item', 'click', function () {
             $('.content-item').removeClass('active');
             $(this).addClass('active');
             syncData();
@@ -458,7 +511,7 @@
         $("#title").keyup(function () {
             var value = $(this).val();
             var index = $("#form").data("index");
-            $('.content-item[data-index="'+index+'"] p').html(value);
+            $('.content-item[data-index="' + index + '"] p').html(value);
         });
 
         $('#btn_add_template').click(function () {
@@ -476,7 +529,13 @@
             showData(index);
         });
 
-
+        $('#msgtype').change(function () {
+           if($(this).val()=='voice'||$(this).val()=='video') {
+               $('#upload_media_box').css("visibility","initial");
+           }else{
+               $('#upload_media_box').css("visibility","hidden");
+           }
+        });
 
         $('#fileupload').fileupload({
             inputid: 'fileupload',//我要实例化哪个标签
@@ -484,15 +543,19 @@
             dataType: 'json',//数据格式，ajax你懂的
             autoUpload: true,//是否选了文件就直接自动上传
             maxNumberOfFiles: 1,//最多同时上传几个文件
-            maxFileSize: 5000000,
+            maxFileSize: 209715200,
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
             //maxChunkSize:10000,//最大接收文件大小
             done: function (e, data) {//上传完了干嘛
                 var res = data.result;
                 if (res.success) {
-                    $('#mediaId').val(res.url);
+                    if ($('#msgtype').val() == 'voice' || $('#msgtype').val() == 'video') {
+                        $('#thumbMediaId').val(res.url)
+                    } else {
+                        $('#mediaId').val(res.url);
+                    }
                     var index = $("#form").data('index');
-                    $('.content-item[data-index="'+index+'"] img').attr('src',res.url);
+                    $('.content-item[data-index="' + index + '"] img').attr('src', res.url);
                 }
 
                 layer.open({
@@ -508,15 +571,40 @@
                     end: function () { //此处用于演示
                     }
                 });
-            },
-            progressall: function (e, data) {//上传过程中，隔段时间就会调起的回调函数，这个东西，主要是用来返回进度的，你看里面的引用，没错，它带回来的参数值，只有total、loaded这种数字。
-            },
-            processalways: function (e, data) {//这货是干嘛的呢？就是上传之前调起的函数。没错，如果你选择了自动上传，那么当你点选完了文件，这个货就会被调起。
             }
-        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');//不用猜了，就是看看是不是支持jqueryajax上传方式。就是上面说的那个frame东东。
+        });
 
-
+        $('#upload_media').fileupload({
+            inputid: 'fileupload',//我要实例化哪个标签
+            url: 'upload/wx_article',//服务端的地址
+            dataType: 'json',//数据格式，ajax你懂的
+            autoUpload: true,//是否选了文件就直接自动上传
+            maxNumberOfFiles: 1,//最多同时上传几个文件
+            maxFileSize: 209715200,
+            acceptFileTypes: /(\.|\/)(mp4|mp3)$/i,
+            //maxChunkSize:10000,//最大接收文件大小
+            done: function (e, data) {//上传完了干嘛
+                var res = data.result;
+                if (res.success) {
+                    $('#mediaId').val(res.url);
+                    var index = $("#form").data('index');
+                    $('.content-item[data-index="' + index + '"] img').attr('src', res.url);
+                }
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0, //不显示关闭按钮
+                    shade: [0],
+                    area: ['300px', '200px'],
+                    offset: 'rb', //右下角弹出
+                    time: 2000, //2秒后自动关闭
+                    anim: 2,
+                    content: res.message, //iframe的url，no代表不显示滚动条
+                    end: function () { //此处用于演示
+                    }
+                });
+            }
+        });
     });
-
 
 </script>

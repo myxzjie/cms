@@ -55,4 +55,14 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
 
         return wechatHelper.message(accessToken.getAccess_token(),messageData.build());
     }
+
+    @Override
+    public void batchSave(Long siteId, Long userId, List<WxMessage> messages) {
+        for (WxMessage message :messages){
+            message.setSiteId(siteId);
+            message.setUserId(userId);
+            this.save(message);
+        }
+//        wxMessageMapper.batchInsert(messages);
+    }
 }
