@@ -231,8 +231,8 @@
     <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"></script>
 
 <script type="text/javascript">
-
-    var contents=[{index:1}];
+    var inx =1;
+    var contents=[{index:inx}];
     var elem = document.querySelector('.js-switch');
     var switchery = new Switchery(elem);
     var ue = UE.getEditor('editor');
@@ -319,6 +319,11 @@
         };
     }();
 
+    function increment() {
+        inx++;
+        return inx;
+    }
+
     function getTemplate(index){
         return '<div class="content-item" data-index="'+index+'">\n' +
                 '<img src="/assets/images/default.png" alt="" >\n' +
@@ -334,13 +339,20 @@
             $(this).parents('.content-item').remove();
         });
 
+        $('.content').delegate('.content-item','click',function () {
+            debugger
+            syncData();
+            var index = $(this).data("index");
+            showData(index);
+        });
+
         $('#btn_add_template').click(function () {
             if (contents.length > 8) {
                 layer.msg("多图文最多8条");
                 return false;
             }
             syncData();
-            var index = contents.length + 1;
+            var index = increment();
             var template = getTemplate(index);
             $(template).appendTo('.content');
             contents.push({index: index});
@@ -351,7 +363,7 @@
         function showData(index) {
             $.each(contents, function (i, e) {
 
-                if (e.index == index) {
+                if (e.index === index) {
                     var data = $('#form')[0];
                     data.title = e.title?e.title:'';
                     data.author = e.author?e.author:'';
@@ -388,10 +400,12 @@
 
             var index = $("#form").data("index");
 
-            $.each(contents, function (index, ele) {
-                if (ele.index == index) {
+            $.each(contents, function (i, e) {
+                if (e.index == index) {
                     data.index = index;
-                    ele = data;
+                    e = data;
+                    contents[i]=e;
+                    debugger
                 //     v.title = title;
                 //     v.author = author;
                 //     v.multType = 2;//多图文标识
