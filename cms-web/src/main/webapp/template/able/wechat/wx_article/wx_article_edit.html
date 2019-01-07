@@ -45,6 +45,17 @@
             height: 50px;
             color: #333;
         }
+        .content .content-default > p {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            line-height: 25px;
+            height: 25px;
+            color: #333;
+            overflow: hidden;
+        }
 
         .content .content-item .btn-delete{
             display: none;
@@ -56,16 +67,9 @@
         .content .content-item:hover .btn-delete{
             display: block;
         }
-        .content .content-default > p {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            font-size: 14px;
-            line-height: 25px;
-            height: 25px;
-            color: #333;
-            overflow: hidden;
+
+        .content .content-item.active{
+            border: 1px #c8c7cc solid;
         }
 
         .template .add{
@@ -116,7 +120,7 @@
 
             <div class="col-md-12">
 
-                <form action="#" role="form" id="form" data-index="1" novalidate="novalidate">
+                <form action="${ctx_admin}<#if model?exists>/wx-article/update<#else>/wx-article/add</#if>" role="form" id="form" data-index="1" novalidate="novalidate">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="errorHandler alert alert-danger no-display">
@@ -129,7 +133,7 @@
                         <div class="col-md-4">
                             <div class="template">
                             <div class="content">
-                                <div class="content-item content-default" data-index="1">
+                                <div class="content-item content-default active" data-index="1">
                                     <img src="/assets/images/default.png" alt="" >
                                     <p>请输入标题</p>
                                 </div>
@@ -173,7 +177,7 @@
                                 <label class="control-label">
                                     原文链接 <span class="symbol required" aria-required="true"></span>
                                 </label>
-                                <input type="text" placeholder="原文链接" class="form-control" id="email" name="email">
+                                <input type="text" placeholder="原文链接" class="form-control" id="contentSourceUrl" name="contentSourceUrl">
                             </div>
 
                             <div class="form-group">
@@ -181,21 +185,18 @@
                                     留言 <span class="symbol required" aria-required="true"></span>
                                 </label>
                                 <div class="checkbox-inline">
-                                    <input type="checkbox" class="js-switch" checked />
-                                    <label for="newsletter_no">
-
-                                    </label>
+                                    <input name="needOpenComment" type="checkbox" class="js-switch" checked  value="1"/>
                                 </div>
                                 <div class="comment-type radio clip-radio radio-primary radio-inline">
-                                    <input type="radio" value="" name="newsletter" id="newsletter_no">
-                                    <label for="newsletter_no">
+                                    <input type="radio" value="0" name="onlyFansCanComment" id="onlyFansCanComment_0">
+                                    <label for="onlyFansCanComment_0">
                                         所有人可留言
                                     </label>
 
                                 </div>
                                 <div class="comment-type radio clip-radio radio-primary radio-inline">
-                                    <input type="radio" value="" name="newsletter" id="newsletter_yes">
-                                    <label for="newsletter_yes">
+                                    <input type="radio" value="1" name="onlyFansCanComment" id="onlyFansCanComment_1">
+                                    <label for="onlyFansCanComment_1">
                                         仅粉丝可留言
                                     </label>
                                 </div>
@@ -245,6 +246,89 @@
         }
     };
 
+    function increment() {
+        inx++;
+        return inx;
+    }
+
+    function getTemplate(index){
+        return '<div class="content-item active" data-index="'+index+'">\n' +
+                '<img src="/assets/images/default.png" alt="" >\n' +
+                '<p style="">请输入标题</p>\n' +
+                '<button type="button" class="btn-delete btn btn-danger" >删除</button>\n' +
+                '</div>';
+    }
+
+    //回显表单
+    function showData(index) {
+        $.each(contents, function (i, e) {
+            if (e.index === index) {
+                var data = $('#form')[0];
+                data.title.value = e.title?e.title:'';
+                data.author.value = e.author?e.author:'';
+                data.mediaId.value = e.mediaId?e.mediaId:'';
+
+                var html= e.content?encodeEscape.escape2Html(e.content):'';
+                ue.ready(function () {
+                    ue.setContent(html);
+                });
+//                     $("#add_thumbMediaId").val(v.thumbMediaId ? v.thumbMediaId : "");
+//                     $("#add_picpath").val(v.picpath ? v.picpath : "");
+//                     $("#add_showpic").prop("checked", v.showpic ? true : false);
+//                     $("#uploader").html(
+//                             v.picpath
+//                                     ? '<img src="' + v.picpath + '" style="width: 150px;height: 150px;"/><p>点击重新上传，或将文件拖拽到此处</p>'
+//                                     : '<i class="layui-icon"></i><p>点击上传，或将文件拖拽到此处</p>'
+//                     );
+//
+// //                     $("#add_digest").val(v.brief ? v.brief : "");
+//                     $("#add_fromurl").val(v.fromurl ? v.fromurl : "");
+//
+//                     $("#add_open_comment").prop("checked",v.open_comment?true:false);
+//                     v.open_comment?$("#add_comment_type").show():$("#add_comment_type").hide();
+//                     $("input[name=fans_can_comment][value="+v.fans_can_comment+"]").prop("checked",true);
+//                     $("#content").html(v.description ? v.description : "");
+//
+//                     form.render();
+//                     layeditIndex = layedit.build('content');
+//
+//                     $(".wxmp-doclist div[data-t=" + t + "]").addClass("active").siblings(".active").removeClass("active");
+                $("#form").data("index", index);
+                return false;
+            }
+        });
+    }
+
+    function syncData(){
+        var index = $("#form").data("index");
+        $.each(contents, function (i, e) {
+            if (e.index == index) {
+                var data = $('#form').serializeJSON();
+                data.content = ue.getContent();
+                data.index = index;
+                e = data;
+                contents[i] = e;
+                //     v.title = title;
+                //     v.author = author;
+                //     v.multType = 2;//多图文标识
+                //     v.newsIndex = t;//图文顺序
+                //     v.thumbMediaId = thumbMediaId;
+                //     v.picpath = picpath;
+                //     v.showpic = showpic;
+                //
+                //     v.brief = "";
+                //     v.fromurl = fromurl;
+                //     v.opencomment=open_comment;
+                //     v.fanscancomment=fans_can_comment;
+                //
+                //     v.description = description;
+                //
+                return false;
+            }
+        });
+
+    }
+
     var FormValidator = function () {
         "use strict";
         // function to initiate Validation Sample 2
@@ -252,7 +336,6 @@
             var form2 = $('#form');
             var errorHandler2 = $('.errorHandler', form2);
             var successHandler2 = $('.successHandler', form2);
-
 
             form2.validate({
                 errorElement: "span", // contain the error msg in a small tag
@@ -288,12 +371,34 @@
                 submitHandler: function (form) {
                     successHandler2.show();
                     errorHandler2.hide();
+
+                    syncData();
+
+                    for(var i=0;i<contents.length;i++){
+                        var data = contents[i];
+                        if(data.title == ""){
+                            layer.msg("请完善标题信息");
+                            showData(data.index);
+                            return false;
+                        }
+                        if(data.author == ""){
+                            layer.msg("请完善作者信息");
+                            showData(data.index);
+                            return false;
+                        }
+                        if(data.content == ""){
+                            layer.msg("请完善图文正文信息");
+                            showData(data.index);
+                            return false;
+                        }
+                    }
+
                     $.ajax({
                         type: form.method,
                         url:form.action,
                         async:false, //同步方法，如果用异步的话，flag永远为1
                         dataType:'json',
-                        data:$(form).serialize(),
+                        data:contents,
                         success: function(res){
                             if(res.success){
                                 layer.msg(res.message, {
@@ -319,31 +424,41 @@
         };
     }();
 
-    function increment() {
-        inx++;
-        return inx;
-    }
 
-    function getTemplate(index){
-        return '<div class="content-item" data-index="'+index+'">\n' +
-                '<img src="/assets/images/default.png" alt="" >\n' +
-                '<p style="">请输入标题</p>\n' +
-                '<button class="btn-delete btn btn-danger" >删除</button>\n' +
-                '</div>';
-    }
 
     jQuery(document).ready(function() {
         FormValidator.init();
 
         $('.content').delegate('.btn-delete','click',function () {
-            $(this).parents('.content-item').remove();
+
+            var item = $(this).parents('.content-item');
+            var index = item.data("index");
+            var isShow = item.hasClass("active");
+            $.each(contents, function (i, e) {
+                if (e.index == index) {
+                    contents.splice(i, 1);
+                    item.remove();
+                }
+            });
+            if (isShow) {
+                $(".content .content-default").trigger("click");
+            }
+            return false;
         });
 
         $('.content').delegate('.content-item','click',function () {
-            debugger
+            $('.content-item').removeClass('active');
+            $(this).addClass('active');
             syncData();
             var index = $(this).data("index");
             showData(index);
+        });
+
+        //同步标题
+        $("#title").keyup(function () {
+            var value = $(this).val();
+            var index = $("#form").data("index");
+            $('.content-item[data-index="'+index+'"] p').html(value);
         });
 
         $('#btn_add_template').click(function () {
@@ -352,80 +467,16 @@
                 return false;
             }
             syncData();
+            $('.content-item').removeClass('active');
             var index = increment();
             var template = getTemplate(index);
             $(template).appendTo('.content');
+
             contents.push({index: index});
             showData(index);
         });
 
-        //回显表单
-        function showData(index) {
-            $.each(contents, function (i, e) {
 
-                if (e.index === index) {
-                    var data = $('#form')[0];
-                    data.title = e.title?e.title:'';
-                    data.author = e.author?e.author:'';
-//
-//                     $("#add_thumbMediaId").val(v.thumbMediaId ? v.thumbMediaId : "");
-//                     $("#add_picpath").val(v.picpath ? v.picpath : "");
-//                     $("#add_showpic").prop("checked", v.showpic ? true : false);
-//                     $("#uploader").html(
-//                             v.picpath
-//                                     ? '<img src="' + v.picpath + '" style="width: 150px;height: 150px;"/><p>点击重新上传，或将文件拖拽到此处</p>'
-//                                     : '<i class="layui-icon"></i><p>点击上传，或将文件拖拽到此处</p>'
-//                     );
-//
-// //                     $("#add_digest").val(v.brief ? v.brief : "");
-//                     $("#add_fromurl").val(v.fromurl ? v.fromurl : "");
-//
-//                     $("#add_open_comment").prop("checked",v.open_comment?true:false);
-//                     v.open_comment?$("#add_comment_type").show():$("#add_comment_type").hide();
-//                     $("input[name=fans_can_comment][value="+v.fans_can_comment+"]").prop("checked",true);
-//                     $("#content").html(v.description ? v.description : "");
-//
-//                     form.render();
-//                     layeditIndex = layedit.build('content');
-//
-//                     $(".wxmp-doclist div[data-t=" + t + "]").addClass("active").siblings(".active").removeClass("active");
-                    $("#form").data("index", index);
-                    return false;
-                }
-            });
-        }
-
-        function syncData(){
-           var data = $('#form').serializeJSON();
-
-            var index = $("#form").data("index");
-
-            $.each(contents, function (i, e) {
-                if (e.index == index) {
-                    data.index = index;
-                    e = data;
-                    contents[i]=e;
-                    debugger
-                //     v.title = title;
-                //     v.author = author;
-                //     v.multType = 2;//多图文标识
-                //     v.newsIndex = t;//图文顺序
-                //     v.thumbMediaId = thumbMediaId;
-                //     v.picpath = picpath;
-                //     v.showpic = showpic;
-                //
-                //     v.brief = "";
-                //     v.fromurl = fromurl;
-                //     v.opencomment=open_comment;
-                //     v.fanscancomment=fans_can_comment;
-                //
-                //     v.description = description;
-                //
-                    return false;
-                }
-            });
-
-        }
 
         $('#fileupload').fileupload({
             inputid: 'fileupload',//我要实例化哪个标签
