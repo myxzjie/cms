@@ -24,7 +24,7 @@ public class MateriaNewsData {
         return new MateriaNewsData();
     }
 
-    public static ItemMap itemMap(){
+    public static ItemMap getItemMap(){
         return new ItemMap();
     }
 

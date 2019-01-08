@@ -10,7 +10,9 @@ import com.xzjie.et.wechat.model.WxAccount;
 import com.xzjie.et.wechat.model.WxAccountFollow;
 import com.xzjie.et.wechat.service.WxAccountFollowService;
 import com.xzjie.et.wechat.service.WxAccountService;
+import com.xzjie.mybatis.page.PageEntity;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,48 +64,77 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
 
     @Override
     public void batchSave(Long siteId, Long userId, List<WxMessage> messages) {
+
+        WxMessage wxMessage = new WxMessage();
+        wxMessage.setUserId(userId);
+        wxMessage.setSiteId(siteId);
+        wxMessage.setCreateDate(new Date());
+
+        this.save(wxMessage);
+
         WxAccount wxAccount = wxAccountService.getWxAccountBySiteId(siteId);
         WxAccessToken accessToken = wechatHelper.getAccessToken(wxAccount);
 
         MateriaNewsData newsData = MateriaNewsData.builder();
 
         for (WxMessage message : messages) {
+            message.setpId(wxMessage.getId());
             message.setSiteId(siteId);
             message.setUserId(userId);
 
-            if ("news".equals(message.getMsgtype())) {
-                String path = WebUtils.getUploadPath(message.getMedia());
-                File file = new File(path);
-                if (!file.exists()) {
+            String path = WebUtils.getUploadPath(message.getThumbMedia());
+            File file = new File(path);
+            if (!file.exists()) {
+                throw new RuntimeException("media file not exist");
+            }
+            String thumbMediaId = wechatHelper.addMateria(accessToken.getAccess_token(), MediaType.image.name(), file);
+            message.setThumbMediaId(thumbMediaId);
+
+            //
+            if (StringUtils.isNotBlank(message.getMedia())) {
+                String mediaPath = WebUtils.getUploadPath(message.getMedia());
+                File mediaFile = new File(mediaPath);
+                if (!mediaFile.exists()) {
                     throw new RuntimeException("media file not exist");
                 }
-                String mediaId = wechatHelper.addMateria(accessToken.getAccess_token(), MediaType.image.name(), file);
-                message.setThumbMediaId(mediaId);
+                String mediaId = wechatHelper.addMateria(accessToken.getAccess_token(), message.getMsgtype(), mediaFile);
+                message.setMediaId(mediaId);
             }
-            newsData.add(MateriaNewsData.itemMap()
+
+            String content = StringEscapeUtils.unescapeHtml4(message.getContent());
+            newsData.add(MateriaNewsData.getItemMap()
                     .add("title", message.getTitle())
-                    .add("thumb_media_id",message.getThumbMediaId())
-                    .add("author",message.getAuthor())
-                    .add("digest",message.getDigest())
-                    .add("show_cover_pic",message.getShowCoverPic()+"")
-                    .add("content", StringEscapeUtils.unescapeHtml4(message.getContent()))
-                    .add("content_source_url",message.getContentSourceUrl())
-                    .add("need_open_comment",message.getNeedOpenComment()+"")
-                    .add("only_fans_can_comment",message.getOnlyFansCanComment()+""));
+                    .add("thumb_media_id", message.getThumbMediaId())
+                    .add("author", message.getAuthor())
+                    .add("digest", message.getDigest())
+                    .add("show_cover_pic", message.getShowCoverPic() + "")
+                    .add("content", content)
+                    .add("content_source_url", message.getContentSourceUrl())
+                    .add("need_open_comment", message.getNeedOpenComment() + "")
+                    .add("only_fans_can_comment", message.getOnlyFansCanComment() + ""));
             this.save(message);
         }
 
-        String mediaId =  wechatHelper.addMateriaNews(accessToken.getAccess_token(),newsData.build());
-
-        WxMessage wxMessage =new WxMessage();
-
-        wxMessage.setUserId(userId);
-        wxMessage.setSiteId(siteId);
+        String mediaId = wechatHelper.addMateriaNews(accessToken.getAccess_token(), newsData.build());
         wxMessage.setMediaId(mediaId);
-        wxMessage.setCreateDate(new Date());
-
-        this.save(wxMessage);
-
+        this.update(wxMessage);
 //        wxMessageMapper.batchInsert(messages);
+    }
+
+    @Override
+    public PageEntity<WxMessage> getMessageListPage(PageEntity<WxMessage> pageEntity) {
+        List<WxMessage> list = wxMessageMapper.selectListPage(pageEntity);
+
+        for (WxMessage message : list) {
+            WxMessage model = new WxMessage();
+            model.setpId(message.getId());
+            model.setSiteId(message.getSiteId());
+            List<WxMessage> messages = wxMessageMapper.selectList(model);
+
+            message.setMessages(messages);
+        }
+
+        pageEntity.setRows(list);
+        return pageEntity;
     }
 }

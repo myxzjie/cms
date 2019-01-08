@@ -9,6 +9,7 @@
 
 <head>
     <@head />
+    <link rel="stylesheet" href="/assets/css/wx-article.css" rel="stylesheet">
 </head>
 <body>
 <@layout>
@@ -61,11 +62,104 @@
                 <button id="btn-updatepwd" type="button" class="btn btn-primary">修改密码</button>
                 <button id="btn-scene" type="button" class="btn btn-primary">设置监控点</button>-->
             </div>
-            <table id="data-table" class="table table-hover col-xs-12" data-toolbar="#toolbar"></table>
+            <#--<table id="data-table" class="table table-hover col-xs-12" data-toolbar="#toolbar"></table>-->
+            <div class="row margin-top-20" >
+                <div class="col-sm-6 col-lg-3">
+                    <div class="template template-item">
+                        <div class="content">
+                            <div class="content-item content-default active" data-index="1">
+                                <img src="/assets/images/default.png" alt="" >
+                                <p>请输入标题</p>
+                            </div>
+                            <div class="content-item active" data-index="2">
+                                <img src="/assets/images/default.png" alt="">
+                                <p style="">请输入标题</p>
+                                <button type="button" class="btn-delete btn btn-danger">删除</button>
+                            </div>
+                        </div>
+                        <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 margin-bottom-20">
+                    <div class="template template-item">
+                        <div class="content">
+                            <div class="content-item content-default active" data-index="1">
+                                <img src="/assets/images/default.png" alt="" >
+                                <p>请输入标题</p>
+                            </div>
+                            <div class="content-item active" data-index="2">
+                                <img src="/assets/images/default.png" alt="">
+                                <p style="">请输入标题</p>
+                                <button type="button" class="btn-delete btn btn-danger">删除</button>
+                            </div>
+                        </div>
+                        <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 margin-bottom-20">
+                    <div class="template template-item">
+                        <div class="content">
+                            <div class="content-item content-default active" data-index="1">
+                                <img src="/assets/images/default.png" alt="" >
+                                <p>请输入标题</p>
+                            </div>
+                            <div class="content-item active" data-index="2">
+                                <img src="/assets/images/default.png" alt="">
+                                <p style="">请输入标题</p>
+                                <button type="button" class="btn-delete btn btn-danger">删除</button>
+                            </div>
+                        </div>
+                        <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 margin-bottom-20">
+                    <div class="template template-item">
+                        <div class="content">
+                            <div class="content-item content-default active" data-index="1">
+                                <img src="/assets/images/default.png" alt="" >
+                                <p>请输入标题</p>
+                            </div>
+                            <div class="content-item active" data-index="2">
+                                <img src="/assets/images/default.png" alt="">
+                                <p style="">请输入标题</p>
+                                <button type="button" class="btn-delete btn btn-danger">删除</button>
+                            </div>
+                        </div>
+                        <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 margin-bottom-20">
+                    <div class="template template-item">
+                        <div class="content">
+                            <div class="content-item content-default active" data-index="1">
+                                <img src="/assets/images/default.png" alt="" >
+                                <p>请输入标题</p>
+                            </div>
+                            <div class="content-item active" data-index="2">
+                                <img src="/assets/images/default.png" alt="">
+                                <p style="">请输入标题</p>
+                                <button type="button" class="btn-delete btn btn-danger">删除</button>
+                            </div>
+                        </div>
+                        <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="text-center">
+                    <ul id="pagination" class="pagination-sm"></ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 </@layout>
+    <script type="text/javascript" src="/vendor/twbs-pagination/jquery.twbsPagination.js"></script>
     <script type="text/javascript">
 
         var $table = null;
@@ -75,67 +169,46 @@
                 $table.bootstrapTable('destroy');
                 initTable();
             });
+
+
         });
 
-        function initTable() {
-            $table = $('#data-table').bootstrapTable({
-                url: global.adminPath + '/wx-message/datapage',  //请求后台的URL（*）
-                method: 'get',   //请求方式（*）
-                //toolbar: '#toolbar',  //工具按钮用哪个容器
-                striped: false,   //是否显示行间隔色
-                cache: false,   //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-                pagination: true,   //是否显示分页（*）
-                sortable: false,   //是否启用排序
-                sortOrder: "desc",   //排序方式
-                queryParams: function queryParams(params) { //传递参数（*）
-                    var pars = $('#query_form').serializeJSON();
-                    params = $.extend({}, params, pars);
-                    params.showCount = params.limit;
-                    params.currentPage = (params.offset / params.limit) + 1;
-                    return params;
-                },
-                sidePagination: "server",  //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,   //初始化加载第一页，默认第一页
-                pageSize: 10,   //每页的记录行数（*）
-                pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
-                search: false,   //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-                strictSearch: true,
-                showColumns: false,   //是否显示所有的列
-                showRefresh: false,   //是否显示刷新按钮
-                minimumCountColumns: 2,  //最少允许的列数
-                clickToSelect: true,  //是否启用点击选中行
-                //height: 400,   //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                uniqueId: "id",   //每一行的唯一标识，一般为主键列
-                showToggle: false,   //是否显示详细视图和列表视图的切换按钮
-                cardView: false,   //是否显示详细视图
-                detailView: false,   //是否显示父子表
-                columns: [
-                    {
-                        checkbox: true
-                    }, {
-                        field: 'title',
-                        title: '标题'
-                    }, {
-                        field: 'content',
-                        title: '内容'
-                    }, {
-                        field: 'createDate',
-                        title: '创建时间',
-                        formatter: function (value, row, index) {
-                            return new Date(value).format("yyyy-MM-dd HH:mm:ss");
-                        }
-                    }, {
-                        title: '操作',
-                        formatter: function (value, row, index) {
+        function initTable(currentPage) {
+            var params={};
+            params.showCount = 10;
+            params.currentPage = currentPage;
+            $.ajax({
+                data: params,
+                type: 'post',
+                dataType: 'json',
+                url: global.adminPath + '/wx-message/datapage',
+                success: function (res) {
 
-                            return [
-                                '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-group?messageId=' + row.id + '"><i class="fa fa-pencil-square-o"></i> 群发</a>',
-                                '<a class="btn btn-o btn-default" href="${ctx_admin}/wx-message/edit/' + row.id + '"><i class="fa fa-pencil-square-o"></i> 编辑</a>',
-                                '<button class="btn btn-o btn-default" type="button" onclick="tgridObj.del(' + row.id + ')"><i class="fa fa-trash"></i> 移除</button>'
-                            ].join('');
-                        }
+                    var rows =res.rows;
+
+                    for(var data in rows){
+                        debugger
                     }
-                ]
+
+                    $('#pagination').twbsPagination({
+                        totalPages : res.totalPage,
+                        visiblePages: 5,
+                        first:'首页',
+                        last:'尾页',
+                        prev:'上一页',
+                        next:'下一页',
+                        //页面点击时触发事件
+                        onPageClick : function(event, page) {
+                            // 将当前页数重置为page
+                            // pagenow = page
+                            //调用后台获取数据函数加载点击的页码数据
+                            // loaddata();
+                            debugger
+                            initTable(page);
+                        }
+                    });
+
+                }
             });
         }
 

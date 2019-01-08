@@ -2,9 +2,12 @@ package com.xzjie.et.wechat.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class WxMessage implements Serializable {
     private Long id;
+
+    private Long pId;
 
     private Long siteId;
 
@@ -43,6 +46,8 @@ public class WxMessage implements Serializable {
     private String author;
 
     private String contentSourceUrl;
+
+    private List<WxMessage> messages;
 
     public Long getId() {
         return id;
@@ -202,5 +207,21 @@ public class WxMessage implements Serializable {
 
     public void setContentSourceUrl(String contentSourceUrl) {
         this.contentSourceUrl = contentSourceUrl;
+    }
+
+    public Long getpId() {
+        return pId;
+    }
+
+    public void setpId(Long pId) {
+        this.pId = pId;
+    }
+
+    public List<WxMessage> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<WxMessage> messages) {
+        this.messages = messages;
     }
 }
