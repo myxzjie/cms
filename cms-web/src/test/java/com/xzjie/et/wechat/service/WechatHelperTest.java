@@ -102,7 +102,7 @@ public class WechatHelperTest extends BaseTest {
 
     @Test
     public void batchgetMaterial(){
-        wechatHelper.batchgetMaterial(accessToken.getAccess_token(),MediaType.image,0,20);
+        wechatHelper.batchgetMaterial(accessToken.getAccess_token(),MediaType.news,0,20);
     }
 
     @Test

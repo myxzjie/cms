@@ -10,6 +10,7 @@ import com.xzjie.et.wechat.model.WxAccount;
 import com.xzjie.et.wechat.model.WxAccountFollow;
 import com.xzjie.et.wechat.service.WxAccountFollowService;
 import com.xzjie.et.wechat.service.WxAccountService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,7 @@ import com.xzjie.mybatis.core.dao.BaseMapper;
 import com.xzjie.mybatis.core.service.AbstractBaseService;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("wxMessageService")
 public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> implements WxMessageService {
@@ -82,17 +80,13 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
                 String mediaId = wechatHelper.addMateria(accessToken.getAccess_token(), MediaType.image.name(), file);
                 message.setThumbMediaId(mediaId);
             }
-
-            Map<String,String> map =new HashMap<>();
-
-
             newsData.add(MateriaNewsData.itemMap()
                     .add("title", message.getTitle())
                     .add("thumb_media_id",message.getThumbMediaId())
                     .add("author",message.getAuthor())
                     .add("digest",message.getDigest())
                     .add("show_cover_pic",message.getShowCoverPic()+"")
-                    .add("content",message.getContent())
+                    .add("content", StringEscapeUtils.unescapeHtml4(message.getContent()))
                     .add("content_source_url",message.getContentSourceUrl())
                     .add("need_open_comment",message.getNeedOpenComment()+"")
                     .add("only_fans_can_comment",message.getOnlyFansCanComment()+""));
@@ -100,6 +94,16 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
         }
 
         String mediaId =  wechatHelper.addMateriaNews(accessToken.getAccess_token(),newsData.build());
+
+        WxMessage wxMessage =new WxMessage();
+
+        wxMessage.setUserId(userId);
+        wxMessage.setSiteId(siteId);
+        wxMessage.setMediaId(mediaId);
+        wxMessage.setCreateDate(new Date());
+
+        this.save(wxMessage);
+
 //        wxMessageMapper.batchInsert(messages);
     }
 }

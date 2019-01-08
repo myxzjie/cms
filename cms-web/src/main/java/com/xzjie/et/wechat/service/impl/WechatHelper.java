@@ -288,7 +288,7 @@ public class WechatHelper {
     }
 
     public String addMateriaNews(String accessToken, String json) {
-        String url = wechatUrl + "/cgi-bin/media/uploadnews?access_token=" + accessToken;
+        String url = wechatUrl + "/cgi-bin/material/add_news?access_token=" + accessToken;
         String result = HttpUtils.doPost(url, json);
         if (logger.isInfoEnabled()) {
             logger.info("\n 结果:" + result);
