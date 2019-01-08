@@ -67,6 +67,15 @@ public class WebUtils {
 		WebUtils.uploadPathFormat = uploadPathFormat;
 	}
 
+	/**
+	 * URL 转为文件物理路径
+	 * @param url
+	 * @return
+	 */
+	public static String getUploadPath(String url){
+		return url.replace(getUploadFileURL(),getUploadDirectory());
+	}
+
 	public static  String getVersion(){
 		return  version;
 	}

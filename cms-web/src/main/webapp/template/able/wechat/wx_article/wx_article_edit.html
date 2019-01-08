@@ -169,8 +169,8 @@
                                     <option value="video">视频</option>
                                     <#--<option value="thumb">和缩略图</option>-->
                                 </select>
-                                <input id="mediaId" name="mediaId" type="hidden">
-                                <input name="thumbMediaId" id="thumbMediaId" type="hidden">
+                                <input id="media" name="media" type="hidden">
+                                <input name="thumbMedia" id="thumbMedia" type="hidden">
                             </div>
 
                             <div class="form-group">
@@ -230,6 +230,14 @@
                                         仅粉丝可留言
                                     </label>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    描述 <span class="symbol required" aria-required="true"></span>
+                                </label>
+                                <input type="text" placeholder="描述" class="form-control" id="digest" name="digest">
+
                             </div>
 
                             <div class="form-group">
@@ -296,7 +304,7 @@
                 var data = $('#form')[0];
                 data.title.value = e.title?e.title:'';
                 data.author.value = e.author?e.author:'';
-                data.mediaId.value = e.mediaId?e.mediaId:'';
+                data.media.value = e.media?e.media:'';
 
                 var html= e.content?encodeEscape.escape2Html(e.content):'';
                 ue.ready(function () {
@@ -550,9 +558,9 @@
                 var res = data.result;
                 if (res.success) {
                     if ($('#msgtype').val() == 'voice' || $('#msgtype').val() == 'video') {
-                        $('#thumbMediaId').val(res.url)
+                        $('#thumbMedia').val(res.url)
                     } else {
-                        $('#mediaId').val(res.url);
+                        $('#media').val(res.url);
                     }
                     var index = $("#form").data('index');
                     $('.content-item[data-index="' + index + '"] img').attr('src', res.url);
@@ -581,14 +589,12 @@
             autoUpload: true,//是否选了文件就直接自动上传
             maxNumberOfFiles: 1,//最多同时上传几个文件
             maxFileSize: 209715200,
-            acceptFileTypes: /(\.|\/)(mp4|mp3)$/i,
+            acceptFileTypes: /(\.|\/)(mp4|mp3|flv)$/i,
             //maxChunkSize:10000,//最大接收文件大小
             done: function (e, data) {//上传完了干嘛
                 var res = data.result;
                 if (res.success) {
-                    $('#mediaId').val(res.url);
-                    var index = $("#form").data('index');
-                    $('.content-item[data-index="' + index + '"] img').attr('src', res.url);
+                    $('#media').val(res.url);
                 }
                 layer.open({
                     type: 1,

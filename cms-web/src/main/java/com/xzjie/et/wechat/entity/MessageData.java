@@ -13,8 +13,13 @@ public class MessageData {
 
     private ItemMap text;
 
+    private ItemMap mpnews;
+
+    private String send_ignore_reprint;
+
     private MessageData() {
         text = new ItemMap();
+        mpnews =new ItemMap();
     }
 
     public static MessageData builder() {
@@ -32,6 +37,11 @@ public class MessageData {
 
     public MessageData add(String content) {
         text.put("content", content);
+        return this;
+    }
+
+    public MessageData addMediaId(String mediaId){
+        mpnews.put("media_id",mediaId);
         return this;
     }
 
@@ -53,6 +63,22 @@ public class MessageData {
 
     public ItemMap getText() {
         return text;
+    }
+
+    public ItemMap getMpnews() {
+        return mpnews;
+    }
+
+    public void setMpnews(ItemMap mpnews) {
+        this.mpnews = mpnews;
+    }
+
+    public String getSend_ignore_reprint() {
+        return send_ignore_reprint;
+    }
+
+    public void setSend_ignore_reprint(String send_ignore_reprint) {
+        this.send_ignore_reprint = send_ignore_reprint;
     }
 
     public class ItemMap extends HashMap<String, String> {

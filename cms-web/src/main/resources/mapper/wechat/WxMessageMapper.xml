@@ -13,6 +13,13 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="thumb_media" jdbcType="VARCHAR" property="thumbMedia" />
+    <result column="media" jdbcType="VARCHAR" property="media" />
+    <result column="show_cover_pic" jdbcType="INTEGER" property="showCoverPic" />
+    <result column="need_open_comment" jdbcType="INTEGER" property="needOpenComment" />
+    <result column="only_fans_can_comment" jdbcType="INTEGER" property="onlyFansCanComment" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="digest" jdbcType="VARCHAR" property="digest" />
   </resultMap>
   <sql id="Base_Column_List">
     id, site_id, user_id, msgtype, title, description, thumb_media_id, media_id, content, 
@@ -83,6 +90,12 @@
       <if test="updateDate != null">
         update_date,
       </if>
+      <if test="thumbMedia != null">
+        thumb_media,
+      </if>
+      <if test="media != null">
+        media,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -117,6 +130,12 @@
       </if>
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thumbMedia != null">
+        #{thumbMedia,jdbcType=VARCHAR},
+      </if>
+      <if test="media != null">
+        #{media,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

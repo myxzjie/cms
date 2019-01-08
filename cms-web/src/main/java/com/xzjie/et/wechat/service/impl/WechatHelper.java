@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
+import com.xzjie.et.wechat.entity.MessageData;
 import com.xzjie.et.wechat.enums.MediaType;
+import com.xzjie.et.wechat.model.WxMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -243,14 +245,20 @@ public class WechatHelper {
         JSONObject jsonObject = JSONObject.parseObject(json);
     }
 
-    public void addMateria(String accessToken, String type, File file) {
+    public String addMateria(String accessToken, String type, File file) {
         String url = wechatUrl + "/cgi-bin/material/add_material?access_token=" + accessToken + "&type=" + type + "";
 
         String result = HttpUtils.doPostFile(url, file, "media");
         if (logger.isInfoEnabled()) {
             logger.info("\n 结果:" + result);
         }
+
+        //{"media_id":"XQRUgXjSqS1YbqZHwmoWWaVFLiEKV_5dui9UO1wBWeA","url":"http:\/\/mmbiz.qpic.cn\/mmbiz_jpg\/ND3A30ibEFukibyGK1u084kY7MVVRIEHnBfsDhoIKpknd0LaAcJpkUBVFnwzQjQYaFO9o5siaJLQwLfIytYTZRKbg\/0?wx_fmt=jpeg"}
         JSONObject jsonObject = JSONObject.parseObject(result);
+        if (jsonObject != null && jsonObject.containsKey("media_id")) {
+            return jsonObject.getString("media_id");
+        }
+        return null;
     }
 
     public void getMaterial(String accessToken, String mediaId) {
@@ -277,6 +285,21 @@ public class WechatHelper {
             logger.info("\n 结果:" + result);
         }
         JSONObject jsonObject = JSONObject.parseObject(result);
+    }
+
+    public String addMateriaNews(String accessToken, String json) {
+        String url = wechatUrl + "/cgi-bin/media/uploadnews?access_token=" + accessToken;
+        String result = HttpUtils.doPost(url, json);
+        if (logger.isInfoEnabled()) {
+            logger.info("\n 结果:" + result);
+        }
+        //{"media_id":"XQRUgXjSqS1YbqZHwmoWWYTeSQPKBFLR95XUaXHJvpQ"}
+        JSONObject jsonObject = JSONObject.parseObject(result);
+
+        if (jsonObject != null && jsonObject.containsKey("media_id")) {
+            return jsonObject.getString("media_id");
+        }
+        return null;
     }
 
     /**
