@@ -2,36 +2,48 @@
     background: #f8f8f8;
 }
 
-.content .content-item{
-    position: relative;height: 70px;width: 320px;margin:0 auto;border: 1px solid #d9dadc; padding-top: 10px; padding-bottom: 10px;
+.content .content-item {
+    position: relative;
+    height: 70px;
+    width: 320px;
+    margin: 0 auto;
+    border: 1px solid #d9dadc;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
-.content .content-default{
-    margin:0 auto;
-    width: 320px;height:180px;position: relative;overflow: hidden;
+
+.content .content-default {
+    margin: 0 auto;
+    width: 320px;
+    height: 180px;
+    position: relative;
+    overflow: hidden;
     padding: 0;
     border: 0px solid #d9dadc;
 }
 
-.content .content-item > img{
+.content .content-item > img {
     width: 50px;
     height: 50px;
     float: right;
     margin-right: 10px;
 
 }
+
 .content .content-default > img {
     width: 100%;
     height: auto;
     margin-right: 0;
 }
 
-.content .content-item > p{
+.content .content-item > p {
     overflow: hidden;
     font-size: 14px;
     line-height: 50px;
     height: 50px;
     color: #333;
 }
+
 .content .content-default > p {
     position: absolute;
     left: 0;
@@ -44,31 +56,46 @@
     overflow: hidden;
 }
 
-.content .content-item .btn-delete{
+.content .content-item .btn-delete {
     display: none;
     position: absolute;
     top: 20px;
     right: 10px;
 }
 
-.content .content-item:hover .btn-delete{
+.content .content-item:hover .btn-delete {
     display: block;
 }
 
-.content .content-item.active{
+.content .content-item.active {
     border: 1px #c8c7cc solid;
 }
 
-.template .add{
+.template .add {
     line-height: 100px;
     height: 100px;
-    border: 2px dotted #d9dadc;width: 320px;margin:2px auto;text-align: center;
+    border: 2px dotted #d9dadc;
+    width: 320px;
+    margin: 2px auto;
+    text-align: center;
 }
-.template .add > i{
+
+.template .add > i {
     font-size: 30px;
     cursor: pointer;
 }
 
-.template-item{
+.template-item {
     background: transparent;
+}
+
+.template-item .content .content-item {
+
+    max-width: 320px;
+    width: 100%;
+}
+
+.template-item .add{
+    max-width: 320px;
+    width: 100%;
 }

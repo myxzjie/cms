@@ -57,11 +57,11 @@ public class SystemWxArticleController extends BaseController {
     @ResponseBody
     public Map<String, Object> dataPage(WxMessage model, Page page) {
         PageEntity<WxMessage> pageEntity = new PageEntity<WxMessage>();
-        Map<String,Object> map =new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         model.setSiteId(getSiteId());
         model.setpId(0L);
 
-        map.put("type",2);
+        map.put("type", 2);
 
         pageEntity.setT(model);
         pageEntity.setPage(page);

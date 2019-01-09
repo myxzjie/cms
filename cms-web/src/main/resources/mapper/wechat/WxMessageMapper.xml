@@ -48,7 +48,7 @@
     <if test="t.pId != null">
       and p_id= #{t.pId,jdbcType=BIGINT}
     </if>
-    <if test="type == 2">
+    <if test="map !=null and map.type == 2">
       and msgtype in('news')
     </if>
     order by create_date desc
