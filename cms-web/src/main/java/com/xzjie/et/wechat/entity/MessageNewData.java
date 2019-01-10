@@ -6,41 +6,33 @@ import com.alibaba.fastjson.JSON;
 import java.util.HashMap;
 import java.util.List;
 
-public class MessageData {
+public class MessageNewData {
 
     private List<String> touser;
     private String msgtype;
-
-    private ItemMap text;
 
     private ItemMap mpnews;
 
     private String send_ignore_reprint;
 
-    private MessageData() {
-        text = new ItemMap();
+    private MessageNewData() {
         mpnews =new ItemMap();
     }
 
-    public static MessageData builder() {
-        return new MessageData();
+    public static MessageNewData builder() {
+        return new MessageNewData();
     }
 
     public String build() {
         return JSON.toJSONString(this);
     }
 
-    public MessageData addOpenId(String openId) {
+    public MessageNewData addOpenId(String openId) {
         touser.add(openId);
         return this;
     }
 
-    public MessageData add(String content) {
-        text.put("content", content);
-        return this;
-    }
-
-    public MessageData addMediaId(String mediaId){
+    public MessageNewData addMediaId(String mediaId){
         mpnews.put("media_id",mediaId);
         return this;
     }
@@ -59,10 +51,6 @@ public class MessageData {
 
     public void setMsgtype(String msgtype) {
         this.msgtype = msgtype;
-    }
-
-    public ItemMap getText() {
-        return text;
     }
 
     public ItemMap getMpnews() {

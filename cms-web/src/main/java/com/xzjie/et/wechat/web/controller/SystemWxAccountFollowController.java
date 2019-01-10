@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -67,6 +68,19 @@ public class SystemWxAccountFollowController extends BaseController {
             LOG.error("sync follow error.", e);
         }
         return MapResult.mapError();
+    }
+
+    @RequestMapping("delete/{id}")
+    @ResponseBody
+    public Map<String, Object> dataPage(@PathVariable Long id) {
+        try {
+            wxAccountFollowService.delete(id);
+            return MapResult.mapOK();
+        } catch (Exception e) {
+            LOG.error("wechat follow delete error.", e);
+        }
+
+        return MapResult.mapError("24");
     }
 
 }

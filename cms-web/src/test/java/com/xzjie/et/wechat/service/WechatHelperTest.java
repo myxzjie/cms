@@ -2,11 +2,11 @@ package com.xzjie.et.wechat.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xzjie.et.BaseTest;
-import com.xzjie.et.wechat.entity.TemplateData;
-import com.xzjie.et.wechat.entity.TemplateMessage;
-import com.xzjie.et.wechat.entity.WxAccessToken;
+import com.xzjie.et.wechat.entity.*;
 import com.xzjie.et.wechat.enums.MediaType;
 import com.xzjie.et.wechat.model.WxAccount;
+import com.xzjie.et.wechat.model.WxAccountFollow;
+import com.xzjie.et.wechat.model.WxMessage;
 import com.xzjie.et.wechat.service.impl.WechatHelper;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -14,9 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 鹰视视科技: www.dev56.com
@@ -30,6 +28,8 @@ public class WechatHelperTest extends BaseTest {
     private WechatHelper wechatHelper;
     @Autowired
     private WxAccountService wxAccountService;
+    @Autowired
+    private WxAccountFollowService wxAccountFollowService;
 
     private WxAccessToken accessToken;
 
@@ -102,6 +102,24 @@ public class WechatHelperTest extends BaseTest {
 
     @Test
     public void batchgetMaterial(){
-        wechatHelper.batchgetMaterial(accessToken.getAccess_token(),MediaType.image,0,20);
+        wechatHelper.batchgetMaterial(accessToken.getAccess_token(),MediaType.news,0,20);
+    }
+
+    @Test
+    public void send() {
+
+
+        List<WxAccountFollow> accountFollows = wxAccountFollowService.getAccountFollowByGroupId(1L);
+        List<String> touser = new ArrayList<>();
+        for (WxAccountFollow accountFollow : accountFollows) {
+            touser.add(accountFollow.getOpenId());
+        }
+
+        MessageNewData messageData = MessageNewData.builder().addMediaId("XQRUgXjSqS1YbqZHwmoWWYTeSQPKBFLR95XUaXHJvpQ");
+        messageData.setMsgtype("mpnews");
+        messageData.setTouser(touser);
+        messageData.setSend_ignore_reprint("1");
+
+        wechatHelper.message(accessToken.getAccess_token(), messageData.build());
     }
 }

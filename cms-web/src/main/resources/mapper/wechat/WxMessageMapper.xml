@@ -3,6 +3,7 @@
 <mapper namespace="com.xzjie.et.wechat.dao.WxMessageMapper">
   <resultMap id="BaseResultMap" type="com.xzjie.et.wechat.model.WxMessage">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="p_id" jdbcType="BIGINT" property="pId" />
     <result column="site_id" jdbcType="BIGINT" property="siteId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="msgtype" jdbcType="VARCHAR" property="msgtype" />
@@ -13,17 +14,43 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="thumb_media" jdbcType="VARCHAR" property="thumbMedia" />
+    <result column="media" jdbcType="VARCHAR" property="media" />
+    <result column="show_cover_pic" jdbcType="INTEGER" property="showCoverPic" />
+    <result column="need_open_comment" jdbcType="INTEGER" property="needOpenComment" />
+    <result column="only_fans_can_comment" jdbcType="INTEGER" property="onlyFansCanComment" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="digest" jdbcType="VARCHAR" property="digest" />
   </resultMap>
   <sql id="Base_Column_List">
     id, site_id, user_id, msgtype, title, description, thumb_media_id, media_id, content, 
-    create_date, update_date
+    create_date, update_date, thumb_media, media, show_cover_pic, need_open_comment, only_fans_can_comment, status, digest
   </sql>
+
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.wechat.model.WxMessage">
+    select
+    <include refid="Base_Column_List" />
+    from wx_message a
+    where status =1
+    <if test="siteId != null">
+    and site_id = #{siteId,jdbcType=BIGINT}
+    </if>
+    <if test="pId != null">
+      and p_id= #{pId,jdbcType=BIGINT}
+    </if>
+  </select>
 
   <select id="selectListPage" resultMap="BaseResultMap" parameterType="entity">
     select
     <include refid="Base_Column_List" />
     from wx_message a
-    where site_id = #{t.siteId,jdbcType=BIGINT}
+    where status =1 and site_id = #{t.siteId,jdbcType=BIGINT}
+    <if test="t.pId != null">
+      and p_id= #{t.pId,jdbcType=BIGINT}
+    </if>
+    <if test="map !=null and map.type == 2">
+      and msgtype in('news')
+    </if>
     order by create_date desc
   </select>
 
@@ -47,11 +74,14 @@
       #{thumbMediaId,jdbcType=VARCHAR}, #{mediaId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.xzjie.et.wechat.model.WxMessage">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.xzjie.et.wechat.model.WxMessage">
     insert into wx_message
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="pId != null">
+        p_id,
       </if>
       <if test="siteId != null">
         site_id,
@@ -83,10 +113,34 @@
       <if test="updateDate != null">
         update_date,
       </if>
+      <if test="thumbMedia != null">
+        thumb_media,
+      </if>
+      <if test="media != null">
+        media,
+      </if>
+      <if test="showCoverPic != null">
+        show_cover_pic,
+      </if>
+      <if test="needOpenComment != null">
+        need_open_comment,
+      </if>
+      <if test="onlyFansCanComment != null">
+        only_fans_can_comment,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="digest != null">
+        digest,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
+      </if>
+      <if test="pId != null">
+        #{pId,jdbcType=BIGINT},
       </if>
       <if test="siteId != null">
         #{siteId,jdbcType=BIGINT},
@@ -118,11 +172,64 @@
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="thumbMedia != null">
+        #{thumbMedia,jdbcType=VARCHAR},
+      </if>
+      <if test="media != null">
+        #{media,jdbcType=VARCHAR},
+      </if>
+      <if test="showCoverPic != null">
+        #{showCoverPic,jdbcType=INTEGER},
+      </if>
+      <if test="needOpenComment != null">
+        #{needOpenComment,jdbcType=INTEGER},
+      </if>
+      <if test="onlyFansCanComment != null">
+        #{onlyFansCanComment,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="digest != null">
+        #{digest,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
+    insert into  wx_message (
+        site_id,
+        user_id,
+        msgtype,
+        title,
+        description,
+        thumb_media_id,
+        media_id,
+        content,
+        create_date,
+        update_date,
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+          #{siteId,jdbcType=BIGINT},
+          #{userId,jdbcType=BIGINT},
+          #{msgtype,jdbcType=VARCHAR},
+          #{title,jdbcType=VARCHAR},
+          #{description,jdbcType=VARCHAR},
+          #{thumbMediaId,jdbcType=VARCHAR},
+          #{mediaId,jdbcType=VARCHAR},
+          #{content,jdbcType=VARCHAR},
+          #{createDate,jdbcType=TIMESTAMP},
+          #{updateDate,jdbcType=TIMESTAMP},
+    </foreach>
+  </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.xzjie.et.wechat.model.WxMessage">
     update wx_message
     <set>
+      <if test="pId != null">
+        p_id = #{pId,jdbcType=BIGINT},
+      </if>
       <if test="siteId != null">
         site_id = #{siteId,jdbcType=BIGINT},
       </if>
@@ -152,6 +259,27 @@
       </if>
       <if test="updateDate != null">
         update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thumbMedia != null">
+        thumb_media = #{thumbMedia,jdbcType=VARCHAR},
+      </if>
+      <if test="media != null">
+        media = #{media,jdbcType=VARCHAR},
+      </if>
+      <if test="showCoverPic != null">
+        show_cover_pic = #{showCoverPic,jdbcType=INTEGER},
+      </if>
+      <if test="needOpenComment != null">
+        need_open_comment = #{needOpenComment,jdbcType=INTEGER},
+      </if>
+      <if test="onlyFansCanComment != null">
+        only_fans_can_comment = #{needOpenComment,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="digest != null">
+        digest = #{digest,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

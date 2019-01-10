@@ -49,7 +49,7 @@
 
             <div class="col-md-12">
 
-                <form action="${ctx_admin}<#if model?exists>/wx-article/update<#else>/wx-article/add</#if>" method="post" role="form" id="form" novalidate="novalidate">
+                <form action="${ctx_admin}<#if model?exists>/wx-article/update<#else>/wx-article/add</#if>" method="post" role="form" id="form" data-index="1" novalidate="novalidate">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="errorHandler alert alert-danger no-display">
@@ -60,14 +60,14 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="template" style="background: transparent;">
-                                <div class="content">
-                                    <div class="content-item content-default active" data-index="1">
-                                        <img src="/assets/images/default.png" alt="">
-                                    </div>
-
+                            <div class="template">
+                            <div class="content">
+                                <div class="content-item content-default active" data-index="1">
+                                    <img src="/assets/images/default.png" alt="" >
+                                    <p>请输入标题</p>
                                 </div>
-
+                            </div>
+                            <div class="add" id="btn_add_template"><i class="ti-plus" ></i></div>
                             </div>
 
                         </div>
@@ -188,6 +188,7 @@
                     </div>
 
                 </form>
+                <form id="temp_form"></form>
             </div>
         </div>
     </div>
@@ -198,6 +199,8 @@
     <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"></script>
 
 <script type="text/javascript">
+    var inx =1;
+    var contents=[{index:inx}];
     var elem = document.querySelector('.js-switch');
     var switchery = new Switchery(elem);
     var ue = UE.getEditor('editor');
@@ -210,7 +213,107 @@
         }
     };
 
+    function increment() {
+        inx++;
+        return inx;
+    }
 
+    function getTemplate(index){
+        return '<div class="content-item active" data-index="'+index+'">\n' +
+                '<img src="/assets/images/default.png" alt="" >\n' +
+                '<p style="">请输入标题</p>\n' +
+                '<button type="button" class="btn-delete btn btn-danger" >删除</button>\n' +
+                '</div>';
+    }
+
+    //回显表单
+    function showData(index) {
+        $.each(contents, function (i, e) {
+            if (e.index === index) {
+                var data = $('#form')[0];
+                data.title.value = e.title?e.title:'';
+                data.author.value = e.author?e.author:'';
+                data.media.value = e.media?e.media:'';
+
+                var html= e.content?encodeEscape.escape2Html(e.content):'';
+                ue.ready(function () {
+                    ue.setContent(html);
+                });
+//                     $("#add_thumbMediaId").val(v.thumbMediaId ? v.thumbMediaId : "");
+//                     $("#add_picpath").val(v.picpath ? v.picpath : "");
+//                     $("#add_showpic").prop("checked", v.showpic ? true : false);
+//                     $("#uploader").html(
+//                             v.picpath
+//                                     ? '<img src="' + v.picpath + '" style="width: 150px;height: 150px;"/><p>点击重新上传，或将文件拖拽到此处</p>'
+//                                     : '<i class="layui-icon"></i><p>点击上传，或将文件拖拽到此处</p>'
+//                     );
+//
+// //                     $("#add_digest").val(v.brief ? v.brief : "");
+//                     $("#add_fromurl").val(v.fromurl ? v.fromurl : "");
+//
+//                     $("#add_open_comment").prop("checked",v.open_comment?true:false);
+//                     v.open_comment?$("#add_comment_type").show():$("#add_comment_type").hide();
+//                     $("input[name=fans_can_comment][value="+v.fans_can_comment+"]").prop("checked",true);
+//                     $("#content").html(v.description ? v.description : "");
+//
+//                     form.render();
+//                     layeditIndex = layedit.build('content');
+//
+//                     $(".wxmp-doclist div[data-t=" + t + "]").addClass("active").siblings(".active").removeClass("active");
+                $("#form").data("index", index);
+                return false;
+            }
+        });
+    }
+
+    function syncData(){
+        var index = $("#form").data("index");
+        $.each(contents, function (i, e) {
+            if (e.index == index) {
+                var data = $('#form').serializeJSON();
+                data.content = ue.getContent();
+                data.index = index;
+                e = data;
+                contents[i] = e;
+                //     v.title = title;
+                //     v.author = author;
+                //     v.multType = 2;//多图文标识
+                //     v.newsIndex = t;//图文顺序
+                //     v.thumbMediaId = thumbMediaId;
+                //     v.picpath = picpath;
+                //     v.showpic = showpic;
+                //
+                //     v.brief = "";
+                //     v.fromurl = fromurl;
+                //     v.opencomment=open_comment;
+                //     v.fanscancomment=fans_can_comment;
+                //
+                //     v.description = description;
+                //
+                return false;
+            }
+        });
+
+    }
+
+    var objectToFormData =function(data, arr, namespace) {
+        if(arr instanceof Array){
+            for(var i=0; i<arr.length;i++){
+                var item = arr[i];
+                this.objectToFormData(data, item, namespace+'['+i+']');
+            }
+        } else{
+            for(var property in arr) {
+                if(arr.hasOwnProperty(property) && arr[property]) {
+                    if(namespace) {
+                        // 若是对象，则这样
+                        var key = namespace + '.' + property ;
+                        data[key] =arr[property];
+                    }
+                }
+            }
+        }
+    };
 
     var FormValidator = function () {
         "use strict";
@@ -255,9 +358,31 @@
                     successHandler2.show();
                     errorHandler2.hide();
 
-                    var data=$(form).serializeJSON();
-                    data.content = ue.getContent();
-
+                    syncData();
+                    var data={};
+                    for(var i=0;i<contents.length;i++){
+                        var content = contents[i];
+                        if(content.title == ""){
+                            layer.msg("请完善标题信息");
+                            showData(content.index);
+                            return false;
+                        }
+                        if(content.author == ""){
+                            layer.msg("请完善作者信息");
+                            showData(content.index);
+                            return false;
+                        }
+                        if(content.content == ""){
+                            layer.msg("请完善图文正文信息");
+                            showData(content.index);
+                            return false;
+                        }
+                        // data['messages['+i+'].title']=content.title;
+                        // data['messages['+i+'].author']=content.author;
+                        // data['messages['+i+'].content']=content.content;
+                    }
+                    objectToFormData(data,contents,'messages');
+                    debugger
                     $.ajax({
                         type: form.method,
                         url:form.action,
@@ -265,14 +390,14 @@
                         dataType:'json',
                         data:data,
                         success: function(res){
-                            if (res.success) {
+                            if(res.success){
                                 layer.msg(res.message, {
                                     icon: 1,
-                                    time: 2000 ///2秒关闭（如果不配置，默认是3秒）
-                                }, function () {
-                                    location.href = global.adminPath + "/wx-article";
+                                    time: 2000, ///2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    location.href = global.adminPath + "/wx-message";
                                 });
-                            } else {
+                            }else{
                                 layer.msg(res.message, {icon: 2});
                             }
                         }
@@ -294,6 +419,53 @@
     jQuery(document).ready(function() {
         FormValidator.init();
 
+        $('.content').delegate('.btn-delete', 'click', function () {
+
+            var item = $(this).parents('.content-item');
+            var index = item.data("index");
+            var isShow = item.hasClass("active");
+            $.each(contents, function (i, e) {
+                if (e.index == index) {
+                    contents.splice(i, 1);
+                    item.remove();
+                }
+            });
+            if (isShow) {
+                $(".content .content-default").trigger("click");
+            }
+            return false;
+        });
+
+        $('.content').delegate('.content-item', 'click', function () {
+            $('.content-item').removeClass('active');
+            $(this).addClass('active');
+            syncData();
+            var index = $(this).data("index");
+            showData(index);
+        });
+
+        //同步标题
+        $("#title").keyup(function () {
+            var value = $(this).val();
+            var index = $("#form").data("index");
+            $('.content-item[data-index="' + index + '"] p').html(value);
+        });
+
+        $('#btn_add_template').click(function () {
+            if (contents.length > 8) {
+                layer.msg("多图文最多8条");
+                return false;
+            }
+            syncData();
+            $('.content-item').removeClass('active');
+            var index = increment();
+            var template = getTemplate(index);
+            $(template).appendTo('.content');
+
+            contents.push({index: index});
+            showData(index);
+        });
+
         $('#msgtype').change(function () {
            if($(this).val()=='voice'||$(this).val()=='video') {
                $('#upload_media_box').css("visibility","initial");
@@ -313,56 +485,55 @@
             //maxChunkSize:10000,//最大接收文件大小
             done: function (e, data) {//上传完了干嘛
                 var res = data.result;
-
                 if (res.success) {
-                    $('#thumbMedia').val(res.url);
-                    $('.content-item img').attr('src', res.url);
-                    layer.msg(res.message, {icon: 1});
-                }else{
-                    layer.msg(res.message, {icon: 2});
+                    $('#thumbMedia').val(res.url)
+                    var index = $("#form").data('index');
+                    $('.content-item[data-index="' + index + '"] img').attr('src', res.url);
                 }
-            },
-            processfail:function(e,data){
-                var currentFile = data.files[data.index];
-                if (data.files.error && currentFile.error) {
-                    layer.msg(currentFile.error, {icon: 2});
-                }
+
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0, //不显示关闭按钮
+                    shade: [0],
+                    area: ['300px', '200px'],
+                    offset: 'rb', //右下角弹出
+                    time: 2000, //2秒后自动关闭
+                    anim: 2,
+                    content: res.message, //iframe的url，no代表不显示滚动条
+                    end: function () { //此处用于演示
+                    }
+                });
             }
         });
 
         $('#upload_media').fileupload({
-            inputid: 'upload_media',//我要实例化哪个标签
+            inputid: 'fileupload',//我要实例化哪个标签
             url: 'upload/wx_article',//服务端的地址
             dataType: 'json',//数据格式，ajax你懂的
             autoUpload: true,//是否选了文件就直接自动上传
             maxNumberOfFiles: 1,//最多同时上传几个文件
             maxFileSize: 209715200,
-            acceptFileTypes: /(\.|\/)(mp4|m4a|mp3|flv)$/i,
+            acceptFileTypes: /(\.|\/)(mp4|mp3|flv)$/i,
             //maxChunkSize:10000,//最大接收文件大小
             done: function (e, data) {//上传完了干嘛
                 var res = data.result;
-                layer.msg(res.message);
                 if (res.success) {
                     $('#media').val(res.url);
-                    layer.msg(res.message, {icon: 1});
-                }else{
-                    layer.msg(res.message, {icon: 2});
                 }
-            },
-            progressall: function (e, data) {
-                debugger
-            },
-            processalways:function (e, data) {
-                debugger
-            },
-            processfail:function(e,data){
-                var currentFile = data.files[data.index];
-                if (data.files.error && currentFile.error) {
-                    layer.msg(currentFile.error, {icon: 2});
-                }
-            },
-            fail:function (e,data) {
-                debugger
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0, //不显示关闭按钮
+                    shade: [0],
+                    area: ['300px', '200px'],
+                    offset: 'rb', //右下角弹出
+                    time: 2000, //2秒后自动关闭
+                    anim: 2,
+                    content: res.message, //iframe的url，no代表不显示滚动条
+                    end: function () { //此处用于演示
+                    }
+                });
             }
         });
     });
