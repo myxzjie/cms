@@ -85,6 +85,26 @@
     cursor: pointer;
 }
 
+.template .toolbar{
+    line-height: 60px;
+    height: 60px;
+    border: 1px solid #d9dadc;
+    width: 320px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.2rem;
+    display: flex;
+}
+
+.template .toolbar > span{
+    cursor: pointer;
+    flex: 1;
+}
+
+.template .toolbar > span:hover a{
+    color: #d43f3a;
+}
+
 .template-item {
     background: transparent;
 }
@@ -95,7 +115,8 @@
     width: 100%;
 }
 
-.template-item .add{
+.template-item .add,
+.template-item .toolbar{
     max-width: 320px;
     width: 100%;
 }

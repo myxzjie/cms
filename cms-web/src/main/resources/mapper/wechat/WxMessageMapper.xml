@@ -24,7 +24,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, site_id, user_id, msgtype, title, description, thumb_media_id, media_id, content, 
-    create_date, update_date
+    create_date, update_date, thumb_media, media, show_cover_pic, need_open_comment, only_fans_can_comment, status, digest
   </sql>
 
   <select id="selectList" resultMap="BaseResultMap" parameterType="com.xzjie.et.wechat.model.WxMessage">

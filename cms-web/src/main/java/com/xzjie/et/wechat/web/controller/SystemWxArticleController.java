@@ -1,6 +1,7 @@
 package com.xzjie.et.wechat.web.controller;
 
 import com.xzjie.common.web.utils.MapResult;
+import com.xzjie.core.utils.ConstantsUtils;
 import com.xzjie.core.utils.StringUtils;
 import com.xzjie.et.cms.model.Article;
 import com.xzjie.et.core.web.BaseController;
@@ -61,7 +62,7 @@ public class SystemWxArticleController extends BaseController {
         model.setSiteId(getSiteId());
         model.setpId(0L);
 
-        map.put("type", 2);
+        //map.put("type", 2);
 
         pageEntity.setT(model);
         pageEntity.setPage(page);
@@ -78,24 +79,13 @@ public class SystemWxArticleController extends BaseController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> save(WxArticleModel articles) {
-
-//        if(StringUtils.isBlank(model.getTitle())){
-//            return MapResult.mapError("1002");
-//        }
-//        if (model.getCategoryId() == null) {
-//            return MapResult.mapError("1003");
-//        }
-//
-//        if (model.getSort() == null) {
-//            model.setSort(1);
-//        }
-//        model.setCreateDate(new Date());
-//        model.setStatus(1);
-//        model.setSiteId(getSiteId());
-//        model.setAuthor(getUserId());
+    public Map<String, Object> save(WxMessage model) {
         try {
-            wxMessageService.batchSave(getSiteId(), getUserId(), articles.getMessages());
+            model.setUserId(getUserId());
+            model.setSiteId(getSiteId());
+            model.setCreateDate(new Date());
+            model.setStatus(1);
+            wxMessageService.save(model);
             return MapResult.mapOK();
         } catch (Exception e) {
             LOG.error("add wechat news error", e);
