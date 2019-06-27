@@ -21,6 +21,7 @@
 	<mvc:resources location="/ueditor/" mapping="/ueditor/**" />
 	<mvc:resources location="/vendor/" mapping="/vendor/**" />
 	<mvc:resources location="/assets/" mapping="/assets/**" />
+	<mvc:resources location="/resources/" mapping="/**" />
 
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}" />
@@ -121,7 +122,6 @@
 			                <prop key="author">xzjie</prop>
 			                <!-- 传值给${resources} -->
 			                <prop key="resources">${template.resources}</prop>
-			                <prop key="u_img_url">${upload.image.web}</prop>
 			            </props>
 			        </property>
 			        <property name="attributesMap" ref="freemarkerStaticModels" />

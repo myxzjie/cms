@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author xzjie
  * @version V0.0.1
- * @className SystemPathMatchingFilter.java
+ * @className ClientPathMatchingFilter.java
  * @description TODO(添加描述)
  * @create 2016年6月3日 下午11:41:44
  */

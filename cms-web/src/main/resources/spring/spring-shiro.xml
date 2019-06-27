@@ -4,8 +4,6 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-
-
 	http://www.springframework.org/schema/util 
 	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
@@ -117,6 +115,7 @@
         <property name="passwordParam" value="password"/>
         <property name="captchaParam" value="captcha"/>
         <property name="stypeParam" value="stype"/>
+        <property name="stype" value="1" />
         <property name="isMobileParam" value="isMobile" />
         <property name="rememberMeParam" value="rememberMe"/>
         <property name="failureKeyAttribute" value="shiroLoginFailure"/>

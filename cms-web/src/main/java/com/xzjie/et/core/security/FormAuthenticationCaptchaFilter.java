@@ -49,6 +49,8 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
     private Integer allowIncorrectNumber = 1;
     private boolean isCaptchaVlaue = true;
 
+    private String stype;
+
 
     /**
      * 获得验证码
@@ -69,7 +71,13 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
      * @return
      */
     protected String getStype(ServletRequest request) {
-        return WebUtils.getCleanParam(request, getStypeParam());
+        String stype = WebUtils.getCleanParam(request, getStypeParam());
+
+        if (StringUtils.isBlank(stype)) {
+            stype = getStype();
+        }
+
+        return stype;
     }
 
     /**
@@ -130,8 +138,8 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         //没退出登录，问题
-        if(isLoginRequest(request, response) && isLoginSubmission(request, response)){
-            if(LOG.isDebugEnabled()){
+        if (isLoginRequest(request, response) && isLoginSubmission(request, response)) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Login submission detected.  Attempting to execute login.");
             }
             return false;
@@ -266,4 +274,11 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
         this.allowIncorrectNumber = allowIncorrectNumber;
     }
 
+    public String getStype() {
+        return stype;
+    }
+
+    public void setStype(String stype) {
+        this.stype = stype;
+    }
 }

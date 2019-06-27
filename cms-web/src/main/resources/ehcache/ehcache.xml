@@ -2,7 +2,7 @@
 <ehcache name="es">
 
     <!-- <diskStore path="java.io.tmpdir"/> -->
-    <diskStore path="/opt/data/cms/ehcache" />
+    <diskStore path="/Users/vito/Documents/data/logs/cms/ehcache" />
 
     <!-- 登录记录缓存 锁定10分钟 -->
     <cache name="passwordRetryCache"

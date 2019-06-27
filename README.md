@@ -1,5 +1,6 @@
 ###  **cms网站** 
 
+[文档](https://myxzjie.github.io/cms)
 
 地址：[http://www.dev56.com/](http://www.dev56.com/)
 

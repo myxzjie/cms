@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="trace" monitorInterval="1800">
 	<properties>
-		<property name="LOG_HOME">/opt/logs</property>
+		<property name="LOG_HOME">/Users/vito/Documents/data/logs/cms</property>
 		<!-- 日志备份目录 -->
 		<property name="BACKUP_HOME">backup</property>
 		<property name="SERVER_NAME">cms-web</property>

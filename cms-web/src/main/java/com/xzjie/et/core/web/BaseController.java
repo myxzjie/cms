@@ -30,6 +30,8 @@ public abstract class BaseController {
     protected HttpServletRequest request;
     @Value(value = "${template.admin}")
     private String template;
+    @Value(value = "${template.admin.siteId}")
+    private String adminSiteId;
 
 
     protected String getTemplate() {
@@ -38,7 +40,7 @@ public abstract class BaseController {
 
     protected String getRemoteView(String view) {
 
-        Site site = SystemCacheManager.get(ConstantsUtils.SITE_ID_KEY + getSiteId(), Site.class);
+        Site site = SystemCacheManager.get(ConstantsUtils.SITE_ID_KEY + adminSiteId, Site.class);
         String remote = "";
         if (site != null && StringUtils.isNotBlank(site.getTheme())) {
             remote = site.getTheme() + "/" + view;

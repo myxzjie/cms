@@ -280,7 +280,7 @@ var Main = function() {
 					break;
 
 				default:
-					$(".navbar-brand img").attr("src", "/assets/images/logo.png");
+					$(".navbar-brand img").attr("src", "/logo.png");
 					break;
 			};
 		};
