@@ -1,0 +1,24 @@
+<#if articles?? && (articles?size > 0) >
+<#list articles as article>
+	<li style="border-bottom: 1px #cccccc dashed"  >
+		<div class="product-content" style="margin: 0 1%;overflow: hidden;">
+			<div class="left am-u-sm-12 am-u-md-4 am-u-lg-4 product-content-left">
+				<img class="product-img" src="${article.image}" onerror="this.src='/img/not-img.gif'" />
+			</div>
+			<div class="right am-u-sm-12 am-u-md-8 am-u-lg-8 product-content-right">
+				<div class="product-show-title">
+					<h3><a href="/article/${article.articleId}">${article.title}</a></h3>
+				</div>
+
+				<div class="product-show-content">
+					<div class="product-intro">
+						<div><p>${article.description}</p></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+	</li>
+</#list>
+</#if>

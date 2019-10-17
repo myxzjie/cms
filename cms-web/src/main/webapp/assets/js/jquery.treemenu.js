@@ -93,11 +93,6 @@
                     var data = res.data;
                     if (data && data.length > 0) {
                         $this.treemenu('renderBody', data);
-                        $this.on('click', 'a', function () {
-                            var $open = $(this).attr('_open');
-                            window.location.hash = $open;
-                            $('.iframe').attr('src',$open);
-                        });
                         $this.find('li').first().addClass('active');
                         $this.find('li').first().addClass('open');
                     }
@@ -116,8 +111,9 @@
             var rootNodes = $this.treemenu('rootNodesDataSort', data, parentColumn, sortColumn);
             $.each(rootNodes, function (i, item) {
                 var $li = $('<li><a><div class="item-content"><div class="item-media"><i class=""></i></div><div class="item-inner"><span class="title"></span><i class="icon-arrow"></i></div></div></a></li>');
-
-                $li.find('a').attr('_open', item[urlColumn]);
+                if(item[urlColumn]!=null && item[urlColumn]!='') {
+                    $li.find('a').attr('href', item[urlColumn]);
+                }
                 $li.find('a .item-media i').addClass(item[iconColumn]);
                 $li.find('a .title').html(item[nameColumn]);
 
@@ -148,7 +144,8 @@
                     if (item[parentColumn] == parentNode[idColumn]) {
                         var nowParentIndex = item[idColumn];
                         var $li = $('<li><a><span class="title"></span></a></li>');
-                        $li.find('a').attr('_open', item[urlColumn]);
+                        $li.find('a').attr('href', item[urlColumn]);
+                        $li.find('a').attr('id', "sub_"+item[idColumn]);
                         $li.find('a .title').html(item[nameColumn]);
 
                         $ul.append($li);

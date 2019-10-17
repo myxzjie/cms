@@ -1,0 +1,99 @@
+package com.xzjie.cms.service.impl;
+
+import com.xzjie.cms.model.Menu;
+import com.xzjie.cms.model.Permission;
+import com.xzjie.cms.model.Role;
+import com.xzjie.cms.repository.PermissionRepository;
+import com.xzjie.cms.repository.RoleRepository;
+import com.xzjie.cms.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+public class RoleServiceImpl implements RoleService {
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    @Override
+    public List<Role> getRoleByUserId(Long userId) {
+        return roleRepository.findRoleByUserId(userId);
+    }
+
+    @Override
+    public Set<Role> getRoles(Long userId) {
+        return roleRepository.findRoleByUserId(userId)
+                .stream()
+                .map(role -> new Role(role.getId(), role.getRoleCode(), role.getRoleName(), role.getRoleLevel()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Page<Role> getRole(Integer page, Integer size, Role query) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return roleRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (query == null) {
+                return null;
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        }, pageable);
+    }
+
+    @Override
+    public List<Permission> getRolePermission(Long roleId) {
+        return permissionRepository.findByRoleId(roleId);
+    }
+
+    @Transactional
+    @Override
+    public void save(Role role, List<Long> menus) {
+        role.setState(1);
+        roleRepository.save(role);
+
+        menus.stream().forEach(menuId -> {
+            Permission permission = new Permission();
+            permission.setMenuId(menuId);
+            permission.setRoleId(role.getId());
+            permissionRepository.save(permission);
+        });
+    }
+
+    @Transactional
+    @Override
+    public void update(Role role, List<Long> menus) {
+        Role model = roleRepository.findById(role.getId()).orElseGet(Role::new);
+        model.copy(role);
+        roleRepository.save(model);
+
+        permissionRepository.deleteByRoleId(role.getId());
+        menus.stream().forEach(menuId -> {
+            Permission permission = new Permission();
+            permission.setMenuId(menuId);
+            permission.setRoleId(role.getId());
+            permissionRepository.save(permission);
+        });
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long roleId) {
+        roleRepository.deleteById(roleId);
+        permissionRepository.deleteByRoleId(roleId);
+    }
+}

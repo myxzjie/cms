@@ -1,0 +1,57 @@
+<#macro header>
+    <header class="am-topbar header">
+        <div class="am-container-1">
+            <div class="left hw-logo">
+                <img class="logo" src="${logo}"/>
+                <!--<img class="word" src="img/logo-word.png" />-->
+                <span style="font-size: 2.5rem">${site_name}</span>
+            </div>
+            <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+                    data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+                        class="am-icon-bars"></span></button>
+
+            <div class="am-collapse am-topbar-collapse right" id="doc-topbar-collapse">
+
+
+                <div class=" am-topbar-left am-form-inline am-topbar-right" role="search">
+
+                    <ul class="am-nav am-nav-pills am-topbar-nav hw-menu">
+                        <li ${categoryId?default('class="hw-menu-active"')}><a href="/index">首页</a></li>
+                        <@et.navigation >
+                            <#list navigations as navigation >
+                                <@et.request >
+                                <li <#if navigation.url==currentURI>class="hw-menu-active"</#if>  <#if navigation.children?size gt 0 >class="am-dropdown" data-am-dropdown</#if>>
+                                </@et.request>
+                                    <a target="${navigation.target?default('_self')}" <#if navigation.children?size lte 0 >href="${navigation.url}"</#if> <#if navigation.children?size gt 0 >href="javascript:;" class="am-dropdown-toggle" data-am-dropdown-toggle</#if>>
+                                        ${navigation.name}
+                                        <#if navigation.children >
+                                        <span class="am-icon-caret-down"></span>
+                                        </#if>
+                                    </a>
+                                    <#if navigation.children?size gt 0 >
+                                        <ul class="am-dropdown-content hw-menu-sub">
+                                            <#list navigation.children as children >
+                                                <li <#if children.id==categoryId?default(-1)>class="hw-menu-active"</#if>>
+                                                    <a target="${navigation.target?default('_self')}" href="${children.url}">${children.name}</a></li>
+                                            </#list>
+                                        </ul>
+                                    </#if>
+
+                                </li>
+                            </#list>
+                        </@et.navigation>
+                        <!--<li ><a target="_blank" href="http://www.dev56.com">技术博</a></li>-->
+
+                        <!--<li><a href="product-show.html">产品展示 </a></li>
+                        <li><a href="customer-case.html">客户案例</a></li>
+                        <li><a href="service-center.html">服务中心 </a></li>
+                        <li><a href="news.html">新闻动态 </a></li>
+                        <li><a href="about-us.html">关于我们</a></li>
+                        <li><a href="recruit.html">招贤纳士 </a></li>-->
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </header>
+</#macro>

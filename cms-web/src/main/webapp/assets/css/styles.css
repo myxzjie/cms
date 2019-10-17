@@ -1,4 +1,4 @@
-/* ---------------------------------------------------------------------- 
+/* ----------------------------------------------------------------------
 >>> TABLE OF CONTENT
 -------------------------------------------------------------------------
 1 - Basic Elements & Classes
@@ -1449,6 +1449,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
 .main-content {
   min-height: 100%;
   position: relative;
+  width: calc(100% - 260px);
 }
 .main-content .container {
   max-width: none !important;
@@ -1475,6 +1476,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
   }
   .app-sidebar-closed .main-content {
     margin-left: 70px;
+    width: calc(100% - 50px);
   }
 }
 @media (max-width: 991px) {

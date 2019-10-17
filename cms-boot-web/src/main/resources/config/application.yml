@@ -1,0 +1,102 @@
+server:
+  port: 8090
+spring:
+  profiles:
+    active: local
+  freemarker:
+    suffix: .html
+    settings:
+      classic_compatible: true
+      template_update_delay: 0
+      #设置freemarker全局的日期、时间格式
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      datetime_format: yyyy-MM-dd HH:mm:ss
+    cache: false
+    request-context-attribute: request
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+    content-type: text/html;charset=UTF-8
+
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3305/db_cms
+    username: root
+    password: 123456
+
+
+  flyway:
+    enabled: true
+  mail:
+    host: smtp.mxhichina.com
+    username: ####
+    password:  ####
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+#  quartz:
+#    jdbc:
+#      initialize-schema: never
+#    properties:
+#      org:
+#        quartz:
+#          scheduler:
+#            instanceId: AUTO
+
+#    clean-disabled: true
+#    schemas:
+#      - cms_category
+#      - cms_article
+#      - cms_ad
+
+
+auth:
+  jwt:
+    key-alias: jwt
+    key-store: jwt.jks
+    key-password: 123qwe
+    key-store-password: 123qwe
+    secret: Y21zMTIzcXdlCg==
+    algorithm: RS512 #HS512
+    expired: 18000
+template:
+  name: default
+
+mail:
+  from: ####
+  from-name: CMS系统管理员
+
+code:
+  expiration: 5
+upload:
+  # local 、aliyun 、qiniu
+  type: aliyun
+  local:
+    path: ./upload/file/
+    url-prefix: http://localhost:8090/
+  aliyun:
+    support-cname: ###
+    endpoint: ###
+    access-key-id: ###
+    access-key-secret: ###
+    bucket-name: ###
+    url-prefix: ###
+  qiniu:
+    access-key: ####
+    secret-key: ###
+    bucket: ####
+    region: ###
+    url-prefix: ###
+
+
+
