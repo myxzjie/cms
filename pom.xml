@@ -20,7 +20,7 @@
         <zkclient.version>0.10</zkclient.version>
         <spring.version>4.3.19.RELEASE</spring.version>
         <redis.version>2.9.0</redis.version>
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.5.0</shiro.version>
         <log4j.version>2.7</log4j.version>
         <servlet.version>3.1.0</servlet.version>
         <kaptcha.version>2.3.2</kaptcha.version>
