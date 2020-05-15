@@ -18,7 +18,7 @@ public class MenuServiceImplTest extends WebApplicationTests {
     @Test
     public void getMenuRouter() {
 
-        List<MenuRouter> menuRouters = menuService.getMenuRouter(0L, new HashSet<>());
+        List<MenuRouter> menuRouters = menuService.getMenuRouter(new HashSet<>());
         System.out.printf(">>" + JsonUtils.toJsonString(menuRouters));
 
     }

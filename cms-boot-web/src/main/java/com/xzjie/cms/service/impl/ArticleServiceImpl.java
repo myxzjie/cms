@@ -1,12 +1,9 @@
 package com.xzjie.cms.service.impl;
 
-import com.xzjie.cms.convert.CategoryConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Category;
-import com.xzjie.cms.model.PicturesGroup;
-import com.xzjie.cms.persistence.utils.SearchCriteria;
 import com.xzjie.cms.repository.ArticleRepository;
 import com.xzjie.cms.repository.CategoryRepository;
 import com.xzjie.cms.service.ArticleService;
@@ -21,8 +18,10 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ArticleServiceImpl extends AbstractService<Article, Long> implements ArticleService {
@@ -30,7 +29,6 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
     private ArticleRepository articleRepository;
     @Autowired
     private CategoryRepository categoryRepository;
-    private CategoryConverter categoryConverter;
 
     @Override
     protected JpaRepository getRepository() {
