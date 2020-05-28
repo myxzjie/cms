@@ -71,4 +71,9 @@ public class DefaultController extends BaseController {
         response.setHeader("Pragma", "no-cache");
         ImageIO.write(image, "jpg", response.getOutputStream());
     }
+
+    @RequestMapping(value = "demo")
+    public String demo(){
+        return getRemoteView("demo");
+    }
 }

@@ -6,19 +6,13 @@ import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.enums.KeyDataKey;
 import com.xzjie.cms.model.KeyData;
 import com.xzjie.cms.service.KeyDataService;
-import com.xzjie.cms.service.factory.WechatServiceFactory;
+import com.xzjie.cms.service.impl.WechatService;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
-import me.chanjar.weixin.mp.config.WxMpConfigStorage;
-import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @RestController
@@ -28,12 +22,7 @@ public class KeyDataController {
     @Autowired
     private KeyDataService keyDataService;
     @Autowired
-    private WechatServiceFactory factory;
-    private  WxMpService wxMpService;
-    @PostConstruct
-    public void init() {
-        wxMpService = factory.create();
-    }
+    private WechatService wechatService;
 
     @GetMapping("/{key}")
     public Map<String, Object> getKeyData(@PathVariable String key) {
@@ -51,7 +40,6 @@ public class KeyDataController {
             case wechat_setting:
                 keyData.setData(data);
                 keyDataService.save(keyData);
-                init();
                 break;
             case wechat_menus:
                 JSONObject json = JSON.parseObject(data);
@@ -60,6 +48,7 @@ public class KeyDataController {
 
                 WxMenu menu = JSONObject.parseObject(data, WxMenu.class);
 
+                final WxMpService wxMpService = wechatService.create();
                 // 创建菜单
                 wxMpService.getMenuService().menuDelete();
                 wxMpService.getMenuService().menuCreate(menu);
