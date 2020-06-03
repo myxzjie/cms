@@ -6,10 +6,7 @@ import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.enums.KeyDataKey;
 import com.xzjie.cms.model.KeyData;
 import com.xzjie.cms.service.KeyDataService;
-import com.xzjie.cms.service.impl.WechatService;
-import me.chanjar.weixin.common.bean.menu.WxMenu;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
+import com.xzjie.cms.service.WechatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/key-data")
 public class KeyDataController {
-    private final String WECHAT_MENUS_KEY = "wechat_menus";
+    //    private final String WECHAT_MENUS_KEY = "wechat_menus";
     @Autowired
     private KeyDataService keyDataService;
     @Autowired
@@ -30,8 +27,9 @@ public class KeyDataController {
         return MapUtils.create().set("code", 0).set("data", keyData);
     }
 
+
     @PostMapping("/create/{key}")
-    public Map<String, Object> create(@PathVariable KeyDataKey key, @RequestBody String data) throws WxErrorException {
+    public Map<String, Object> create(@PathVariable KeyDataKey key, @RequestBody String data) {
 
         KeyData keyData = new KeyData();
         keyData.setKey(key.name());
@@ -43,15 +41,14 @@ public class KeyDataController {
                 break;
             case wechat_menus:
                 JSONObject json = JSON.parseObject(data);
-                String buttons = json.get("buttons").toString();
+                String buttons = json.get("button").toString();
                 keyData.setData(buttons);
 
-                WxMenu menu = JSONObject.parseObject(data, WxMenu.class);
-
-                final WxMpService wxMpService = wechatService.create();
                 // 创建菜单
-                wxMpService.getMenuService().menuDelete();
-                wxMpService.getMenuService().menuCreate(menu);
+                wechatService.deleteButton();
+                wechatService.createButton(data);
+
+                //保存数据
                 keyDataService.save(keyData);
                 break;
         }

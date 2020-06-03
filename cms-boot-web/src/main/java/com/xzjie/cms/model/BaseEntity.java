@@ -4,11 +4,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class BaseEntity<T extends Object> {
+public abstract class BaseEntity<T extends Object> implements Serializable {
 
     public abstract void copy(T obj);
 

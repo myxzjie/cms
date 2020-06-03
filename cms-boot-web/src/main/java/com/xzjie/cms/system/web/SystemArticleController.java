@@ -2,6 +2,7 @@ package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.client.web.BaseController;
 import com.xzjie.cms.core.annotation.Log;
+import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.ArticleRequest;
 import com.xzjie.cms.dto.CategoryRequest;
 import com.xzjie.cms.model.Article;
@@ -56,16 +57,12 @@ public class SystemArticleController extends BaseController {
         return map;
     }
 
-    @Log(value = "article_list",descrption = "the article list")
+    @Log(value = "article_list", descrption = "the article list")
     @GetMapping(value = "/list")
 //    @PreAuthorize("hasAuthority('user')")
     public Map<String, Object> articleList(ArticleRequest article) {
-        Map<String, Object> map = new HashMap<>();
         Page<Article> articlePage = articleService.getArticle(article.getPage(), article.getSize(), article.toArticle());
-        map.put("data", articlePage.getContent());
-        map.put("total", articlePage.getTotalElements());
-        map.put("code", 0);
-        return map;
+        return MapUtils.success(articlePage.getContent(), articlePage.getTotalElements());
     }
 
     @GetMapping(value = "/{id}")
@@ -84,42 +81,31 @@ public class SystemArticleController extends BaseController {
 
     @GetMapping(value = "/category")
     public Map<String, Object> category(CategoryRequest category) {
-        Map<String, Object> map = new HashMap<>();
         Page<Category> categoryPage = articleService.getCategory(category.getPage(), category.getSize(), category.toCategory());
 
-        map.put("code", 0);
-        map.put("data", categoryPage.getContent());
-        map.put("total", categoryPage.getTotalPages());
-        return map;
+        return MapUtils.success(categoryPage.getContent(), categoryPage.getTotalElements());
     }
 
     @PostMapping(value = "/category/create")
     public Map<String, Object> createCategory(@RequestBody CategoryRequest categoryRequest) {
-        Map<String, Object> map = new HashMap<>();
         Category category = categoryRequest.toCategory();
         articleService.saveCategory(category);
-
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PutMapping(value = "/category/update/{id}")
     public Map<String, Object> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryRequest categoryRequest) {
-        Map<String, Object> map = new HashMap<>();
         Category category = categoryRequest.toCategory();
         category.setId(id);
         articleService.updateCategory(category);
 
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @DeleteMapping(value = "/category/delete/{id}")
     public Map<String, Object> deleteCategory(@PathVariable Long id) {
-        Map<String, Object> map = new HashMap<>();
         articleService.deleteCategory(id);
 
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 }

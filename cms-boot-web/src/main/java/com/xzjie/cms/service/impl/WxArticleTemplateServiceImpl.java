@@ -1,27 +1,25 @@
 package com.xzjie.cms.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ReUtil;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
-import com.xzjie.cms.configure.LocalProperties;
 import com.xzjie.cms.core.service.AbstractService;
+import com.xzjie.cms.core.utils.JsonUtils;
+import com.xzjie.cms.dto.WxMediaArticle;
+import com.xzjie.cms.dto.WxMediaUploadResult;
+import com.xzjie.cms.dto.WxMessagePreview;
+import com.xzjie.cms.enums.MassMsgType;
+import com.xzjie.cms.enums.MediaFileType;
+import com.xzjie.cms.model.WxAccountFans;
 import com.xzjie.cms.model.WxArticle;
 import com.xzjie.cms.model.WxArticleTemplate;
 import com.xzjie.cms.repository.WxArticleRepository;
 import com.xzjie.cms.repository.WxArticleTemplateRepository;
+import com.xzjie.cms.service.WechatService;
+import com.xzjie.cms.service.WxAccountFansService;
 import com.xzjie.cms.service.WxArticleTemplateService;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterial;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterialNews;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterialUploadResult;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,14 +27,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,7 +46,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     @Autowired
     private WechatService wechatService;
     @Autowired
-    private LocalProperties localProperties;
+    private WxAccountFansService accountFansService;
 
     @Override
     protected JpaRepository getRepository() {
@@ -130,53 +122,56 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     }
 
     @Override
-    public void updateArticle(String newsId, List<WxArticle> list, List<String> articleIds) throws IOException, WxErrorException {
+    public void updateArticle(String newsId, List<WxArticle> list, List<String> articleIds) {
         WxArticleTemplate articleTemplate = articleTemplateRepository.findById(Long.parseLong(newsId)).orElseGet(WxArticleTemplate::new);
 
         this.saveArticle(newsId, list, articleIds);
 
-        WxMpService wxMpService = wechatService.create();
-        WxMpMaterialNews materialNews = new WxMpMaterialNews();
+        WxMediaArticle mediaArticle = WxMediaArticle.builder();
         for (int i = 0; i < list.size(); i++) {
             WxArticle article = list.get(i);
 
-//            WxMpMaterialUploadResult wxMpMaterialUploadResult = uploadPhotoToWx(wxMpService, article.getImage());
-//            article.setThumbMediaId(wxMpMaterialUploadResult.getMediaId());
-            article.setThumbMediaId("XQRUgXjSqS1YbqZHwmoWWUsxJJJu5DTr7w4tamvsuh0");
-            // XQRUgXjSqS1YbqZHwmoWWcEe5S-Zcvlrj9zAQJ-alfg
-
-            // 更新 ThumbMediaId
-            articleRepository.updateThumbMediaId("XQRUgXjSqS1YbqZHwmoWWUsxJJJu5DTr7w4tamvsuh0", article.getId());
-//            articleRepository.updateThumbMediaId(wxMpMaterialUploadResult.getMediaId(), article.getId());
-
-            WxMpMaterialNews.WxMpMaterialNewsArticle newsArticle = new WxMpMaterialNews.WxMpMaterialNewsArticle();
+            WxMediaUploadResult mediaUploadResult = wechatService.addMedia(article.getImage());
+            article.setThumbMediaId(mediaUploadResult.getMediaId());
+            articleRepository.updateThumbMediaId(mediaUploadResult.getMediaId(), article.getId());
 
             //处理content
-            String content = processContent(wxMpService, article.getContent());
-            newsArticle.setContent(content);
-            newsArticle.setContentSourceUrl(article.getContentSourceUrl());
-            newsArticle.setShowCoverPic(article.getShowCoverPic().equals("1"));
-            newsArticle.setThumbMediaId(article.getThumbMediaId());
-
-            newsArticle.setTitle(article.getTitle());
-            newsArticle.setAuthor(article.getAuthor());
-            newsArticle.setDigest(article.getDigest());
+            String content = processContent(article.getContent());
+            mediaArticle.add(WxMediaArticle.getItemMap()
+                    .add("title", article.getTitle())
+                    .add("thumb_media_id", article.getThumbMediaId())
+                    .add("author", article.getAuthor())
+                    .add("digest", article.getDigest())
+                    .add("show_cover_pic", article.getShowCoverPic())
+                    .add("content", content)
+                    .add("content_source_url", article.getContentSourceUrl()));
             // 注意，测试号没有留言权限
-//            newsArticle.setNeedOpenComment(article.getNeedOpenComment().equals("1") ? true : false);
-//            newsArticle.setOnlyFansCanComment(article.getOnlyFansCanComment().equals("1") ? true : false);
-            materialNews.addArticle(newsArticle);
+//                    .add("need_open_comment", article.getNeedOpenComment())
+//                    .add("only_fans_can_comment", article.getOnlyFansCanComment()));
         }
 
-        log.info("wxMpMaterialNews : {}", JSONUtil.toJsonStr(materialNews));
-//        WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpService.getMaterialService().materialNewsUpload(materialNews);
-//        log.info("wxMpMaterialUploadResult : {}", JSONUtil.toJsonStr(wxMpMaterialUploadResult));
+        String json = mediaArticle.build();
+        log.info(">> wechat media article: {}", json);
+        WxMediaUploadResult mediaUploadResult = wechatService.addMediaArticle(json);
+        log.info(">>wechat media article result: {}", JsonUtils.toJsonString(mediaUploadResult));
 
 
         articleTemplate.setPublish(true);
-//        articleTemplate.setMediaId(wxMpMaterialUploadResult.getMediaId());
-        articleTemplate.setMediaId("XQRUgXjSqS1YbqZHwmoWWWr3OYNZa0bgsxUnYdwX5Is");
+        articleTemplate.setMediaId(mediaUploadResult.getMediaId());
 
         this.save(articleTemplate);
+    }
+
+    @Override
+    public void sendArticleTemplatePreview(WxArticleTemplate articleTemplate, List<Long> fansIds) {
+        WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
+        for (Long fansId : fansIds) {
+            WxAccountFans accountFans = accountFansService.getAccountFans(fansId);
+            WxMessagePreview messageData = WxMessagePreview.builder().addMediaId(model.getMediaId());
+            messageData.setMsgtype(MassMsgType.mpnews.name());
+            messageData.setTouser(accountFans.getOpenId());
+            wechatService.messagePreview(messageData.build());
+        }
     }
 
 //    private String [] imgBitsDeal(byte[]bits, String prefix){
@@ -211,54 +206,35 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
                 RandomUtils.nextInt(4) + ".png";
     }
 
-    private WxMpMaterialUploadResult uploadPhotoToWx(WxMpService wxMpService, String image) throws WxErrorException {
-        WxMpMaterial wxMpMaterial = new WxMpMaterial();
+//    private WxMediaUploadResult uploadPhotoToWx(String image) throws WxErrorException {
+//        WxMpMaterial wxMpMaterial = new WxMpMaterial();
+//
+////        String filePath = getFilePath();
+////        String imagePath = localProperties.getPath() + filePath;
+//
+////        File imageFile = FileUtil.file(imagePath);
+//        byte[] bytes = HttpUtils.doDownload(image);
+//
+////        wxMpMaterial.setFile(imageFile);
+////        wxMpMaterial.setName(imageFile.getName());
+////        log.info("picFile name : {}", imageFile.getName());
+////        WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpService.getMaterialService().materialFileUpload(WxConsts.MediaFileType.IMAGE, wxMpMaterial);
+//
+//        WxMediaUploadResult mediaUploadResult = wechatService.addMedia(MediaFileType.image, bytes);
+//        log.info("wxMpMaterialUploadResult : {}", JSONUtil.toJsonStr(mediaUploadResult));
+//        return mediaUploadResult;
+//    }
 
-        String filePath = getFilePath();
-        String imagePath = localProperties.getPath() + filePath;
-
-        File imageFile = FileUtil.file(imagePath);
-        long size = HttpUtil.downloadFile(image, imageFile);
-
-        wxMpMaterial.setFile(imageFile);
-        wxMpMaterial.setName(imageFile.getName());
-        log.info("picFile name : {}", imageFile.getName());
-        WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpService.getMaterialService().materialFileUpload(WxConsts.MediaFileType.IMAGE, wxMpMaterial);
-        log.info("wxMpMaterialUploadResult : {}", JSONUtil.toJsonStr(wxMpMaterialUploadResult));
-        return wxMpMaterialUploadResult;
-    }
-
-    private String processContent(WxMpService wxMpService, String content) throws IOException, WxErrorException {
+    private String processContent(String content) {
         if (StringUtils.isBlank(content)) {
             return content;
         }
         String imgReg = "<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
         List<String> imgList = ReUtil.findAllGroup1(imgReg, content);
         for (int j = 0; j < imgList.size(); j++) {
-            String imgSrc = imgList.get(j);
-            String fileType = imgSrc.substring(imgSrc.lastIndexOf("."));
-            String DEFAULT_CHARSET = "UTF-8";
-            URL url = new URL(UriUtils.encodePath(imgSrc, DEFAULT_CHARSET));
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Content-Type", "plain/text;charset=" + DEFAULT_CHARSET);
-            conn.setRequestProperty("charset", DEFAULT_CHARSET);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestMethod("GET");
-//            conn.setReadTimeout(DEFAULT_TIME_OUT);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-
-            WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService().mediaUpload("image", fileType, is);
-
-//            if (StringUtils.isBlank(filepath)) { // 网络图片URL，需下载到本地
-//                String filename = String.valueOf(System.currentTimeMillis()) + ".png";
-//                String downloadPath = uploadDirStr + filename;
-//                long size = HttpUtil.downloadFile(imgSrc, FileUtil.file(downloadPath));
-//                filepath = downloadPath;
-//            }
-//            WxMediaImgUploadResult wxMediaImgUploadResult = wxMpService.getMaterialService().mediaImgUpload(new File(filepath));
-            content = StringUtils.replace(content, imgList.get(j), wxMediaUploadResult.getUrl());
+            String image = imgList.get(j);
+            WxMediaUploadResult mediaUploadResult = wechatService.uploadMedia(image, MediaFileType.image);
+            content = StringUtils.replace(content, imgList.get(j), mediaUploadResult.getUrl());
         }
         return content;
     }

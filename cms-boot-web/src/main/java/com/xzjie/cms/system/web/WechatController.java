@@ -1,11 +1,8 @@
 package com.xzjie.cms.system.web;
 
-import com.xzjie.cms.service.impl.WechatService;
+import com.xzjie.cms.service.WechatService;
 import io.swagger.annotations.ApiOperation;
-import me.chanjar.weixin.mp.api.WxMpMessageRouter;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/wechat")
 public class WechatController {
@@ -27,8 +25,8 @@ public class WechatController {
                             @RequestParam(name = "timestamp", required = false) String timestamp,
                             @RequestParam(name = "nonce", required = false) String nonce,
                             @RequestParam(name = "echostr", required = false) String echostr) {
-        final WxMpService wxMpService = wechatService.create();
-        if (wxMpService.checkSignature(timestamp, nonce, signature)) {
+
+        if (wechatService.checkSignature(timestamp, nonce, signature)) {
             return echostr;
         }
         return "fail";
@@ -46,40 +44,35 @@ public class WechatController {
                           HttpServletRequest request,
                           HttpServletResponse response) throws IOException {
 
-        final WxMpService wxMpService = wechatService.create();
 
-        if (!wxMpService.checkSignature(timestamp, nonce, signature)) {
+        if (!wechatService.checkSignature(timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
         }
 
-        String out = null;
-        if (encType == null) {
-            // 明文传输的消息
-            WxMpXmlMessage message = WxMpXmlMessage.fromXml(requestBody);
-            WxMpXmlOutMessage outMessage = this.route(wxMpService, message);
-            if (outMessage == null) return;
-            out = outMessage.toXml();
-            ;
-        } else if ("aes".equalsIgnoreCase(encType)) {
-            // aes加密的消息
-            WxMpXmlMessage message = WxMpXmlMessage.fromEncryptedXml(requestBody, wxMpService.getWxMpConfigStorage(),
-                    timestamp, nonce, msgSignature);
-            WxMpXmlOutMessage outMessage = this.route(wxMpService, message);
-            if (outMessage == null) return;
+        log.info(">>requestBody:"+requestBody);
 
-            out = outMessage.toEncryptedXml(wxMpService.getWxMpConfigStorage());
-        }
+//        String out = null;
+//        if (encType == null) {
+//            // 明文传输的消息
+//            WxMpXmlMessage message = WxMpXmlMessage.fromXml(requestBody);
+//            WxMpXmlOutMessage outMessage = this.route(wxMpService, message);
+//            if (outMessage == null) return;
+//            out = outMessage.toXml();
+//            ;
+//        } else if ("aes".equalsIgnoreCase(encType)) {
+//            // aes加密的消息
+//            WxMpXmlMessage message = WxMpXmlMessage.fromEncryptedXml(requestBody, wxMpService.getWxMpConfigStorage(),
+//                    timestamp, nonce, msgSignature);
+//            WxMpXmlOutMessage outMessage = this.route(wxMpService, message);
+//            if (outMessage == null) return;
+//
+//            out = outMessage.toEncryptedXml(wxMpService.getWxMpConfigStorage());
+//        }
 
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer = response.getWriter();
-        writer.print(out);
+        writer.print(requestBody);
         writer.close();
     }
 
-    private WxMpXmlOutMessage route(WxMpService wxMpService, WxMpXmlMessage message) {
-        WxMpMessageRouter router = new WxMpMessageRouter(wxMpService);
-        WxMpXmlOutMessage outMessage = router.route(message);
-
-        return outMessage;
-    }
 }
