@@ -1,11 +1,10 @@
 package com.xzjie.cms.service;
 
 
-import com.xzjie.cms.dto.WxMediaUploadResult;
-import com.xzjie.cms.dto.WxMessageResult;
-import com.xzjie.cms.dto.WxOpenIdResult;
-import com.xzjie.cms.dto.WxUserResult;
+import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.MediaFileType;
+
+import java.util.List;
 
 public interface WechatService {
 
@@ -53,4 +52,16 @@ public interface WechatService {
     WxOpenIdResult getOpenIds(String nextOpenId);
 
     WxMessageResult messagePreview(String json);
+
+    boolean customMessage(String json);
+
+    List<WxTagsResult> getTags();
+
+    WxTagsResult createTags(String json);
+
+    boolean updateTags(String json);
+
+    boolean deleteTags(String json);
+
+    boolean batchTagging(String json);
 }

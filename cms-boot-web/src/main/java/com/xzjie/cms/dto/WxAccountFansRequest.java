@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 @Data
 public class WxAccountFansRequest extends BasePageRequest {
 
+    private Long tagId;
     private String nickName;
 
     public WxAccountFans toAccountFans() {

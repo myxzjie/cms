@@ -2,14 +2,15 @@ package com.xzjie.cms.model;
 
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
+@Where(clause = "state = 1")
 @Table(name = "wx_account_fans")
 @SQLDelete(sql = "update wx_account_fans set state = 0 where id = ?")
 public class WxAccountFans extends BaseEntity<WxAccountFans> {
@@ -58,6 +59,10 @@ public class WxAccountFans extends BaseEntity<WxAccountFans> {
     private LocalDateTime createDate;
 
     private Integer state;
+
+    @OneToMany
+    @JoinColumn(name = "fans_id", updatable = false, insertable = false)
+    private List<WxFansTag> fansTags;
 
     @Override
     public void copy(WxAccountFans obj) {

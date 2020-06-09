@@ -15,5 +15,7 @@ public interface WxAccountFansService extends BaseService<WxAccountFans, Long> {
 
     Page<WxAccountFans> getAccountFans(Integer page, int size, WxAccountFans query);
 
+    Page<WxAccountFans> getAccountFans(Integer page, int size, WxAccountFans query, Long tagId);
+
     void syncAccountFans(String nextOpenId);
 }

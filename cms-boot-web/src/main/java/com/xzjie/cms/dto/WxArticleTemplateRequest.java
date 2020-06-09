@@ -11,6 +11,7 @@ import java.util.List;
 public class WxArticleTemplateRequest extends BasePageRequest {
     private Long id;
     private String templateName;
+    private Boolean publish;
 
     private List<Long> fansIds = Lists.newArrayList();
 

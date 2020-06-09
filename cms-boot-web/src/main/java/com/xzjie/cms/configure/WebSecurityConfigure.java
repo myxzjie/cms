@@ -24,8 +24,8 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SecurityUserDetailsService userDetailsService;
-    @Autowired
-    private SecurityAuthenticationEntryPoint unauthorizedHandler;
+//    @Autowired
+//    private SecurityAuthenticationEntryPoint unauthorizedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

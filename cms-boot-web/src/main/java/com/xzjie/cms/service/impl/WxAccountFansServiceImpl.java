@@ -5,7 +5,9 @@ import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.WxOpenIdResult;
 import com.xzjie.cms.dto.WxUserResult;
 import com.xzjie.cms.model.WxAccountFans;
-import com.xzjie.cms.repository.WxAccountFansRepository;
+import com.xzjie.cms.model.WxFansTag;
+import com.xzjie.cms.model.WxTags;
+import com.xzjie.cms.repository.WxFansRepository;
 import com.xzjie.cms.service.WechatService;
 import com.xzjie.cms.service.WxAccountFansService;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +19,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +29,7 @@ import java.util.List;
 public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Long> implements WxAccountFansService {
 
     @Autowired
-    private WxAccountFansRepository accountFansRepository;
+    private WxFansRepository fansRepository;
 
     @Autowired
     private WechatService wechatService;
@@ -34,7 +38,7 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
 
     @Override
     protected JpaRepository getRepository() {
-        return accountFansRepository;
+        return fansRepository;
     }
 
     @Override
@@ -44,12 +48,12 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
 
     @Override
     public WxAccountFans getAccountFans(Long id) {
-        return accountFansRepository.getOne(id);
+        return fansRepository.getOne(id);
     }
 
     @Override
     public List<WxAccountFans> getAccountFans(WxAccountFans query) {
-        return accountFansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return fansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query.getNickName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("nickName"), query.getNickName() + "%"));
@@ -61,11 +65,29 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
     @Override
     public Page<WxAccountFans> getAccountFans(Integer page, int size, WxAccountFans query) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return accountFansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return fansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query.getNickName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("nickName"), query.getNickName() + "%"));
             }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        }, pageable);
+    }
+
+    @Override
+    public Page<WxAccountFans> getAccountFans(Integer page, int size, WxAccountFans query, Long tagId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return fansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (tagId != null && tagId > 0) {
+                Join<WxAccountFans, WxFansTag> tagsJoin = root.join("fansTags", JoinType.LEFT);
+                predicates.add(criteriaBuilder.equal(tagsJoin.get("tagId"), tagId));
+                criteriaQuery.distinct(true);
+            }
+            if (StringUtils.isNotBlank(query.getNickName())) {
+                predicates.add(criteriaBuilder.like(root.get("nickName"), query.getNickName() + "%"));
+            }
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         }, pageable);
     }
@@ -76,12 +98,14 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
         for (String openId : openIdResult.getOpenids()) {
             WxUserResult userResult = wechatService.getUser(openId, "");
             WxAccountFans accountFans = accountFansConverter.target(userResult);
-            if (accountFansRepository.existsByOpenId(openId)) {
-                WxAccountFans model = accountFansRepository.findByOpenId(openId);
+            accountFans.setState(1);
+            if (fansRepository.existsByOpenId(openId)) {
+                WxAccountFans model = fansRepository.findByOpenId(openId);
                 model.copy(accountFans);
-                accountFansRepository.save(model);
+
+                fansRepository.save(model);
             } else {
-                accountFansRepository.save(accountFans);
+                fansRepository.save(accountFans);
             }
 
         }

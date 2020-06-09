@@ -12,6 +12,8 @@ public interface WxArticleTemplateService extends BaseService<WxArticleTemplate,
 
     WxArticleTemplate getArticleTemplate(Long id);
 
+    List<WxArticleTemplate> getArticleTemplate(WxArticleTemplate query);
+
     Page<WxArticleTemplate> getArticleTemplate(Integer page, int size, WxArticleTemplate query);
 
     List<WxArticle> getArticle(String newId);

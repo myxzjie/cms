@@ -45,6 +45,15 @@ public class WxMaterialController {
         return MapUtils.success(articleTemplatePage.getContent(), articleTemplatePage.getTotalElements());
     }
 
+    @GetMapping("/article/template/data")
+    public Map<String, Object> getArticleTemplateData(@Validated WxArticleTemplateRequest articleTemplateRequest) {
+        if (articleTemplateRequest.getPublish() == null) {
+            articleTemplateRequest.setPublish(true);
+        }
+        List<WxArticleTemplate> articleTemplates = articleTemplateService.getArticleTemplate(articleTemplateRequest.toArticleTemplate());
+
+        return MapUtils.success(articleTemplates);
+    }
 
     @PostMapping("/article/template")
     public Map<String, Object> createArticleTemplate(@Validated @RequestBody WxArticleTemplateRequest articleTemplateRequest) {

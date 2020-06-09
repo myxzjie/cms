@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -219,6 +220,16 @@ public class WechatServiceImpl implements WechatService {
         return WxMessageResult.fromJson(result);
     }
 
+    public boolean customMessage(String json) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s", getAccessToken(false));
+        String result = HttpUtils.doPost(url, json);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+        return true;
+    }
+
     public WxUserResult getUser(String openId, String lang) {
         if (StringUtils.isBlank(lang)) {
             lang = "zh_CN";
@@ -244,5 +255,62 @@ public class WechatServiceImpl implements WechatService {
         }
 
         return WxOpenIdResult.fromJson(result);
+    }
+
+    public List<WxTagsResult> getTags() {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/tags/get?access_token=%s", getAccessToken(false));
+        String result = HttpUtils.doGet(url);
+        log.info("获得微信粉丝用户列表:" + result);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+
+        return WxTagsResult.fromJsonList(result);
+    }
+
+    public WxTagsResult createTags(String json) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/tags/create?access_token=%s", getAccessToken(false));
+        String result = HttpUtils.doPost(url, json);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+
+        return WxTagsResult.fromJson(result);
+    }
+
+    public boolean updateTags(String json) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/tags/update?access_token=%s", getAccessToken(false));
+        String result = HttpUtils.doPost(url, json);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+        return true;
+    }
+
+    public boolean deleteTags(String json) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=%s", getAccessToken(false));
+
+        String result = HttpUtils.doPost(url, json);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+
+        return true;
+    }
+
+    public boolean batchTagging(String json) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=%s", getAccessToken(false));
+
+        String result = HttpUtils.doPost(url, json);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+
+        return true;
     }
 }

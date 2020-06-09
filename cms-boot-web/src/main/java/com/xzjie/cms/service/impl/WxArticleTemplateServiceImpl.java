@@ -63,6 +63,25 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
         return articleTemplateRepository.getOne(id);
     }
 
+
+    @Override
+    public List<WxArticleTemplate> getArticleTemplate(WxArticleTemplate query) {
+        return articleTemplateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (query == null) {
+                return null;
+            }
+            if (null != query.getTemplateName()) {
+                predicates.add(criteriaBuilder.equal(root.get("templateName").as(String.class), query.getTemplateName()));
+            }
+            if (null != query.getPublish()) {
+                predicates.add(criteriaBuilder.equal(root.get("publish").as(Boolean.class), query.getPublish()));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        });
+    }
+
     @Override
     public Page<WxArticleTemplate> getArticleTemplate(Integer page, int size, WxArticleTemplate query) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());

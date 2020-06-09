@@ -1,8 +1,6 @@
 package com.xzjie.cms.convert;
 
-import com.xzjie.cms.dto.MenuResponse;
 import com.xzjie.cms.dto.WxUserResult;
-import com.xzjie.cms.model.Menu;
 import com.xzjie.cms.model.WxAccountFans;
 import org.apache.commons.lang.StringUtils;
 import org.mapstruct.*;
