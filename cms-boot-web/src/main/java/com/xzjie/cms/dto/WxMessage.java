@@ -1,55 +1,97 @@
 package com.xzjie.cms.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.collect.Lists;
+import com.xzjie.cms.core.utils.JsonUtils;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WxMessage implements Serializable {
-    private Long id;
-
-    private Long pId;
-
-    private Long siteId;
-
-    private Long userId;
-
+    private List<String> touser = Lists.newArrayList();
     private String msgtype;
 
-    private String title;
+    private ItemMap text;
 
-    private String description;
+    private ItemMap mpnews;
 
-    private String thumbMediaId;
+    private String send_ignore_reprint;
 
-    private String mediaId;
+    private WxMessage() {
+    }
 
-    private String content;
+    public static WxMessage builder() {
+        return new WxMessage();
+    }
 
-    private Date createDate;
+    public String build() {
+        return JsonUtils.toJsonString(this);
+    }
 
-    private Date updateDate;
+    public WxMessage addOpenId(String openId) {
+        touser.add(openId);
+        return this;
+    }
 
-    private String thumbMedia;
+    public WxMessage add(String content) {
+        if (text == null) {
+            text = new ItemMap();
+        }
+        text.put("content", content);
+        return this;
+    }
 
-    private String media;
+    public WxMessage addMediaId(String mediaId) {
+        if (mpnews == null) {
+            mpnews = new ItemMap();
+        }
+        mpnews.put("media_id", mediaId);
+        return this;
+    }
 
-    private Integer showCoverPic;
+    public WxMessage setMsgtype(String msgtype) {
+        this.msgtype = msgtype;
+        return this;
+    }
 
-    private Integer needOpenComment;
 
-    private Integer onlyFansCanComment;
+    public List<String> getTouser() {
+        return touser;
+    }
 
-    private Integer status;
+    public void setTouser(List<String> touser) {
+        this.touser = touser;
+    }
 
-    private String digest;
+    public String getMsgtype() {
+        return msgtype;
+    }
 
-    private String author;
 
-    private String contentSourceUrl;
+    public ItemMap getText() {
+        return text;
+    }
 
-    private List<WxMessage> messages;
+    public String getSend_ignore_reprint() {
+        return send_ignore_reprint;
+    }
+
+    public void setSend_ignore_reprint(String send_ignore_reprint) {
+        this.send_ignore_reprint = send_ignore_reprint;
+    }
+
+    public class ItemMap extends HashMap<String, String> {
+
+        public ItemMap() {
+        }
+
+        public ItemMap(String key, String value) {
+            this.put(key, value);
+        }
+    }
 
 }

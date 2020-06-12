@@ -50,14 +50,14 @@ public class WxMessageServiceImpl extends AbstractBaseService<WxMessage, Long> i
 
         WxMessage message = get(messageId);
         List<WxAccountFollow> accountFollows = wxAccountFollowService.getAccountFollowByGroupId(groupId);
-        List<String> touser = new ArrayList<>();
+        List<String> toUser = new ArrayList<>();
         for (WxAccountFollow accountFollow : accountFollows) {
-            touser.add(accountFollow.getOpenId());
+            toUser.add(accountFollow.getOpenId());
         }
 
         MessageData messageData = MessageData.builder().add(message.getContent());
         messageData.setMsgtype(message.getMsgtype());
-        messageData.setTouser(touser);
+        messageData.setTouser(toUser);
 
         return wechatHelper.message(accessToken.getAccess_token(), messageData.build());
     }

@@ -1,5 +1,6 @@
 package com.xzjie.cms.service.impl;
 
+import com.xzjie.cms.configure.LocationProperties;
 import com.xzjie.cms.core.utils.HttpUtils;
 import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.KeyDataKey;
@@ -26,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class WechatServiceImpl implements WechatService {
     private static final String accessTokenKey = "wechat:access_token";
 
+    @Autowired
+    private LocationProperties properties;
     @Autowired
     private KeyDataService keyDataService;
     @Autowired
@@ -101,24 +104,6 @@ public class WechatServiceImpl implements WechatService {
         return redisTemplate.opsForValue().get(accessTokenKey);
     }
 
-    public WxMediaUploadResult addMedia(String image) {
-        File file = new File(getFilePath());
-        HttpUtils.doDownload(image, file);
-        WxMediaUploadResult mediaUploadResult = this.addMedia(MediaFileType.image, file);
-
-        return mediaUploadResult;
-    }
-
-    private String getFilePath() {
-//        LocalDateTime localDate = LocalDateTime.now();
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-
-        //4.把 2019-01-01  转成  2019/01/01
-//        String format = localDate.format(dtf);
-        String tmpdir = System.getProperty("java.io.tmpdir");
-        return tmpdir + "wechat/" + System.currentTimeMillis() +
-                RandomUtils.nextInt(4) + ".png";
-    }
 
     /**
      * 创建菜单
@@ -148,13 +133,32 @@ public class WechatServiceImpl implements WechatService {
         return true;
     }
 
+    /**
+     * 新增永久素材
+     * @param image 图片url路径
+     * @return
+     */
+    public WxMediaUploadResult addMedia(String image) {
+        String path = properties.getWechatFilePath();
+        File file = new File(path);
+        HttpUtils.doDownload(image, file);
+        WxMediaUploadResult result = this.addMedia(MediaFileType.image, file);
+        // 删除临时文件
+        file.delete();
+        return result;
+    }
+
+    /**
+     * 新增永久素材
+     *
+     * @param type 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
+     * @param file
+     * @return
+     */
     public WxMediaUploadResult addMedia(MediaFileType type, File file) {
         String url = String.format("https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=%s&type=%s", this.getAccessToken(false), type.name());
 
         String result = HttpUtils.doPostFile(url, file, "media");
-
-        // 删除临时文件
-        file.delete();
 
         WxMpError error = WxMpError.fromJson(result);
         if (error.getCode() != 0) {
@@ -164,15 +168,15 @@ public class WechatServiceImpl implements WechatService {
     }
 
     /**
-     * 公众号可以新增临时素材
-     * 媒体文件在微信后台保存时间为3天，即3天后media_id失效。
+     * 新增临时素材,媒体文件在微信后台保存时间为3天,即3天后media_id失效。
      *
      * @param type
      * @return
      */
     public WxMediaUploadResult uploadMedia(String image, MediaFileType type) {
 
-        File file = new File(getFilePath());
+        String path = properties.getWechatFilePath();
+        File file = new File(path);
         HttpUtils.doDownload(image, file);
 
         String url = String.format("https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s", getAccessToken(false), type.name());
@@ -187,6 +191,18 @@ public class WechatServiceImpl implements WechatService {
         }
 
         return WxMediaUploadResult.fromJson(result);
+    }
+
+    private String getFilePath() {
+//        LocalDateTime localDate = LocalDateTime.now();
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+        //4.把 2019-01-01  转成  2019/01/01
+//        String format = localDate.format(dtf);
+        String location = properties.getLocationDirectory();
+        String fileName = System.currentTimeMillis() + RandomUtils.nextInt(4) + ".png";
+        String path = "/wechat/" + fileName;
+        return location + path;
     }
 
     public WxMediaUploadResult addMediaArticle(String json) {
@@ -206,6 +222,17 @@ public class WechatServiceImpl implements WechatService {
         if (error.getCode() != 0) {
             throw new WxMpException(error);
         }
+        return WxMessageResult.fromJson(result);
+    }
+
+    public WxMessageResult messageTag(String json) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s", getAccessToken(false));
+        String result = HttpUtils.doPost(url, json);
+        WxMpError error = WxMpError.fromJson(result);
+        if (error.getCode() != 0) {
+            throw new WxMpException(error);
+        }
+
         return WxMessageResult.fromJson(result);
     }
 

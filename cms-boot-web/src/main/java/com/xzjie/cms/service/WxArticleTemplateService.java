@@ -24,5 +24,9 @@ public interface WxArticleTemplateService extends BaseService<WxArticleTemplate,
 
     void updateArticle(String newsId, List<WxArticle> list, List<String> articleIds);
 
-    void sendArticleTemplatePreview(WxArticleTemplate articleTemplate, List<Long> fansIds);
+    void sendPreviewArticleTemplate(WxArticleTemplate articleTemplate, List<Long> fansIds);
+
+    void sendTagArticleTemplate(WxArticleTemplate articleTemplate, Long tagId);
+
+    void sendFansArticleTemplate(WxArticleTemplate articleTemplate, List<Long> fansIds);
 }

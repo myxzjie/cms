@@ -62,9 +62,31 @@ public class WxMaterialController {
         return MapUtils.success();
     }
 
-    @PostMapping("/article/template/send")
-    public Map<String, Object> sendArticleTemplatePreview(@Validated @RequestBody WxArticleTemplateRequest articleTemplate) {
-        articleTemplateService.sendArticleTemplatePreview(articleTemplate.toArticleTemplate(), articleTemplate.getFansIds());
+    @PutMapping("/article/template/{id}")
+    public Map<String, Object> updateArticleTemplate(@PathVariable Long id, @Validated @RequestBody WxArticleTemplateRequest articleTemplate) {
+        articleTemplate.setId(id);
+        articleTemplateService.update(articleTemplate.toArticleTemplate());
+
+        return MapUtils.success();
+    }
+
+    @PostMapping("/article/preview/send")
+    public Map<String, Object> sendPreviewArticleTemplate(@Validated @RequestBody WxArticleTemplateRequest articleTemplate) {
+        articleTemplateService.sendPreviewArticleTemplate(articleTemplate.toArticleTemplate(), articleTemplate.getPreviewFansIds());
+
+        return MapUtils.success();
+    }
+
+    @PostMapping("/article/tag/send")
+    public Map<String, Object> sendTagArticleTemplate(@Validated @RequestBody WxArticleTemplateRequest articleTemplate) {
+        articleTemplateService.sendTagArticleTemplate(articleTemplate.toArticleTemplate(), articleTemplate.getTagId());
+
+        return MapUtils.success();
+    }
+
+    @PostMapping("/article/fans/send")
+    public Map<String, Object> sendFansArticleTemplate(@Validated @RequestBody WxArticleTemplateRequest articleTemplate) {
+        articleTemplateService.sendFansArticleTemplate(articleTemplate.toArticleTemplate(), articleTemplate.getFansIds());
 
         return MapUtils.success();
     }

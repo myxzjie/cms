@@ -4,9 +4,7 @@ import cn.hutool.core.util.ReUtil;
 import com.google.common.collect.Lists;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.core.utils.JsonUtils;
-import com.xzjie.cms.dto.WxMediaArticle;
-import com.xzjie.cms.dto.WxMediaUploadResult;
-import com.xzjie.cms.dto.WxMessagePreview;
+import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.MassMsgType;
 import com.xzjie.cms.enums.MediaFileType;
 import com.xzjie.cms.model.WxAccountFans;
@@ -55,6 +53,9 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
 
     @Override
     public boolean update(WxArticleTemplate obj) {
+        WxArticleTemplate model = articleTemplateRepository.getOne(obj.getId());
+        model.copy(obj);
+        articleTemplateRepository.save(model);
         return false;
     }
 
@@ -150,6 +151,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
         for (int i = 0; i < list.size(); i++) {
             WxArticle article = list.get(i);
 
+            // 上传微信材料资源
             WxMediaUploadResult mediaUploadResult = wechatService.addMedia(article.getImage());
             article.setThumbMediaId(mediaUploadResult.getMediaId());
             articleRepository.updateThumbMediaId(mediaUploadResult.getMediaId(), article.getId());
@@ -182,7 +184,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     }
 
     @Override
-    public void sendArticleTemplatePreview(WxArticleTemplate articleTemplate, List<Long> fansIds) {
+    public void sendPreviewArticleTemplate(WxArticleTemplate articleTemplate, List<Long> fansIds) {
         WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
         for (Long fansId : fansIds) {
             WxAccountFans accountFans = accountFansService.getAccountFans(fansId);
@@ -191,6 +193,29 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
             messageData.setTouser(accountFans.getOpenId());
             wechatService.messagePreview(messageData.build());
         }
+    }
+
+    @Override
+    public void sendTagArticleTemplate(WxArticleTemplate articleTemplate, Long tagId) {
+        WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
+        WxMessageTag messageTag = WxMessageTag.builder()
+                .setMsgtype(MassMsgType.mpnews.name())
+                .addMediaId(model.getMediaId())
+                .setAll(false)
+                .setTagId(tagId);
+        wechatService.messageTag(messageTag.build());
+    }
+
+    @Override
+    public void sendFansArticleTemplate(WxArticleTemplate articleTemplate, List<Long> fansIds) {
+        WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
+        WxMessage message = WxMessage.builder()
+                .addMediaId(model.getMediaId()).setMsgtype(MassMsgType.mpnews.name());
+        for (Long fansId : fansIds) {
+            WxAccountFans accountFans = accountFansService.getAccountFans(fansId);
+            message.addOpenId(accountFans.getOpenId());
+        }
+        wechatService.message(message.build());
     }
 
 //    private String [] imgBitsDeal(byte[]bits, String prefix){
@@ -252,7 +277,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
         List<String> imgList = ReUtil.findAllGroup1(imgReg, content);
         for (int j = 0; j < imgList.size(); j++) {
             String image = imgList.get(j);
-            WxMediaUploadResult mediaUploadResult = wechatService.uploadMedia(image, MediaFileType.image);
+            WxMediaUploadResult mediaUploadResult = wechatService.addMedia(image);
             content = StringUtils.replace(content, imgList.get(j), mediaUploadResult.getUrl());
         }
         return content;

@@ -1,12 +1,14 @@
 package com.xzjie.cms.dto;
 
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.xzjie.cms.core.utils.JsonUtils;
 import lombok.Data;
 
 import java.util.HashMap;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WxMessagePreview {
 
     private String touser;
@@ -15,15 +17,13 @@ public class WxMessagePreview {
 
     private String msgtype;
 
-    private ItemMap text;
+    private ItemMap text = new ItemMap();
 
-    private ItemMap mpnews;
+    private ItemMap mpnews = new ItemMap();
 
 //    private String send_ignore_reprint;
 
     private WxMessagePreview() {
-        text = new ItemMap();
-        mpnews =new ItemMap();
     }
 
     public static WxMessagePreview builder() {
@@ -31,7 +31,7 @@ public class WxMessagePreview {
     }
 
     public String build() {
-        return JSON.toJSONString(this);
+        return JsonUtils.toJsonString(this);
     }
 
     public WxMessagePreview add(String content) {
@@ -39,46 +39,10 @@ public class WxMessagePreview {
         return this;
     }
 
-    public WxMessagePreview addMediaId(String mediaId){
-        mpnews.put("media_id",mediaId);
+    public WxMessagePreview addMediaId(String mediaId) {
+        mpnews.put("media_id", mediaId);
         return this;
     }
-
-//    public String getTouser() {
-//        return touser;
-//    }
-//
-//    public void setTouser(String touser) {
-//        this.touser = touser;
-//    }
-//
-//    public String getMsgtype() {
-//        return msgtype;
-//    }
-//
-//    public void setMsgtype(String msgtype) {
-//        this.msgtype = msgtype;
-//    }
-//
-//    public ItemMap getText() {
-//        return text;
-//    }
-//
-//    public ItemMap getMpnews() {
-//        return mpnews;
-//    }
-//
-//    public void setMpnews(ItemMap mpnews) {
-//        this.mpnews = mpnews;
-//    }
-//
-//    public String getSend_ignore_reprint() {
-//        return send_ignore_reprint;
-//    }
-//
-//    public void setSend_ignore_reprint(String send_ignore_reprint) {
-//        this.send_ignore_reprint = send_ignore_reprint;
-//    }
 
     public class ItemMap extends HashMap<String, String> {
 

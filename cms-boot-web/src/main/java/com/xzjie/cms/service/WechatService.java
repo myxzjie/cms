@@ -53,6 +53,10 @@ public interface WechatService {
 
     WxMessageResult messagePreview(String json);
 
+    WxMessageResult messageTag(String json);
+
+    WxMessageResult message(String json);
+
     boolean customMessage(String json);
 
     List<WxTagsResult> getTags();

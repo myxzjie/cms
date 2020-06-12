@@ -45,14 +45,32 @@ spring:
           starttls:
             enable: true
             required: true
-#  quartz:
+  quartz:
+    job-store-type: jdbc
 #    jdbc:
 #      initialize-schema: never
-#    properties:
-#      org:
-#        quartz:
-#          scheduler:
-#            instanceId: AUTO
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+            instanceName: clusteredScheduler
+            wrapJobExecutionInUserTransaction: false
+            rmi:
+              export: false
+              proxy: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 20
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+          jobStore:
+            isClustered: true
+            useProperties: true
+            clusterCheckinInterval: 15000
+            misfireThreshold: 50000
+            tablePrefix: QRTZ_
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
 
 #    clean-disabled: true
 #    schemas:
@@ -79,6 +97,12 @@ mail:
 
 code:
   expiration: 5
+
+location:
+  temp:
+    user: true
+    directory: /.cms/file/tmp
+
 upload:
   # local 、aliyun 、qiniu
   type: aliyun

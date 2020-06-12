@@ -10,9 +10,11 @@ import java.util.List;
 @Data
 public class WxArticleTemplateRequest extends BasePageRequest {
     private Long id;
+    private Long tagId;
     private String templateName;
     private Boolean publish;
 
+    private List<Long> previewFansIds = Lists.newArrayList();
     private List<Long> fansIds = Lists.newArrayList();
 
     public WxArticleTemplate toArticleTemplate() {

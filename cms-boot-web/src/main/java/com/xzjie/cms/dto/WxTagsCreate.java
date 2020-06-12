@@ -1,13 +1,9 @@
 package com.xzjie.cms.dto;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.xzjie.cms.core.utils.JsonUtils;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Data
 public class WxTagsCreate {

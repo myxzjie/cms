@@ -1,7 +1,6 @@
 package com.xzjie.cms.security;
 
 import com.xzjie.cms.configure.SecurityProperties;
-import com.xzjie.cms.model.Account;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
