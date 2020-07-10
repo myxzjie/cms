@@ -35,7 +35,7 @@ public class MenuController {
         Menu menu = menuRequest.toMenu();
         menu.setState(1);
         menuService.save(menu);
-        return MapUtils.create().set("code", 0);
+        return MapUtils.success();
     }
 
     @Log("修改菜单")
@@ -44,7 +44,7 @@ public class MenuController {
 //    @PreAuthorize("@el.check('menu:edit')")
     public Map<String, Object> update(@Validated(MenuRequest.Update.class) @RequestBody MenuRequest menuRequest) {
         menuService.update(menuRequest.toMenu());
-        return MapUtils.create().set("code", 0);
+        return MapUtils.success();
     }
 
     @Log("删除菜单")
@@ -53,13 +53,13 @@ public class MenuController {
 //    @PreAuthorize("@el.check('menu:del')")
     public Map<String, Object> delete(@Validated @RequestBody @NotNull Set<Long> ids) {
         menuService.delete(ids);
-        return MapUtils.create().set("code", 0);
+        return MapUtils.success();
     }
 
     @GetMapping("/routers")
     public Map<String, Object> getMenuRouter() {
         List<MenuRouter> menuRouters = menuService.getMenuRouter(SecurityUtils.getUserRoles());
-        return MapUtils.create().set("code", 0).set("data", menuRouters);
+        return MapUtils.success(menuRouters);
     }
 
     @Log("查询菜单")
@@ -67,7 +67,7 @@ public class MenuController {
     @GetMapping("/list")
     public Map<String, Object> getMenus() {
         List<MenuResponse> menus = menuService.getMenus();
-        return MapUtils.create().set("code", 0).set("data", menus);
+        return MapUtils.success(menus);
     }
 
     @Log("查询菜单树")
@@ -75,6 +75,6 @@ public class MenuController {
     @GetMapping("/tree")
     public Map<String, Object> tree() {
         List<MenuTree> menuTree = menuService.getMenuTree(0L);
-        return MapUtils.create().set("code", 0).set("data", menuTree);
+        return MapUtils.success(menuTree);
     }
 }

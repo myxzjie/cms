@@ -234,8 +234,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
         List<MenuResponse> menuResponses = new ArrayList<>();
         List<Menu> menus = menuRepository.findByPid(0L);
         menus.stream().forEach(menu -> {
-            MenuResponse menuResponse = new MenuResponse();
-            BeanUtils.copyProperties(menu, menuResponse);
+            MenuResponse menuResponse = menuConverter.source(menu);
             menuResponse.setChildren(getTree(menu.getId()));
             menuResponses.add(menuResponse);
         });

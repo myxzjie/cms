@@ -7,15 +7,13 @@ import com.xzjie.cms.quartz.service.QuartzService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.quartz.*;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -24,7 +22,7 @@ public class QuartzServiceImpl implements QuartzService {
 //    @Qualifier("scheduler")
     private Scheduler scheduler;
     @Autowired
-    private QuartzRepository repository;
+    private QuartzRepository quartzRepository;
 
     @Override
     public boolean createTask(QuartzEntity quartz) throws Exception {
@@ -39,15 +37,63 @@ public class QuartzServiceImpl implements QuartzService {
             TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
             JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
 
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withDescription(jobDescription).withSchedule(scheduleBuilder).build();
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
+                    .cronSchedule(cronExpression)
+                    .withMisfireHandlingInstructionDoNothing();
+
+            CronTrigger trigger = TriggerBuilder
+                    .newTrigger()
+                    .withIdentity(triggerKey)
+                    .withDescription(jobDescription)
+                    .withSchedule(scheduleBuilder)
+                    .build();
 
             Class<? extends Job> clazz = (Class<? extends Job>) Class.forName(quartz.getJobClass());
-            JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(jobKey).withDescription(jobDescription).build();
+            JobDetail jobDetail = JobBuilder
+                    .newJob(clazz)
+                    .withIdentity(jobKey)
+                    .withDescription(jobDescription).build();
             scheduler.scheduleJob(jobDetail, trigger);
             return true;
         } catch (SchedulerException | ClassNotFoundException e) {
             throw new Exception("类名不存在或执行表达式错误");
+        }
+    }
+
+    /**
+     * 增加一个job
+     *
+     * @param jobClass
+     *            任务实现类
+     * @param jobName
+     *            任务名称
+     * @param jobGroupName
+     *            任务组名
+     * @param jobTime
+     *            时间表达式 (这是每隔多少秒为一次任务)
+     * @param jobTimes
+     *            运行的次数 （<0:表示不限次数）
+     */
+    public void addJob(Class<? extends Job> jobClass, String jobName, String jobGroupName, int jobTime,
+                       int jobTimes) {
+        try {
+            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName)// 任务名称和组构成任务key
+                    .build();
+            // 使用simpleTrigger规则
+            Trigger trigger = null;
+            if (jobTimes < 0) {
+                trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroupName)
+                        .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(1).withIntervalInSeconds(jobTime))
+                        .startNow().build();
+            } else {
+                trigger = TriggerBuilder
+                        .newTrigger().withIdentity(jobName, jobGroupName).withSchedule(SimpleScheduleBuilder
+                                .repeatSecondlyForever(1).withIntervalInSeconds(jobTime).withRepeatCount(jobTimes))
+                        .startNow().build();
+            }
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -69,6 +115,22 @@ public class QuartzServiceImpl implements QuartzService {
         return false;
     }
 
+    /**
+     * 立即执行一个job
+     *
+     * @param quartz
+     */
+    public boolean runJobNow(QuartzEntity quartz) {
+        try {
+            JobKey jobKey = JobKey.jobKey(quartz.getJobName(), quartz.getJobGroup());
+            scheduler.triggerJob(jobKey);
+            return true;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     /**
      * @return
@@ -76,7 +138,82 @@ public class QuartzServiceImpl implements QuartzService {
      */
     @Override
     public List<QuartzResult> getQuartzList() {
-        return repository.findQuartz();
+        return quartzRepository.findQuartz();
+    }
+
+    /**
+     * 获取所有计划中的任务列表
+     *
+     * @return
+     */
+    public List<QuartzEntity> queryAllJob() {
+        List<QuartzEntity> jobList = null;
+        try {
+            GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
+            Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
+            jobList = new ArrayList<>();
+            for (JobKey jobKey : jobKeys) {
+                List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
+                for (Trigger trigger : triggers) {
+                    QuartzEntity entity = new QuartzEntity();
+                    entity.setJobName(jobKey.getName());
+                    entity.setJobGroup(jobKey.getGroup());
+                    entity.setJobDescription("触发器:" + trigger.getKey());
+
+//                    Map<String, Object> map = new HashMap<>();
+//                    map.put("jobName", jobKey.getName());
+//                    map.put("jobGroupName", jobKey.getGroup());
+//                    map.put("description", "触发器:" + trigger.getKey());
+                    Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
+//                    map.put("jobStatus", triggerState.name());
+                    entity.setJobStatus(triggerState.name());
+                    if (trigger instanceof CronTrigger) {
+                        CronTrigger cronTrigger = (CronTrigger) trigger;
+                        String cronExpression = cronTrigger.getCronExpression();
+//                        map.put("jobTime", cronExpression);
+                        entity.setCronExpression(cronExpression);
+                    }
+                    jobList.add(entity);
+                }
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return jobList;
+    }
+
+    /**
+     * 获取所有正在运行的job
+     *
+     * @return
+     */
+    public List<Map<String, Object>> queryRunJob() {
+        List<Map<String, Object>> jobList = null;
+        try {
+            List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
+            jobList = new ArrayList<>(executingJobs.size());
+            for (JobExecutionContext executingJob : executingJobs) {
+                Map<String, Object> map = new HashMap<>();
+                JobDetail jobDetail = executingJob.getJobDetail();
+                JobKey jobKey = jobDetail.getKey();
+                Trigger trigger = executingJob.getTrigger();
+                map.put("jobName", jobKey.getName());
+                map.put("jobGroupName", jobKey.getGroup());
+                map.put("description", "触发器:" + trigger.getKey());
+                Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
+                map.put("jobStatus", triggerState.name());
+                if (trigger instanceof CronTrigger) {
+                    CronTrigger cronTrigger = (CronTrigger) trigger;
+                    String cronExpression = cronTrigger.getCronExpression();
+                    map.put("jobTime", cronExpression);
+                }
+                jobList.add(map);
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return jobList;
+
     }
 
     /**

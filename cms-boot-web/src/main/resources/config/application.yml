@@ -47,8 +47,8 @@ spring:
             required: true
   quartz:
     job-store-type: jdbc
-#    jdbc:
-#      initialize-schema: never
+    jdbc:
+      initialize-schema: never
     properties:
       org:
         quartz:
@@ -95,6 +95,8 @@ mail:
   from: ####
   from-name: CMS系统管理员
 
+origin:
+  access-control-allow-origin: http://localhost:9527
 code:
   expiration: 5
 

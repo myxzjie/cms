@@ -1,6 +1,5 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Menu;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -8,8 +7,6 @@ import org.springframework.beans.BeanUtils;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Data

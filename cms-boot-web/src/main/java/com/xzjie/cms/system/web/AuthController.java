@@ -46,19 +46,19 @@ public class AuthController {
     @Autowired
     private SecurityTokenProvider tokenProvider;
 
-    @Log(value = "login", descrption = "用户登录")
-    @PostMapping("/sign")
-    public Map<String, Object> authenticate(@Valid @RequestBody LoginRequest login) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        Authentication authentication = authenticate(login.getUsername(), login.getPassword());
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String token = tokenProvider.generateToken((UserDetails) authentication.getPrincipal());
-        map.put("code", 0);
-        map.put("data", new AuthResponse(token));
-        return map;
-    }
+//    @Log(value = "login", descrption = "用户登录")
+//    @PostMapping("/sign")
+//    public Map<String, Object> authenticate(@Valid @RequestBody LoginRequest login) throws Exception {
+//        Map<String, Object> map = new HashMap<>();
+//        Authentication authentication = authenticate(login.getUsername(), login.getPassword());
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        String token = tokenProvider.generateToken((UserDetails) authentication.getPrincipal());
+//        map.put("code", 0);
+//        map.put("data", new AuthResponse(token));
+//        return map;
+//    }
 
     private Authentication authenticate(String username, String password) throws Exception {
         try {

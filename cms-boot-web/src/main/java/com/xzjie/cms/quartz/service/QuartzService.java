@@ -11,6 +11,8 @@ public interface QuartzService {
 
     boolean resumeTask(QuartzEntity quartz);
 
+    boolean runJobNow(QuartzEntity quartz);
+
     boolean updateTask(QuartzEntity quartz) throws Exception;
 
     boolean pauseTask(QuartzEntity quartz) throws Exception;

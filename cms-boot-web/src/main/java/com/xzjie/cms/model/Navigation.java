@@ -10,8 +10,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "cms_navigation")
-public class Navigation {
+public class Navigation extends BaseEntity<Navigation> {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "p_id")
     private Long pid;
@@ -22,9 +23,15 @@ public class Navigation {
     private Integer sort;
     private Boolean enabled;
 
-    @OneToMany
-    @JoinColumn(name = "p_id")
-    @Where(clause = "enabled = 1")
-    @OrderBy("sort desc")
+    //    @OneToMany
+//    @JoinColumn(name = "p_id")
+//    @Where(clause = "enabled = 1")
+//    @OrderBy("sort desc")
+    @Transient
     private List<Navigation> children = new LinkedList<>();
+
+    @Override
+    public void copy(Navigation obj) {
+        this.copyProperties(obj, this);
+    }
 }

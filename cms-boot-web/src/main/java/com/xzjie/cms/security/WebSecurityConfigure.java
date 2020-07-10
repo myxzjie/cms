@@ -1,8 +1,7 @@
-package com.xzjie.cms.configure;
+package com.xzjie.cms.security;
 
-import com.xzjie.cms.security.SecurityAuthenticationEntryPoint;
-import com.xzjie.cms.core.filter.SecurityAuthenticationFilter;
-import com.xzjie.cms.security.SecurityUserDetailsService;
+import com.xzjie.cms.security.filter.SecurityAuthenticationFilter;
+import com.xzjie.cms.security.authentication.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,25 +22,41 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SecurityUserDetailsService userDetailsService;
-//    @Autowired
-//    private SecurityAuthenticationEntryPoint unauthorizedHandler;
+    @Autowired
+    private SecurityAuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private SecurityAuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private SecurityAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private SecurityAccessDeniedHandler accessDeniedHandler;
+    @Autowired
+    private SecurityLogoutSuccessHandler logoutSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/css/*", "/js/**", "/image/**", "/fonts/**", "/i/**", "/img/**", "/logo.png", "favicon.ico","/demo","/api/hot/data").permitAll()
+                .antMatchers("/css/*", "/js/**", "/image/**", "/fonts/**", "/i/**", "/img/**", "/logo.png", "favicon.ico", "/demo", "/api/hot/data").permitAll()
                 .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .antMatchers("/", "/index", "/article/**", "/login**", "/oauth/**", "/swagger-ui.html","/doc.html","/error**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/", "/index", "/article/**", "/login**", "/oauth/**", "/swagger-ui.html", "/doc.html", "/error**").permitAll()
+//                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic().disable()
                 .csrf().disable()
-//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-//                .and()
                 .formLogin()
+                .loginProcessingUrl("/api/auth/sign") //.usernameParameter("username").passwordParameter("password")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+                .and().logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
         ;
 
-        http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.xzjie.cms.core.filter;
+package com.xzjie.cms.security.filter;
 
 import com.xzjie.cms.security.SecurityTokenProvider;
 import com.xzjie.cms.security.SecurityUserDetails;
@@ -7,7 +7,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
