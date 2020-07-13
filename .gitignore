@@ -12,3 +12,4 @@ target/
 *.iml
 *.versionsBackup
 
+docker-compose-*.yml

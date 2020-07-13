@@ -32,7 +32,8 @@
                                         <ul class="am-dropdown-content hw-menu-sub">
                                             <#list navigation.children as children >
                                                 <li <#if children.id==categoryId?default(-1)>class="hw-menu-active"</#if>>
-                                                    <a target="${navigation.target?default('_self')}" href="${children.url}">${children.name}</a></li>
+                                                    <a target="${navigation.target?default('_self')}" href="${children.url}">${children.name}</a>
+                                                </li>
                                             </#list>
                                         </ul>
                                     </#if>

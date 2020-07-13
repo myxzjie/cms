@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+  oracle:
+    image: xzjie/cms-boot-web:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=###
+      - SPRING_DATASOURCE_USERNAME=###
+      - SPRING_DATASOURCE_PASSWORD=###
+      - SPRING_DATASOURCE_URL=###
+      - SPRING_REDIS_HOST=###
+      - SPRING_REDIS_PORT=###
+      - SPRING_REDIS_PASSWORD=###
+#    restart: always
+    container_name: cms-web
+    ports:
+      - 8090:8090
