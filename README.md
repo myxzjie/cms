@@ -2,6 +2,11 @@
 
 [文档](https://myxzjie.github.io/cms)
 
+地址(临时)：[http://cms.dev56.com/](http://cms.dev56.com/)
+地址(临时)：[http://cms-admin.dev56.com/](http://cms-admin.dev56.com/)
+
+# **打个广告，有需要可以联系我。^_^**
+
 地址：[http://www.dev56.com/](http://www.dev56.com/)
 
 **关注公众号**  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **小程序**
@@ -9,12 +14,14 @@
 ![输入图片说明](https://gitee.com/uploads/images/2018/0504/153407_f8d34a53_411145.jpeg "qrcode_for_gh_955550ad6334_258.jpg")
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1017/164259_af6b2137_411145.jpeg "mmexport1539765653517.jpg")
 
-在项目上有什么问题或bug ，可以联系：
+--------------------------------------------------------------------------------------------------------------------------
+在项目上有什么问题或bug，可以联系：
 
 **QQ群：203498970** 
 
 **个人QQ:513961835** 
 
+**有需要定制，随时欢迎……^_^**
 
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +30,12 @@
 - 后台使用vue 前后端分离
 - 正在开发中....
 
+更新：2020-07-14
+ 1. cms-boot-web 新增导航栏管理、i18n国际化
+ 2. cms-boot-web 登录方式修改
+ 3. cms-boot-web 新增docker镜像和docker部署
+ 4. cms-boot-web 新增k8s部署
+  
 更新：2020-06-12
  1. cms-boot-web 新增微信公众号配置和菜单
  2. cms-boot-web 新增微信公众号图文管理，推送图文

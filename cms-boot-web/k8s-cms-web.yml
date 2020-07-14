@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: microservice
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 38090
+      port: 8090
+      protocol: TCP
+      targetPort: 8090
+  selector:
+    run: cms-web
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-web
+  namespace: microservice
+  labels:
+    run: cms-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: cms-web
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: cms-web
+    spec:
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: ###
+            - name: SPRING_DATASOURCE_USERNAME
+              value: ###
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: ###
+            - name: SPRING_DATASOURCE_URL
+              value: ###
+            - name: SPRING_REDIS_HOST
+              value: ###
+            - name: SPRING_REDIS_PORT
+              value: ###
+            - name: SPRING_REDIS_PASSWORD
+              value: ###
+          name: cms-web
+          image: xzjie/cms-boot-web:latest
+          ports:
+            - containerPort: 8090
+          resources: {}
+status: {}
+
+
