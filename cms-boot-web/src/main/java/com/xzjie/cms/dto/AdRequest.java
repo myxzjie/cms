@@ -1,19 +1,15 @@
-package com.xzjie.cms.model;
+package com.xzjie.cms.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.xzjie.cms.model.Ad;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Entity
-@Table(name = "cms_ad")
-public class Ad extends BaseEntity<Ad> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AdRequest extends BasePageRequest {
+
     private Long id;
 
     private Long positionId;
@@ -28,7 +24,7 @@ public class Ad extends BaseEntity<Ad> {
 
     private String adCode;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -44,14 +40,14 @@ public class Ad extends BaseEntity<Ad> {
 
     private Boolean enabled;
 
-    @CreationTimestamp
     private Date createDate;
 
-    @Transient
     private String positionName;
 
-    @Override
-    public void copy(Ad obj) {
-        this.copyProperties(obj, this);
+
+    public Ad toAd() {
+        Ad ad = new Ad();
+        BeanUtils.copyProperties(this, ad);
+        return ad;
     }
 }

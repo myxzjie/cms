@@ -25,7 +25,7 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
 //        log.error("Responding with unauthorized error. Message - {}", e.getMessage());
 //        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         httpServletResponse.setContentType("application/json;charset=utf-8");
-        Map<String, Object> result = MapUtils.error(4); //, "需要权限,请先登录！"
+        Map<String, Object> result = MapUtils.error(6); //, "需要权限,请先登录！"
         httpServletResponse.getWriter().write(JSONObject.toJSONString(result));
     }
 }

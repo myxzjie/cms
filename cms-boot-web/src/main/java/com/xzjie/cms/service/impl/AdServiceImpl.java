@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,6 +78,56 @@ public class AdServiceImpl extends AbstractService<Ad, Long> implements AdServic
 
 
     @Override
+    public Page<Ad> getAd(Integer page, Integer size, Ad query) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return adRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (query == null) {
+                return null;
+            }
+
+            if (null != query.getAdName()) {
+                predicates.add(criteriaBuilder.like(root.get("adName").as(String.class), "%" + query.getAdName() + "%"));
+            }
+
+            if (null != query.getAdCode()) {
+                predicates.add(criteriaBuilder.like(root.get("adCode").as(String.class), "%" + query.getAdCode() + "%"));
+            }
+
+            if (null != query.getEnabled()) {
+                predicates.add(criteriaBuilder.equal(root.get("enabled").as(String.class), query.getEnabled()));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        }, pageable);
+    }
+
+    @Override
+    public Page<AdPosition> getPosition(Integer page, int size, AdPosition query) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return adPositionRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (query == null) {
+                return null;
+            }
+
+            if (null != query.getPositionName()) {
+                predicates.add(criteriaBuilder.like(root.get("positionName").as(String.class), "%" + query.getPositionName() + "%"));
+            }
+
+            if (null != query.getPositionCode()) {
+                predicates.add(criteriaBuilder.like(root.get("positionCode").as(String.class), "%" + query.getPositionCode() + "%"));
+            }
+
+            if (null != query.getEnabled()) {
+                predicates.add(criteriaBuilder.equal(root.get("enabled").as(String.class), query.getEnabled()));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        }, pageable);
+    }
+
+    @Override
     public List<Ad> getAdByPositionCode(String positionCode) {
         AdPosition adPosition = adPositionRepository.findAdPositionByPositionCode(positionCode);
         if (adPosition == null) return null;
@@ -83,8 +135,35 @@ public class AdServiceImpl extends AbstractService<Ad, Long> implements AdServic
     }
 
     @Override
+    public boolean savePosition(AdPosition position) {
+        adPositionRepository.save(position);
+        return true;
+    }
+
+    @Override
+    public boolean updatePosition(AdPosition position) {
+        AdPosition model = adPositionRepository.findById(position.getId()).orElseGet(AdPosition::new);
+
+        model.copy(position);
+        adPositionRepository.save(model);
+        return true;
+    }
+
+    @Override
+    public boolean deletePosition(Long id) {
+        adPositionRepository.deleteById(id);
+        return false;
+    }
+
+    @Override
+    public List<AdPosition> getPositionData() {
+        return adPositionRepository.findAll();
+    }
+
+    @Override
     public boolean update(Ad obj) {
         Ad ad = adRepository.findById(obj.getId()).orElseGet(Ad::new);
+        ad.copy(obj);
         return save(ad);
     }
 }
