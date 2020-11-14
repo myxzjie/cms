@@ -1,5 +1,6 @@
 package com.xzjie.cms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,12 +11,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "cms_article")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Article extends BaseEntity<Article> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +36,9 @@ public class Article extends BaseEntity<Article> {
 
     private String description;
 
-    private Long author;
+    private String author;
+
+    private Long userId;
 
     private LocalDateTime createDate;
 
@@ -80,6 +85,11 @@ public class Article extends BaseEntity<Article> {
 
     @Transient
     private String avatar;
+
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.LAZY)
+    @JoinTable(name = "cms_article_label",joinColumns={@JoinColumn(name="articleId")},inverseJoinColumns={@JoinColumn(name="labelId")})
+    private List<Label> labels;
 
     @Override
     public void copy(Article article) {

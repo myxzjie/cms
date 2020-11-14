@@ -1,5 +1,7 @@
 package com.xzjie.cms.service;
 
+import com.xzjie.cms.client.dto.ArticleDetailResponse;
+import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.model.Article;
@@ -13,10 +15,13 @@ public interface ArticleService extends BaseService<Article, Long> {
 
     Article getArticle(Long id);
 
+    ArticleDetailResponse getArticleDetail(Long id);
+
     Page<Article> getArticle(Integer page, int size, Article query);
 
-
     Category getCategory(Long id);
+
+    List<CaseResponse> getCaseData(Long categoryId, Article article, Integer page, Integer size);
 
     List<Category> getCategory();
 
@@ -29,8 +34,6 @@ public interface ArticleService extends BaseService<Article, Long> {
     boolean updateCategory(Category category);
 
     boolean deleteCategory(Long id);
-
-
 
 
 //

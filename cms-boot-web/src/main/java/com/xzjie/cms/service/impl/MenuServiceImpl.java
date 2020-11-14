@@ -168,7 +168,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
         routers.stream().forEach(router -> {
             if (menuMap.containsKey(router.getPid())) {
                 MenuRouter parentRouter = menuMap.get(router.getPid());
-                parentRouter.setAlwaysShow(true);
+//                parentRouter.setAlwaysShow(true);
                 parentRouter.getChildren().add(router);
             } else {
                 menuRouters.add(router);
@@ -219,6 +219,9 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
             menuRouter.setRedirect(menu.getRedirect());
             menuRouter.setComponent(menu.getComponent());
             menuRouter.setMeta(new MenuMeta(menu.getComponentName(), menu.getIcon(), menu.getCache()));
+            if (menu.getPid() == 0) {
+                menuRouter.setAlwaysShow(menu.getAlwaysShow());
+            }
 
             return menuRouter;
         }).collect(Collectors.toList());

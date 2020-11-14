@@ -9,9 +9,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor {
+public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category> {
 
     List<Category> findCategoriesByPid(Long pid);
+
+    List<Category> findCategoriesByPidOrderBySort(Long pid);
 
     Page<Category> findCategoriesByPid(Long pid, Pageable pageable);
 }

@@ -28,12 +28,23 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
         return navigationRepository;
     }
 
+
+
     @Override
     public List<Navigation> getNavigation() {
         boolean enabled = true;
         List<Navigation> navigations = this.getNavigation(0L, enabled);
         navigations.stream().forEach(navigation -> {
             navigation.setChildren(this.getChildrenNavigation(navigation.getId(), enabled));
+        });
+        return navigations;
+    }
+
+    @Override
+    public List<Navigation> getNavigations(Long pid, boolean enabled) {
+        List<Navigation> navigations = this.getNavigation(pid, enabled);
+        navigations.stream().forEach(navigation -> {
+            navigation.setChildren(this.getNavigations(navigation.getId(), enabled));
         });
         return navigations;
     }

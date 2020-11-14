@@ -1,5 +1,8 @@
 package com.xzjie.cms.service.impl;
 
+import com.xzjie.cms.client.dto.ArticleDetailResponse;
+import com.xzjie.cms.client.dto.CaseResponse;
+import com.xzjie.cms.convert.CategoryConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.model.Article;
@@ -29,6 +32,8 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
     private ArticleRepository articleRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryConverter categoryConverter;
 
     @Override
     protected JpaRepository getRepository() {
@@ -38,6 +43,18 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
     @Override
     public Article getArticle(Long id) {
         return articleRepository.getOne(id);
+    }
+
+    @Override
+    public ArticleDetailResponse getArticleDetail(Long id) {
+        Article article = this.getArticle(id);
+        Article prev = null;
+        Article next = null;
+        if (article.getCategoryId() != null) {
+            prev = articleRepository.findByIdLessThanAndCategoryId(id, article.getCategoryId());
+            next = articleRepository.findByIdGreaterThanAndCategoryId(id, article.getCategoryId());
+        }
+        return ArticleDetailResponse.create(article, prev, next);
     }
 
     @Override
@@ -102,6 +119,19 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
     @Override
     public Category getCategory(Long id) {
         return categoryRepository.getOne(id);
+    }
+
+    @Override
+    public List<CaseResponse> getCaseData(Long categoryId, Article article, Integer page, Integer size) {
+        List<Category> categories = categoryRepository.findCategoriesByPidOrderBySort(categoryId);
+        List<CaseResponse> caseResponses = categoryConverter.source(categories);
+
+        for (CaseResponse caseResponse : caseResponses) {
+            article.setCategoryId(caseResponse.getId());
+            Page<Article> articlePage = this.getArticle(page, size, article);
+            caseResponse.setArticles(articlePage.getContent());
+        }
+        return caseResponses;
     }
 
     @Override

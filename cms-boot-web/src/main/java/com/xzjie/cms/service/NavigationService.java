@@ -11,6 +11,8 @@ public interface NavigationService extends BaseService<Navigation, Long> {
 
     List<Navigation> getNavigation();
 
+    List<Navigation> getNavigations(Long pid, boolean enabled);
+
     List<Navigation> getNavigation(Long pid);
 
     List<NodeTree> getNavigationTree(Long pid);

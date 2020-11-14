@@ -51,6 +51,7 @@ public class Menu extends BaseEntity<Menu> {
     @Column(name = "permission")
     private String permission;
 
+    private Boolean alwaysShow;
 
     private String icon;
 

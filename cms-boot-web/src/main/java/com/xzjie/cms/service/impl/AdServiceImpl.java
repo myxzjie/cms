@@ -90,10 +90,6 @@ public class AdServiceImpl extends AbstractService<Ad, Long> implements AdServic
                 predicates.add(criteriaBuilder.like(root.get("adName").as(String.class), "%" + query.getAdName() + "%"));
             }
 
-            if (null != query.getAdCode()) {
-                predicates.add(criteriaBuilder.like(root.get("adCode").as(String.class), "%" + query.getAdCode() + "%"));
-            }
-
             if (null != query.getEnabled()) {
                 predicates.add(criteriaBuilder.equal(root.get("enabled").as(String.class), query.getEnabled()));
             }

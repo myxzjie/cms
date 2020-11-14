@@ -1,13 +1,8 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.Menu;
 import com.xzjie.cms.model.Navigation;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
-
-import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
 
 @Data
 public class NavigationRequest {

@@ -1,12 +1,9 @@
 package com.xzjie.cms.model;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Data

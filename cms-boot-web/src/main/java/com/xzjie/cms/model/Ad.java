@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -26,7 +25,7 @@ public class Ad extends BaseEntity<Ad> {
 
     private String adLink;
 
-    private String adCode;
+    private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;

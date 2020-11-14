@@ -17,15 +17,21 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/navigation")
-public class NavigationController {
+public class SystemNavigationController {
 
     @Autowired
     private NavigationService navigationService;
 
+    @GetMapping("/data")
+    public Map<String, Object> getNavigations() {
+        List<Navigation> navigations = navigationService.getNavigations(0L, true);
+        return MapUtils.success(navigations);
+    }
+
     @Log("查询导航栏")
     @ApiOperation("查询导航栏")
     @GetMapping("/list")
-    public Map<String, Object> getNavigations() {
+    public Map<String, Object> getNavigation() {
         List<Navigation> navigations = navigationService.getNavigation(0L);
         return MapUtils.success(navigations);
     }

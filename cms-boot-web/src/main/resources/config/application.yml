@@ -96,7 +96,7 @@ mail:
   from-name: CMS系统管理员
 
 origin:
-  access-control-allow-origin: http://localhost:9527
+  access-control-allow-origin: http://localhost:9527,http://localhost:8095
 code:
   expiration: 5
 

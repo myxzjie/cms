@@ -1,3 +1,4 @@
+*.DS_Store
 target/
 .classpath
 .project
@@ -13,3 +14,7 @@ target/
 *.versionsBackup
 
 docker-compose-*.yml
+/hbase/
+/pinpoint-docker/
+docs/*.sql
+/pinpoint-docker-master.zip

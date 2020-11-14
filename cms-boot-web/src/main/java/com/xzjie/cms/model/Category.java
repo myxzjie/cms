@@ -1,5 +1,6 @@
 package com.xzjie.cms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -17,6 +18,7 @@ import java.util.List;
 @Where(clause = "state = 1")
 @Table(name = "cms_category")
 @SQLDelete(sql = "update cms_category set state = 0 where id = ?")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Category extends BaseEntity<Category> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
