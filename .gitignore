@@ -1,8 +1,11 @@
-*.DS_Store
-target/
+.DS_Store
 .classpath
 .project
 .settings
+
+
+target/
+
 /cms-web/doc/generator
 /cms-web/doc/.gitignore
 /cms-web/env/.gitignore
@@ -13,6 +16,7 @@ target/
 *.iml
 *.versionsBackup
 
+upload.sh
 docker-compose-*.yml
 /hbase/
 /pinpoint-docker/

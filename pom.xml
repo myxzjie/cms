@@ -363,10 +363,6 @@
     </dependencyManagement>
 
     <modules>
-        <module>cms-common</module>
-        <module>cms-web</module>
-        <module>cms-ueditor</module>
-        <module>cms-oss</module>
         <module>cms-boot-web</module>
     </modules>
 
