@@ -1,18 +1,13 @@
-.DS_Store
 .classpath
 .project
 .settings
 
+target
 
-target/
+compile.bat
 
-/cms-web/doc/generator
-/cms-web/doc/.gitignore
-/cms-web/env/.gitignore
-/cms-web/src/main/webapp/upload/
-/compile.bat
-/cms-web/src/main/webapp/*.txt
 .idea
+.DS_Store
 *.iml
 *.versionsBackup
 
