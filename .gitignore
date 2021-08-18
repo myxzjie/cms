@@ -11,6 +11,7 @@
 *.ipr
 *.versionsBackup
 
+data
 target
 logs
 

@@ -1,17 +1,66 @@
 version: '3.6'
 
 services:
-  cms-web:
+  mysql:
+    container_name: cms-mysql
+    image: mysql:8.0.25
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      # 初始化数据库(后续的初始化sql会在这个库执行)
+      MYSQL_DATABASE: db_cms
+      # 初始化用户(不能是root 会报错, 后续需要给新用户赋予权限)
+      MYSQL_USER: cms
+      # 用户密码
+      MYSQL_PASSWORD: 123456
+    # 映射端口
+    ports:
+      - 3306:3306
+    volumes:
+      # 数据挂载
+      - ./docker/mysql/data/:/var/lib/mysql/
+      # 配置挂载
+#      - /root/mysql/conf/:/etc/mysql/conf.d/
+    command:
+      - --lower_case_table_names=1 # 忽略大小写
+  redis:
+    container_name: cms-redis
+    image: redis:6.2
+    command: redis-server --requirepass 123456
+#    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6380:6379
+    volumes:
+      - ./docker/redis/data:/data
+#      - ./redis.conf:/usr/local/etc/redis/redis.conf
+  cms-boot-web:
+    container_name: cms-boot-web
     image: xzjie/cms-boot-web:latest
     environment:
-      - SPRING_PROFILES_ACTIVE=###
-      - SPRING_DATASOURCE_USERNAME=###
-      - SPRING_DATASOURCE_PASSWORD=###
-      - SPRING_DATASOURCE_URL=###
-      - SPRING_REDIS_HOST=###
-      - SPRING_REDIS_PORT=###
-      - SPRING_REDIS_PASSWORD=###
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_USERNAME=cms
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_DATASOURCE_URL=jdbc:mysql://cms-mysql:3306/db_cms?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf-8
+      - SPRING_REDIS_HOST=cms-redis
+      - SPRING_REDIS_PORT=6379
+      - SPRING_REDIS_PASSWORD=123456
 #    restart: always
-    container_name: cms-web
     ports:
       - 8090:8090
+  cms-admin:
+    container_name: cms-admin
+    image: xzjie/cms-admin:latest
+    #    restart: always
+    ports:
+      - 8091:80
+    volumes:
+      - ./docker/cms-admin/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/cms-admin/config.js:/usr/share/nginx/html/config.js
+  cms-web:
+    container_name: cms-web
+    image: xzjie/cms-web:latest
+    #    restart: always
+    ports:
+      - 8092:80
+    volumes:
+      - ./docker/cms-web/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/cms-web/config.js:/usr/share/nginx/html/config.js
