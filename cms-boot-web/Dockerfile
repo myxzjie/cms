@@ -1,6 +1,6 @@
 FROM openjdk:8u232-jre
 
-MAINTAINER docker_maven docker_maven@email.com
+MAINTAINER Vito 513961835@qq.com
 
 RUN mkdir -p /cms-boot-web
 

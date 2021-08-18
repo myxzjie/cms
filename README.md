@@ -28,6 +28,11 @@
 
 ---
 
+### docker一键体验
+
+- 下载 docker-compose.yml
+- docker-compose up -d
+
 ### **问题反馈**
 
 **大家如果在使用过程有什么问题，欢迎通过 issues与我们交流！**
@@ -51,9 +56,14 @@ QQ群: 203498970
 
 
 ### 事项：
-- 全新新增改版Spring boot,计划废弃旧代码重构
-- 后台使用vue 前后端分离(未开源，正在开发中...)
-- 正在开发中....
+- 
+
+更新：2021-08-18
+1. cms-boot-web docker镜像1.0.3
+2. cms-web  docker镜像1.0.3
+3. cms-admin docker镜像1.0.3
+4. cms-boot-web 初始化数据库整理
+5. docker-compose docker-compose一键构建cms-web,方便开发者自己搭建体验
 
 更新：2020-07-14
  1. cms-boot-web 新增导航栏管理、i18n国际化
