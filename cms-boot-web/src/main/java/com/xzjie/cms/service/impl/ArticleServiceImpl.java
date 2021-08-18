@@ -5,6 +5,7 @@ import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.convert.CategoryConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.CategoryTree;
+import com.xzjie.cms.enums.Sorting;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.repository.ArticleRepository;
@@ -59,8 +60,12 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
 
     @Override
     public Page<Article> getArticle(Integer page, int size, Article query) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return articleRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        Sort sort = Sort.by("id").descending();
+        if (Sorting.asc.equals(query.getSorting())) {
+            sort = Sort.by("id").ascending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Article> articles = articleRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query == null) {
                 return null;
@@ -71,6 +76,9 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
             }
             if (null != query.getCategoryId()) {
                 predicates.add(criteriaBuilder.equal(root.get("categoryId").as(String.class), query.getCategoryId()));
+            }
+            if (null != query.getTitle()) {
+                predicates.add(criteriaBuilder.like(root.get("title").as(String.class), "%" + query.getTitle() + "%"));
             }
 
             //add add criteria to predicates
@@ -114,6 +122,12 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         }, pageable);
+
+        articles.forEach(article -> {
+            Category category = categoryRepository.getOne(article.getCategoryId());
+            article.setCategoryName(category.getCategoryName());
+        });
+        return articles;
     }
 
     @Override

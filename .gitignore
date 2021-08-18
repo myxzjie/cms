@@ -1,15 +1,31 @@
 .classpath
 .project
 .settings
+.vscode
+.DS_Store
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.versionsBackup
 
 target
+logs
 
 compile.bat
 
-.idea
-.DS_Store
-*.iml
-*.versionsBackup
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+
 
 upload.sh
 docker-compose-*.yml
@@ -17,3 +33,13 @@ docker-compose-*.yml
 /pinpoint-docker/
 docs/*.sql
 /pinpoint-docker-master.zip
+
+HELP.md
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+application-local.yml
+application-temp.yml
+application-prod.yml
+

@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class QuartzServiceImpl implements QuartzService {
     @Autowired
-//    @Qualifier("scheduler")
+    @Qualifier("quartzScheduler")
     private Scheduler scheduler;
     @Autowired
     private QuartzRepository quartzRepository;

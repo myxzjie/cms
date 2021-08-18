@@ -1,5 +1,6 @@
 package com.xzjie.cms.dto;
 
+import com.xzjie.cms.enums.Sorting;
 import com.xzjie.cms.model.Article;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,8 @@ public class ArticleRequest extends BasePageRequest {
 
     private String image;
 
+    private String keywords;
+
     private String description;
 
     private Integer recommendStat;
@@ -27,7 +30,7 @@ public class ArticleRequest extends BasePageRequest {
 
     private String content;
 
-
+    private Sorting sorting;
 
     public Article toArticle() {
         Article article = new Article();

@@ -1,5 +1,7 @@
 package com.xzjie.cms.model;
 
+import com.xzjie.cms.enums.Sorting;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -9,7 +11,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 public abstract class BaseEntity<T extends Object> implements Serializable {
+
+    private Sorting sorting;
 
     public abstract void copy(T obj);
 

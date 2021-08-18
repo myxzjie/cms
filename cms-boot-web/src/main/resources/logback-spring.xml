@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds" debug="false">
     <contextName>cms</contextName>
+    <property name="log.path" value="./logs"/>
+    <property name="max.history" value="30"/>
+    <property name="max.file.size" value="100MB"/>
     <property name="log.charset" value="utf-8" />
     <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
 
@@ -12,9 +15,32 @@
         </encoder>
     </appender>
 
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/cms-web.log</file>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>${log.charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/cms-web-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${max.file.size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数-->
+            <maxHistory>${max.history}</maxHistory>
+        </rollingPolicy>
+        <!-- 此日志文档只记录warn级别的 -->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>-->
+    </appender>
+
     <!--普通日志输出到控制台-->
     <root level="info">
         <appender-ref ref="console" />
+        <appender-ref ref="file"/>
     </root>
 
     <!--监控sql日志输出 -->

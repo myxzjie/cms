@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/article")
+@RequestMapping({"/api/article", "/api/system/article"})
 public class SystemArticleController extends BaseController {
 
     @Autowired
