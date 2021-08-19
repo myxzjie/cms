@@ -8,6 +8,16 @@
 <!-- 地址(临时)：[http://cms.dev56.com/](http://cms.dev56.com/) -->
 地址：[http://cms-admin.dev56.com/](http://cms-admin.dev56.com/)
 
+### docker一键部署体验cms网站
+
+> - 进入qq群下载 docker-compose.yml 或者 git clone https://gitee.com/xzjie/cms.git
+
+> - docker-compose up -d
+
+> - 后台访问: http://localhost:8092
+> - 账号/密码: admin/admin
+
+> - 前台访问: http://localhost:8091
 
 ---
 
@@ -27,11 +37,6 @@
 -->
 
 ---
-
-### docker一键体验
-
-- 下载 docker-compose.yml
-- docker-compose up -d
 
 ### **问题反馈**
 
