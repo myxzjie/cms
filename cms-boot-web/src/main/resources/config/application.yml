@@ -1,8 +1,8 @@
 server:
   port: 8090
 spring:
-  profiles:
-    active: local
+#  profiles:
+#    active: local
   freemarker:
     suffix: .html
     settings:
@@ -107,23 +107,23 @@ location:
 
 upload:
   # local 、aliyun 、qiniu
-  type: aliyun
+  type: local
   local:
     path: ./upload/file/
     url-prefix: http://localhost:8090/
   aliyun:
-    support-cname: ###
-    endpoint: ###
-    access-key-id: ###
-    access-key-secret: ###
-    bucket-name: ###
-    url-prefix: ###
+    support-cname: true
+    endpoint: 111
+    access-key-id: 111
+    access-key-secret: 111
+    bucket-name: 111
+    url-prefix: 111
   qiniu:
-    access-key: ####
-    secret-key: ###
-    bucket: ####
-    region: ###
-    url-prefix: ###
+    access-key: 111
+    secret-key: 111
+    bucket: 111
+    region: auto
+    url-prefix: 111
 
 
 

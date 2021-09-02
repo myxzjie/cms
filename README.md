@@ -10,7 +10,10 @@
 
 ### docker一键部署体验cms网站
 
-> - 进入qq群下载 docker-compose.yml 或者 git clone https://gitee.com/xzjie/cms.git
+> - 进入qq群下载 docker-compose.yml 
+> - 或者git clone
+> - git clone https://gitee.com/xzjie/cms.git
+> - git clone https://github.com/myxzjie/cms.git
 
 > - docker-compose up -d
 

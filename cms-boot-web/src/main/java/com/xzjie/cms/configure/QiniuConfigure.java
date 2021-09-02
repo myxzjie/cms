@@ -7,6 +7,7 @@ import com.qiniu.util.Auth;
 import com.xzjie.cms.enums.QiniuRegion;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
