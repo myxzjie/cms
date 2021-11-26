@@ -24,8 +24,9 @@ public class ArticleController extends BaseController {
 
     @GetMapping(value = {"", "/", "index"})
     public String index(Map<String, Object> model) {
-        Page<Article> articlePage = articleService.getArticle(0, 2, null);
         Article query = new Article();
+        Page<Article> articlePage = articleService.getArticle(0, 2, query);
+
         query.setRecommendStat(1);
         Page<Article> recommendsPage = articleService.getArticle(0, 5, query);
         model.put("articleLatest", articlePage.getContent());
