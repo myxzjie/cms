@@ -21,7 +21,7 @@ public class SpecSearchCriteria {
     public <T,Q> Specification<T> toSpecification(Q query) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             List<Field> fields = getFields(query.getClass());
-            List<Predicate> predicates = new ArrayList<>(fields.size());
+            List<Predicate> predicates = new ArrayList<>();
             for (Field single : fields) {
                 QueryCondition condition = single.getAnnotation(QueryCondition.class);
                 if (condition == null) {

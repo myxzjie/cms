@@ -2,7 +2,8 @@ package com.xzjie.cms.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xzjie.cms.model.Account;
-import com.xzjie.cms.model.Article;
+import com.xzjie.cms.persistence.annotation.QueryCondition;
+import com.xzjie.cms.persistence.enums.ConditionType;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -10,7 +11,8 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Data
-public class UserRequest {
+public class UserRequest extends BasePageRequest {
+    @QueryCondition(connect = ConditionType.LIKE)
     private String name;
     private String nickName;
     private String sex;

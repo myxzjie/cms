@@ -1,6 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.annotation.Log;
+import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.SecurityUtils;
 import com.xzjie.cms.dto.EmailRequest;
 import com.xzjie.cms.dto.PasswordRequest;
@@ -16,6 +17,7 @@ import com.xzjie.cms.service.SystemLogService;
 import com.xzjie.cms.service.VerifyCodeService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class SystemUserController {
     @Autowired
     private AccountService accountService;
     @Autowired
@@ -140,5 +142,10 @@ public class UserController {
         return map;
     }
 
+    @GetMapping("/list")
+    public Map<String, Object> getUserList(UserRequest request) {
+        Page<Account> page = accountService.getAccountList(request);
+        return MapUtils.success(page.getContent(), page.getTotalElements());
+    }
 
 }

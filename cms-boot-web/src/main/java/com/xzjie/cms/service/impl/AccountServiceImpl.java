@@ -1,12 +1,16 @@
 package com.xzjie.cms.service.impl;
 
 import com.xzjie.cms.core.service.AbstractService;
+import com.xzjie.cms.dto.UserRequest;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AccountRepository;
 import com.xzjie.cms.service.AccountService;
 import com.xzjie.cms.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -86,34 +90,10 @@ public class AccountServiceImpl extends AbstractService<Account, Long> implement
     }
 
     @Override
-    public List<Account> getAccountList(Account account) {
-        Specification<Account> query = SpecSearchCriteria.builder(account);
-//        Specification<Account> query = new Specification<Account>() {
-//            @Override
-//            public Predicate toPredicate(Root<Account> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-//                List<Predicate> predicates = new ArrayList<>();
-////                if(account.getNumber()!=null){
-////                    predicates.add(criteriaBuilder.equal(root.get("number"),player.getNumber()));
-////                }
-////                if(StringUtils.isNotEmpty(player.getGender())){
-////                    predicates.add(criteriaBuilder.equal(root.get("gender"),player.getGender()));
-////                }
-////                if(StringUtils.isNotEmpty(player.getName())){
-////                    predicates.add(criteriaBuilder.like(root.get("name"),"%"+player.getName()+"%"));
-////                }
-////                if(StringUtils.isNotEmpty(player.getIdCard())){
-////                    predicates.add(criteriaBuilder.like(root.get("idCard"),"%"+player.getIdCard()+"%"));
-////                }
-////                if(StringUtils.isNotEmpty(player.getWorksName())){
-////                    predicates.add(criteriaBuilder.like(root.get("worksName"),"%"+player.getWorksName()+"%"));
-////                }
-////                if(StringUtils.isNotEmpty(player.getWorksType())){
-////                    predicates.add(criteriaBuilder.equal(root.get("worksType"),player.getWorksType()));
-////                }
-//                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-//            }
-//        };
-        return accountRepository.findAll(query);
+    public Page<Account> getAccountList(UserRequest query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("userId").descending());
+        Specification<Account> specification = SpecSearchCriteria.builder(query);
+        return accountRepository.findAll(specification,pageable);
     }
 
     @Override

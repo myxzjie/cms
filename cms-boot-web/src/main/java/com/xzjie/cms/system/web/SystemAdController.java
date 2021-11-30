@@ -69,9 +69,7 @@ public class SystemAdController {
     @GetMapping("/position/data")
     @ResponseBody
     public Map<String, Object> getPositionData() {
-
         List<AdPosition> positions = adService.getPositionData();
-
         return MapUtils.success(positions);
     }
 
