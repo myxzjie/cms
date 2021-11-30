@@ -1,6 +1,8 @@
 package com.xzjie.cms.dto;
 
 import com.xzjie.cms.model.AdPosition;
+import com.xzjie.cms.persistence.enums.ConditionType;
+import com.xzjie.cms.persistence.annotation.QueryCondition;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -13,8 +15,9 @@ public class AdPositionRequest extends BasePageRequest {
 
     private Long userId;
 
+    @QueryCondition(connect = ConditionType.LIKE)
     private String positionName;
-
+    @QueryCondition
     private String positionCode;
 
     private Short adWidth;
@@ -25,6 +28,7 @@ public class AdPositionRequest extends BasePageRequest {
 
     private String positionDesc;
 
+    @QueryCondition
     private Boolean enabled;
 
     private String theme;

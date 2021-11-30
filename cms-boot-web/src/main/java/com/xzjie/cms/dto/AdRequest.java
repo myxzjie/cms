@@ -2,6 +2,8 @@ package com.xzjie.cms.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xzjie.cms.model.Ad;
+import com.xzjie.cms.persistence.enums.ConditionType;
+import com.xzjie.cms.persistence.annotation.QueryCondition;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -15,13 +17,13 @@ public class AdRequest extends BasePageRequest {
     private Long positionId;
 
     private Byte mediaType;
-
+    @QueryCondition(connect = ConditionType.LIKE)
     private String adName;
 
     private String image;
 
     private String adLink;
-
+    @QueryCondition
     private String adCode;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
@@ -38,6 +40,7 @@ public class AdRequest extends BasePageRequest {
 
     private Integer clickCount;
 
+    @QueryCondition
     private Boolean enabled;
 
     private Date createDate;

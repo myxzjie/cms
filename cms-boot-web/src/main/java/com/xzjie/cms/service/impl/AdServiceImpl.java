@@ -1,8 +1,11 @@
 package com.xzjie.cms.service.impl;
 
 import com.xzjie.cms.core.service.AbstractService;
+import com.xzjie.cms.dto.AdPositionRequest;
+import com.xzjie.cms.dto.AdRequest;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.AdPosition;
+import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AdPositionRepository;
 import com.xzjie.cms.repository.AdRepository;
 import com.xzjie.cms.service.AdService;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -78,49 +82,37 @@ public class AdServiceImpl extends AbstractService<Ad, Long> implements AdServic
 
 
     @Override
-    public Page<Ad> getAd(Integer page, Integer size, Ad query) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return adRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (query == null) {
-                return null;
-            }
-
-            if (null != query.getAdName()) {
-                predicates.add(criteriaBuilder.like(root.get("adName").as(String.class), "%" + query.getAdName() + "%"));
-            }
-
-            if (null != query.getEnabled()) {
-                predicates.add(criteriaBuilder.equal(root.get("enabled").as(String.class), query.getEnabled()));
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        }, pageable);
+    public Page<Ad> getAd(AdRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("id").descending());
+        Specification<Ad> specification = SpecSearchCriteria.builder(request);
+        return adRepository.findAll(specification, pageable);
     }
 
     @Override
-    public Page<AdPosition> getPosition(Integer page, int size, AdPosition query) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return adPositionRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (query == null) {
-                return null;
-            }
-
-            if (null != query.getPositionName()) {
-                predicates.add(criteriaBuilder.like(root.get("positionName").as(String.class), "%" + query.getPositionName() + "%"));
-            }
-
-            if (null != query.getPositionCode()) {
-                predicates.add(criteriaBuilder.like(root.get("positionCode").as(String.class), "%" + query.getPositionCode() + "%"));
-            }
-
-            if (null != query.getEnabled()) {
-                predicates.add(criteriaBuilder.equal(root.get("enabled").as(String.class), query.getEnabled()));
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        }, pageable);
+    public Page<AdPosition> getPosition(AdPositionRequest query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
+        Specification<AdPosition> specification = SpecSearchCriteria.builder(query);
+        return adPositionRepository.findAll(specification, pageable);
+//        return adPositionRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+//            List<Predicate> predicates = new ArrayList<>();
+//            if (query == null) {
+//                return null;
+//            }
+//
+//            if (null != query.getPositionName()) {
+//                predicates.add(criteriaBuilder.like(root.get("positionName").as(String.class), "%" + query.getPositionName() + "%"));
+//            }
+//
+//            if (null != query.getPositionCode()) {
+//                predicates.add(criteriaBuilder.like(root.get("positionCode").as(String.class), "%" + query.getPositionCode() + "%"));
+//            }
+//
+//            if (null != query.getEnabled()) {
+//                predicates.add(criteriaBuilder.equal(root.get("enabled").as(String.class), query.getEnabled()));
+//            }
+//
+//            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//        }, pageable);
     }
 
     @Override

@@ -45,6 +45,7 @@ public class Account extends BaseEntity<Account> {
 
     private Integer state;
 
+
     private LocalDateTime createDate;
 
     private String remarks;
@@ -57,6 +58,7 @@ public class Account extends BaseEntity<Account> {
 
     private String card;
 
+    @Column(columnDefinition = "datetime")
     private LocalDate birtn;
 
     private Long createUser;

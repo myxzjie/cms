@@ -48,11 +48,9 @@ public class SystemAdController {
 
     @GetMapping("/list")
     @ResponseBody
-    public Map<String, Object> getAd(AdRequest adRequest) {
-
-        Page<Ad> adPage = adService.getAd(adRequest.getPage(), adRequest.getSize(), adRequest.toAd());
-
-        return MapUtils.success(adPage.getContent(), adPage.getTotalElements());
+    public Map<String, Object> getAd(AdRequest request) {
+        Page<Ad> page = adService.getAd(request);
+        return MapUtils.success(page.getContent(), page.getTotalElements());
     }
 
     /**
@@ -64,10 +62,8 @@ public class SystemAdController {
     @GetMapping("/position/list")
     @ResponseBody
     public Map<String, Object> getPosition(AdPositionRequest positionRequest) {
-
-        Page<AdPosition> adPositionPage = adService.getPosition(positionRequest.getPage(), positionRequest.getSize(), positionRequest.toAdPosition());
-
-        return MapUtils.success(adPositionPage.getContent(), adPositionPage.getTotalElements());
+        Page<AdPosition> page = adService.getPosition(positionRequest);
+        return MapUtils.success(page.getContent(), page.getTotalElements());
     }
 
     @GetMapping("/position/data")
