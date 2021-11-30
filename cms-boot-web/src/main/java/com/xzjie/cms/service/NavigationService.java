@@ -7,7 +7,7 @@ import com.xzjie.cms.model.Navigation;
 import java.util.List;
 import java.util.Set;
 
-public interface NavigationService extends BaseService<Navigation, Long> {
+public interface NavigationService extends BaseService<Navigation> {
 
     List<Navigation> getNavigation();
 

@@ -26,20 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Long> implements WxAccountFansService {
+public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, WxFansRepository> implements WxAccountFansService {
 
-    @Autowired
-    private WxFansRepository fansRepository;
 
     @Autowired
     private WechatService wechatService;
     @Autowired
     private WxAccountFansConverter accountFansConverter;
 
-    @Override
-    protected JpaRepository getRepository() {
-        return fansRepository;
-    }
 
     @Override
     public boolean update(WxAccountFans obj) {
@@ -48,12 +42,12 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
 
     @Override
     public WxAccountFans getAccountFans(Long id) {
-        return fansRepository.getOne(id);
+        return baseRepository.getOne(id);
     }
 
     @Override
     public List<WxAccountFans> getAccountFans(WxAccountFans query) {
-        return fansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query.getNickName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("nickName"), query.getNickName() + "%"));
@@ -65,7 +59,7 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
     @Override
     public Page<WxAccountFans> getAccountFans(Integer page, int size, WxAccountFans query) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return fansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query.getNickName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("nickName"), query.getNickName() + "%"));
@@ -77,7 +71,7 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
     @Override
     public Page<WxAccountFans> getAccountFans(Integer page, int size, WxAccountFans query, Long tagId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return fansRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (tagId != null && tagId > 0) {
                 Join<WxAccountFans, WxFansTag> tagsJoin = root.join("fansTags", JoinType.LEFT);
@@ -99,13 +93,13 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, Lon
             WxUserResult userResult = wechatService.getUser(openId, "");
             WxAccountFans accountFans = accountFansConverter.target(userResult);
             accountFans.setState(1);
-            if (fansRepository.existsByOpenId(openId)) {
-                WxAccountFans model = fansRepository.findByOpenId(openId);
+            if (baseRepository.existsByOpenId(openId)) {
+                WxAccountFans model = baseRepository.findByOpenId(openId);
                 model.copy(accountFans);
 
-                fansRepository.save(model);
+                baseRepository.save(model);
             } else {
-                fansRepository.save(accountFans);
+                baseRepository.save(accountFans);
             }
 
         }

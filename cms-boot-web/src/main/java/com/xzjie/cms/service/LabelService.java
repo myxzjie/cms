@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface LabelService extends BaseService<Label,Long> {
+public interface LabelService extends BaseService<Label> {
 
     List<Label> getLabelByArticleId(Long articleId);
 

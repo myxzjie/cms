@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, Long> implements VerifyCodeService {
+public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, VerifyCodeRepository> implements VerifyCodeService {
     @Value("${code.expiration}")
     private Integer expiration;
 
@@ -36,13 +36,6 @@ public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, Long> imp
     private Configuration configuration;
     @Autowired
     private ApplicationContext applicationContext;
-    @Autowired
-    private VerifyCodeRepository verifyCodeRepository;
-
-    @Override
-    protected JpaRepository getRepository() {
-        return verifyCodeRepository;
-    }
 
     @Override
     public boolean update(VerifyCode obj) {
@@ -59,7 +52,7 @@ public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, Long> imp
         model.setValue(value);
         model.setTarget(target);
         model.setState(1);
-        return verifyCodeRepository.save(model);
+        return baseRepository.save(model);
     }
 
     @Override
@@ -90,18 +83,18 @@ public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, Long> imp
     @Override
     public boolean validated(String code, String email, VerifyCodeScenes scenes, VerifyCodeType type) {
 
-        VerifyCode verifyCode = verifyCodeRepository.findByTargetAndAndScenesAndType(email, scenes, type);
+        VerifyCode verifyCode = baseRepository.findByTargetAndAndScenesAndType(email, scenes, type);
         if (verifyCode == null || !verifyCode.getValue().equals(code)) {
             return false;
         }
         verifyCode.setState(0);
-        verifyCodeRepository.save(verifyCode);
+        baseRepository.save(verifyCode);
         return true;
     }
 
     @Override
     public List<VerifyCode> getVerifyCodeExpiration() {
-        return verifyCodeRepository.findVerifyCode(expiration);
+        return baseRepository.findVerifyCode(expiration);
     }
 
     /**
@@ -115,7 +108,7 @@ public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, Long> imp
         try {
             executorService.schedule(() -> {
                 verifyCode.setState(0);
-                verifyCodeRepository.save(verifyCode);
+                baseRepository.save(verifyCode);
             }, expiration * 60 * 1000L, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();

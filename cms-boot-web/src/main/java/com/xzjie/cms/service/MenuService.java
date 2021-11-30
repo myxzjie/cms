@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public interface MenuService extends BaseService<Menu, Long> {
+public interface MenuService extends BaseService<Menu> {
 //
 //    /**
 //     * 查询全部数据

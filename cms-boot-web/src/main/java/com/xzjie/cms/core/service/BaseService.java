@@ -1,8 +1,6 @@
 package com.xzjie.cms.core.service;
 
-import java.io.Serializable;
-
-public interface BaseService<T, O extends Serializable> {
+public interface BaseService<T> {
 
     boolean save(T obj);
 

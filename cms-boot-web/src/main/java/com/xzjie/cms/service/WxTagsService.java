@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.Set;
 
-public interface WxTagsService extends BaseService<WxTags, Long> {
+public interface WxTagsService extends BaseService<WxTags> {
 
     Page<WxTags> getTags(Integer page, Integer size, WxTags query);
 

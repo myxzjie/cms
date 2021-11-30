@@ -7,7 +7,7 @@ import com.xzjie.cms.model.VerifyCode;
 
 import java.util.List;
 
-public interface VerifyCodeService extends BaseService<VerifyCode, Long> {
+public interface VerifyCodeService extends BaseService<VerifyCode> {
 
     VerifyCode save(String target, String value, VerifyCodeScenes scenes, VerifyCodeType type, String message);
 

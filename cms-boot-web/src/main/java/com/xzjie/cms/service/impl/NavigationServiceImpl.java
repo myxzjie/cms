@@ -2,13 +2,10 @@ package com.xzjie.cms.service.impl;
 
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.NodeTree;
-import com.xzjie.cms.model.Menu;
 import com.xzjie.cms.model.Navigation;
 import com.xzjie.cms.repository.NavigationRepository;
 import com.xzjie.cms.service.NavigationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -18,16 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class NavigationServiceImpl extends AbstractService<Navigation, Long> implements NavigationService {
-
-    @Autowired
-    private NavigationRepository navigationRepository;
-
-    @Override
-    protected JpaRepository getRepository() {
-        return navigationRepository;
-    }
-
+public class NavigationServiceImpl extends AbstractService<Navigation, NavigationRepository> implements NavigationService {
 
 
     @Override
@@ -59,7 +47,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
     }
 
     private List<Navigation> getNavigation(Long pid, Boolean enabled) {
-        return navigationRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(criteriaBuilder.equal(root.get("pid").as(Long.class), pid));
             if (enabled != null) {
@@ -71,7 +59,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
 
     @Override
     public List<Navigation> getNavigation(Long pid) {
-        List<Navigation> navigations = navigationRepository.findByPid(pid);
+        List<Navigation> navigations = baseRepository.findByPid(pid);
         navigations.stream().forEach(navigation -> {
             navigation.setChildren(this.getNavigation(navigation.getId()));
         });
@@ -81,7 +69,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
     @Override
     public List<NodeTree> getNavigationTree(Long pid) {
         List<NodeTree> trees = new ArrayList<>();
-        List<Navigation> navigations = navigationRepository.findByPid(pid);
+        List<Navigation> navigations = baseRepository.findByPid(pid);
         navigations.stream().forEach(navigation -> {
             trees.add(new NodeTree(navigation.getId(), navigation.getName(), this.getNavigationTree(navigation.getId())));
         });
@@ -92,7 +80,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
     public void delete(Set<Long> ids) {
         ids.stream().forEach(id -> {
             Set<Long> navigationIds = getIds(id);
-            navigationRepository.delete(navigationIds);
+            baseRepository.delete(navigationIds);
         });
     }
 
@@ -104,7 +92,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
     private Set<Long> getIds(Long pid) {
         Set<Long> ids = new HashSet<>();
         ids.add(pid);
-        List<Navigation> navigations = navigationRepository.findByPid(pid);
+        List<Navigation> navigations = baseRepository.findByPid(pid);
         navigations.stream().forEach(navigation -> {
             ids.add(navigation.getId());
             this.getIds(navigation.getId());
@@ -114,9 +102,9 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Long> imp
 
     @Override
     public boolean update(Navigation obj) {
-        Navigation model = navigationRepository.findById(obj.getId()).orElseGet(Navigation::new);
+        Navigation model = baseRepository.findById(obj.getId()).orElseGet(Navigation::new);
         model.copy(obj);
-        navigationRepository.save(model);
+        baseRepository.save(model);
         return true;
     }
 }

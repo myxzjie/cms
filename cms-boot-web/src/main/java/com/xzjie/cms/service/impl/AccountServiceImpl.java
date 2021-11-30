@@ -6,39 +6,20 @@ import com.xzjie.cms.model.Account;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AccountRepository;
 import com.xzjie.cms.service.AccountService;
-import com.xzjie.cms.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class AccountServiceImpl extends AbstractService<Account, Long> implements AccountService {
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Override
-    protected JpaRepository getRepository() {
-        return accountRepository;
-    }
+public class AccountServiceImpl extends AbstractService<Account, AccountRepository> implements AccountService {
 
 
     @Override
     public Account getAccount(Long userId) {
-        return accountRepository.findById(userId).orElseGet(Account::new);
+        return baseRepository.findById(userId).orElseGet(Account::new);
     }
 
 
@@ -77,7 +58,7 @@ public class AccountServiceImpl extends AbstractService<Account, Long> implement
 //
     @Override
     public Account getAccountByName(String name) {
-        Account account = accountRepository.findAccountByName(name);
+        Account account = baseRepository.findAccountByName(name);
 //        account.setRoles(roleService.getRoles(account.getUserId()));
         return account;
     }
@@ -93,30 +74,30 @@ public class AccountServiceImpl extends AbstractService<Account, Long> implement
     public Page<Account> getAccountList(UserRequest query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("userId").descending());
         Specification<Account> specification = SpecSearchCriteria.builder(query);
-        return accountRepository.findAll(specification,pageable);
+        return baseRepository.findAll(specification,pageable);
     }
 
     @Override
     public boolean updateAvatar(String username, String avatar) {
-        return accountRepository.updateAvatar(username, avatar) > 0;
+        return baseRepository.updateAvatar(username, avatar) > 0;
     }
 
     @Override
     public boolean updatePassword(Long userId, String encode) {
-        return accountRepository.updatePassword(userId, encode) > 0;
+        return baseRepository.updatePassword(userId, encode) > 0;
     }
 
     @Override
     public boolean updateEmail(Long userId, String email) {
-        return accountRepository.updateEmail(userId, email) > 0;
+        return baseRepository.updateEmail(userId, email) > 0;
     }
 
 
     @Override
     public boolean update(Account obj) {
-        Account model = accountRepository.findById(obj.getUserId()).orElseGet(Account::new);
+        Account model = baseRepository.findById(obj.getUserId()).orElseGet(Account::new);
         model.copy(obj);
-        accountRepository.save(model);
+        baseRepository.save(model);
         return true;
     }
 }

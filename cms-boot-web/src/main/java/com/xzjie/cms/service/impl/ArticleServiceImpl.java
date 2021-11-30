@@ -28,22 +28,16 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ArticleServiceImpl extends AbstractService<Article, Long> implements ArticleService {
-    @Autowired
-    private ArticleRepository articleRepository;
+public class ArticleServiceImpl extends AbstractService<Article, ArticleRepository> implements ArticleService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryConverter categoryConverter;
 
-    @Override
-    protected JpaRepository getRepository() {
-        return articleRepository;
-    }
 
     @Override
     public Article getArticle(Long id) {
-        return articleRepository.getOne(id);
+        return baseRepository.getOne(id);
     }
 
     @Override
@@ -52,8 +46,8 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
         Article prev = null;
         Article next = null;
         if (article.getCategoryId() != null) {
-            prev = articleRepository.findByIdLessThanAndCategoryId(id, article.getCategoryId());
-            next = articleRepository.findByIdGreaterThanAndCategoryId(id, article.getCategoryId());
+            prev = baseRepository.findByIdLessThanAndCategoryId(id, article.getCategoryId());
+            next = baseRepository.findByIdGreaterThanAndCategoryId(id, article.getCategoryId());
         }
         return ArticleDetailResponse.create(article, prev, next);
     }
@@ -65,7 +59,7 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
             sort = Sort.by("id").ascending();
         }
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Article> articles = articleRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        Page<Article> articles = baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query == null) {
                 return null;
@@ -225,10 +219,10 @@ public class ArticleServiceImpl extends AbstractService<Article, Long> implement
 
     @Override
     public boolean update(Article article) {
-        Article model = articleRepository.findById(article.getId()).orElseGet(Article::new);
+        Article model = baseRepository.findById(article.getId()).orElseGet(Article::new);
         model.copy(article);
         model.setUpdateDate(LocalDateTime.now());
-        articleRepository.save(model);
+        baseRepository.save(model);
         return true;
     }
 

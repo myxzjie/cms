@@ -1,13 +1,16 @@
 package com.xzjie.cms.core.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.io.Serializable;
+public abstract class AbstractService<T extends Object, R extends JpaRepository<T, Long>> implements BaseService<T> {
+    @Autowired
+    protected R baseRepository;
 
-public abstract class AbstractService<T, O extends Serializable> implements BaseService<T, O> {
-
-    protected abstract JpaRepository getRepository();
+    public R getRepository() {
+        return baseRepository;
+    }
 
     @Override
     public boolean save(T obj) {

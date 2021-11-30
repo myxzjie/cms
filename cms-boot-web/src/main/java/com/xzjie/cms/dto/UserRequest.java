@@ -14,6 +14,10 @@ import java.time.LocalDate;
 public class UserRequest extends BasePageRequest {
     @QueryCondition(connect = ConditionType.LIKE)
     private String name;
+    @QueryCondition
+    private String phone;
+    @QueryCondition
+    private String email;
     private String nickName;
     private String sex;
     private LocalDate birtn;

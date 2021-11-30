@@ -20,17 +20,11 @@ import java.util.stream.Collectors;
 @Service
 //@CacheConfig(cacheNames = "menu")
 //@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class MenuServiceImpl extends AbstractService<Menu, Long> implements MenuService {
+public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> implements MenuService {
 
-    @Autowired
-    private MenuRepository menuRepository;
     @Autowired
     private MenuConverter menuConverter;
 
-    @Override
-    protected JpaRepository getRepository() {
-        return menuRepository;
-    }
 
 //    private final RoleService roleService;
 
@@ -38,13 +32,13 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //    @Cacheable
 //    public List<MenuDTO> queryAll(MenuQueryCriteria criteria){
 ////        Sort sort = new Sort(Sort.Direction.DESC,"id");
-//        return menuMapper.toDto(menuRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+//        return menuMapper.toDto(baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
 //    }
 //
 //    @Override
 //    @Cacheable(key = "#p0")
 //    public MenuDTO findById(long id) {
-//        Menu menu = menuRepository.findById(id).orElseGet(Menu::new);
+//        Menu menu = baseRepository.findById(id).orElseGet(Menu::new);
 //        ValidationUtil.isNull(menu.getId(),"Menu","id",id);
 //        return menuMapper.toDto(menu);
 //    }
@@ -52,18 +46,18 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //    @Override
 //    public List<MenuDTO> findByRoles(List<RoleSmallDTO> roles) {
 //        Set<Long> roleIds = roles.stream().map(RoleSmallDTO::getId).collect(Collectors.toSet());
-//        LinkedHashSet<Menu> menus = menuRepository.findByRoles_IdInAndTypeNotOrderBySortAsc(roleIds, 2);
+//        LinkedHashSet<Menu> menus = baseRepository.findByRoles_IdInAndTypeNotOrderBySortAsc(roleIds, 2);
 //        return menus.stream().map(menuMapper::toDto).collect(Collectors.toList());
 //    }
 //
 //    @Override
 //    @CacheEvict(allEntries = true)
 //    public MenuDTO create(Menu resources) {
-//        if(menuRepository.findByName(resources.getName()) != null){
+//        if(baseRepository.findByName(resources.getName()) != null){
 //            throw new EntityExistException(Menu.class,"name",resources.getName());
 //        }
 //        if(StringUtils.isNotBlank(resources.getComponentName())){
-//            if(menuRepository.findByComponentName(resources.getComponentName()) != null){
+//            if(baseRepository.findByComponentName(resources.getComponentName()) != null){
 //                throw new EntityExistException(Menu.class,"componentName",resources.getComponentName());
 //            }
 //        }
@@ -73,7 +67,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //                throw new BadRequestException("外链必须以http://或者https://开头");
 //            }
 //        }
-//        return menuMapper.toDto(menuRepository.save(resources));
+//        return menuMapper.toDto(baseRepository.save(resources));
 //    }
 //
 //    @Override
@@ -82,7 +76,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //        if(resources.getId().equals(resources.getPid())) {
 //            throw new BadRequestException("上级不能为自己");
 //        }
-//        Menu menu = menuRepository.findById(resources.getId()).orElseGet(Menu::new);
+//        Menu menu = baseRepository.findById(resources.getId()).orElseGet(Menu::new);
 //        ValidationUtil.isNull(menu.getId(),"Permission","id",resources.getId());
 //
 //        if(resources.getIFrame()){
@@ -91,14 +85,14 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //                throw new BadRequestException("外链必须以http://或者https://开头");
 //            }
 //        }
-//        Menu menu1 = menuRepository.findByName(resources.getName());
+//        Menu menu1 = baseRepository.findByName(resources.getName());
 //
 //        if(menu1 != null && !menu1.getId().equals(menu.getId())){
 //            throw new EntityExistException(Menu.class,"name",resources.getName());
 //        }
 //
 //        if(StringUtils.isNotBlank(resources.getComponentName())){
-//            menu1 = menuRepository.findByComponentName(resources.getComponentName());
+//            menu1 = baseRepository.findByComponentName(resources.getComponentName());
 //            if(menu1 != null && !menu1.getId().equals(menu.getId())){
 //                throw new EntityExistException(Menu.class,"componentName",resources.getComponentName());
 //            }
@@ -115,7 +109,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //        menu.setComponentName(resources.getComponentName());
 //        menu.setPermission(resources.getPermission());
 //        menu.setType(resources.getType());
-//        menuRepository.save(menu);
+//        baseRepository.save(menu);
 //    }
 //
 //    @Override
@@ -123,7 +117,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //        // 递归找出待删除的菜单
 //        for (Menu menu1 : menuList) {
 //            menuSet.add(menu1);
-//            List<Menu> menus = menuRepository.findByPid(menu1.getId());
+//            List<Menu> menus = baseRepository.findByPid(menu1.getId());
 //            if(menus!=null && menus.size()!=0){
 //                getDeleteMenus(menus, menuSet);
 //            }
@@ -137,7 +131,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //    public void delete(Set<Menu> menuSet) {
 //        for (Menu menu : menuSet) {
 //            roleService.untiedMenu(menu.getId());
-//            menuRepository.deleteById(menu.getId());
+//            baseRepository.deleteById(menu.getId());
 //        }
 //    }
 //
@@ -146,7 +140,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
     @Override
     public List<MenuTree> getMenuTree(Long pid) {
         List<MenuTree> trees = new ArrayList<>();
-        List<Menu> menus = menuRepository.findByPid(pid);
+        List<Menu> menus = baseRepository.findByPid(pid);
         menus.stream().forEach(menu -> {
             MenuTree tree = new MenuTree();
             tree.setId(menu.getId());
@@ -160,7 +154,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
     @Override
     public List<MenuRouter> getMenuRouter(Set<String> roles) {
         List<MenuRouter> menuRouters = new ArrayList<>();
-        List<Menu> menus = menuRepository.findMenuByRoles(roles);
+        List<Menu> menus = baseRepository.findMenuByRoles(roles);
 
         List<MenuRouter> routers = getTreeNodeList(menus);
         Map<Long, MenuRouter> menuMap = getTreeNodeMap(routers);
@@ -235,7 +229,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
     @Override
     public List<MenuResponse> getMenus() {
         List<MenuResponse> menuResponses = new ArrayList<>();
-        List<Menu> menus = menuRepository.findByPid(0L);
+        List<Menu> menus = baseRepository.findByPid(0L);
         menus.stream().forEach(menu -> {
             MenuResponse menuResponse = menuConverter.source(menu);
             menuResponse.setChildren(getTree(menu.getId()));
@@ -248,14 +242,14 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
     public void delete(Set<Long> ids) {
         ids.stream().forEach(id -> {
             Set<Long> menuIds = getIds(id);
-            menuRepository.delete(menuIds);
+            baseRepository.delete(menuIds);
         });
     }
 
     private Set<Long> getIds(Long pid) {
         Set<Long> ids = new HashSet<>();
         ids.add(pid);
-        List<Menu> menus = menuRepository.findByPid(pid);
+        List<Menu> menus = baseRepository.findByPid(pid);
         menus.stream().forEach(menu -> {
             ids.add(menu.getId());
             this.getIds(menu.getId());
@@ -265,7 +259,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 
     private List<MenuResponse> getTree(Long pid) {
         List<MenuResponse> menuResponses = new ArrayList<>();
-        List<Menu> menus = menuRepository.findByPid(pid);
+        List<Menu> menus = baseRepository.findByPid(pid);
         menus.stream().forEach(menu -> {
             MenuResponse menuResponse = menuConverter.source(menu);
             List<MenuResponse> children = getTree(menu.getId());
@@ -277,7 +271,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 
 //    private List<MenuRouter> menuRouters(Long pid) {
 //        List<MenuRouter> menuRouters = new ArrayList<>();
-//        List<Menu> menus = menuRepository.findByPid(pid);
+//        List<Menu> menus = baseRepository.findByPid(pid);
 //        menus.stream().forEach(menu -> {
 //            MenuRouter menuRouter = new MenuRouter();
 //            if (StringUtils.isBlank(menu.getComponentName())) {
@@ -312,9 +306,9 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 
     @Override
     public boolean update(Menu obj) {
-        Menu model = menuRepository.findById(obj.getId()).orElseGet(Menu::new);
+        Menu model = baseRepository.findById(obj.getId()).orElseGet(Menu::new);
         model.copy(obj);
-        menuRepository.save(model);
+        baseRepository.save(model);
         return true;
     }
 
@@ -322,7 +316,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //    @Override
 //    @Cacheable(key = "'pid:'+#p0")
 //    public List<Menu> findByPid(long pid) {
-//        return menuRepository.findByPid(pid);
+//        return baseRepository.findByPid(pid);
 //    }
 //
 //    @Override
@@ -404,7 +398,7 @@ public class MenuServiceImpl extends AbstractService<Menu, Long> implements Menu
 //
 //    @Override
 //    public Menu findOne(Long id) {
-//        Menu menu = menuRepository.findById(id).orElseGet(Menu::new);
+//        Menu menu = baseRepository.findById(id).orElseGet(Menu::new);
 //        ValidationUtil.isNull(menu.getId(),"Menu","id",id);
 //        return menu;
 //    }

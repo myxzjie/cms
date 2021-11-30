@@ -19,16 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SystemLogServiceImpl extends AbstractService<SystemLog, Long> implements SystemLogService {
+public class SystemLogServiceImpl extends AbstractService<SystemLog, SystemLogRepository> implements SystemLogService {
 
     private static final String LOGIN_NAME = "login";
-    @Autowired
-    private SystemLogRepository systemLogRepository;
-
-    @Override
-    protected JpaRepository getRepository() {
-        return systemLogRepository;
-    }
 
     @Override
     public boolean update(SystemLog obj) {
@@ -40,7 +33,7 @@ public class SystemLogServiceImpl extends AbstractService<SystemLog, Long> imple
     public List<SystemLog> getLoginSystemLog(String username) {
         Pageable pageable = PageRequest.of(0, 100, Sort.by("id").descending());
 
-        Page<SystemLog> list = systemLogRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        Page<SystemLog> list = baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             predicates.add(criteriaBuilder.equal(root.get("name").as(String.class), LOGIN_NAME));

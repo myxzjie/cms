@@ -9,15 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KeyDataServiceImpl extends AbstractService<KeyData, Long> implements KeyDataService {
+public class KeyDataServiceImpl extends AbstractService<KeyData, KeyDataRepository> implements KeyDataService {
 
-    @Autowired
-    private KeyDataRepository keyDataRepository;
-
-    @Override
-    protected JpaRepository getRepository() {
-        return keyDataRepository;
-    }
 
     @Override
     public boolean save(KeyData keyData) {
@@ -32,20 +25,20 @@ public class KeyDataServiceImpl extends AbstractService<KeyData, Long> implement
 
     @Override
     public boolean update(KeyData obj) {
-        KeyData model = keyDataRepository.findByKey(obj.getKey());
+        KeyData model = baseRepository.findByKey(obj.getKey());
         model.copy(obj);
-        keyDataRepository.save(model);
+        baseRepository.save(model);
         return true;
     }
 
     @Override
     public KeyData getKeyDataByKey(String key) {
-        return keyDataRepository.findByKey(key);
+        return baseRepository.findByKey(key);
     }
 
     @Override
     public boolean existsByKey(String key) {
 
-        return keyDataRepository.existsByKey(key);
+        return baseRepository.existsByKey(key);
     }
 }

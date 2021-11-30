@@ -5,9 +5,7 @@ import com.xzjie.cms.dto.UserRequest;
 import com.xzjie.cms.model.Account;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
-public interface AccountService extends BaseService<Account, Long> {
+public interface AccountService extends BaseService<Account> {
     Account getAccount(Long userId);
 
     Account getAccountByName(String name);

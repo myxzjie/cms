@@ -34,10 +34,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTemplate, Long> implements WxArticleTemplateService {
-
-    @Autowired
-    private WxArticleTemplateRepository articleTemplateRepository;
+public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTemplate, WxArticleTemplateRepository> implements WxArticleTemplateService {
 
     @Autowired
     private WxArticleRepository articleRepository;
@@ -46,28 +43,24 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     @Autowired
     private WxAccountFansService accountFansService;
 
-    @Override
-    protected JpaRepository getRepository() {
-        return articleTemplateRepository;
-    }
 
     @Override
     public boolean update(WxArticleTemplate obj) {
-        WxArticleTemplate model = articleTemplateRepository.getOne(obj.getId());
+        WxArticleTemplate model = baseRepository.getOne(obj.getId());
         model.copy(obj);
-        articleTemplateRepository.save(model);
+        baseRepository.save(model);
         return false;
     }
 
     @Override
     public WxArticleTemplate getArticleTemplate(Long id) {
-        return articleTemplateRepository.getOne(id);
+        return baseRepository.getOne(id);
     }
 
 
     @Override
     public List<WxArticleTemplate> getArticleTemplate(WxArticleTemplate query) {
-        return articleTemplateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query == null) {
                 return null;
@@ -86,7 +79,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     @Override
     public Page<WxArticleTemplate> getArticleTemplate(Integer page, int size, WxArticleTemplate query) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return articleTemplateRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query == null) {
                 return null;
@@ -143,7 +136,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
 
     @Override
     public void updateArticle(String newsId, List<WxArticle> list, List<String> articleIds) {
-        WxArticleTemplate articleTemplate = articleTemplateRepository.findById(Long.parseLong(newsId)).orElseGet(WxArticleTemplate::new);
+        WxArticleTemplate articleTemplate = baseRepository.findById(Long.parseLong(newsId)).orElseGet(WxArticleTemplate::new);
 
         this.saveArticle(newsId, list, articleIds);
 
@@ -185,7 +178,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
 
     @Override
     public void sendPreviewArticleTemplate(WxArticleTemplate articleTemplate, List<Long> fansIds) {
-        WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
+        WxArticleTemplate model = baseRepository.getOne(articleTemplate.getId());
         for (Long fansId : fansIds) {
             WxAccountFans accountFans = accountFansService.getAccountFans(fansId);
             WxMessagePreview messageData = WxMessagePreview.builder().addMediaId(model.getMediaId());
@@ -197,7 +190,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
 
     @Override
     public void sendTagArticleTemplate(WxArticleTemplate articleTemplate, Long tagId) {
-        WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
+        WxArticleTemplate model = baseRepository.getOne(articleTemplate.getId());
         WxMessageTag messageTag = WxMessageTag.builder()
                 .setMsgtype(MassMsgType.mpnews.name())
                 .addMediaId(model.getMediaId())
@@ -208,7 +201,7 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
 
     @Override
     public void sendFansArticleTemplate(WxArticleTemplate articleTemplate, List<Long> fansIds) {
-        WxArticleTemplate model = articleTemplateRepository.getOne(articleTemplate.getId());
+        WxArticleTemplate model = baseRepository.getOne(articleTemplate.getId());
         WxMessage message = WxMessage.builder()
                 .addMediaId(model.getMediaId()).setMsgtype(MassMsgType.mpnews.name());
         for (Long fansId : fansIds) {

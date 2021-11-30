@@ -17,14 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LabelServiceImpl extends AbstractService<Label, Long> implements LabelService {
-    @Autowired
-    private LabelRepository labelRepository;
+public class LabelServiceImpl extends AbstractService<Label, LabelRepository> implements LabelService {
 
-    @Override
-    protected JpaRepository getRepository() {
-        return labelRepository;
-    }
 
     @Override
     public boolean update(Label obj) {
@@ -33,13 +27,13 @@ public class LabelServiceImpl extends AbstractService<Label, Long> implements La
 
     @Override
     public List<Label> getLabelByArticleId(Long articleId) {
-        return labelRepository.findByArticleId(articleId);
+        return baseRepository.findByArticleId(articleId);
     }
 
     @Override
     public Page<Label> getLabel(Integer page, int size, Label query) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return labelRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query == null) {
                 return null;

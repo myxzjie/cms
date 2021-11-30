@@ -5,7 +5,7 @@ import com.xzjie.cms.model.SystemLog;
 
 import java.util.List;
 
-public interface SystemLogService extends BaseService<SystemLog,Long> {
+public interface SystemLogService extends BaseService<SystemLog> {
 
     List<SystemLog> getLoginSystemLog(String username);
 }

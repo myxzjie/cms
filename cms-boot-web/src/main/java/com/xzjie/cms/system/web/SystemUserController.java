@@ -148,4 +148,10 @@ public class SystemUserController {
         return MapUtils.success(page.getContent(), page.getTotalElements());
     }
 
+    @PostMapping("/create")
+    public Map<String, Object> create(@Valid @RequestBody UserRequest request) {
+        accountService.save(request.toAccount());
+        return MapUtils.success();
+    }
+
 }

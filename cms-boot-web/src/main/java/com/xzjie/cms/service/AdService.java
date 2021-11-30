@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by xzjie on 2017/7/2.
  */
-public interface AdService extends BaseService<Ad, Long> {
+public interface AdService extends BaseService<Ad> {
 
     Page<Ad> getAd(AdRequest request);
 

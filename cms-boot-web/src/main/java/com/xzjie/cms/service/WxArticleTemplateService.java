@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface WxArticleTemplateService extends BaseService<WxArticleTemplate, Long> {
+public interface WxArticleTemplateService extends BaseService<WxArticleTemplate> {
 
     WxArticleTemplate getArticleTemplate(Long id);
 

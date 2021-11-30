@@ -30,9 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements WxTagsService {
-    @Autowired
-    private WxTagsRepository tagsRepository;
+public class WxTagsServiceImpl extends AbstractService<WxTags, WxTagsRepository> implements WxTagsService {
     @Autowired
     private WxFansTagRepository fansTagRepository;
 
@@ -43,10 +41,6 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements 
     @Autowired
     private WxTagsConverter tagsConverter;
 
-    @Override
-    protected JpaRepository getRepository() {
-        return tagsRepository;
-    }
 
     @Override
     public boolean save(WxTags obj) {
@@ -57,10 +51,10 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements 
 
     @Override
     public boolean update(WxTags obj) {
-        WxTags model = tagsRepository.getOne(obj.getId());
+        WxTags model = baseRepository.getOne(obj.getId());
         wechatService.updateTags(WxTagsCreate.builder().setId(obj.getId()).setName(obj.getName()).build());
         model.copy(obj);
-        tagsRepository.save(model);
+        baseRepository.save(model);
         return true;
     }
 
@@ -68,7 +62,7 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements 
     @Override
     public boolean delete(Long id) {
         wechatService.deleteTags(WxTagsCreate.builder().setId(id).build());
-        tagsRepository.deleteById(id);
+        baseRepository.deleteById(id);
         fansTagRepository.deleteByTagId(id);
         return true;
     }
@@ -76,7 +70,7 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements 
     @Override
     public Page<WxTags> getTags(Integer page, Integer size, WxTags query) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return tagsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (query == null) {
                 return null;
@@ -92,7 +86,7 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements 
 
     @Override
     public List<WxTags> getTagsData() {
-        return tagsRepository.findAll();
+        return baseRepository.findAll();
     }
 
     @Override
@@ -101,12 +95,12 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, Long> implements 
         for (WxTagsResult tagsResult : tagsResults) {
             WxTags tags = tagsConverter.target(tagsResult);
 
-            if (tagsRepository.existsById(tags.getId())) {
-                WxTags model = tagsRepository.getOne(tags.getId());
+            if (baseRepository.existsById(tags.getId())) {
+                WxTags model = baseRepository.getOne(tags.getId());
                 model.copy(tags);
-                tagsRepository.save(model);
+                baseRepository.save(model);
             } else {
-                tagsRepository.save(tags);
+                baseRepository.save(tags);
             }
         }
     }

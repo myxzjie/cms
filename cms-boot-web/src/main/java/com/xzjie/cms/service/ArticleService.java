@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 
-public interface ArticleService extends BaseService<Article, Long> {
+public interface ArticleService extends BaseService<Article> {
 
     Article getArticle(Long id);
 
