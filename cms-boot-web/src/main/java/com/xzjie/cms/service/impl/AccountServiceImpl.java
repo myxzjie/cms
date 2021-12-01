@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AccountServiceImpl extends AbstractService<Account, AccountRepository> implements AccountService {
 
@@ -74,7 +76,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     public Page<Account> getAccountList(UserRequest query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("userId").descending());
         Specification<Account> specification = SpecSearchCriteria.builder(query);
-        return baseRepository.findAll(specification,pageable);
+        return baseRepository.findAll(specification, pageable);
     }
 
     @Override
@@ -92,6 +94,12 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
         return baseRepository.updateEmail(userId, email) > 0;
     }
 
+    @Override
+    public boolean save(Account obj) {
+        obj.setState(1);
+        obj.setCreateDate(LocalDateTime.now());
+        return super.save(obj);
+    }
 
     @Override
     public boolean update(Account obj) {

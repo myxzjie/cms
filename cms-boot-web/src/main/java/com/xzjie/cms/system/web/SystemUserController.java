@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -151,6 +152,20 @@ public class SystemUserController {
     @PostMapping("/create")
     public Map<String, Object> create(@Valid @RequestBody UserRequest request) {
         accountService.save(request.toAccount());
+        return MapUtils.success();
+    }
+
+    @PutMapping("/update/{id}")
+    public Map<String, Object> update(@PathVariable Long id, @Validated(UserRequest.Update.class) @RequestBody UserRequest request) {
+        Account account = request.toAccount();
+        account.setUserId(id);
+        accountService.update(account);
+        return MapUtils.success();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Map<String, Object> delete(@PathVariable Long id){
+        accountService.delete(id);
         return MapUtils.success();
     }
 

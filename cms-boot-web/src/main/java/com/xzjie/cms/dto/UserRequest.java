@@ -8,11 +8,15 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
 public class UserRequest extends BasePageRequest {
+//    @NotNull(groups = {Update.class})
+//    private Long userId;
     @QueryCondition(connect = ConditionType.LIKE)
+    @NotBlank(groups = {Update.class})
     private String name;
     @QueryCondition
     private String phone;
@@ -21,10 +25,14 @@ public class UserRequest extends BasePageRequest {
     private String nickName;
     private String sex;
     private LocalDate birtn;
+    @NotNull(groups = {Update.class})
+    private Integer locked;
 
     public Account toAccount() {
         Account model = new Account();
         BeanUtils.copyProperties(this, model);
         return model;
     }
+
+    public @interface Update{}
 }
