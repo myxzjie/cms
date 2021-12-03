@@ -8,6 +8,7 @@ import com.xzjie.cms.configure.AliyunConfigure;
 import com.xzjie.cms.configure.LocalProperties;
 import com.xzjie.cms.configure.QiniuConfigure;
 import com.xzjie.cms.configure.UploadProperties;
+import com.xzjie.cms.core.utils.SecurityUtils;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.service.PicturesService;
@@ -71,7 +72,10 @@ public class UploadServiceImpl implements UploadService {
             default:
                 String path = localProperties.getPath() + filePath;
                 File dest = new File(path);
-                uploadFile.transferTo(dest);
+                if (!dest.getParentFile().exists()) {
+                    dest.getParentFile().mkdirs();
+                }
+                uploadFile.transferTo(dest.getAbsoluteFile());
                 //
                 url = localProperties.getUrlPrefix() + filePath;
                 break;
@@ -85,8 +89,8 @@ public class UploadServiceImpl implements UploadService {
         pictures.setName(fileName);
         pictures.setOrigin(properties.getType().name());
         try {
-            Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            pictures.setUserId(account.getUserId());
+            Long userId = SecurityUtils.getUserId();
+            pictures.setUserId(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }

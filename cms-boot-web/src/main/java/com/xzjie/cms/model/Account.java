@@ -1,5 +1,6 @@
 package com.xzjie.cms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
@@ -49,7 +50,7 @@ public class Account extends BaseEntity<Account> {
 
     private Integer state;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime createDate;
 
     private String remarks;

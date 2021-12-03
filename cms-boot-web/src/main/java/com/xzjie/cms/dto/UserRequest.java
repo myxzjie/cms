@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @Data
 public class UserRequest extends BasePageRequest {
-//    @NotNull(groups = {Update.class})
+    //    @NotNull(groups = {Update.class})
 //    private Long userId;
     @QueryCondition(connect = ConditionType.LIKE)
     @NotBlank(groups = {Update.class})
@@ -23,6 +23,7 @@ public class UserRequest extends BasePageRequest {
     @QueryCondition
     private String email;
     private String nickName;
+    private String avatar;
     private String sex;
     private LocalDate birtn;
     @NotNull(groups = {Update.class})
@@ -34,5 +35,6 @@ public class UserRequest extends BasePageRequest {
         return model;
     }
 
-    public @interface Update{}
+    public @interface Update {
+    }
 }

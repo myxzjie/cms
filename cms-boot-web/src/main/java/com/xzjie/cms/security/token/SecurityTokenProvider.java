@@ -1,6 +1,7 @@
-package com.xzjie.cms.security;
+package com.xzjie.cms.security.token;
 
 import com.xzjie.cms.configure.SecurityProperties;
+import com.xzjie.cms.security.SecurityUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class SecurityTokenProvider {
 
     private Claims getClaimsFromToken(String token) {
         JwtParser parser = getJwtParser();
-        return parser.parseClaimsJws(token).getBody();
+        return parser. parseClaimsJws(token).getBody();
     }
 
 
@@ -101,7 +102,7 @@ public class SecurityTokenProvider {
     /**
      * check if the token has expired
      */
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         final Date expiration = getExpirationFromToken(token);
         return expiration.before(new Date());
     }

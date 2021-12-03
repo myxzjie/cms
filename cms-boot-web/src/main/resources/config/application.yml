@@ -109,7 +109,7 @@ upload:
   # local 、aliyun 、qiniu
   type: local
   local:
-    path: ./upload/file/
+    path: upload/file/
     url-prefix: http://localhost:8090/
   aliyun:
     support-cname: true

@@ -14,6 +14,7 @@
 data
 target
 logs
+upload
 
 compile.bat
 
