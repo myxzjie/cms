@@ -14,12 +14,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleHotResult implements Serializable {
+public class ArticleRecommendStatResult implements Serializable {
     private Long id;
     private Long articleId;
     private String title;
-    private String description;
     private Integer sort;
     private LocalDateTime createDate;
-
 }

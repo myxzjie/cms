@@ -8,11 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.Optional;
 
 public interface ArticleHotRepository extends JpaRepository<ArticleHot, Long>, JpaSpecificationExecutor<ArticleHot> {
 
-    @Query(value = "SELECT new com.xzjie.cms.dto.ArticleHotResult(b.id,b.articleId,a.title,b.sort,b.createDate) FROM Article a, ArticleHot b where a.id = b.articleId")
+    @Query(value = "SELECT new com.xzjie.cms.dto.ArticleHotResult(b.id,b.articleId,a.title,a.description,b.sort,b.createDate) FROM ArticleHot b, Article a where a.id = b.articleId")
     Page<ArticleHotResult> findArticleHot(Pageable pageable);
 
 //    ArticleHot findByArticleId(Long ArticleId);

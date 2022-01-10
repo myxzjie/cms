@@ -41,7 +41,7 @@ HELP.md
 !**/src/main/**
 !**/src/test/**
 
+/cms-boot-web/config/
 application-local.yml
-application-temp.yml
 application-prod.yml
 

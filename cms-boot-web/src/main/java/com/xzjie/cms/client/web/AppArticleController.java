@@ -3,7 +3,9 @@ package com.xzjie.cms.client.web;
 import com.xzjie.cms.client.dto.ArticleDetailResponse;
 import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleRequest;
+import com.xzjie.cms.dto.BasePageRequest;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.service.ArticleService;
@@ -27,7 +29,13 @@ public class AppArticleController extends BaseController {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping(value = "recommend-stat")
+    @GetMapping(value = "/hot")
+    public Map<String, Object> getArticleHot(BasePageRequest pageRequest) {
+        Page<ArticleHotResult> hotResultPage = articleService.getArticleHot(pageRequest.getPage(), pageRequest.getSize());
+        return MapUtils.success(hotResultPage.getContent(), hotResultPage.getTotalElements());
+    }
+
+    @GetMapping(value = "/recommend-stat")
     public Map<String, Object> recommendStat(ArticleRequest articleRequest) {
         Article query = articleRequest.toArticle();
         query.setRecommendStat(1);

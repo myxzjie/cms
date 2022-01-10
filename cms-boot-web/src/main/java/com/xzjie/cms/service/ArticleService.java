@@ -4,9 +4,11 @@ import com.xzjie.cms.client.dto.ArticleDetailResponse;
 import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.dto.ArticleHotResult;
+import com.xzjie.cms.dto.ArticleRecommendStatResult;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.ArticleHot;
+import com.xzjie.cms.model.ArticleRecommendStat;
 import com.xzjie.cms.model.Category;
 import org.springframework.data.domain.Page;
 
@@ -46,4 +48,11 @@ public interface ArticleService extends BaseService<Article> {
 
     boolean deleteArticleHot(Set<Long> ids);
 
+    Page<ArticleRecommendStatResult> getRecommendStat(Integer page, int size);
+
+    boolean saveRecommendStat(Set<Long> ids);
+
+    boolean updateRecommendStat(ArticleRecommendStat recommendStat);
+
+    boolean deleteRecommendStat(Set<Long> ids);
 }

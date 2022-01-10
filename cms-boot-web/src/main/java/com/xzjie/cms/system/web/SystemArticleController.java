@@ -3,12 +3,10 @@ package com.xzjie.cms.system.web;
 import com.xzjie.cms.client.web.BaseController;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.ArticleHotResult;
-import com.xzjie.cms.dto.ArticleRequest;
-import com.xzjie.cms.dto.BasePageRequest;
-import com.xzjie.cms.dto.CategoryRequest;
+import com.xzjie.cms.dto.*;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.ArticleHot;
+import com.xzjie.cms.model.ArticleRecommendStat;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +86,30 @@ public class SystemArticleController extends BaseController {
     }
 
 
+    @GetMapping(value = "/recommend-stat")
+    public Map<String, Object> getRecommendStat(BasePageRequest page) {
+        Page<ArticleRecommendStatResult> resultPage = articleService.getRecommendStat(page.getPage(), page.getSize());
+        return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
+    }
+
+    @PostMapping(value = "/recommend-stat")
+    public Map<String, Object> createRecommendStat(@RequestBody Set<Long> ids) {
+        articleService.saveRecommendStat(ids);
+        return MapUtils.success();
+    }
+
+    @PutMapping(value = "/recommend-stat")
+    public Map<String, Object> createArticleHot(@RequestBody ArticleRecommendStat recommendStat) {
+        articleService.updateRecommendStat(recommendStat);
+        return MapUtils.success();
+    }
+
+    @DeleteMapping(value = "/recommend-stat")
+    public Map<String, Object> deleteRecommendStat(@RequestBody Set<Long> ids) {
+        articleService.deleteRecommendStat(ids);
+        return MapUtils.success();
+    }
+
     @PostMapping(value = "/hot")
     public Map<String, Object> createArticleHot(@RequestBody Set<Long> ids) {
         articleService.saveArticleHot(ids);
@@ -106,7 +128,7 @@ public class SystemArticleController extends BaseController {
         return MapUtils.success();
     }
 
-    @GetMapping(value = "/hot/list")
+    @GetMapping(value = "/hot")
     public Map<String, Object> getArticleHot(BasePageRequest page) {
         Page<ArticleHotResult> resultPage = articleService.getArticleHot(page.getPage(), page.getSize());
         return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());

@@ -5,12 +5,15 @@ import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.convert.CategoryConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.ArticleHotResult;
+import com.xzjie.cms.dto.ArticleRecommendStatResult;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.enums.Sorting;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.ArticleHot;
+import com.xzjie.cms.model.ArticleRecommendStat;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.repository.ArticleHotRepository;
+import com.xzjie.cms.repository.ArticleRecommendStatRepository;
 import com.xzjie.cms.repository.ArticleRepository;
 import com.xzjie.cms.repository.CategoryRepository;
 import com.xzjie.cms.service.ArticleService;
@@ -33,7 +36,8 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     private CategoryRepository categoryRepository;
     @Autowired
     private ArticleHotRepository articleHotRepository;
-
+    @Autowired
+    private ArticleRecommendStatRepository articleRecommendStatRepository;
 
     @Override
     public Article getArticle(Long id) {
@@ -228,7 +232,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public Page<ArticleHotResult> getArticleHot(Integer page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("sort").descending());
         return articleHotRepository.findArticleHot(pageable);
     }
 
@@ -259,6 +263,43 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     public boolean deleteArticleHot(Set<Long> ids) {
         ids.forEach(id -> {
             articleHotRepository.deleteById(id);
+        });
+        return true;
+    }
+
+    @Override
+    public Page<ArticleRecommendStatResult> getRecommendStat(Integer page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("sort").descending());
+        return articleRecommendStatRepository.findArticleRecommendStat(pageable);
+    }
+
+    @Override
+    public boolean saveRecommendStat(Set<Long> ids) {
+        List<ArticleRecommendStat> list = new ArrayList<>();
+        for (Long articleId : ids) {
+            if (!articleRecommendStatRepository.existsByArticleId(articleId)) {
+                ArticleRecommendStat model = new ArticleRecommendStat();
+                model.setArticleId(articleId);
+                model.setSort(50);
+                list.add(model);
+            }
+        }
+        articleRecommendStatRepository.saveAll(list);
+        return true;
+    }
+
+    @Override
+    public boolean updateRecommendStat(ArticleRecommendStat recommendStat) {
+        ArticleRecommendStat model = articleRecommendStatRepository.findById(recommendStat.getId()).orElseGet(ArticleRecommendStat::new);
+        model.copy(recommendStat);
+        articleRecommendStatRepository.save(model);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRecommendStat(Set<Long> ids) {
+        ids.forEach(id -> {
+            articleRecommendStatRepository.deleteById(id);
         });
         return true;
     }
