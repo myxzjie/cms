@@ -3,19 +3,25 @@ package com.xzjie.cms.system.web;
 import com.xzjie.cms.client.web.BaseController;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleRequest;
+import com.xzjie.cms.dto.BasePageRequest;
 import com.xzjie.cms.dto.CategoryRequest;
 import com.xzjie.cms.model.Article;
+import com.xzjie.cms.model.ArticleHot;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping({"/api/article", "/api/system/article"})
@@ -26,35 +32,37 @@ public class SystemArticleController extends BaseController {
 
     @PostMapping(value = "/create")
     public Map<String, Object> create(@Valid @RequestBody ArticleRequest model) {
-        Map<String, Object> map = new HashMap<>();
         Article article = model.toArticle();
         article.setCreateDate(LocalDateTime.now());
         articleService.save(article);
 
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PutMapping(value = "/update/{id}")
     public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody ArticleRequest model) {
-        Map<String, Object> map = new HashMap<>();
         Article article = model.toArticle();
         article.setId(id);
 
         articleService.update(article);
 
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
+    }
+
+    @PutMapping(value = "/update/recommend-stat/{id}/{recommendStat}")
+    public Map<String, Object> update(@PathVariable Long id, @PathVariable Integer recommendStat) {
+        Article article = new Article();
+        article.setId(id);
+        article.setRecommendStat(recommendStat);
+
+        articleService.update(article);
+        return MapUtils.success();
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public Map<String, Object> delete(@PathVariable Long id) {
-        Map<String, Object> map = new HashMap<>();
-
         articleService.delete(id);
-
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @Log(value = "article_list", descrption = "the article list")
@@ -77,6 +85,31 @@ public class SystemArticleController extends BaseController {
 
         modelView.put("article", article);
         return getRemoteView("article-details");
+    }
+
+
+    @PostMapping(value = "/hot")
+    public Map<String, Object> createArticleHot(@RequestBody Set<Long> ids) {
+        articleService.saveArticleHot(ids);
+        return MapUtils.success();
+    }
+
+    @PutMapping(value = "/hot")
+    public Map<String, Object> createArticleHot(@RequestBody ArticleHot articleHot) {
+        articleService.updateArticleHot(articleHot);
+        return MapUtils.success();
+    }
+
+    @DeleteMapping(value = "/hot")
+    public Map<String, Object> deleteArticleHot(@RequestBody Set<Long> ids) {
+        articleService.deleteArticleHot(ids);
+        return MapUtils.success();
+    }
+
+    @GetMapping(value = "/hot/list")
+    public Map<String, Object> getArticleHot(BasePageRequest page) {
+        Page<ArticleHotResult> resultPage = articleService.getArticleHot(page.getPage(), page.getSize());
+        return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
     }
 
     @GetMapping(value = "/category")

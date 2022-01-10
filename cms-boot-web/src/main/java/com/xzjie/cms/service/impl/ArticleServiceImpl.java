@@ -4,10 +4,13 @@ import com.xzjie.cms.client.dto.ArticleDetailResponse;
 import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.convert.CategoryConverter;
 import com.xzjie.cms.core.service.AbstractService;
+import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.enums.Sorting;
 import com.xzjie.cms.model.Article;
+import com.xzjie.cms.model.ArticleHot;
 import com.xzjie.cms.model.Category;
+import com.xzjie.cms.repository.ArticleHotRepository;
 import com.xzjie.cms.repository.ArticleRepository;
 import com.xzjie.cms.repository.CategoryRepository;
 import com.xzjie.cms.service.ArticleService;
@@ -22,17 +25,14 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ArticleServiceImpl extends AbstractService<Article, ArticleRepository> implements ArticleService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private CategoryConverter categoryConverter;
+    private ArticleHotRepository articleHotRepository;
 
 
     @Override
@@ -132,7 +132,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     @Override
     public List<CaseResponse> getCaseData(Long categoryId, Article article, Integer page, Integer size) {
         List<Category> categories = categoryRepository.findCategoriesByPidOrderBySort(categoryId);
-        List<CaseResponse> caseResponses = categoryConverter.source(categories);
+        List<CaseResponse> caseResponses = CategoryConverter.INSTANCE.source(categories);
 
         for (CaseResponse caseResponse : caseResponses) {
             article.setCategoryId(caseResponse.getId());
@@ -226,4 +226,40 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
         return true;
     }
 
+    @Override
+    public Page<ArticleHotResult> getArticleHot(Integer page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return articleHotRepository.findArticleHot(pageable);
+    }
+
+    @Override
+    public boolean saveArticleHot(Set<Long> ids) {
+        List<ArticleHot> list = new ArrayList<>();
+        for (Long articleId : ids) {
+            if (!articleHotRepository.existsByArticleId(articleId)) {
+                ArticleHot model = new ArticleHot();
+                model.setArticleId(articleId);
+                model.setSort(50);
+                list.add(model);
+            }
+        }
+        articleHotRepository.saveAll(list);
+        return true;
+    }
+
+    @Override
+    public boolean updateArticleHot(ArticleHot articleHot) {
+        ArticleHot model = articleHotRepository.findById(articleHot.getId()).orElseGet(ArticleHot::new);
+        model.copy(articleHot);
+        articleHotRepository.save(model);
+        return true;
+    }
+
+    @Override
+    public boolean deleteArticleHot(Set<Long> ids) {
+        ids.forEach(id -> {
+            articleHotRepository.deleteById(id);
+        });
+        return true;
+    }
 }

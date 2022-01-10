@@ -29,7 +29,10 @@ spring:
     url: jdbc:mysql://localhost:3305/db_cms
     username: root
     password: 123456
-
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: P123456
 
   flyway:
     enabled: true
