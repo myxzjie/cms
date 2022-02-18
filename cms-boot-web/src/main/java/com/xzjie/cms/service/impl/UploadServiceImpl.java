@@ -51,14 +51,15 @@ public class UploadServiceImpl implements UploadService {
         //文件新路径
         String fileName = uploadFile.getOriginalFilename();
         String filePath = getFilePath(fileName);
-
         String url = null;
+
         switch (properties.getType()) {
             case ALIYUN:
                 InputStream inputStream = uploadFile.getInputStream();
                 ossClient.putObject(aliyunConfig.getBucketName(), filePath, inputStream);
                 //
                 url = aliyunConfig.getUrlPrefix() + filePath;
+//                pictures.setPath(filePath);
                 break;
             case QINIU:
                 String uploadToken = auth.uploadToken(qiniuConfigure.getBucket());
@@ -67,6 +68,7 @@ public class UploadServiceImpl implements UploadService {
                 Response response = uploadManager.put(uploadFile.getBytes(), key, uploadToken);
 //                DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
                 url = qiniuConfigure.getUrlPrefix() + key;
+//                pictures.setPath(key);
                 break;
             case LOCAL:
             default:
@@ -78,11 +80,12 @@ public class UploadServiceImpl implements UploadService {
                 uploadFile.transferTo(dest.getAbsoluteFile());
                 //
                 url = localProperties.getUrlPrefix() + filePath;
+//                pictures.setPath(dest.getAbsolutePath());
                 break;
         }
 
-
         Pictures pictures = new Pictures();
+        pictures.setPath(filePath);
         pictures.setGroupId(groupId);
         pictures.setUrl(url);
         pictures.setType(1);

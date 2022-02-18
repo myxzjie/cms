@@ -1,20 +1,22 @@
-//package com.xzjie.cms.security.filter;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.cors.CorsConfiguration;
-//import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-//import org.springframework.web.filter.CorsFilter;
-//import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-//import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//
-//@EnableWebMvc
-//@Configuration
-//public class WebConfiguration implements WebMvcConfigurer {
-//
+package com.xzjie.cms.security;
+
+import com.xzjie.cms.configure.LocalProperties;
+import com.xzjie.cms.configure.LocationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.*;
+
+@EnableWebMvc
+@Configuration
+public class WebConfiguration implements WebMvcConfigurer {
+    @Autowired
+    private LocalProperties localProperties;
+    @Autowired
+    private LocationProperties properties;
 ////    @Autowired
 ////    private CorsInterceptor corsInterceptor;
 //
@@ -36,4 +38,13 @@
 //        return new CorsFilter(source);
 //
 //    }
-//}
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String resource = "file:" + localProperties.getPath().replace("\\", "/");
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations(resource).setCachePeriod(0);
+//        registry.addResourceHandler("/**").addResourceLocations("classpath:/META-INF/resources/").setCachePeriod(0);
+    }
+}

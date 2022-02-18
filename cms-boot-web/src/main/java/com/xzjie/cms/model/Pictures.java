@@ -32,4 +32,6 @@ public class Pictures {
     private Integer state;
 
     private String origin;
+
+    private String path;
 }

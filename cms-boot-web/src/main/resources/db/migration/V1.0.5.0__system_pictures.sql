@@ -1,0 +1,3 @@
+SET FOREIGN_KEY_CHECKS = 0;
+ALTER TABLE sys_pictures ADD COLUMN `path` varchar(255) NULL COMMENT '路径' AFTER `origin`;
+SET FOREIGN_KEY_CHECKS = 1;

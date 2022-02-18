@@ -26,6 +26,7 @@ public class SystemAdController {
     @ResponseBody
     public Map<String, Object> create(@Valid @RequestBody AdRequest adRequest) {
         Ad ad = adRequest.toAd();
+        ad.setClickCount(0);
         adService.save(ad);
         return MapUtils.success();
     }

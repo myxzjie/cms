@@ -3,6 +3,7 @@ package com.xzjie.cms.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "cms_ad")
+@EntityListeners(AuditingEntityListener.class)
 public class Ad extends BaseEntity<Ad> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +41,7 @@ public class Ad extends BaseEntity<Ad> {
 
     private String phone;
 
+    @Column(columnDefinition = "int default 0")
     private Integer clickCount;
 
     private Boolean enabled;

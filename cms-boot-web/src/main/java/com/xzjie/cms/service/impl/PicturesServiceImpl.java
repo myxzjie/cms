@@ -1,5 +1,10 @@
 package com.xzjie.cms.service.impl;
 
+import cn.hutool.core.io.FileUtil;
+import com.aliyun.oss.OSS;
+import com.xzjie.cms.configure.AliyunConfigure;
+import com.xzjie.cms.configure.LocalProperties;
+import com.xzjie.cms.enums.UploadType;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
 import com.xzjie.cms.repository.PicturesGroupRepository;
@@ -11,13 +16,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PicturesServiceImpl implements PicturesService {
-
+    @Autowired
+    private OSS ossClient;
+    @Autowired
+    private LocalProperties localProperties;
+    @Autowired
+    private AliyunConfigure aliyunConfig;
     @Autowired
     private PicturesRepository picturesRepository;
     @Autowired
@@ -29,7 +40,7 @@ public class PicturesServiceImpl implements PicturesService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean deleteGroup(Long id) {
         picturesGroupRepository.deleteById(id);
         return true;
     }
@@ -37,7 +48,6 @@ public class PicturesServiceImpl implements PicturesService {
     @Override
     public boolean update(PicturesGroup picturesGroup) {
         Optional<PicturesGroup> optionalPicturesGroup = picturesGroupRepository.findById(picturesGroup.getId());
-//        ValidationUtil.isNull( optionalYxExpress,"YxExpress","id",resources.getId());
         PicturesGroup group = optionalPicturesGroup.get();
         group.copy(picturesGroup);
         picturesGroupRepository.save(group);
@@ -50,6 +60,25 @@ public class PicturesServiceImpl implements PicturesService {
         pictures.setCreateDate(LocalDateTime.now());
         picturesRepository.save(pictures);
         return true;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        boolean hasDelete = false;
+        Pictures pictures = picturesRepository.findById(id).orElseGet(Pictures::new);
+        if (UploadType.LOCAL.name().equals(pictures.getOrigin())) {
+            String path = localProperties.getPath() + pictures.getPath();
+            File dest = new File(path);
+            hasDelete = dest.delete();
+        } else if (UploadType.ALIYUN.name().equals(pictures.getOrigin())) {
+            ossClient.deleteObject(aliyunConfig.getBucketName(), pictures.getPath());
+            hasDelete = true;
+        }
+        if (hasDelete) {
+            picturesRepository.delete(pictures);
+            return true;
+        }
+        return false;
     }
 
     @Override

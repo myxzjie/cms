@@ -24,7 +24,7 @@ services:
       - --lower_case_table_names=1 # 忽略大小写
   redis:
     container_name: cms-redis
-    image: redis:6.2
+    image: redis:6.2.5
     command: redis-server --requirepass 123456
 #    command: redis-server /usr/local/etc/redis/redis.conf
     ports:

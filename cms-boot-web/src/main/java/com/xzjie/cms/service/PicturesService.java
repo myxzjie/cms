@@ -9,13 +9,16 @@ import java.util.List;
 public interface PicturesService {
     List<PicturesGroup> getPicturesGroup();
 
-    boolean delete(Long id);
+    boolean deleteGroup(Long id);
 
     boolean update(PicturesGroup picturesGroup);
 
-    boolean save(Pictures pictures);
-
     boolean save(PicturesGroup picturesGroup);
 
+    boolean save(Pictures pictures);
+
+    boolean delete(Long id);
+
     Page<Pictures> getPictures(Integer page, Integer size, Pictures pictures);
+
 }

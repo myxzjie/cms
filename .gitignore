@@ -24,7 +24,9 @@ compile.bat
 /dist/
 /nbdist/
 /.nb-gradle/
+/config/
 build/
+
 
 ### VS Code ###
 
@@ -41,7 +43,4 @@ HELP.md
 !**/src/main/**
 !**/src/test/**
 
-/cms-boot-web/config/
-application-local.yml
-application-prod.yml
-
+/docs/config/application-prod.yml

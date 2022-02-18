@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.web;
 
+import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.ArticleRequest;
 import com.xzjie.cms.dto.PicturesGroupRequest;
 import com.xzjie.cms.dto.PicturesRequest;
@@ -25,48 +26,44 @@ public class PicturesController {
     @GetMapping(value = "/list")
 //    @PreAuthorize("hasAuthority('user')")
     public Map<String, Object> getPictures(PicturesRequest pictures) {
-        Map<String, Object> map = new HashMap<>();
         Page<Pictures> articlePage = picturesService.getPictures(pictures.getPage(), pictures.getSize(), pictures.toPictures());
-        map.put("data", articlePage.getContent());
-        map.put("total",articlePage.getTotalPages());
-        map.put("code", 0);
-        return map;
+
+        return MapUtils.success(articlePage.getContent(), (long) articlePage.getTotalPages());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Map<String, Object> deletePictures(@PathVariable Long id) {
+        if (picturesService.delete(id)) {
+            return MapUtils.success();
+        }
+        return MapUtils.error("图片删除失败");
     }
 
     @GetMapping("/group")
     public Map<String, Object> getPicturesGroup() {
-        Map<String, Object> map = new HashMap<>();
         List<PicturesGroup> picturesGroups = picturesService.getPicturesGroup();
-        map.put("code", 0);
-        map.put("data", picturesGroups);
-        return map;
+        return MapUtils.success(picturesGroups);
     }
 
     @PostMapping("/group")
     public Map<String, Object> createPicturesGroup(@RequestBody PicturesGroupRequest group) {
-        Map<String, Object> map = new HashMap<>();
         PicturesGroup picturesGroup = group.toPicturesGroup();
         picturesService.save(picturesGroup);
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PutMapping("/group/{id}")
     public Map<String, Object> updatePicturesGroup(@PathVariable Long id, @RequestBody PicturesGroupRequest group) {
-        Map<String, Object> map = new HashMap<>();
         PicturesGroup picturesGroup = group.toPicturesGroup();
         picturesGroup.setId(id);
 
         picturesService.update(picturesGroup);
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @DeleteMapping("/group/{id}")
     public Map<String, Object> deletePicturesGroup(@PathVariable Long id) {
-        Map<String, Object> map = new HashMap<>();
-        picturesService.delete(id);
-        map.put("code", 0);
-        return map;
+        picturesService.deleteGroup(id);
+        return MapUtils.success();
     }
 }

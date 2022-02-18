@@ -71,6 +71,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
                 .antMatchers("/", "/index", "/article/**", "/login**", "/oauth/**", "/swagger-ui.html", "/doc.html", "/error**").permitAll()
                 .antMatchers("/app/**","/api/auth/sign").permitAll()
+                .antMatchers("/images/**").permitAll()
                 // 所有请求都需要认证
                 .anyRequest().authenticated()
                 .and().apply(securityConfigurerAdapter());

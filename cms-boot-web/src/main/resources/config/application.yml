@@ -1,8 +1,12 @@
 server:
   port: 8090
 spring:
-#  profiles:
-#    active: local
+  profiles:
+    active: prod
+  servlet:
+    multipart:
+      max-file-size: 20MB #单个文件最大为20M
+      max-request-size: 20MB #单个文件最大为20M
   freemarker:
     suffix: .html
     settings:

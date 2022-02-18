@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.xzjie</groupId>
         <artifactId>cms</artifactId>
-        <version>1.0.4</version>
+        <version>${cms.version}</version>
     </parent>
     <artifactId>cms-boot-web</artifactId>
     <name>cms-boot-web</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Cms Web Spring Boot</description>
 
     <dependencies>
         <dependency>

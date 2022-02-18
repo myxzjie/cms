@@ -1,6 +1,5 @@
 package com.xzjie.cms.quartz.repository;
 
-import com.xzjie.cms.model.Account;
 import com.xzjie.cms.quartz.dto.QuartzResult;
 import com.xzjie.cms.quartz.model.QuartzEntity;
 import com.xzjie.cms.quartz.model.QuartzMultiKeys;

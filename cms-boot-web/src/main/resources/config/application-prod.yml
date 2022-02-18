@@ -1,0 +1,72 @@
+
+spring:
+  mail:
+    username: admin@cms.cn
+    password: '!@******qwe'
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/db_cms?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf-8
+    username: db******oot
+    password: M******DBA
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: M******.RS
+
+mail:
+  from: admin@cms.cn
+  from-name: CMS系统管理员
+
+upload:
+  # local 、aliyun 、qiniu
+  type: aliyun
+  local:
+    path: ./upload/file/
+    url-prefix: http://localhost:8090/
+  aliyun:
+    support-cname: true
+    endpoint: http://my.cdn.cms.cn
+    access-key-id: LTA******wgaJmq
+    access-key-secret: cH******laddzcl
+    bucket-name: b-cdn
+    url-prefix: http://my.cdn.cms.cn/
+  qiniu:
+    access-key: 123321
+    secret-key: 123321
+    bucket: my-bucket
+    region: auto
+    url-prefix: ###
+justauth:
+  cache:
+    type: redis
+    prefix: oauth
+    timeout: 1h
+  type:
+    WECHAT_OPEN:
+      client-id: wxf******7b4
+      client-secret: bc4******8473
+      redirect-uri: http://stg.cms.cn/oauth/wechat_open/callback?redirect=http://localhost:9527/auth-redirect
+    qq:
+      client-id: 10******884
+      client-secret: 5ea******347293
+#      oauth.weibo_client_id=11******92
+#      oauth.weibo_client_secret=3e******6323a10780
+#
+#      oauth.alipay_client_id=208******2732226
+#      oauth.alipay_client_secret=e4h******106gz52e
+#      aouth.alipay_public_key=
+#
+#      oauth.qq_client_id=1******884
+#      oauth.qq_client_secret=5e******347293
+
+async:
+  executor:
+    thread:
+      # 配置核心线程数
+      core-pool-size: 30
+      # 配置最大线程数
+      max-pool-size: 30
+      # 配置队列大小
+      queue-capacity: 99988
+      # 配置线程池中的线程的名称前缀
+      name-prefix: async-import-db-
