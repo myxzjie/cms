@@ -2,11 +2,9 @@ package com.xzjie.cms.core.aspect;
 
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.event.SystemLogEvent;
-import com.xzjie.cms.core.utils.JsonUtils;
 import com.xzjie.cms.core.utils.RequestHolder;
 import com.xzjie.cms.core.utils.SecurityUtils;
 import com.xzjie.cms.dto.LoginRequest;
-import com.xzjie.cms.dto.UserRequest;
 import com.xzjie.cms.model.SystemLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,11 +12,7 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -26,7 +20,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 
 @Aspect
 @Component

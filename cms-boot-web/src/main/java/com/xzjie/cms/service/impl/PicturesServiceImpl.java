@@ -1,12 +1,13 @@
 package com.xzjie.cms.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import com.aliyun.oss.OSS;
 import com.xzjie.cms.configure.AliyunConfigure;
 import com.xzjie.cms.configure.LocalProperties;
+import com.xzjie.cms.dto.PicturesRequest;
 import com.xzjie.cms.enums.UploadType;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
+import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.PicturesGroupRepository;
 import com.xzjie.cms.repository.PicturesRepository;
 import com.xzjie.cms.service.PicturesService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -89,8 +91,9 @@ public class PicturesServiceImpl implements PicturesService {
     }
 
     @Override
-    public Page<Pictures> getPictures(Integer page, Integer size, Pictures pictures) {
-        Pageable pageable = PageRequest.of(page, size);
-        return picturesRepository.findAll(pageable);
+    public Page<Pictures> getPictures(PicturesRequest query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize());
+        Specification<Pictures> specification = SpecSearchCriteria.builder(query);
+        return picturesRepository.findAll(specification, pageable);
     }
 }

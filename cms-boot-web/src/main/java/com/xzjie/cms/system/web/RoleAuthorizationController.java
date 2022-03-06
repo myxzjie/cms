@@ -28,6 +28,12 @@ public class RoleAuthorizationController {
     @Autowired
     private RoleService roleService;
 
+    @GetMapping(value = "/query")
+    public Result<List<Role>> roleList() {
+        List<Role> roles = roleService.getRoles();
+        return Result.success(roles);
+    }
+
     @GetMapping(value = "/list")
     public Result<List<Role>> roleList(RoleRequest roleRequest) {
         Page<Role> rolePage = roleService.getRole(roleRequest.getPage(), roleRequest.getSize(), roleRequest.toRole());

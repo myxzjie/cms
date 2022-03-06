@@ -7,6 +7,8 @@ spring:
     multipart:
       max-file-size: 20MB #单个文件最大为20M
       max-request-size: 20MB #单个文件最大为20M
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
   freemarker:
     suffix: .html
     settings:

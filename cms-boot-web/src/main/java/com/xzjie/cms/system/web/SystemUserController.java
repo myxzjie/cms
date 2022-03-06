@@ -3,10 +3,7 @@ package com.xzjie.cms.system.web;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.SecurityUtils;
-import com.xzjie.cms.dto.EmailRequest;
-import com.xzjie.cms.dto.PasswordRequest;
-import com.xzjie.cms.dto.UserRequest;
-import com.xzjie.cms.dto.UserResponse;
+import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.VerifyCodeScenes;
 import com.xzjie.cms.enums.VerifyCodeType;
 import com.xzjie.cms.model.Account;
@@ -15,11 +12,10 @@ import com.xzjie.cms.security.SecurityUserDetails;
 import com.xzjie.cms.service.AccountService;
 import com.xzjie.cms.service.SystemLogService;
 import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -84,7 +80,7 @@ public class SystemUserController {
     }
 
     @PutMapping("/update")
-    public Map<String, Object> update(@Valid @RequestBody UserRequest user) {
+    public Map<String, Object> update(@Valid @RequestBody UserQueryDto user) {
         Map<String, Object> map = new HashMap<>();
         Account account = user.toAccount();
         account.setUserId(SecurityUtils.getUserId());
@@ -144,27 +140,25 @@ public class SystemUserController {
     }
 
     @GetMapping("/list")
-    public Map<String, Object> getUserList(UserRequest request) {
-        Page<Account> page = accountService.getAccountList(request);
+    public Map<String, Object> getUserList(UserQueryDto request) {
+        Page<UserVo> page = accountService.getAccountList(request);
         return MapUtils.success(page.getContent(), page.getTotalElements());
     }
 
     @PostMapping("/create")
-    public Map<String, Object> create(@Valid @RequestBody UserRequest request) {
-        accountService.save(request.toAccount());
+    public Map<String, Object> create(@Valid @RequestBody UserDto dto) {
+        accountService.save(dto);
         return MapUtils.success();
     }
 
     @PutMapping("/update/{id}")
-    public Map<String, Object> update(@PathVariable Long id, @Validated(UserRequest.Update.class) @RequestBody UserRequest request) {
-        Account account = request.toAccount();
-        account.setUserId(id);
-        accountService.update(account);
+    public Map<String, Object> update(@PathVariable Long id, @Validated(UserDto.Update.class) @RequestBody UserDto dto) {
+        accountService.update(id, dto);
         return MapUtils.success();
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String, Object> delete(@PathVariable Long id){
+    public Map<String, Object> delete(@PathVariable Long id) {
         accountService.delete(id);
         return MapUtils.success();
     }

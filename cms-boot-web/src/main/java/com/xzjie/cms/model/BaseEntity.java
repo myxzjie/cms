@@ -5,13 +5,16 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.EntityListeners;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity<T extends Object> implements Serializable {
 
     private Sorting sorting;

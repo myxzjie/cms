@@ -1,23 +1,74 @@
 package com.xzjie.cms.service.impl;
 
+import com.xzjie.cms.convert.UserDtoConverter;
+import com.xzjie.cms.convert.UserVoConverter;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.UserRequest;
+import com.xzjie.cms.dto.UserDto;
+import com.xzjie.cms.dto.UserQueryDto;
+import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.model.Account;
+import com.xzjie.cms.model.AccountRole;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AccountRepository;
 import com.xzjie.cms.service.AccountService;
+import com.xzjie.cms.service.RoleService;
+import com.xzjie.cms.vo.UserVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountServiceImpl extends AbstractService<Account, AccountRepository> implements AccountService {
 
+    @Autowired
+    private RoleService roleService;
+
+    @Override
+    @Transactional
+    public void save(UserDto dto) {
+        Account account = UserDtoConverter.INSTANCE.target(dto);
+        account.setState(StateType.NORMAL.getCode());
+        baseRepository.save(account);
+        List<AccountRole> accountRoles = new ArrayList<>();
+        if (dto.getRoles().size() > 0) {
+            dto.getRoles().stream().forEach(roleId -> {
+                AccountRole accountRole = new AccountRole();
+                accountRole.setUserId(account.getUserId());
+                accountRole.setRoleId(roleId);
+                accountRoles.add(accountRole);
+            });
+        }
+        roleService.saveAccount(accountRoles);
+    }
+
+    @Override
+    @Transactional
+    public void update(Long userId, UserDto dto) {
+        Account account = UserDtoConverter.INSTANCE.target(dto);
+        List<AccountRole> accountRoles = new ArrayList<>();
+        if (dto.getRoles().size() > 0) {
+            dto.getRoles().stream().forEach(roleId -> {
+                AccountRole accountRole = new AccountRole();
+                accountRole.setUserId(userId);
+                accountRole.setRoleId(roleId);
+                accountRoles.add(accountRole);
+            });
+        }
+        Account model = baseRepository.findById(userId).orElseGet(Account::new);
+        model.copy(account);
+        baseRepository.save(model);
+        roleService.deleteAccountRole(userId);
+        roleService.saveAccount(accountRoles);
+    }
 
     @Override
     public Account getAccount(Long userId) {
@@ -73,10 +124,16 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
-    public Page<Account> getAccountList(UserRequest query) {
+    public Page<UserVo> getAccountList(UserQueryDto query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("userId").descending());
         Specification<Account> specification = SpecSearchCriteria.builder(query);
-        return baseRepository.findAll(specification, pageable);
+        Page<Account> page = baseRepository.findAll(specification, pageable);
+        Page<UserVo> voPage = page.map(UserVoConverter.INSTANCE::source);
+        voPage.forEach(userVo -> {
+            List<Long> roles = roleService.getAccountRoleByUserId(userVo.getUserId());
+            userVo.setRoles(roles);
+        });
+        return voPage;
     }
 
     @Override
@@ -95,6 +152,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
+    @Transactional
     public boolean save(Account obj) {
         obj.setState(1);
         obj.setCreateDate(LocalDateTime.now());

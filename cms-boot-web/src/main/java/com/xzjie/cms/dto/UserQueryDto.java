@@ -10,9 +10,10 @@ import org.springframework.beans.BeanUtils;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
-public class UserRequest extends BasePageRequest {
+public class UserQueryDto extends BasePageRequest {
     //    @NotNull(groups = {Update.class})
 //    private Long userId;
     @QueryCondition(connect = ConditionType.LIKE)
@@ -28,6 +29,7 @@ public class UserRequest extends BasePageRequest {
     private LocalDate birtn;
     @NotNull(groups = {Update.class})
     private Integer locked;
+    private List<Long> roles;
 
     public Account toAccount() {
         Account model = new Account();

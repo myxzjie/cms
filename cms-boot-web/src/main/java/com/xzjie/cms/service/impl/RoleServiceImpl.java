@@ -1,8 +1,10 @@
 package com.xzjie.cms.service.impl;
 
+import com.xzjie.cms.model.AccountRole;
 import com.xzjie.cms.model.Menu;
 import com.xzjie.cms.model.Permission;
 import com.xzjie.cms.model.Role;
+import com.xzjie.cms.repository.AccountRoleRepository;
 import com.xzjie.cms.repository.PermissionRepository;
 import com.xzjie.cms.repository.RoleRepository;
 import com.xzjie.cms.service.RoleService;
@@ -28,7 +30,14 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
+    private AccountRoleRepository accountRoleRepository;
+    @Autowired
     private PermissionRepository permissionRepository;
+
+    @Override
+    public List<Role> getRoles() {
+        return roleRepository.findAll();
+    }
 
     @Override
     public List<Role> getRoleByUserId(Long userId) {
@@ -96,4 +105,21 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.deleteById(roleId);
         permissionRepository.deleteByRoleId(roleId);
     }
+
+    @Override
+    public void saveAccount(List<AccountRole> accountRoles) {
+        accountRoleRepository.saveAll(accountRoles);
+    }
+
+    @Override
+    public void deleteAccountRole(Long userId) {
+        accountRoleRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    public List<Long> getAccountRoleByUserId(Long userId) {
+        return accountRoleRepository.findAccountRoleByUserId(userId);
+    }
+
+
 }

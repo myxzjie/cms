@@ -26,8 +26,7 @@ public class PicturesController {
     @GetMapping(value = "/list")
 //    @PreAuthorize("hasAuthority('user')")
     public Map<String, Object> getPictures(PicturesRequest pictures) {
-        Page<Pictures> articlePage = picturesService.getPictures(pictures.getPage(), pictures.getSize(), pictures.toPictures());
-
+        Page<Pictures> articlePage = picturesService.getPictures(pictures);
         return MapUtils.success(articlePage.getContent(), (long) articlePage.getTotalPages());
     }
 
