@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 @Data
-public class WxTagsRequest extends BasePageRequest {
+public class WxTagsRequest extends BasePageDto {
     private Long id;
     private String name;
 

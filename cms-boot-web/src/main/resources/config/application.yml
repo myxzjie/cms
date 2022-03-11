@@ -115,8 +115,15 @@ location:
     directory: /.cms/file/tmp
 
 upload:
-  # local 、aliyun 、qiniu
-  type: local
+  # local 、aliyun 、qiniu、minio
+  type: minio
+  minio:
+    url: http://127.0.0.1:9001
+    access-key: 111
+    secret-key: 111
+    secure:
+    bucket: test
+    metric-name:
   local:
     path: upload/file/
     url-prefix: http://localhost:8090/

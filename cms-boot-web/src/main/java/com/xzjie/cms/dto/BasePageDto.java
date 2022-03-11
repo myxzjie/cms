@@ -3,7 +3,7 @@ package com.xzjie.cms.dto;
 import lombok.Data;
 
 @Data
-public class BasePageRequest {
+public class BasePageDto {
     private Integer page = 0;
     private Integer size = 15;
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 @Data
-public class WxAccountFansRequest extends BasePageRequest {
+public class WxAccountFansRequest extends BasePageDto {
 
     private Long tagId;
     private String nickName;

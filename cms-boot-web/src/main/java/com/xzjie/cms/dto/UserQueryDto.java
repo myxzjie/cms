@@ -1,6 +1,5 @@
 package com.xzjie.cms.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.persistence.annotation.QueryCondition;
 import com.xzjie.cms.persistence.enums.ConditionType;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class UserQueryDto extends BasePageRequest {
+public class UserQueryDto extends BasePageDto {
     //    @NotNull(groups = {Update.class})
 //    private Long userId;
     @QueryCondition(connect = ConditionType.LIKE)

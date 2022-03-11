@@ -5,12 +5,10 @@ import com.xzjie.cms.client.dto.CaseResponse;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleRequest;
-import com.xzjie.cms.dto.BasePageRequest;
+import com.xzjie.cms.dto.BasePageDto;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.service.ArticleService;
-import org.apache.commons.lang.StringUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +28,7 @@ public class AppArticleController extends BaseController {
     private ArticleService articleService;
 
     @GetMapping(value = "/hot")
-    public Map<String, Object> getArticleHot(BasePageRequest pageRequest) {
+    public Map<String, Object> getArticleHot(BasePageDto pageRequest) {
         Page<ArticleHotResult> hotResultPage = articleService.getArticleHot(pageRequest.getPage(), pageRequest.getSize());
         return MapUtils.success(hotResultPage.getContent(), hotResultPage.getTotalElements());
     }

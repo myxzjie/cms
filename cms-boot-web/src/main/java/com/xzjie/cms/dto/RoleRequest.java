@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
-public class RoleRequest extends BasePageRequest {
+public class RoleRequest extends BasePageDto {
     private Long id;
 
     @NotBlank

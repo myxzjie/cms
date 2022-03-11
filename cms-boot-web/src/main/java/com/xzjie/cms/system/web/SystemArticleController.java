@@ -11,9 +11,6 @@ import com.xzjie.cms.model.Category;
 import com.xzjie.cms.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -87,7 +84,7 @@ public class SystemArticleController extends BaseController {
 
 
     @GetMapping(value = "/recommend-stat")
-    public Map<String, Object> getRecommendStat(BasePageRequest page) {
+    public Map<String, Object> getRecommendStat(BasePageDto page) {
         Page<ArticleRecommendStatResult> resultPage = articleService.getRecommendStat(page.getPage(), page.getSize());
         return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
     }
@@ -129,7 +126,7 @@ public class SystemArticleController extends BaseController {
     }
 
     @GetMapping(value = "/hot")
-    public Map<String, Object> getArticleHot(BasePageRequest page) {
+    public Map<String, Object> getArticleHot(BasePageDto page) {
         Page<ArticleHotResult> resultPage = articleService.getArticleHot(page.getPage(), page.getSize());
         return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
     }

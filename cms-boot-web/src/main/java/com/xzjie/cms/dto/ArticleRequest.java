@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ArticleRequest extends BasePageRequest {
+public class ArticleRequest extends BasePageDto {
 
     @NotBlank
     private String title;

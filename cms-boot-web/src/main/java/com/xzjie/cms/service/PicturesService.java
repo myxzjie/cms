@@ -1,6 +1,6 @@
 package com.xzjie.cms.service;
 
-import com.xzjie.cms.dto.PicturesRequest;
+import com.xzjie.cms.dto.PictureQueryDto;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
 import org.springframework.data.domain.Page;
@@ -20,6 +20,6 @@ public interface PicturesService {
 
     boolean delete(Long id);
 
-    Page<Pictures> getPictures(PicturesRequest query);
+    Page<Pictures> getPictures(PictureQueryDto query);
 
 }

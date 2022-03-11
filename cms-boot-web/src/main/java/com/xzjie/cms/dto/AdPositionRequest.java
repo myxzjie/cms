@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.Date;
 
 @Data
-public class AdPositionRequest extends BasePageRequest {
+public class AdPositionRequest extends BasePageDto {
 
     private Long id;
 

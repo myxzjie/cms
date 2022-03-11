@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class CategoryRequest extends BasePageRequest {
+public class CategoryRequest extends BasePageDto {
 
     private Long pid;
 

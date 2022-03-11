@@ -9,10 +9,13 @@ import com.xzjie.cms.configure.LocalProperties;
 import com.xzjie.cms.configure.QiniuConfigure;
 import com.xzjie.cms.configure.UploadProperties;
 import com.xzjie.cms.core.utils.SecurityUtils;
+import com.xzjie.cms.minio.service.MinioService;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.service.PicturesService;
 import com.xzjie.cms.service.UploadService;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,8 @@ public class UploadServiceImpl implements UploadService {
     private UploadManager uploadManager;
     @Autowired
     private PicturesService picturesService;
+    @Autowired
+    private MinioService minioService;
 
     @Override
     public String upload(Long groupId, MultipartFile uploadFile) throws IOException {
@@ -69,6 +74,11 @@ public class UploadServiceImpl implements UploadService {
 //                DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
                 url = qiniuConfigure.getUrlPrefix() + key;
 //                pictures.setPath(key);
+                break;
+            case MINIO:
+                String contentType = uploadFile.getContentType();
+                inputStream = uploadFile.getInputStream();
+                url = minioService.putObject(filePath, inputStream, contentType);
                 break;
             case LOCAL:
             default:

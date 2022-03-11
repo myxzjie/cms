@@ -1,10 +1,8 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.ArticleRequest;
 import com.xzjie.cms.dto.PicturesGroupRequest;
-import com.xzjie.cms.dto.PicturesRequest;
-import com.xzjie.cms.model.Article;
+import com.xzjie.cms.dto.PictureQueryDto;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
 import com.xzjie.cms.service.PicturesService;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +22,9 @@ public class PicturesController {
 
     @GetMapping(value = "/list")
 //    @PreAuthorize("hasAuthority('user')")
-    public Map<String, Object> getPictures(PicturesRequest pictures) {
+    public Map<String, Object> getPictures(PictureQueryDto pictures) {
         Page<Pictures> articlePage = picturesService.getPictures(pictures);
-        return MapUtils.success(articlePage.getContent(), (long) articlePage.getTotalPages());
+        return MapUtils.success(articlePage.getContent(), articlePage.getTotalElements());
     }
 
     @DeleteMapping("/delete/{id}")

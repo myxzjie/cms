@@ -3,8 +3,9 @@ package com.xzjie.cms.service.impl;
 import com.aliyun.oss.OSS;
 import com.xzjie.cms.configure.AliyunConfigure;
 import com.xzjie.cms.configure.LocalProperties;
-import com.xzjie.cms.dto.PicturesRequest;
+import com.xzjie.cms.dto.PictureQueryDto;
 import com.xzjie.cms.enums.UploadType;
+import com.xzjie.cms.minio.service.MinioService;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
@@ -27,6 +28,8 @@ import java.util.Optional;
 public class PicturesServiceImpl implements PicturesService {
     @Autowired
     private OSS ossClient;
+    @Autowired
+    private MinioService minioService;
     @Autowired
     private LocalProperties localProperties;
     @Autowired
@@ -75,6 +78,9 @@ public class PicturesServiceImpl implements PicturesService {
         } else if (UploadType.ALIYUN.name().equals(pictures.getOrigin())) {
             ossClient.deleteObject(aliyunConfig.getBucketName(), pictures.getPath());
             hasDelete = true;
+        } else if (UploadType.MINIO.name().equals(pictures.getOrigin())) {
+            minioService.deleteObject(pictures.getPath());
+            hasDelete = true;
         }
         if (hasDelete) {
             picturesRepository.delete(pictures);
@@ -91,7 +97,7 @@ public class PicturesServiceImpl implements PicturesService {
     }
 
     @Override
-    public Page<Pictures> getPictures(PicturesRequest query) {
+    public Page<Pictures> getPictures(PictureQueryDto query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize());
         Specification<Pictures> specification = SpecSearchCriteria.builder(query);
         return picturesRepository.findAll(specification, pageable);

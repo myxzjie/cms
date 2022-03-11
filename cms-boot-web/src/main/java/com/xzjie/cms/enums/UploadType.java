@@ -2,5 +2,5 @@ package com.xzjie.cms.enums;
 
 public enum UploadType {
 
-    LOCAL, ALIYUN, QINIU
+    LOCAL, ALIYUN, QINIU, MINIO
 }
