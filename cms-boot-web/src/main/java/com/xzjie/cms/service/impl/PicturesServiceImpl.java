@@ -1,17 +1,17 @@
 package com.xzjie.cms.service.impl;
 
-import com.aliyun.oss.OSS;
-import com.xzjie.cms.configure.AliyunConfigure;
-import com.xzjie.cms.configure.LocalProperties;
 import com.xzjie.cms.dto.PictureQueryDto;
 import com.xzjie.cms.enums.UploadType;
-import com.xzjie.cms.minio.service.MinioService;
+import com.xzjie.cms.store.local.configure.LocalProperties;
+import com.xzjie.cms.store.minio.service.MinioService;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.PicturesGroupRepository;
 import com.xzjie.cms.repository.PicturesRepository;
 import com.xzjie.cms.service.PicturesService;
+import com.xzjie.cms.store.oss.service.OssService;
+import com.xzjie.cms.store.qiniu.service.QiniuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,13 +27,13 @@ import java.util.Optional;
 @Service
 public class PicturesServiceImpl implements PicturesService {
     @Autowired
-    private OSS ossClient;
+    private OssService ossService;
+    @Autowired
+    private QiniuService qiniuService;
     @Autowired
     private MinioService minioService;
     @Autowired
     private LocalProperties localProperties;
-    @Autowired
-    private AliyunConfigure aliyunConfig;
     @Autowired
     private PicturesRepository picturesRepository;
     @Autowired
@@ -76,7 +76,7 @@ public class PicturesServiceImpl implements PicturesService {
             File dest = new File(path);
             hasDelete = dest.delete();
         } else if (UploadType.ALIYUN.name().equals(pictures.getOrigin())) {
-            ossClient.deleteObject(aliyunConfig.getBucketName(), pictures.getPath());
+            ossService.deleteObject(pictures.getPath());
             hasDelete = true;
         } else if (UploadType.MINIO.name().equals(pictures.getOrigin())) {
             minioService.deleteObject(pictures.getPath());

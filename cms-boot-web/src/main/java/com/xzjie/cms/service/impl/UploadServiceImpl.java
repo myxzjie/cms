@@ -1,25 +1,17 @@
 package com.xzjie.cms.service.impl;
 
-import com.aliyun.oss.OSS;
-import com.qiniu.http.Response;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.util.Auth;
-import com.xzjie.cms.configure.AliyunConfigure;
-import com.xzjie.cms.configure.LocalProperties;
-import com.xzjie.cms.configure.QiniuConfigure;
 import com.xzjie.cms.configure.UploadProperties;
 import com.xzjie.cms.core.utils.SecurityUtils;
-import com.xzjie.cms.minio.service.MinioService;
-import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.service.PicturesService;
 import com.xzjie.cms.service.UploadService;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import com.xzjie.cms.store.local.configure.LocalProperties;
+import com.xzjie.cms.store.minio.service.MinioService;
+import com.xzjie.cms.store.oss.service.OssService;
+import com.xzjie.cms.store.qiniu.service.QiniuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,22 +24,19 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class UploadServiceImpl implements UploadService {
 
-    @Autowired
-    private OSS ossClient;
-    @Autowired
-    private Auth auth;
+
     @Autowired
     private UploadProperties properties;
     @Autowired
     private LocalProperties localProperties;
-    @Autowired
-    private AliyunConfigure aliyunConfig;
-    @Autowired
-    private QiniuConfigure qiniuConfigure;
-    @Autowired
-    private UploadManager uploadManager;
+
+
     @Autowired
     private PicturesService picturesService;
+    @Autowired
+    private OssService ossService;
+    @Autowired
+    private QiniuService qiniuService;
     @Autowired
     private MinioService minioService;
 
@@ -61,19 +50,10 @@ public class UploadServiceImpl implements UploadService {
         switch (properties.getType()) {
             case ALIYUN:
                 InputStream inputStream = uploadFile.getInputStream();
-                ossClient.putObject(aliyunConfig.getBucketName(), filePath, inputStream);
-                //
-                url = aliyunConfig.getUrlPrefix() + filePath;
-//                pictures.setPath(filePath);
+                url = ossService.putObject(filePath, inputStream);
                 break;
             case QINIU:
-                String uploadToken = auth.uploadToken(qiniuConfigure.getBucket());
-
-                String key = "/" + filePath;
-                Response response = uploadManager.put(uploadFile.getBytes(), key, uploadToken);
-//                DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
-                url = qiniuConfigure.getUrlPrefix() + key;
-//                pictures.setPath(key);
+                url = qiniuService.putObject(filePath, uploadFile.getBytes());
                 break;
             case MINIO:
                 String contentType = uploadFile.getContentType();

@@ -1,4 +1,4 @@
-package com.xzjie.cms.minio.service;
+package com.xzjie.cms.store.minio.service;
 
 import java.io.InputStream;
 

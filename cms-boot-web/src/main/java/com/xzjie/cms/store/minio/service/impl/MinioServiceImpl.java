@@ -1,7 +1,7 @@
-package com.xzjie.cms.minio.service.impl;
+package com.xzjie.cms.store.minio.service.impl;
 
-import com.xzjie.cms.minio.configure.MinioConfigurationProperties;
-import com.xzjie.cms.minio.service.MinioService;
+import com.xzjie.cms.store.minio.configure.MinioConfigurationProperties;
+import com.xzjie.cms.store.minio.service.MinioService;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
@@ -36,7 +36,7 @@ public class MinioServiceImpl implements MinioService {
                 .build();
         ObjectWriteResponse response = minioClient.putObject(args);
         log.info("minio put response:{}", response);
-        return configurationProperties.getUrl() + "/" + configurationProperties.getBucket() + "/" + filePath;
+        return configurationProperties.getUrlPrefix() + configurationProperties.getBucket() + "/" + filePath;
     }
 
     @SneakyThrows

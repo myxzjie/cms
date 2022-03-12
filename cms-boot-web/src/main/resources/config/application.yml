@@ -124,6 +124,7 @@ upload:
     secure:
     bucket: test
     metric-name:
+    url-prefix: http://127.0.0.1:9000/
   local:
     path: upload/file/
     url-prefix: http://localhost:8090/

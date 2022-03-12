@@ -1,7 +1,7 @@
 package com.xzjie.cms.security;
 
-import com.xzjie.cms.configure.LocalProperties;
 import com.xzjie.cms.configure.LocationProperties;
+import com.xzjie.cms.store.local.configure.LocalProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

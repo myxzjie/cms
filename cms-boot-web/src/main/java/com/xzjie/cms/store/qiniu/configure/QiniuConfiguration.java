@@ -1,30 +1,25 @@
-package com.xzjie.cms.configure;
+package com.xzjie.cms.store.qiniu.configure;
 
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.xzjie.cms.enums.QiniuRegion;
-import lombok.Data;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Data
+/**
+ * @author Vito
+ * @since 2022/3/11 6:08 下午
+ */
 @Configuration
-@ConfigurationProperties(prefix = "upload.qiniu")
-public class QiniuConfigure {
-    private String accessKey;
-    private String secretKey;
-    private String bucket;
-    private QiniuRegion region;
-    private String urlPrefix;
+public class QiniuConfiguration {
+    @Autowired
+    private QiniuConfigurationProperties properties;
 
     @Bean
     public Auth getAuth() {
-        Auth auth = Auth.create(accessKey, secretKey);
+        Auth auth = Auth.create(properties.getAccessKey(), properties.getSecretKey());
         return auth;
     }
 
@@ -56,7 +51,7 @@ public class QiniuConfigure {
 
     private Region getRegion() {
 
-        switch (region) {
+        switch (properties.getRegion()) {
             case HUADONG:
                 return Region.huadong();
             case HUABEI:
