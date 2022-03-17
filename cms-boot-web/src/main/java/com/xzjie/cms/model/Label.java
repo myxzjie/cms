@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -39,6 +40,6 @@ public class Label extends BaseEntity<Label> {
 
     @Override
     public void copy(Label obj) {
-
+        copyProperties(obj, this);
     }
 }

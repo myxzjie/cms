@@ -1,6 +1,7 @@
 package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.dto.LabelQueryDto;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.Label;
 import com.xzjie.cms.service.AdService;
@@ -23,7 +24,10 @@ public class AppLabelController {
     @GetMapping("/data")
     @ResponseBody
     public Map<String, Object> getLabel() {
-        Page<Label> labelPage = labelService.getLabel(0, 15, new Label());
+        LabelQueryDto query = new LabelQueryDto();
+        query.setPage(0);
+        query.setSize(15);
+        Page<Label> labelPage = labelService.getLabel(query);
         return MapUtils.success(labelPage.getContent(), labelPage.getTotalElements());
     }
 

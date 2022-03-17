@@ -1,7 +1,11 @@
 package com.xzjie.cms.service.impl;
 
 import com.xzjie.cms.core.service.AbstractService;
+import com.xzjie.cms.dto.LabelQueryDto;
+import com.xzjie.cms.model.Account;
+import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.Label;
+import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.LabelRepository;
 import com.xzjie.cms.service.LabelService;
 import com.xzjie.cms.vo.LabelVo;
@@ -10,10 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +28,10 @@ public class LabelServiceImpl extends AbstractService<Label, LabelRepository> im
 
     @Override
     public boolean update(Label obj) {
-        return false;
+        Label model = baseRepository.findById(obj.getId()).orElseGet(Label::new);
+        model.copy(obj);
+        model.setUpdateDate(LocalDateTime.now());
+        return save(model);
     }
 
     @Override
@@ -41,18 +50,9 @@ public class LabelServiceImpl extends AbstractService<Label, LabelRepository> im
     }
 
     @Override
-    public Page<Label> getLabel(Integer page, int size, Label query) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (query == null) {
-                return null;
-            }
-//            if (null != query.getPid()) {
-//                predicates.add(criteriaBuilder.equal(root.get("pid").as(String.class), query.getPid()));
-//            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        }, pageable);
+    public Page<Label> getLabel(LabelQueryDto query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
+        Specification<Label> specification = SpecSearchCriteria.builder(query);
+        return baseRepository.findAll(specification,pageable);
     }
 }

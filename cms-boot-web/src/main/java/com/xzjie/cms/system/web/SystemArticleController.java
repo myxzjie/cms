@@ -160,9 +160,4 @@ public class SystemArticleController extends BaseController {
         return MapUtils.success();
     }
 
-    @GetMapping("/label")
-    public Map<String, Object> getLabel() {
-        List<Label> list = labelService.getLabelList();
-        return MapUtils.success(list);
-    }
 }
