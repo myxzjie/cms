@@ -1,20 +1,19 @@
 package com.xzjie.cms.client.web;
 
-import com.xzjie.cms.client.dto.ArticleDetailResponse;
-import com.xzjie.cms.client.dto.CaseResponse;
+import com.xzjie.cms.client.vo.ArticleDetailVo;
+import com.xzjie.cms.client.vo.CaseVo;
 import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.dto.ArticleDto;
 import com.xzjie.cms.dto.ArticleHotResult;
-import com.xzjie.cms.dto.ArticleRequest;
 import com.xzjie.cms.dto.BasePageDto;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Category;
 import com.xzjie.cms.service.ArticleService;
+import com.xzjie.cms.service.LabelService;
+import com.xzjie.cms.vo.LabelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +25,8 @@ public class AppArticleController extends BaseController {
 
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private LabelService labelService;
 
     @GetMapping(value = "/hot")
     public Map<String, Object> getArticleHot(BasePageDto pageRequest) {
@@ -34,7 +35,7 @@ public class AppArticleController extends BaseController {
     }
 
     @GetMapping(value = "/recommend-stat")
-    public Map<String, Object> recommendStat(ArticleRequest articleRequest) {
+    public Map<String, Object> recommendStat(ArticleDto articleRequest) {
         Article query = articleRequest.toArticle();
         query.setRecommendStat(1);
         Page<Article> recommendsPage = articleService.getArticle(articleRequest.getPage(), articleRequest.getSize(), query);
@@ -49,12 +50,19 @@ public class AppArticleController extends BaseController {
 
     @GetMapping(value = "/detail/{id}")
     public Map<String, Object> articleDetail(@PathVariable Long id) {
-        ArticleDetailResponse article = articleService.getArticleDetail(id);
-        return MapUtils.success(article).set("labels", new String[]{"设计师", "原则"});
+        ArticleDetailVo article = articleService.getArticleDetail(id);
+        List<LabelVo> list = labelService.getLabelCounterList();
+        return MapUtils.success(article).set("labels", list);
+    }
+
+    @PostMapping("/praise/{id}")
+    public Map<String,Object> praise(@PathVariable Long id){
+        articleService.updatePraise(id);
+        return MapUtils.success();
     }
 
     @GetMapping(value = "/category/{id}")
-    public Map<String, Object> category(@PathVariable Long id, ArticleRequest articleRequest) {
+    public Map<String, Object> category(@PathVariable Long id, ArticleDto articleRequest) {
         Map<String, Object> model = new HashMap<>();
         Category category = articleService.getCategory(id);
         Article article = articleRequest.toArticle();
@@ -69,9 +77,9 @@ public class AppArticleController extends BaseController {
     }
 
     @GetMapping(value = "/cases/{id}")
-    public Map<String, Object> cases(@PathVariable Long id, ArticleRequest articleRequest) {
+    public Map<String, Object> cases(@PathVariable Long id, ArticleDto articleRequest) {
         Article article = articleRequest.toArticle();
-        List<CaseResponse> categories = articleService.getCaseData(id, article, articleRequest.getPage(), articleRequest.getSize());
+        List<CaseVo> categories = articleService.getCaseData(id, article, articleRequest.getPage(), articleRequest.getSize());
         return MapUtils.success(categories);
     }
 }

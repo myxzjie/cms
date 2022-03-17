@@ -7,9 +7,10 @@ import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
-public class ArticleRequest extends BasePageDto {
+public class ArticleDto extends BasePageDto {
 
     @NotBlank
     private String title;
@@ -31,6 +32,8 @@ public class ArticleRequest extends BasePageDto {
     private String content;
 
     private Sorting sorting;
+
+    private List<Long> labels;
 
     public Article toArticle() {
         Article article = new Article();

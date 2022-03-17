@@ -1,8 +1,8 @@
 package com.xzjie.cms.service.impl;
 
-import com.xzjie.cms.client.dto.ArticleDetailResponse;
-import com.xzjie.cms.client.dto.CaseResponse;
-import com.xzjie.cms.convert.CategoryConverter;
+import com.xzjie.cms.client.vo.CaseVo;
+import com.xzjie.cms.client.vo.ArticleDetailVo;
+import com.xzjie.cms.client.convert.CategoryVoConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleRecommendStatResult;
@@ -23,7 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -45,7 +44,13 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     }
 
     @Override
-    public ArticleDetailResponse getArticleDetail(Long id) {
+    public boolean updatePraise(Long id) {
+        baseRepository.updatePraise(id);
+        return true;
+    }
+
+    @Override
+    public ArticleDetailVo getArticleDetail(Long id) {
         Article article = this.getArticle(id);
         Article prev = null;
         Article next = null;
@@ -53,7 +58,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
             prev = baseRepository.findByIdLessThanAndCategoryId(id, article.getCategoryId());
             next = baseRepository.findByIdGreaterThanAndCategoryId(id, article.getCategoryId());
         }
-        return ArticleDetailResponse.create(article, prev, next);
+        return ArticleDetailVo.create(article, prev, next);
     }
 
     @Override
@@ -134,11 +139,11 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     }
 
     @Override
-    public List<CaseResponse> getCaseData(Long categoryId, Article article, Integer page, Integer size) {
+    public List<CaseVo> getCaseData(Long categoryId, Article article, Integer page, Integer size) {
         List<Category> categories = categoryRepository.findCategoriesByPidOrderBySort(categoryId);
-        List<CaseResponse> caseResponses = CategoryConverter.INSTANCE.source(categories);
+        List<CaseVo> caseResponses = CategoryVoConverter.INSTANCE.source(categories);
 
-        for (CaseResponse caseResponse : caseResponses) {
+        for (CaseVo caseResponse : caseResponses) {
             article.setCategoryId(caseResponse.getId());
             Page<Article> articlePage = this.getArticle(page, size, article);
             caseResponse.setArticles(articlePage.getContent());

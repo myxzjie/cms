@@ -1,7 +1,7 @@
 package com.xzjie.cms.service;
 
-import com.xzjie.cms.client.dto.ArticleDetailResponse;
-import com.xzjie.cms.client.dto.CaseResponse;
+import com.xzjie.cms.client.vo.CaseVo;
+import com.xzjie.cms.client.vo.ArticleDetailVo;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleRecommendStatResult;
@@ -20,13 +20,15 @@ public interface ArticleService extends BaseService<Article> {
 
     Article getArticle(Long id);
 
-    ArticleDetailResponse getArticleDetail(Long id);
+    boolean updatePraise(Long id);
+
+    ArticleDetailVo getArticleDetail(Long id);
 
     Page<Article> getArticle(Integer page, int size, Article query);
 
     Category getCategory(Long id);
 
-    List<CaseResponse> getCaseData(Long categoryId, Article article, Integer page, Integer size);
+    List<CaseVo> getCaseData(Long categoryId, Article article, Integer page, Integer size);
 
     List<Category> getCategory();
 

@@ -1,4 +1,4 @@
-package com.xzjie.cms.client.dto;
+package com.xzjie.cms.client.vo;
 
 import com.xzjie.cms.model.Article;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CaseResponse {
+public class CaseVo {
     private Long id;
 
     private Long pid;

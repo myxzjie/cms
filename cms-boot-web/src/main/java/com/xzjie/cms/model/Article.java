@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -43,10 +44,12 @@ public class Article extends BaseEntity<Article> {
 
     private Long userId;
 
+    @CreationTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime createDate;
 
+    @UpdateTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime updateDate;
@@ -54,6 +57,8 @@ public class Article extends BaseEntity<Article> {
     private Integer countRead;
 
     private Integer countComment;
+
+    private Integer countPraise;
 
     private Integer sort;
 
@@ -93,9 +98,9 @@ public class Article extends BaseEntity<Article> {
     @Transient
     private String avatar;
 
-
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.LAZY)
-    @JoinTable(name = "cms_article_label",joinColumns={@JoinColumn(name="articleId")},inverseJoinColumns={@JoinColumn(name="labelId")})
+    // cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST},
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "cms_article_label", joinColumns = {@JoinColumn(name = "articleId")}, inverseJoinColumns = {@JoinColumn(name = "labelId")})
     private List<Label> labels;
 
     @Override

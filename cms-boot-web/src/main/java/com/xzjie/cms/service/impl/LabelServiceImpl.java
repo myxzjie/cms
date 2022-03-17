@@ -4,6 +4,7 @@ import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.model.Label;
 import com.xzjie.cms.repository.LabelRepository;
 import com.xzjie.cms.service.LabelService;
+import com.xzjie.cms.vo.LabelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +20,19 @@ import java.util.List;
 @Service
 public class LabelServiceImpl extends AbstractService<Label, LabelRepository> implements LabelService {
 
-
     @Override
     public boolean update(Label obj) {
         return false;
+    }
+
+    @Override
+    public List<Label> getLabelList() {
+        return baseRepository.findAll();
+    }
+
+    @Override
+    public List<LabelVo> getLabelCounterList() {
+        return baseRepository.findLabelAll();
     }
 
     @Override

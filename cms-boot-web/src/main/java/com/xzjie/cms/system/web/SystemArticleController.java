@@ -1,20 +1,21 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.client.web.BaseController;
+import com.xzjie.cms.convert.ArticleDtoConverter;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.*;
-import com.xzjie.cms.model.Article;
-import com.xzjie.cms.model.ArticleHot;
-import com.xzjie.cms.model.ArticleRecommendStat;
-import com.xzjie.cms.model.Category;
+import com.xzjie.cms.model.*;
 import com.xzjie.cms.service.ArticleService;
+import com.xzjie.cms.service.LabelService;
+import com.xzjie.cms.vo.LabelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,23 +25,21 @@ public class SystemArticleController extends BaseController {
 
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private LabelService labelService;
 
     @PostMapping(value = "/create")
-    public Map<String, Object> create(@Valid @RequestBody ArticleRequest model) {
-        Article article = model.toArticle();
-        article.setCreateDate(LocalDateTime.now());
+    public Map<String, Object> create(@Valid @RequestBody ArticleDto model) {
+        Article article = ArticleDtoConverter.INSTANCE.target(model);
         articleService.save(article);
-
         return MapUtils.success();
     }
 
     @PutMapping(value = "/update/{id}")
-    public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody ArticleRequest model) {
-        Article article = model.toArticle();
+    public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody ArticleDto model) {
+        Article article = ArticleDtoConverter.INSTANCE.target(model);
         article.setId(id);
-
         articleService.update(article);
-
         return MapUtils.success();
     }
 
@@ -63,7 +62,7 @@ public class SystemArticleController extends BaseController {
     @Log(value = "article_list", descrption = "the article list")
     @GetMapping(value = "/list")
 //    @PreAuthorize("hasAuthority('user')")
-    public Map<String, Object> articleList(ArticleRequest article) {
+    public Map<String, Object> articleList(ArticleDto article) {
         Page<Article> articlePage = articleService.getArticle(article.getPage(), article.getSize(), article.toArticle());
         return MapUtils.success(articlePage.getContent(), articlePage.getTotalElements());
     }
@@ -159,5 +158,11 @@ public class SystemArticleController extends BaseController {
         articleService.deleteCategory(id);
 
         return MapUtils.success();
+    }
+
+    @GetMapping("/label")
+    public Map<String, Object> getLabel() {
+        List<Label> list = labelService.getLabelList();
+        return MapUtils.success(list);
     }
 }

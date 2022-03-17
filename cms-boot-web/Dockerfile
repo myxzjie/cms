@@ -7,7 +7,7 @@ RUN mkdir -p /cms-boot-web
 WORKDIR /cms-boot-web
 VOLUME /tmp
 
-COPY ./target/cms-boot-web-1.0.5.jar /cms-boot-web/app.jar
+COPY ./target/cms-boot-web-1.0.6.jar /cms-boot-web/app.jar
 #ADD agent/ /agent
 CMD ["java", "-version"]
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/cms-boot-web/app.jar"]
