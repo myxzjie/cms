@@ -1,4 +1,4 @@
-###  **cms网站** 
+###  **cms网站地址** 
 
 <!--
 [文档](https://myxzjie.github.io/cms)
@@ -22,9 +22,10 @@
 
 > - 前台访问: http://localhost:8091
 
-### 关注公众号获得后台前端源码
- >- 发送信息留下您的联系方式，code#微信号(QQ或邮箱)
- >- 客服会第一时间联系你
+### 关注公众号获得后台管理前端源码
+ >- 关注公众号回复【cms-admin】
+ >- 有问题关注公众号,发送问题信息，客服会第一时间回复你
+ >- 目前前端源码需要付费，关注公众号咨询
  
 ![输入图片说明](./docs/image/gh_955550ad6334_258.jpg "gh_955550ad6334_258.jpg")
 
@@ -56,94 +57,42 @@
 
 **QQ群：203498970**
 
+**QQ: 513961835**
+
 **有需要定制，随时欢迎……^_^**
 
 ---
 
-### 兴趣招募
-如有兴趣的朋友一起来完善这个开源项目，持续更新下去. 期待您的加入！
-
-前端更加欢迎。
-
-QQ: 513961835
-
-QQ群: 203498970
-
-
-### 事项：
+### 功能截图：
 - 
 
-更新：2021-08-18
-1. cms-boot-web docker镜像1.0.3
-2. cms-web  docker镜像1.0.3
-3. cms-admin docker镜像1.0.3
-4. cms-boot-web 初始化数据库整理
-5. docker-compose docker-compose一键构建cms-web,方便开发者自己搭建体验
+![登录](./docs/image/share/1.png "1.png")
 
-更新：2020-07-14
- 1. cms-boot-web 新增导航栏管理、i18n国际化
- 2. cms-boot-web 登录方式修改
- 3. cms-boot-web 新增docker镜像和docker部署
- 4. cms-boot-web 新增k8s部署
-  
-更新：2020-06-12
- 1. cms-boot-web 新增微信公众号配置和菜单
- 2. cms-boot-web 新增微信公众号图文管理，推送图文
- 3. cms-boot-web 新增微信公众号粉丝管理
- 4. cms-boot-web 新增微信公众号标签管理
+![登录](./docs/image/share/2.png "2.png")
 
-更新：2018-10-20
+![登录](./docs/image/share/3.png "3.png")
 
- 1. jackson-databind 高严重性安全漏洞升级2.9.5
- 
-更新：2018-10-17
+![登录](./docs/image/share/4.png "4.png")
 
- 1. spring-core 高严重性安全漏洞升级4.3.18
- 2. jackson-databind 高严重性安全漏洞升级2.8.11.1
+![登录](./docs/image/share/5.png "5.png")
 
+![登录](./docs/image/share/6.png "6.png")
 
- 更新：2018-8-31
- 1. 后台UI更换，使用新版的UI页面
- 2. 前端台登录
- 3. 优化登录注销重登问题
- 4. 优化验证码登录错误后显示
- 
+![登录](./docs/image/share/7.png "7.png")
 
+![登录](./docs/image/share/8.png "8.png")
 
----
+![登录](./docs/image/share/9.png "9.png")
 
-### 旧版的已经删除
- **1.cms网站** 
-完整开源建站平台。cms网站，拥有微信公众号模块，可以加入微信公众号使用。用于咨询网站、企业网网站，个人小网站等等。可以自己开发模板放在template目录文件夹下。也适合二次开发，完整的权限系统。
+![登录](./docs/image/share/10.png "10.png")
 
- **2.使用技术** 
-spring4 +freemarker+ shrio + ehcache + mybatis + MYSQL + H-ui.admin + Amaze UI，可以在Tomcat，jetty跑。
-3.环境要求：maven 版本3.3.9+，JDK1.7+(推荐1.8），mysql5.6+
+![登录](./docs/image/share/11.png "11.png")
 
- **3.编译** 
-运行 run.bat
-或者
-mvn clean install -Plocal -Dmaven.test.skip=true
+![登录](./docs/image/share/12.png "12.png")
+
 
  **4.MYSQL数据模型：** 
 
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093504_7ea0e4a1_411145.png "数据库模型1")
-
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/093601_a87043e3_411145.png "数据库模型2")
-
- **5.网站地址** 
-
-http://www.dev56.com/
-
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/091211_684205a6_411145.png "网站首页")
-
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/091309_05e9a7ac_411145.png "网站首页-列表")
-
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1102/091427_c7264f69_411145.png "内容页面")
+![数据模型](./docs/image/16462965296660.png "数据模型")
 
 
-在未来项目会进行完善可以不足和扩展新的功能  ^_^  
-
-网站地址: http://www.dev56.com/
-
-http://localhost:8090/swagger-ui.html
