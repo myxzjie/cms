@@ -1,19 +1,19 @@
-package com.xzjie.cms.dto;
+package com.xzjie.cms.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xzjie.cms.model.Account;
 import lombok.Data;
-import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class UserResponse {
+public class UserInfoVo {
     private String name;
     private String nickName;
     private String sex;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate birtn;
     private String phone;
     private String email;
@@ -21,7 +21,7 @@ public class UserResponse {
     private String introduction = "'I am a super administrator'";
     private List<String> roles;
 
-    private UserResponse toUserResponse(Account account) {
+    private UserInfoVo toUserResponse(Account account) {
         BeanUtils.copyProperties(account, this);
         return this;
     }
@@ -38,8 +38,8 @@ public class UserResponse {
             return this;
         }
 
-        public UserResponse build() {
-            return new UserResponse().toUserResponse(account);
+        public UserInfoVo build() {
+            return new UserInfoVo().toUserResponse(account);
         }
     }
 }

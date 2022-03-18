@@ -1,5 +1,6 @@
 package com.xzjie.cms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -67,11 +68,13 @@ public class SystemLog {
     /**
      * 开始时间
      */
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
 
     /**
      * 完成时间
      */
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime finishTime;
 
     /**
@@ -85,6 +88,7 @@ public class SystemLog {
     @Column(name = "exception_detail",columnDefinition = "text")
     private String exceptionDetail;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
 }

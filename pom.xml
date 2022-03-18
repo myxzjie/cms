@@ -5,7 +5,7 @@
 
     <groupId>com.xzjie</groupId>
     <artifactId>cms</artifactId>
-    <version>${cms.version}</version>
+    <version>1.0.6</version>
     <packaging>pom</packaging>
 
     <name>cms</name>

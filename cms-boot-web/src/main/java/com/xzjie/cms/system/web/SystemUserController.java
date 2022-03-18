@@ -12,6 +12,7 @@ import com.xzjie.cms.security.SecurityUserDetails;
 import com.xzjie.cms.service.AccountService;
 import com.xzjie.cms.service.SystemLogService;
 import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.vo.UserInfoVo;
 import com.xzjie.cms.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,60 +48,45 @@ public class SystemUserController {
     @GetMapping("/info")
     @PreAuthorize("hasAuthority('user')")
     public Map<String, Object> getUserDetails(Principal principal) {
-        Map<String, Object> map = new HashMap<>();
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         Account account = accountService.getAccount(userDetails.getUserId());
-        UserResponse user = UserResponse.UserResponseBuilder.builder().setAccount(account).build();
+        UserInfoVo user = UserInfoVo.UserResponseBuilder.builder().setAccount(account).build();
         user.setRoles(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-        map.put("code", 0);
-        map.put("data", user);
-        return map;
+        return MapUtils.success(user);
     }
 
     @ApiOperation("退出登录")
     @DeleteMapping(value = "/logout")
     public Map<String, Object> logout(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
 //        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @GetMapping("/record")
     @PreAuthorize("hasAuthority('user')")
     public Map<String, Object> record() {
-        Map<String, Object> map = new HashMap<>();
-
         List<SystemLog> records = systemLogService.getLoginSystemLog(SecurityUtils.getUsername());
-
-        map.put("code", 0);
-        map.put("data", records);
-        return map;
+        return MapUtils.success(records);
     }
 
     @PutMapping("/update")
-    public Map<String, Object> update(@Valid @RequestBody UserQueryDto user) {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, Object> update(@Valid @RequestBody UserDto user) {
         Account account = user.toAccount();
         account.setUserId(SecurityUtils.getUserId());
         account.setCreateUser(SecurityUtils.getUserId());
         accountService.update(account);
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PutMapping("/update/avatar")
     public Map<String, Object> update(@Valid @RequestBody @NotBlank String avatar) {
-        Map<String, Object> map = new HashMap<>();
         accountService.updateAvatar(SecurityUtils.getUsername(), avatar);
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PutMapping("/update/password")
     public Map<String, Object> update(@Valid @RequestBody PasswordRequest password) throws Exception {
-        Map<String, Object> map = new HashMap<>();
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         if (!passwordEncoder.matches(password.getOldPassword(), userDetails.getPassword())) {
             throw new Exception("修改失败，旧密码错误");
@@ -109,13 +95,11 @@ public class SystemUserController {
             throw new Exception("新密码不能与旧密码相同");
         }
         accountService.updatePassword(userDetails.getUserId(), passwordEncoder.encode(password.getPassword()));
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PutMapping("/update/email")
     public Map<String, Object> updateEmail(@Valid @RequestBody EmailRequest emailRequest) throws Exception {
-        Map<String, Object> map = new HashMap<>();
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         if (!passwordEncoder.matches(emailRequest.getPassword(), userDetails.getPassword())) {
             throw new Exception("密码错误");
@@ -127,16 +111,13 @@ public class SystemUserController {
             throw new Exception("验证密码错误");
         }
         accountService.updateEmail(userDetails.getUserId(), emailRequest.getEmail());
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @PostMapping("/verify/email")
     public Map<String, Object> resetEmail(@Valid @RequestBody @NotBlank String email) {
-        Map<String, Object> map = new HashMap<>();
         verifyCodeService.sendMail(email);
-        map.put("code", 0);
-        return map;
+        return MapUtils.success();
     }
 
     @GetMapping("/list")

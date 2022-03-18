@@ -12,6 +12,7 @@ import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AccountRepository;
 import com.xzjie.cms.service.AccountService;
 import com.xzjie.cms.service.RoleService;
+import com.xzjie.cms.vo.UserInfoVo;
 import com.xzjie.cms.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -82,9 +83,9 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
      * @author Wang Chen Chen
      */
 //    @Override
-//    public UserVo findUserInfo(String account) {
+//    public UserInfoVo findUserInfo(String account) {
 //        User user = findByAccount(account);
-//        UserVo result = new UserVo(user.getUid(), user.getAvatar(), user.getNickname(), user.getAccount(), user.getMail());
+//        UserInfoVo result = new UserInfoVo(user.getUid(), user.getAvatar(), user.getNickname(), user.getAccount(), user.getMail());
 //        Set<Permission> permissions = permissionService.findAllByUserId(user.getUid());
 //        Set<ButtonVo> buttonVos = new HashSet<>();
 //        Set<MenuVo> menuVos = new HashSet<>();

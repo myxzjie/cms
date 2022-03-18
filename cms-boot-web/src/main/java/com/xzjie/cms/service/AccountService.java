@@ -4,6 +4,7 @@ import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.dto.UserDto;
 import com.xzjie.cms.dto.UserQueryDto;
 import com.xzjie.cms.model.Account;
+import com.xzjie.cms.vo.UserInfoVo;
 import com.xzjie.cms.vo.UserVo;
 import org.springframework.data.domain.Page;
 

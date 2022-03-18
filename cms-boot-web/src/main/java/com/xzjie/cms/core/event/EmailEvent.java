@@ -1,6 +1,5 @@
 package com.xzjie.cms.core.event;
 
-import com.xzjie.cms.dto.UserResponse;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

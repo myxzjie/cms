@@ -66,6 +66,7 @@ public class Account extends BaseEntity<Account> {
     private String card;
 
     @Column(columnDefinition = "datetime")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate birtn;
 
     private Long createUser;

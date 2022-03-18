@@ -1,7 +1,7 @@
 package com.xzjie.cms.convert;
 
-import com.xzjie.cms.dto.UserDto;
 import com.xzjie.cms.model.Account;
+import com.xzjie.cms.vo.UserInfoVo;
 import com.xzjie.cms.vo.UserVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

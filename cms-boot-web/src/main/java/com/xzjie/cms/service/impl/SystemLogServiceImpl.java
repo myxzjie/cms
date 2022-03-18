@@ -38,8 +38,8 @@ public class SystemLogServiceImpl extends AbstractService<SystemLog, SystemLogRe
 
             predicates.add(criteriaBuilder.equal(root.get("name").as(String.class), LOGIN_NAME));
             predicates.add(criteriaBuilder.equal(root.get("username").as(String.class), username));
-            LocalDateTime startTime =  LocalDateTime.now().minusDays(30);
-            DateTimeFormatter df= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            LocalDateTime startTime =  LocalDateTime.now().minusDays(30);
+//            DateTimeFormatter df= DateTimeFormatter.ofPattern("yyyy-MM-dd");
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createDate").as(LocalDateTime.class), LocalDateTime.now().minusDays(30)));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
