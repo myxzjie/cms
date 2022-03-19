@@ -26,9 +26,7 @@ public abstract class ArticleDtoConverter implements Converter<ArticleDto, Artic
             @Mapping(source = "labels", target = "labels", ignore = true)
     })
     @Override
-    public ArticleDto source(Article target) {
-        return null;
-    }
+    public abstract ArticleDto source(Article target);
 
     @Mappings({
             @Mapping(source = "labels", target = "labels", ignore = true)

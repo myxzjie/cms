@@ -4,6 +4,7 @@ import com.xzjie.cms.quartz.dto.QuartzResult;
 import com.xzjie.cms.quartz.model.QuartzEntity;
 import com.xzjie.cms.quartz.repository.QuartzRepository;
 import com.xzjie.cms.quartz.service.QuartzService;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.quartz.*;
@@ -284,8 +285,9 @@ public class QuartzServiceImpl implements QuartzService {
      * @return
      * @throws SchedulerException
      */
+    @SneakyThrows
     @Override
-    public String deleteTask(String jobName, String jobGroup) throws SchedulerException {
+    public String deleteTask(String jobName, String jobGroup) {
         JobKey jobKey = new JobKey(jobName, jobGroup);
         JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail == null) {

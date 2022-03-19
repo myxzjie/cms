@@ -63,12 +63,13 @@
 
 ---
 
-### 功能截图：
-- 
+### 后台功能截图：
 
-![登录](./docs/image/share/1.png "1.png")
+- 想要体验功能，可以通过以上方式联系.
 
 ![登录](./docs/image/share/2.png "2.png")
+
+![登录](./docs/image/share/1.png "1.png")
 
 ![登录](./docs/image/share/3.png "3.png")
 

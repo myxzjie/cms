@@ -5,7 +5,6 @@ import com.xzjie.cms.quartz.dto.PauseQuartzRequest;
 import com.xzjie.cms.quartz.dto.QuartzRequest;
 import com.xzjie.cms.quartz.dto.QuartzResult;
 import com.xzjie.cms.quartz.service.QuartzService;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +50,7 @@ public class QuartzController {
     }
 
     @DeleteMapping("/delete")
-    public Map<String, Object> delete(@Valid @RequestBody PauseQuartzRequest quartzRequest) throws SchedulerException {
+    public Map<String, Object> delete(@Valid @RequestBody PauseQuartzRequest quartzRequest) {
         quartzService.deleteTask(quartzRequest.getJobName(), quartzRequest.getJobGroup());
         return MapUtils.create().set("code", 0);
     }

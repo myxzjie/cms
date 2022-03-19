@@ -6,9 +6,21 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.beans.PropertyEditorSupport;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
+@ControllerAdvice
 public abstract class BaseController {
     @Autowired
     protected HttpServletRequest request;
@@ -80,4 +92,50 @@ public abstract class BaseController {
     public Subject getSubject() {
         return SecurityUtils.getSubject();
     }
+
+    /**
+     * Date格式化字符串
+     */
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    /**
+     * DateTime格式化字符串
+     */
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * Time格式化字符串
+     */
+    private static final String TIME_FORMAT = "HH:mm:ss";
+
+//    @InitBinder
+//    protected void initBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+//            @Override
+//            public void setAsText(String text) throws IllegalArgumentException {
+//                setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DATE_FORMAT)));
+//            }
+//        });
+//        binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+//            @Override
+//            public void setAsText(String text) throws IllegalArgumentException {
+//                setValue(LocalDateTime.parse(text, DateTimeFormatter.ofPattern(DATETIME_FORMAT)));
+//            }
+//        });
+//        binder.registerCustomEditor(LocalTime.class, new PropertyEditorSupport() {
+//            @Override
+//            public void setAsText(String text) throws IllegalArgumentException {
+//                setValue(LocalTime.parse(text, DateTimeFormatter.ofPattern(TIME_FORMAT)));
+//            }
+//        });
+//        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+//            @Override
+//            public void setAsText(String text) throws IllegalArgumentException {
+//                SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_FORMAT);
+//                try {
+//                    setValue(formatter.parse(text));
+//                } catch (Exception e) {
+//                    throw new RuntimeException(String.format("Error parsing %s to Date", text));
+//                }
+//            }
+//        });
+//    }
 }
