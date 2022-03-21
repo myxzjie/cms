@@ -1,8 +1,8 @@
 package com.xzjie.cms.service;
 
 import com.xzjie.cms.core.service.BaseService;
-import com.xzjie.cms.dto.AdPositionRequest;
-import com.xzjie.cms.dto.AdRequest;
+import com.xzjie.cms.dto.AdPositionDto;
+import com.xzjie.cms.dto.AdDto;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.AdPosition;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface AdService extends BaseService<Ad> {
 
-    Page<Ad> getAd(AdRequest request);
+    Page<Ad> getAd(AdDto request);
 
     /**
      * 分页获得广告位置
@@ -24,7 +24,7 @@ public interface AdService extends BaseService<Ad> {
      * @param query
      * @return
      */
-    Page<AdPosition> getPosition(AdPositionRequest query);
+    Page<AdPosition> getPosition(AdPositionDto query);
 
     /**
      * 通过广告位置ID获得广告数据

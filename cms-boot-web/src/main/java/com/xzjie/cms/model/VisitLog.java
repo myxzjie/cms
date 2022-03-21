@@ -20,7 +20,7 @@ public class VisitLog extends BaseEntity<VisitLog> {
     private Long id;
     private String ip;
     private String type;
-    @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern="yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime pvDate;
     private String fromName;

@@ -2,8 +2,8 @@ package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.SecurityUtils;
-import com.xzjie.cms.dto.AdPositionRequest;
-import com.xzjie.cms.dto.AdRequest;
+import com.xzjie.cms.dto.AdPositionDto;
+import com.xzjie.cms.dto.AdDto;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.AdPosition;
 import com.xzjie.cms.service.AdService;
@@ -24,7 +24,7 @@ public class SystemAdController {
 
     @PostMapping("/create")
     @ResponseBody
-    public Map<String, Object> create(@Valid @RequestBody AdRequest adRequest) {
+    public Map<String, Object> create(@Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setClickCount(0);
         adService.save(ad);
@@ -34,7 +34,7 @@ public class SystemAdController {
 
     @PutMapping("/update/{id}")
     @ResponseBody
-    public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody AdRequest adRequest) {
+    public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setId(id);
         adService.update(ad);
@@ -49,7 +49,7 @@ public class SystemAdController {
 
     @GetMapping("/list")
     @ResponseBody
-    public Map<String, Object> getAd(AdRequest request) {
+    public Map<String, Object> getAd(AdDto request) {
         Page<Ad> page = adService.getAd(request);
         return MapUtils.success(page.getContent(), page.getTotalElements());
     }
@@ -62,7 +62,7 @@ public class SystemAdController {
      */
     @GetMapping("/position/list")
     @ResponseBody
-    public Map<String, Object> getPosition(AdPositionRequest positionRequest) {
+    public Map<String, Object> getPosition(AdPositionDto positionRequest) {
         Page<AdPosition> page = adService.getPosition(positionRequest);
         return MapUtils.success(page.getContent(), page.getTotalElements());
     }
@@ -76,7 +76,7 @@ public class SystemAdController {
 
     @PostMapping("/position/create")
     @ResponseBody
-    public Map<String, Object> createPosition(@Valid @RequestBody AdPositionRequest positionRequest) {
+    public Map<String, Object> createPosition(@Valid @RequestBody AdPositionDto positionRequest) {
         AdPosition position = positionRequest.toAdPosition();
         position.setUserId(SecurityUtils.getUserId());
         adService.savePosition(position);
@@ -86,7 +86,7 @@ public class SystemAdController {
 
     @PutMapping("/position/update/{id}")
     @ResponseBody
-    public Map<String, Object> updatePosition(@PathVariable Long id, @Valid @RequestBody AdPositionRequest positionRequest) {
+    public Map<String, Object> updatePosition(@PathVariable Long id, @Valid @RequestBody AdPositionDto positionRequest) {
         AdPosition position = positionRequest.toAdPosition();
         position.setId(id);
         adService.updatePosition(position);

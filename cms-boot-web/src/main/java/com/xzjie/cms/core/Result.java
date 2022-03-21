@@ -7,7 +7,6 @@ import lombok.Getter;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.LinkedHashMap;
 
 @Getter
 public final class Result<T extends Object> {

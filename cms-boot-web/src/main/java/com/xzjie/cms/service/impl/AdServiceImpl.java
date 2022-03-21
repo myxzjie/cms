@@ -1,8 +1,8 @@
 package com.xzjie.cms.service.impl;
 
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.AdPositionRequest;
-import com.xzjie.cms.dto.AdRequest;
+import com.xzjie.cms.dto.AdPositionDto;
+import com.xzjie.cms.dto.AdDto;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.AdPosition;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
@@ -15,11 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,14 +56,14 @@ public class AdServiceImpl extends AbstractService<Ad, AdRepository> implements 
 
 
     @Override
-    public Page<Ad> getAd(AdRequest request) {
+    public Page<Ad> getAd(AdDto request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("id").descending());
         Specification<Ad> specification = SpecSearchCriteria.builder(request);
         return baseRepository.findAll(specification, pageable);
     }
 
     @Override
-    public Page<AdPosition> getPosition(AdPositionRequest query) {
+    public Page<AdPosition> getPosition(AdPositionDto query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
         Specification<AdPosition> specification = SpecSearchCriteria.builder(query);
         return adPositionRepository.findAll(specification, pageable);
