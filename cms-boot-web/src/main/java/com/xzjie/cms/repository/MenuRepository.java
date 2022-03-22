@@ -51,6 +51,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificat
      */
     @Query(nativeQuery = true, value = "SELECT DISTINCT m.* FROM sys_menu m INNER JOIN sys_permission p on m.id=p.menu_id\n" +
             "INNER JOIN sys_role r ON p.role_id=r.id\n" +
-            "WHERE m.state =1 and r.role_code in ?1 ")
+            "WHERE m.state =1 and r.role_code in ?1 ORDER BY m.sort DESC,id ASC")
     List<Menu> findMenuByRoles(Set<String> roles);
 }

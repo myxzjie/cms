@@ -1,17 +1,17 @@
 package com.xzjie.cms.service.impl;
 
+import com.xzjie.cms.client.dto.SearchDto;
 import com.xzjie.cms.client.vo.CaseVo;
 import com.xzjie.cms.client.vo.ArticleDetailVo;
 import com.xzjie.cms.client.convert.CategoryVoConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.ArticleHotResult;
+import com.xzjie.cms.dto.ArticleQueryDto;
 import com.xzjie.cms.dto.ArticleRecommendStatResult;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.enums.Sorting;
-import com.xzjie.cms.model.Article;
-import com.xzjie.cms.model.ArticleHot;
-import com.xzjie.cms.model.ArticleRecommendStat;
-import com.xzjie.cms.model.Category;
+import com.xzjie.cms.model.*;
+import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.ArticleHotRepository;
 import com.xzjie.cms.repository.ArticleRecommendStatRepository;
 import com.xzjie.cms.repository.ArticleRepository;
@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -62,69 +63,70 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     }
 
     @Override
-    public Page<Article> getArticle(Integer page, int size, Article query) {
+    public Page<Article> getArticle(SearchDto dto) {
         Sort sort = Sort.by("id").descending();
-        if (Sorting.asc.equals(query.getSorting())) {
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
+
+        Specification<Article> specification = SpecSearchCriteria.builder(dto);
+        return baseRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Page<Article> getArticle(ArticleQueryDto dto) {
+        Sort sort = Sort.by("id").descending();
+        if (Sorting.asc.equals(dto.getSorting())) {
             sort = Sort.by("id").ascending();
         }
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Article> articles = baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (query == null) {
-                return null;
-            }
-            if (null != query.getRecommendStat()) {
-//                String attribute = query.getRecommendStat().getClass().getName();
-                predicates.add(criteriaBuilder.equal(root.get("recommendStat").as(String.class), query.getRecommendStat()));
-            }
-            if (null != query.getCategoryId()) {
-                predicates.add(criteriaBuilder.equal(root.get("categoryId").as(String.class), query.getCategoryId()));
-            }
-            if (null != query.getTitle()) {
-                predicates.add(criteriaBuilder.like(root.get("title").as(String.class), "%" + query.getTitle() + "%"));
-            }
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
 
-            //add add criteria to predicates
-//            for (SearchCriteria criteria : list) {
-//                if (criteria.getOperation().equals(SearchOperation.GREATER_THAN)) {
-//                    predicates.add(builder.greaterThan(
-//                            root.get(criteria.getKey()), criteria.getValue().toString()));
-//                } else if (criteria.getOperation().equals(SearchOperation.LESS_THAN)) {
-//                    predicates.add(builder.lessThan(
-//                            root.get(criteria.getKey()), criteria.getValue().toString()));
-//                } else if (criteria.getOperation().equals(SearchOperation.GREATER_THAN_EQUAL)) {
-//                    predicates.add(builder.greaterThanOrEqualTo(
-//                            root.get(criteria.getKey()), criteria.getValue().toString()));
-//                } else if (criteria.getOperation().equals(SearchOperation.LESS_THAN_EQUAL)) {
-//                    predicates.add(builder.lessThanOrEqualTo(
-//                            root.get(criteria.getKey()), criteria.getValue().toString()));
-//                } else if (criteria.getOperation().equals(SearchOperation.NOT_EQUAL)) {
-//                    predicates.add(builder.notEqual(
-//                            root.get(criteria.getKey()), criteria.getValue()));
-//                } else if (criteria.getOperation().equals(SearchOperation.EQUAL)) {
-//                    predicates.add(builder.equal(
-//                            root.get(criteria.getKey()), criteria.getValue()));
-//                } else if (criteria.getOperation().equals(SearchOperation.MATCH)) {
-//                    predicates.add(builder.like(
-//                            builder.lower(root.get(criteria.getKey())),
-//                            "%" + criteria.getValue().toString().toLowerCase() + "%"));
-//                } else if (criteria.getOperation().equals(SearchOperation.MATCH_END)) {
-//                    predicates.add(builder.like(
-//                            builder.lower(root.get(criteria.getKey())),
-//                            criteria.getValue().toString().toLowerCase() + "%"));
-//                } else if (criteria.getOperation().equals(SearchOperation.MATCH_START)) {
-//                    predicates.add(builder.like(
-//                            builder.lower(root.get(criteria.getKey())),
-//                            "%" + criteria.getValue().toString().toLowerCase()));
-//                } else if (criteria.getOperation().equals(SearchOperation.IN)) {
-//                    predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()));
-//                } else if (criteria.getOperation().equals(SearchOperation.NOT_IN)) {
-//                    predicates.add(builder.not(root.get(criteria.getKey())).in(criteria.getValue()));
-//                }
+        Specification<Article> specification = SpecSearchCriteria.builder(dto);
+        Page<Article> articles = baseRepository.findAll(specification, pageable);
+//        Page<Article> articles = baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+//            List<Predicate> predicates = new ArrayList<>();
+//            if (query == null) {
+//                return null;
 //            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        }, pageable);
+//            //add add criteria to predicates
+////            for (SearchCriteria criteria : list) {
+////                if (criteria.getOperation().equals(SearchOperation.GREATER_THAN)) {
+////                    predicates.add(builder.greaterThan(
+////                            root.get(criteria.getKey()), criteria.getValue().toString()));
+////                } else if (criteria.getOperation().equals(SearchOperation.LESS_THAN)) {
+////                    predicates.add(builder.lessThan(
+////                            root.get(criteria.getKey()), criteria.getValue().toString()));
+////                } else if (criteria.getOperation().equals(SearchOperation.GREATER_THAN_EQUAL)) {
+////                    predicates.add(builder.greaterThanOrEqualTo(
+////                            root.get(criteria.getKey()), criteria.getValue().toString()));
+////                } else if (criteria.getOperation().equals(SearchOperation.LESS_THAN_EQUAL)) {
+////                    predicates.add(builder.lessThanOrEqualTo(
+////                            root.get(criteria.getKey()), criteria.getValue().toString()));
+////                } else if (criteria.getOperation().equals(SearchOperation.NOT_EQUAL)) {
+////                    predicates.add(builder.notEqual(
+////                            root.get(criteria.getKey()), criteria.getValue()));
+////                } else if (criteria.getOperation().equals(SearchOperation.EQUAL)) {
+////                    predicates.add(builder.equal(
+////                            root.get(criteria.getKey()), criteria.getValue()));
+////                } else if (criteria.getOperation().equals(SearchOperation.MATCH)) {
+////                    predicates.add(builder.like(
+////                            builder.lower(root.get(criteria.getKey())),
+////                            "%" + criteria.getValue().toString().toLowerCase() + "%"));
+////                } else if (criteria.getOperation().equals(SearchOperation.MATCH_END)) {
+////                    predicates.add(builder.like(
+////                            builder.lower(root.get(criteria.getKey())),
+////                            criteria.getValue().toString().toLowerCase() + "%"));
+////                } else if (criteria.getOperation().equals(SearchOperation.MATCH_START)) {
+////                    predicates.add(builder.like(
+////                            builder.lower(root.get(criteria.getKey())),
+////                            "%" + criteria.getValue().toString().toLowerCase()));
+////                } else if (criteria.getOperation().equals(SearchOperation.IN)) {
+////                    predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()));
+////                } else if (criteria.getOperation().equals(SearchOperation.NOT_IN)) {
+////                    predicates.add(builder.not(root.get(criteria.getKey())).in(criteria.getValue()));
+////                }
+////            }
+//
+//            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//        }, pageable);
 
         articles.forEach(article -> {
             Category category = categoryRepository.getOne(article.getCategoryId());
@@ -139,13 +141,13 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     }
 
     @Override
-    public List<CaseVo> getCaseData(Long categoryId, Article article, Integer page, Integer size) {
+    public List<CaseVo> getCaseData(Long categoryId, ArticleQueryDto query) {
         List<Category> categories = categoryRepository.findCategoriesByPidOrderBySort(categoryId);
         List<CaseVo> caseResponses = CategoryVoConverter.INSTANCE.source(categories);
 
         for (CaseVo caseResponse : caseResponses) {
-            article.setCategoryId(caseResponse.getId());
-            Page<Article> articlePage = this.getArticle(page, size, article);
+            query.setCategoryId(caseResponse.getId());
+            Page<Article> articlePage = this.getArticle(query);
             caseResponse.setArticles(articlePage.getContent());
         }
         return caseResponses;

@@ -46,7 +46,7 @@ public class SystemUserController {
 
     @Log(value = "user_info", descrption = "获得用户信息")
     @GetMapping("/info")
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAuthority('user') or hasAuthority('member')")
     public Map<String, Object> getUserDetails(Principal principal) {
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         Account account = accountService.getAccount(userDetails.getUserId());
@@ -64,7 +64,7 @@ public class SystemUserController {
     }
 
     @GetMapping("/record")
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAuthority('user') or hasAuthority('member')")
     public Map<String, Object> record() {
         List<SystemLog> records = systemLogService.getLoginSystemLog(SecurityUtils.getUsername());
         return MapUtils.success(records);
@@ -127,7 +127,8 @@ public class SystemUserController {
     }
 
     @PostMapping("/create")
-    public Map<String, Object> create(@Valid @RequestBody UserDto dto) {
+    public Map<String, Object> create(@Validated(UserDto.Create.class) @RequestBody UserDto dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         accountService.save(dto);
         return MapUtils.success();
     }

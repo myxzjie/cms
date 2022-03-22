@@ -13,12 +13,12 @@ import java.util.List;
 
 public class SpecSearchCriteria {
 
-    public static <T,Q> Specification<T> builder(Q query) {
+    public static <T, Q> Specification<T> builder(Q query) {
         SpecSearchCriteria searchCriteria = new SpecSearchCriteria();
         return searchCriteria.toSpecification(query);
     }
 
-    public <T,Q> Specification<T> toSpecification(Q query) {
+    public <T, Q> Specification<T> toSpecification(Q query) {
         return ((root, criteriaQuery, criteriaBuilder) -> {
             List<Field> fields = getFields(query.getClass());
             List<Predicate> predicates = new ArrayList<>();
@@ -51,7 +51,7 @@ public class SpecSearchCriteria {
                         predicates.add(criteriaBuilder.or(blurPredicates.toArray(new Predicate[blurPredicates.size()])));
                     }
 
-                    if (StringUtils.hasText(column)) {
+                    if (StringUtils.hasText(column) && blurry.length == 0) {
                         switch (conditionType) {
                             case EQUAL:
                                 predicates.add(criteriaBuilder.equal(root.get(column), value));

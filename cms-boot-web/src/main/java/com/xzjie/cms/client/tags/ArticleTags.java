@@ -2,6 +2,7 @@ package com.xzjie.cms.client.tags;
 
 import com.xzjie.cms.client.freemarker.AbstractTemplateModel;
 import com.xzjie.cms.client.freemarker.annotation.FreemarkerComponent;
+import com.xzjie.cms.dto.ArticleQueryDto;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.service.ArticleService;
 import freemarker.core.Environment;
@@ -33,9 +34,11 @@ public class ArticleTags extends AbstractTemplateModel {
 
         List<Article> list = null;
         try {
-            Article article = new Article();
-            article.setCategoryId(categoryId);
-            Page<Article> articlePage = articleService.getArticle(page, size, article);
+            ArticleQueryDto query = new ArticleQueryDto();
+            query.setCategoryId(categoryId);
+            query.setPage(page);
+            query.setSize(size);
+            Page<Article> articlePage = articleService.getArticle(query);
             list = articlePage.getContent();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,10 +1,12 @@
 package com.xzjie.cms.client.web;
 
+import com.xzjie.cms.client.dto.SearchDto;
 import com.xzjie.cms.client.vo.ArticleDetailVo;
 import com.xzjie.cms.client.vo.CaseVo;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.ArticleDto;
 import com.xzjie.cms.dto.ArticleHotResult;
+import com.xzjie.cms.dto.ArticleQueryDto;
 import com.xzjie.cms.dto.BasePageDto;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Category;
@@ -28,6 +30,12 @@ public class AppArticleController extends BaseController {
     @Autowired
     private LabelService labelService;
 
+    @GetMapping(value = "/search")
+    public Map<String, Object> getSearch(SearchDto query) {
+        Page<Article> resultPage = articleService.getArticle(query);
+        return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
+    }
+
     @GetMapping(value = "/hot")
     public Map<String, Object> getArticleHot(BasePageDto pageRequest) {
         Page<ArticleHotResult> hotResultPage = articleService.getArticleHot(pageRequest.getPage(), pageRequest.getSize());
@@ -35,10 +43,9 @@ public class AppArticleController extends BaseController {
     }
 
     @GetMapping(value = "/recommend-stat")
-    public Map<String, Object> recommendStat(ArticleDto articleRequest) {
-        Article query = articleRequest.toArticle();
+    public Map<String, Object> recommendStat(ArticleQueryDto query) {
         query.setRecommendStat(1);
-        Page<Article> recommendsPage = articleService.getArticle(articleRequest.getPage(), articleRequest.getSize(), query);
+        Page<Article> recommendsPage = articleService.getArticle(query);
         List<Article> articles = recommendsPage.getContent();
         if (articles.size() < 1) {
             return MapUtils.success();
@@ -56,18 +63,17 @@ public class AppArticleController extends BaseController {
     }
 
     @PostMapping("/praise/{id}")
-    public Map<String,Object> praise(@PathVariable Long id){
+    public Map<String, Object> praise(@PathVariable Long id) {
         articleService.updatePraise(id);
         return MapUtils.success();
     }
 
     @GetMapping(value = "/category/{id}")
-    public Map<String, Object> category(@PathVariable Long id, ArticleDto articleRequest) {
+    public Map<String, Object> category(@PathVariable Long id, ArticleQueryDto query) {
         Map<String, Object> model = new HashMap<>();
         Category category = articleService.getCategory(id);
-        Article article = articleRequest.toArticle();
-        article.setCategoryId(id);
-        Page<Article> articlePage = articleService.getArticle(articleRequest.getPage(), articleRequest.getSize(), article);
+        query.setCategoryId(id);
+        Page<Article> articlePage = articleService.getArticle(query);
 
         model.put("total", articlePage.getTotalElements());
         model.put("articles", articlePage.getContent());
@@ -77,9 +83,8 @@ public class AppArticleController extends BaseController {
     }
 
     @GetMapping(value = "/cases/{id}")
-    public Map<String, Object> cases(@PathVariable Long id, ArticleDto articleRequest) {
-        Article article = articleRequest.toArticle();
-        List<CaseVo> categories = articleService.getCaseData(id, article, articleRequest.getPage(), articleRequest.getSize());
+    public Map<String, Object> cases(@PathVariable Long id, ArticleQueryDto query) {
+        List<CaseVo> categories = articleService.getCaseData(id, query);
         return MapUtils.success(categories);
     }
 }

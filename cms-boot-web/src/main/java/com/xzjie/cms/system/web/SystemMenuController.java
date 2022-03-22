@@ -22,7 +22,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/menu")
-public class MenuController {
+public class SystemMenuController {
 
     @Autowired
     private MenuService menuService;

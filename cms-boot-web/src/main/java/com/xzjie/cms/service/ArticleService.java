@@ -1,9 +1,11 @@
 package com.xzjie.cms.service;
 
+import com.xzjie.cms.client.dto.SearchDto;
 import com.xzjie.cms.client.vo.CaseVo;
 import com.xzjie.cms.client.vo.ArticleDetailVo;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.dto.ArticleHotResult;
+import com.xzjie.cms.dto.ArticleQueryDto;
 import com.xzjie.cms.dto.ArticleRecommendStatResult;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.model.Article;
@@ -24,11 +26,13 @@ public interface ArticleService extends BaseService<Article> {
 
     ArticleDetailVo getArticleDetail(Long id);
 
-    Page<Article> getArticle(Integer page, int size, Article query);
+    Page<Article> getArticle(SearchDto dto);
+
+    Page<Article> getArticle(ArticleQueryDto dto);
 
     Category getCategory(Long id);
 
-    List<CaseVo> getCaseData(Long categoryId, Article article, Integer page, Integer size);
+    List<CaseVo> getCaseData(Long categoryId,ArticleQueryDto query);
 
     List<Category> getCategory();
 

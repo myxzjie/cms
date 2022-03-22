@@ -8,6 +8,8 @@
 <!-- 地址(临时)：[http://cms.dev56.com/](http://cms.dev56.com/) -->
 地址：[http://cms-admin.dev56.com/](http://cms-admin.dev56.com/)
 
+账号密码: admin/123qwe
+
 ### docker一键部署体验cms网站
 
 > - 进入qq群下载 docker-compose.yml 

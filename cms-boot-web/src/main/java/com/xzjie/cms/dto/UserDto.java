@@ -13,15 +13,18 @@ import java.util.List;
 
 @Data
 public class UserDto extends Dto {
-    @NotBlank(groups = {Update.class})
+    @NotBlank(groups = {Create.class, Update.class})
     private String name;
+    @NotBlank(groups = {Create.class})
+    private String password;
     private String phone;
     private String email;
     private String nickName;
+    @NotNull(groups = {Create.class, Update.class})
     private String avatar;
     private String sex;
     private LocalDate birtn;
-    @NotNull(groups = {Update.class})
+    @NotNull(groups = {Create.class, Update.class})
     private Integer locked;
     private List<Long> roles;
 

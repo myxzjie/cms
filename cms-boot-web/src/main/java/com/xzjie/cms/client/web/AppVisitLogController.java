@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -25,6 +26,7 @@ public class AppVisitLogController {
     @PostMapping("/save")
     public Map<String, Object> createVisit(@RequestBody VisitLog model) {
         model.setIp(RequestHolder.getIp());
+        model.setPvDate(LocalDateTime.now());
         visitLogService.save(model);
         return MapUtils.success();
     }

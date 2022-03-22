@@ -62,8 +62,8 @@ public class SystemArticleController extends BaseController {
     @Log(value = "article_list", descrption = "the article list")
     @GetMapping(value = "/list")
 //    @PreAuthorize("hasAuthority('user')")
-    public Map<String, Object> articleList(ArticleDto article) {
-        Page<Article> articlePage = articleService.getArticle(article.getPage(), article.getSize(), article.toArticle());
+    public Map<String, Object> articleList(ArticleQueryDto query) {
+        Page<Article> articlePage = articleService.getArticle(query);
         return MapUtils.success(articlePage.getContent(), articlePage.getTotalElements());
     }
 
