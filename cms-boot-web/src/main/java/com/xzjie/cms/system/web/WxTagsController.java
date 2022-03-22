@@ -2,14 +2,10 @@ package com.xzjie.cms.system.web;
 
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.WxArticleTemplateRequest;
 import com.xzjie.cms.dto.WxFansTagRequest;
 import com.xzjie.cms.dto.WxTagsRequest;
-import com.xzjie.cms.model.WxArticleTemplate;
-import com.xzjie.cms.model.WxFansTag;
 import com.xzjie.cms.model.WxTags;
 import com.xzjie.cms.service.WxTagsService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;

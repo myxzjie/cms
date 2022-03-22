@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.List;
 
 @Data
-public class WxArticleTemplateRequest extends BasePageDto {
+public class WxArticleTemplateDto extends BasePageDto {
     private Long id;
     private Long tagId;
     private String templateName;

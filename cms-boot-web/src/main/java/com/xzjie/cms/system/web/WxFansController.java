@@ -1,7 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.WxAccountFansRequest;
+import com.xzjie.cms.dto.WxAccountFansDto;
 import com.xzjie.cms.model.WxAccountFans;
 import com.xzjie.cms.service.WxAccountFansService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,14 @@ public class WxFansController {
     private WxAccountFansService accountFansService;
 
     @GetMapping(value = "/list")
-    public Map<String, Object> articleList(WxAccountFansRequest fans) {
+    public Map<String, Object> articleList(WxAccountFansDto fans) {
         Page<WxAccountFans> accountFansPage = accountFansService.getAccountFans(fans.getPage(), fans.getSize(), fans.toAccountFans(), fans.getTagId());
         return MapUtils.success(accountFansPage.getContent(), accountFansPage.getTotalElements());
     }
 
     @GetMapping(value = "/data")
 //    @PreAuthorize("hasAuthority('user')")
-    public Map<String, Object> getAccountFansList(WxAccountFansRequest fans) {
+    public Map<String, Object> getAccountFansList(WxAccountFansDto fans) {
         List<WxAccountFans> accountFans = accountFansService.getAccountFans(fans.toAccountFans());
         return MapUtils.success(accountFans);
     }

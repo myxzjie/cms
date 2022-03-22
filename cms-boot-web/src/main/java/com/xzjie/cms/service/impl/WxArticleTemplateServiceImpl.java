@@ -10,6 +10,7 @@ import com.xzjie.cms.enums.MediaFileType;
 import com.xzjie.cms.model.WxAccountFans;
 import com.xzjie.cms.model.WxArticle;
 import com.xzjie.cms.model.WxArticleTemplate;
+import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.WxArticleRepository;
 import com.xzjie.cms.repository.WxArticleTemplateRepository;
 import com.xzjie.cms.service.WechatService;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -77,19 +79,10 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     }
 
     @Override
-    public Page<WxArticleTemplate> getArticleTemplate(Integer page, int size, WxArticleTemplate query) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        return baseRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (query == null) {
-                return null;
-            }
-            if (null != query.getTemplateName()) {
-                predicates.add(criteriaBuilder.equal(root.get("templateName").as(String.class), query.getTemplateName()));
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        }, pageable);
+    public Page<WxArticleTemplate> getArticleTemplate(WxArticleTemplateQueryDto query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
+        Specification<WxArticleTemplate> specification = SpecSearchCriteria.builder(query);
+        return baseRepository.findAll(specification, pageable);
     }
 
     @Override

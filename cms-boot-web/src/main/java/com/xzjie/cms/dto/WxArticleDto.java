@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class WxArticleRequest {
+public class WxArticleDto {
 
     @NotNull
     private Long id;

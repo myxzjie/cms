@@ -2,6 +2,7 @@ package com.xzjie.cms.service;
 
 
 import com.xzjie.cms.core.service.BaseService;
+import com.xzjie.cms.dto.WxArticleTemplateQueryDto;
 import com.xzjie.cms.model.WxArticle;
 import com.xzjie.cms.model.WxArticleTemplate;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,7 @@ public interface WxArticleTemplateService extends BaseService<WxArticleTemplate>
 
     List<WxArticleTemplate> getArticleTemplate(WxArticleTemplate query);
 
-    Page<WxArticleTemplate> getArticleTemplate(Integer page, int size, WxArticleTemplate query);
+    Page<WxArticleTemplate> getArticleTemplate(WxArticleTemplateQueryDto query);
 
     List<WxArticle> getArticle(String newId);
 
