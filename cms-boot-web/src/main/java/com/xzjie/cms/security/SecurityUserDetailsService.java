@@ -1,8 +1,10 @@
 package com.xzjie.cms.security;
 
 import com.xzjie.cms.model.Account;
+import com.xzjie.cms.model.Menu;
 import com.xzjie.cms.model.Role;
 import com.xzjie.cms.service.AccountService;
+import com.xzjie.cms.service.MenuService;
 import com.xzjie.cms.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -25,6 +28,8 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private MenuService menuService;
 
     @Override
     public SecurityUserDetails loadUserByUsername(String s) {
@@ -52,6 +57,12 @@ public class SecurityUserDetailsService implements UserDetailsService {
         if (roles == null) {
             throw new AccessDeniedException("角色权限错误");
         }
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleCode())).collect(Collectors.toSet());
+        Set<String> permissions = roles.stream().map(Role::getRoleCode).collect(Collectors.toSet());
+
+        List<Menu> menus = menuService.getMenuByRoles(permissions);
+
+        permissions.addAll(menus.stream().filter(menu -> StringUtils.hasText(menu.getPermission())).map(Menu::getPermission).collect(Collectors.toSet()));
+
+        return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 }

@@ -47,8 +47,10 @@ public interface MenuService extends BaseService<Menu> {
 //     */
 //    Set<Menu> getDeleteMenus(List<Menu> menuList, Set<Menu> menuSet);
 //
+
     /**
      * 获取菜单树
+     *
      * @param pid /
      * @return /
      */
@@ -59,7 +61,8 @@ public interface MenuService extends BaseService<Menu> {
     List<MenuResponse> getMenus();
 
     void delete(Set<Long> ids);
-//
+
+    //
 //    /**
 //     * 根据pid查询
 //     * @param pid /
@@ -79,7 +82,7 @@ public interface MenuService extends BaseService<Menu> {
 //     * @param roles /
 //     * @return /
 //     */
-//    List<MenuDTO> findByRoles(List<RoleSmallDTO> roles);
+    List<Menu> getMenuByRoles(Set<String> roles);
 //
 //    /**
 //     * 构建菜单树

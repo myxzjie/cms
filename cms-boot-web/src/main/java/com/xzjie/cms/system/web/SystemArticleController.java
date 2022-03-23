@@ -11,6 +11,7 @@ import com.xzjie.cms.service.LabelService;
 import com.xzjie.cms.vo.LabelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,7 +62,7 @@ public class SystemArticleController extends BaseController {
 
     @Log(value = "article_list", descrption = "the article list")
     @GetMapping(value = "/list")
-//    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("@permission.hasPermission('administrator','article:all','article:list')")
     public Map<String, Object> articleList(ArticleQueryDto query) {
         Page<Article> articlePage = articleService.getArticle(query);
         return MapUtils.success(articlePage.getContent(), articlePage.getTotalElements());

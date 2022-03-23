@@ -9,6 +9,7 @@ import com.xzjie.cms.model.AdPosition;
 import com.xzjie.cms.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,7 +34,7 @@ public class SystemAdController {
 
 
     @PutMapping("/update/{id}")
-    @ResponseBody
+//    @PreAuthorize("hasPermission('/user/user/list',new Object[]{RoleType.ADMINISTRATOR.getCode()})")
     public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setId(id);
@@ -49,6 +50,7 @@ public class SystemAdController {
 
     @GetMapping("/list")
     @ResponseBody
+    @PreAuthorize("@permission.hasPermission('administrator','ad:list')")
     public Map<String, Object> getAd(AdDto request) {
         Page<Ad> page = adService.getAd(request);
         return MapUtils.success(page.getContent(), page.getTotalElements());

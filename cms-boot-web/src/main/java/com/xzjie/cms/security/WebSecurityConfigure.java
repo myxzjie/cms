@@ -2,6 +2,7 @@ package com.xzjie.cms.security;
 
 //import com.xzjie.cms.security.filter.SecurityAuthenticationFilter;
 import com.xzjie.cms.security.authentication.*;
+import com.xzjie.cms.security.permission.CustomPermissionEvaluator;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
 import com.xzjie.cms.security.token.TokenConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
@@ -108,6 +110,14 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
+
+//    // 注入自定义url和权限验证器
+//    @Bean
+//    public DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler() {
+//        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+//        handler.setPermissionEvaluator(new CustomPermissionEvaluator());
+//        return handler;
+//    }
 
     @Override
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

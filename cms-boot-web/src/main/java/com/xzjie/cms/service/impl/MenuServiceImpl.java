@@ -246,6 +246,11 @@ public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> imple
         });
     }
 
+    @Override
+    public List<Menu> getMenuByRoles(Set<String> roles) {
+        return baseRepository.findMenuByRoles(roles);
+    }
+
     private Set<Long> getIds(Long pid) {
         Set<Long> ids = new HashSet<>();
         ids.add(pid);
