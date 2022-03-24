@@ -24,7 +24,7 @@ public class SystemAdController {
     private AdService adService;
 
     @PostMapping("/create")
-    @ResponseBody
+    @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:add')")
     public Map<String, Object> create(@Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setClickCount(0);
@@ -35,6 +35,7 @@ public class SystemAdController {
 
     @PutMapping("/update/{id}")
 //    @PreAuthorize("hasPermission('/user/user/list',new Object[]{RoleType.ADMINISTRATOR.getCode()})")
+    @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:edit')")
     public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setId(id);
@@ -43,14 +44,14 @@ public class SystemAdController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
+    @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:delete')")
     public Map<String, Object> delete(@PathVariable Long id) {
         adService.delete(id);
         return MapUtils.success();
     }
 
     @GetMapping("/list")
-    @ResponseBody
-    @PreAuthorize("@permission.hasPermission('administrator','ad:list')")
+    @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:list')")
     public Map<String, Object> getAd(AdDto request) {
         Page<Ad> page = adService.getAd(request);
         return MapUtils.success(page.getContent(), page.getTotalElements());
@@ -63,21 +64,21 @@ public class SystemAdController {
      * @return
      */
     @GetMapping("/position/list")
-    @ResponseBody
+    @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:list')")
     public Map<String, Object> getPosition(AdPositionDto positionRequest) {
         Page<AdPosition> page = adService.getPosition(positionRequest);
         return MapUtils.success(page.getContent(), page.getTotalElements());
     }
 
     @GetMapping("/position/data")
-    @ResponseBody
+    @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:list')")
     public Map<String, Object> getPositionData() {
         List<AdPosition> positions = adService.getPositionData();
         return MapUtils.success(positions);
     }
 
     @PostMapping("/position/create")
-    @ResponseBody
+    @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:add')")
     public Map<String, Object> createPosition(@Valid @RequestBody AdPositionDto positionRequest) {
         AdPosition position = positionRequest.toAdPosition();
         position.setUserId(SecurityUtils.getUserId());
@@ -87,7 +88,7 @@ public class SystemAdController {
 
 
     @PutMapping("/position/update/{id}")
-    @ResponseBody
+    @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:edit')")
     public Map<String, Object> updatePosition(@PathVariable Long id, @Valid @RequestBody AdPositionDto positionRequest) {
         AdPosition position = positionRequest.toAdPosition();
         position.setId(id);
@@ -96,6 +97,7 @@ public class SystemAdController {
     }
 
     @DeleteMapping(value = "/position/delete/{id}")
+    @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:delete')")
     public Map<String, Object> deletePosition(@PathVariable Long id) {
         adService.deletePosition(id);
         return MapUtils.success();

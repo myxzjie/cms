@@ -8,6 +8,7 @@ import com.xzjie.cms.model.KeyData;
 import com.xzjie.cms.service.KeyDataService;
 import com.xzjie.cms.service.WechatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -29,6 +30,7 @@ public class KeyDataController {
 
 
     @PostMapping("/create/{key}")
+    @PreAuthorize("@permission.hasPermission('administrator','wx-setting:all','wx-setting:edit')")
     public Map<String, Object> create(@PathVariable KeyDataKey key, @RequestBody String data) {
 
         KeyData keyData = new KeyData();

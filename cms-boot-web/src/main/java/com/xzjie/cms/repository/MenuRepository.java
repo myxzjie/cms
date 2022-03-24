@@ -38,6 +38,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificat
      */
     List<Menu> findByPid(Long pid);
 
+    List<Menu> findByPidOrderBySortDescIdAsc(Long pid);
+
     @Modifying
     @Transactional
     @Query(value = "update Menu m set m.state = 0 where m.id in (:ids) ")
@@ -51,6 +53,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificat
      */
     @Query(nativeQuery = true, value = "SELECT DISTINCT m.* FROM sys_menu m INNER JOIN sys_permission p on m.id=p.menu_id\n" +
             "INNER JOIN sys_role r ON p.role_id=r.id\n" +
-            "WHERE m.state =1 and r.role_code in ?1 ORDER BY m.sort DESC,id ASC")
-    List<Menu> findMenuByRoles(Set<String> roles);
+            "WHERE m.state =1 and r.role_code in ?1 and type in ?2 ORDER BY m.sort DESC,id ASC")
+    List<Menu> findMenuByRoles(Set<String> roles, List<Integer> types);
 }

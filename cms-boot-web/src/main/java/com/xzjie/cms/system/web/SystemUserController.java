@@ -46,7 +46,8 @@ public class SystemUserController {
 
     @Log(value = "user_info", descrption = "获得用户信息")
     @GetMapping("/info")
-    @PreAuthorize("hasAuthority('user') or hasAuthority('member')")
+//    @PreAuthorize("hasAuthority('user') or hasAuthority('member')")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all','user:list')")
     public Map<String, Object> getUserDetails(Principal principal) {
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         Account account = accountService.getAccount(userDetails.getUserId());
@@ -64,13 +65,15 @@ public class SystemUserController {
     }
 
     @GetMapping("/record")
-    @PreAuthorize("hasAuthority('user') or hasAuthority('member')")
+//    @PreAuthorize("hasAuthority('user') or hasAuthority('member')")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all')")
     public Map<String, Object> record() {
         List<SystemLog> records = systemLogService.getLoginSystemLog(SecurityUtils.getUsername());
         return MapUtils.success(records);
     }
 
     @PutMapping("/update")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all')")
     public Map<String, Object> update(@Valid @RequestBody UserDto user) {
         Account account = user.toAccount();
         account.setUserId(SecurityUtils.getUserId());
@@ -80,12 +83,14 @@ public class SystemUserController {
     }
 
     @PutMapping("/update/avatar")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all')")
     public Map<String, Object> update(@Valid @RequestBody @NotBlank String avatar) {
         accountService.updateAvatar(SecurityUtils.getUsername(), avatar);
         return MapUtils.success();
     }
 
     @PutMapping("/update/password")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all')")
     public Map<String, Object> update(@Valid @RequestBody PasswordRequest password) throws Exception {
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         if (!passwordEncoder.matches(password.getOldPassword(), userDetails.getPassword())) {
@@ -99,6 +104,7 @@ public class SystemUserController {
     }
 
     @PutMapping("/update/email")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all')")
     public Map<String, Object> updateEmail(@Valid @RequestBody EmailRequest emailRequest) throws Exception {
         SecurityUserDetails userDetails = SecurityUtils.getUserDetails();
         if (!passwordEncoder.matches(emailRequest.getPassword(), userDetails.getPassword())) {
@@ -115,18 +121,21 @@ public class SystemUserController {
     }
 
     @PostMapping("/verify/email")
+    @PreAuthorize("@permission.hasPermission('administrator','member','user:all')")
     public Map<String, Object> resetEmail(@Valid @RequestBody @NotBlank String email) {
         verifyCodeService.sendMail(email);
         return MapUtils.success();
     }
 
     @GetMapping("/list")
+    @PreAuthorize("@permission.hasPermission('administrator','user:all','user:list')")
     public Map<String, Object> getUserList(UserQueryDto request) {
         Page<UserVo> page = accountService.getAccountList(request);
         return MapUtils.success(page.getContent(), page.getTotalElements());
     }
 
     @PostMapping("/create")
+    @PreAuthorize("@permission.hasPermission('administrator','user:all')")
     public Map<String, Object> create(@Validated(UserDto.Create.class) @RequestBody UserDto dto) {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         accountService.save(dto);
@@ -134,12 +143,14 @@ public class SystemUserController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("@permission.hasPermission('administrator','user:all')")
     public Map<String, Object> update(@PathVariable Long id, @Validated(UserDto.Update.class) @RequestBody UserDto dto) {
         accountService.update(id, dto);
         return MapUtils.success();
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("@permission.hasPermission('administrator','user:all')")
     public Map<String, Object> delete(@PathVariable Long id) {
         accountService.delete(id);
         return MapUtils.success();

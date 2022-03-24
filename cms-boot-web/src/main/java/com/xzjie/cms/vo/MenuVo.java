@@ -1,16 +1,15 @@
-package com.xzjie.cms.dto;
+package com.xzjie.cms.vo;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Data
-public class MenuResponse {
+public class MenuVo {
 
     private Long id;
 
@@ -36,7 +35,8 @@ public class MenuResponse {
 
     private String icon;
 
-    private List<MenuResponse> children = new ArrayList<>();
+    private List<MenuVo> children = new ArrayList<>();
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 }

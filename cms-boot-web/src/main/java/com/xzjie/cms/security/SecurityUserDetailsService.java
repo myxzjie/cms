@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,7 +60,8 @@ public class SecurityUserDetailsService implements UserDetailsService {
         }
         Set<String> permissions = roles.stream().map(Role::getRoleCode).collect(Collectors.toSet());
 
-        List<Menu> menus = menuService.getMenuByRoles(permissions);
+        List<Integer> types = Arrays.asList(1, 2);
+        List<Menu> menus = menuService.getMenuByRoles(permissions, types);
 
         permissions.addAll(menus.stream().filter(menu -> StringUtils.hasText(menu.getPermission())).map(Menu::getPermission).collect(Collectors.toSet()));
 
