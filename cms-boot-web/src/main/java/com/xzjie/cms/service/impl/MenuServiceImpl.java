@@ -67,7 +67,12 @@ public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> imple
             menuRouter.setHidden(menu.getHidden());
             menuRouter.setRedirect(menu.getRedirect());
             menuRouter.setComponent(menu.getComponent());
-            menuRouter.setMeta(new MenuMeta(menu.getComponentName(), menu.getIcon(), menu.getCache()));
+            List<String> roles = null;
+            if (menu.getPermission() != null) {
+                String[] permissions = menu.getPermission().split(",");
+                roles = Arrays.asList(permissions);
+            }
+            menuRouter.setMeta(new MenuMeta(menu.getComponentName(), menu.getIcon(), menu.getCache(), roles));
             if (menu.getPid() == 0) {
                 menuRouter.setAlwaysShow(menu.getAlwaysShow());
             }

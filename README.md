@@ -69,11 +69,11 @@
 
 - 想要体验功能，可以通过以上方式联系.
 
-![登录](cms/docs/image/share/1.png "登录")
+![登录](./docs/image/share/1.png "登录")
 
-![首页](cms/docs/image/share/2.png "首页")
+![首页](./docs/image/share/2.png "首页")
 
-![内容管理](cms/docs/image/share/2.1.png "内容管理")
+![内容管理](./docs/image/share/2.1.png "内容管理")
 
 ![登录](./docs/image/share/3.png "3.png")
 
