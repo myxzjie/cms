@@ -63,6 +63,24 @@
 
 **有需要定制，随时欢迎……^_^**
 
+
+使用技术框架
+
+| 核心技术 | 版本 |
+|---|---|
+| spring boot | 2.4.0 |
+| spring security | 2.4.0 |
+| quartz | 2.3.2 |
+| jpa | 2.4.0 |
+| mysql | 8.0.x |
+| redis | 6.0.x |
+| minio | - |
+| aliyun oss | - |
+| vue | 2.6.x |
+| element-ui | - |
+| docker | - |
+
+
 ---
 
 ### 后台功能截图：
