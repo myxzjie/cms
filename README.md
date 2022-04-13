@@ -66,8 +66,9 @@
 
 使用技术框架
 
-| 核心技术 | 版本 |
+| Name | Version |
 |---|---|
+| java jdk | 1.8+ |
 | spring boot | 2.4.0 |
 | spring security | 2.4.0 |
 | quartz | 2.3.2 |
