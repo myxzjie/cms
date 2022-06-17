@@ -10,7 +10,7 @@ VOLUME /tmp
 ENV TZ=Asia/Shanghai
 RUN ln -sf /usr/share/zoneinfo/{TZ} /etc/localtime && echo "{TZ}" > /etc/timezone
 
-COPY ./target/cms-boot-web-1.0.9.jar /cms-boot-web/app.jar
+COPY ./target/cms-boot-web-1.1.0.jar /cms-boot-web/app.jar
 #ADD agent/ /agent
 CMD ["java", "-version"]
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/cms-boot-web/app.jar"]
