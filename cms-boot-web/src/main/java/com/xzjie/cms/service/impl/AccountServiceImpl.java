@@ -8,11 +8,12 @@ import com.xzjie.cms.dto.UserQueryDto;
 import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.AccountRole;
+import com.xzjie.cms.model.Social;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AccountRepository;
+import com.xzjie.cms.repository.SocialRepository;
 import com.xzjie.cms.service.AccountService;
 import com.xzjie.cms.service.RoleService;
-import com.xzjie.cms.vo.UserInfoVo;
 import com.xzjie.cms.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,22 +21,28 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccountServiceImpl extends AbstractService<Account, AccountRepository> implements AccountService {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private SocialRepository socialRepository;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
-    public void save(UserDto dto) {
+    public void save(UserDto dto, Social social,String code) {
         Account account = UserDtoConverter.INSTANCE.target(dto);
         account.setState(StateType.NORMAL.getCode());
         baseRepository.save(account);
@@ -49,6 +56,12 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
             });
         }
         roleService.saveAccount(accountRoles);
+        if (social != null) {
+            social.setUserId(account.getUserId());
+            this.saveSocial(social);
+            redisTemplate.opsForValue()
+                    .set("social:" + code, social,10*60, TimeUnit.SECONDS);
+        }
     }
 
     @Override
@@ -119,9 +132,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 
     @Override
     public Account getAccountByMobile(String mobile) {
-        Account account = new Account();
-        account.setName(mobile);
-        return null; // accountMapper.selectAccount(account);
+        return baseRepository.findAccountByPhone(mobile);
     }
 
     @Override
@@ -135,6 +146,11 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
             userVo.setRoles(roles);
         });
         return voPage;
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return baseRepository.existsByName(name);
     }
 
     @Override
@@ -166,5 +182,21 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
         model.copy(obj);
         baseRepository.save(model);
         return true;
+    }
+
+    @Override
+    public Social getSocialByUuid(String uuid) {
+        return socialRepository.findByUuid(uuid);
+    }
+
+    @Override
+    public Social saveSocial(Social social) {
+        Social model = socialRepository.findByUuid(social.getUuid());
+        if (model != null) {
+            model.copy(social);
+        } else {
+            model = social;
+        }
+        return socialRepository.save(model);
     }
 }

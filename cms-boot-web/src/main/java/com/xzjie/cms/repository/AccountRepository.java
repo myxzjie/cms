@@ -12,8 +12,14 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
 
     Account findAccountByNameAndState(String name, Integer state);
 
+    Account findAccountByPhoneAndState(String phone, Integer state);
+
     default Account findAccountByName(String name){
         return findAccountByNameAndState(name,1);
+    }
+
+    default Account findAccountByPhone(String phone){
+        return findAccountByPhoneAndState(phone,1);
     }
 
     @Modifying
@@ -35,4 +41,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
     @Transactional
     @Query("UPDATE Account SET email = :email WHERE userId = :userId")
     int updateEmail(Long userId, String email);
+
+    boolean existsByName(String name);
 }

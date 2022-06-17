@@ -35,9 +35,19 @@ public class SecurityUserDetailsService implements UserDetailsService {
     @Override
     public SecurityUserDetails loadUserByUsername(String s) {
         Account account = accountService.getAccountByName(s);
-
         log.info(">> account: {}", account);
+        return getSecurityUserDetails(account);
+    }
 
+    public SecurityUserDetails loadUserByMobile(String mobile) {
+        Account account = accountService.getAccountByMobile(mobile);
+        log.info(">> account: {}", account);
+        return getSecurityUserDetails(account);
+    }
+
+    public SecurityUserDetails loadUserById(Long userId) {
+        Account account = accountService.getAccount(userId);
+        log.info(">> account: {}", account);
         return getSecurityUserDetails(account);
     }
 

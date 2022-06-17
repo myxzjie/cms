@@ -1,4 +1,4 @@
-FROM openjdk:8u232-jre
+FROM openjdk:11.0.15-jre
 
 MAINTAINER Vito 513961835@qq.com
 

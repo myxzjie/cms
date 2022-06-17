@@ -12,7 +12,10 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: M******.RS
-
+cms:
+  host:
+    url: http://localhost:8090
+    system-url: http://localhost:9527/
 mail:
   from: admin@cms.cn
   from-name: CMS系统管理员

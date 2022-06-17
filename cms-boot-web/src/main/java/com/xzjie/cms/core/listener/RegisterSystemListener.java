@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 public class RegisterSystemListener {
     @Value("${mail.from}")
     private String from;
-
     @Value("${mail.from-name}")
     private String fromName;
     @Autowired

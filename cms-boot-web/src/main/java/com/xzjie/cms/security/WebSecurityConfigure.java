@@ -1,9 +1,11 @@
 package com.xzjie.cms.security;
 
 //import com.xzjie.cms.security.filter.SecurityAuthenticationFilter;
-
 import com.xzjie.cms.security.authentication.*;
+import com.xzjie.cms.security.code.CodeAuthenticationProvider;
+import com.xzjie.cms.security.code.CodeSecurityConfigurerAdapter;
 import com.xzjie.cms.security.permission.CustomPermissionEvaluator;
+import com.xzjie.cms.security.social.SocialSecurityConfigurerAdapter;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
 import com.xzjie.cms.security.token.TokenConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
-    //    @Autowired
+//    @Autowired
 //    private CorsFilter corsFilter;
     @Autowired
     private SecurityTokenProvider tokenProvider;
@@ -44,6 +46,10 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     private SecurityAccessDeniedHandler accessDeniedHandler;
     @Autowired
     private SecurityLogoutSuccessHandler logoutSuccessHandler;
+    @Autowired
+    private CodeSecurityConfigurerAdapter codeSecurityConfigurerAdapter;
+    @Autowired
+    private SocialSecurityConfigurerAdapter securityConfigurerAdapter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -78,11 +84,13 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/v3/api-docs",
                         "/webjars/**").permitAll()
-                .antMatchers("/app/**", "/api/auth/sign").permitAll()
+                .antMatchers("/app/**", "/api/auth/**","/api/oauth/**").permitAll()
                 .antMatchers("/images/**").permitAll()
                 // 所有请求都需要认证
                 .anyRequest().authenticated()
-                .and().apply(securityConfigurerAdapter());
+                .and().apply(securityConfigurerAdapter())
+                .and().apply(codeSecurityConfigurerAdapter)
+                .and().apply(securityConfigurerAdapter);
 //        http.authorizeRequests()
 //
 ////                .antMatchers("/api/auth/**").permitAll()
@@ -110,6 +118,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 //
 ////        http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

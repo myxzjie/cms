@@ -35,6 +35,9 @@ spring:
     url: jdbc:mysql://localhost:3305/db_cms
     username: root
     password: 123456
+    schema: classpath*:db/migration/schema.sql
+    sql-script-encoding: UTF-8
+    initialization-mode: embedded
   redis:
     host: 127.0.0.1
     port: 6379
@@ -86,7 +89,6 @@ spring:
 #      - cms_category
 #      - cms_article
 #      - cms_ad
-
 
 auth:
   jwt:

@@ -16,6 +16,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.Arrays;
@@ -32,7 +33,7 @@ public class WechatServiceImpl implements WechatService {
     @Autowired
     private KeyDataService keyDataService;
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
 
     /**
@@ -59,16 +60,16 @@ public class WechatServiceImpl implements WechatService {
     }
 
     public void expireAccessToken() {
-        redisTemplate.expire(accessTokenKey, 0, TimeUnit.SECONDS);
+        stringRedisTemplate.expire(accessTokenKey, 0, TimeUnit.SECONDS);
     }
 
     public boolean isAccessTokenExpired() {
         // TTL key 的剩余生存时间,key不存在返回 null
-        return redisTemplate.getExpire(accessTokenKey) < 2L;
+        return stringRedisTemplate.getExpire(accessTokenKey) < 2L;
     }
 
     public synchronized void updateAccessToken(String accessToken, int expiresInSeconds) {
-        redisTemplate.opsForValue().set(accessTokenKey, accessToken, expiresInSeconds - 200, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(accessTokenKey, accessToken, expiresInSeconds - 200, TimeUnit.SECONDS);
 //        jedis.setex(this.accessTokenKey, expiresInSeconds - 200, accessToken);
     }
 
@@ -101,7 +102,7 @@ public class WechatServiceImpl implements WechatService {
      * @return
      */
     private String getAccessToken() {
-        return redisTemplate.opsForValue().get(accessTokenKey);
+        return stringRedisTemplate.opsForValue().get(accessTokenKey);
     }
 
 

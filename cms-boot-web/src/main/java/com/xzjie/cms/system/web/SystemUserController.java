@@ -138,7 +138,7 @@ public class SystemUserController {
     @PreAuthorize("@permission.hasPermission('administrator','user:all')")
     public Map<String, Object> create(@Validated(UserDto.Create.class) @RequestBody UserDto dto) {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-        accountService.save(dto);
+        accountService.save(dto, null, null);
         return MapUtils.success();
     }
 
