@@ -44,3 +44,4 @@ HELP.md
 !**/src/test/**
 
 /docs/config/application-prod.yml
+/docs/docker-compose.yml

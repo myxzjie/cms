@@ -5,10 +5,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
 @Data
+@Configuration
 @ConfigurationProperties(prefix = SecurityProperties.PREFIX)
 public class SecurityProperties {
     public static final String PREFIX = "auth.jwt";
