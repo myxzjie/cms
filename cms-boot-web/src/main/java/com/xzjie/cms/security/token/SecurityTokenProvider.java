@@ -21,7 +21,7 @@ import java.util.function.Function;
 
 @Slf4j
 @Component
-@EnableConfigurationProperties(SecurityProperties.class)
+//@EnableConfigurationProperties(SecurityProperties.class)
 public class SecurityTokenProvider {
 
     public static final long jwt_token_validity = 5 * 60 * 60;
