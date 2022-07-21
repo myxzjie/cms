@@ -30,6 +30,8 @@ public interface ArticleService extends BaseService<Article> {
 
     Page<Article> getArticle(ArticleQueryDto dto);
 
+    Page<Article> getArticleByLabels(ArticleQueryDto query);
+
     Category getCategory(Long id);
 
     List<CaseVo> getCaseData(Long categoryId,ArticleQueryDto query);

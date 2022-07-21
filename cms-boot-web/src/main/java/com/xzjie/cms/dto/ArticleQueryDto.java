@@ -21,4 +21,6 @@ public class ArticleQueryDto extends BasePageDto {
     @QueryCondition
     private Integer recommendStat;
 
+    private List<Long> labelIds;
+
 }

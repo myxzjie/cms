@@ -87,4 +87,10 @@ public class AppArticleController extends BaseController {
         List<CaseVo> categories = articleService.getCaseData(id, query);
         return MapUtils.success(categories);
     }
+
+    @GetMapping(value = "/label")
+    public Map<String, Object> getArticleByLabels(ArticleQueryDto query) {
+        Page<Article> resultPage = articleService.getArticleByLabels(query);
+        return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
+    }
 }

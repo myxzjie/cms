@@ -12,9 +12,9 @@ import java.util.List;
 @Data
 public class ArticleDto extends BasePageDto {
 
-    @NotBlank
+    @NotBlank(message = "标题不能为空")
     private String title;
-    @NotNull
+    @NotNull(message = "类型不能为空")
     private Long categoryId;
 
     private String author;
@@ -28,11 +28,11 @@ public class ArticleDto extends BasePageDto {
     private Integer recommendStat;
 
     private Integer showState;
-
+    @NotNull(message = "内容不能为空")
     private String content;
 
     private Sorting sorting;
-
+    @NotNull(message = "标签不能为空")
     private List<Long> labels;
 
     public Article toArticle() {

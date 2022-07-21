@@ -24,4 +24,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
     @Transactional
     @Query("update Article set countPraise = countPraise + 1 where id= :id")
     int updatePraise(Long id);
+
+
+    Page<Article> findByLabels_idIn(List<Long> labelIds, Pageable pageable);
 }
