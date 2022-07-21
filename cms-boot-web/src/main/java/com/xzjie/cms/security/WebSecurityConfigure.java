@@ -1,6 +1,7 @@
 package com.xzjie.cms.security;
 
 //import com.xzjie.cms.security.filter.SecurityAuthenticationFilter;
+
 import com.xzjie.cms.security.authentication.*;
 import com.xzjie.cms.security.permission.CustomPermissionEvaluator;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
@@ -27,7 +28,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
-//    @Autowired
+    //    @Autowired
 //    private CorsFilter corsFilter;
     @Autowired
     private SecurityTokenProvider tokenProvider;
@@ -71,8 +72,13 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 // 静态资源等等
                 .antMatchers("/css/*", "/js/**", "/image/**", "/fonts/**", "/i/**", "/img/**", "/logo.png", "favicon.ico", "/demo", "/api/hot/data").permitAll()
                 .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .antMatchers("/", "/index", "/article/**", "/login**", "/oauth/**", "/swagger-ui.html", "/doc.html", "/error**").permitAll()
-                .antMatchers("/app/**","/api/auth/sign").permitAll()
+                .antMatchers("/", "/index", "/article/**", "/login**", "/oauth/**", "/error**").permitAll()
+                .antMatchers("/swagger-ui.html", "/doc.html", "/swagger-ui/*",
+                        "/swagger-resources/**",
+                        "/v2/api-docs",
+                        "/v3/api-docs",
+                        "/webjars/**").permitAll()
+                .antMatchers("/app/**", "/api/auth/sign").permitAll()
                 .antMatchers("/images/**").permitAll()
                 // 所有请求都需要认证
                 .anyRequest().authenticated()
@@ -136,6 +142,6 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 //    }
 
     private TokenConfigurer securityConfigurerAdapter() {
-        return new TokenConfigurer(tokenProvider,userDetailsService);
+        return new TokenConfigurer(tokenProvider, userDetailsService);
     }
 }
