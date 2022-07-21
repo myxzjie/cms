@@ -79,7 +79,7 @@ spring:
             clusterCheckinInterval: 15000
             misfireThreshold: 50000
             tablePrefix: QRTZ_
-            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+#            class: org.quartz.impl.jdbcjobstore.JobStoreTX
 
 #    clean-disabled: true
 #    schemas:
