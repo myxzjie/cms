@@ -13,6 +13,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,33 +43,40 @@ public class SwaggerConfigure {
                         .build())
                 .securitySchemes(Collections.singletonList(HttpAuthenticationScheme.JWT_BEARER_BUILDER
 //                        显示用
-                        .name("JWT")
+                        .name("Authorization")
+                        .description("token")
+//                        .bearerFormat("JWT")
+//                        .scheme("bearer")
                         .build()))
                 .securityContexts(Collections.singletonList(SecurityContext.builder()
                         .securityReferences(Collections.singletonList(SecurityReference.builder()
                                 .scopes(new AuthorizationScope[0])
-                                .reference("JWT")
+                                .reference("Authorization")
                                 .build()))
                         // 声明作用域
                         .operationSelector(o -> o.requestMappingPattern().matches("/.*"))
-                        .build()));
-
-
-//                .globalRequestParameters(getParameters());
+                        .build()))
+                .globalRequestParameters(getParameters());
     }
 
-//    private List<RequestParameter> getParameters() {
-//        List<RequestParameter> parameters = new ArrayList<>();
-//        RequestParameter parameter = new RequestParameterBuilder()
+    private List<RequestParameter> getParameters() {
+        List<RequestParameter> parameters = new ArrayList<>();
+
+//        parameters.add(new RequestParameterBuilder()
 //                .name("Authorization")
 //                .description("token")
 //                .in(ParameterType.HEADER)
-//                .defaultValue("Bearer ")
-//                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+//                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)).defaultValue("Bearer"))
 //                .required(true)
-//                .build();
-//
-//        parameters.add(parameter);
-//        return parameters;
-//    }
+//                .build());
+//        parameters.add(new RequestParameterBuilder()
+//                .name("version")
+//                .description("客户端的版本号")
+//                .required(true)
+//                .in(ParameterType.QUERY)
+//                .query(q -> q.defaultValue("1.0.0").model(m -> m.scalarModel(ScalarType.STRING)))
+//                .required(false)
+//                .build());
+        return parameters;
+    }
 }
