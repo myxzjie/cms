@@ -1,8 +1,10 @@
 package com.xzjie.cms.security.token;
 
+import cn.hutool.core.codec.Base64;
 import com.xzjie.cms.configure.SecurityProperties;
 import com.xzjie.cms.security.SecurityUserDetails;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.security.KeyPair;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,18 +50,10 @@ public class SecurityTokenProvider {
         JwtBuilder builder = Jwts.builder()
                 .addClaims(claims)
                 .setSubject(userDetails.getUsername())
+                .signWith(this.getKey(), properties.getAlgorithm())
                 .setIssuedAt(new Date())
                 .setExpiration(expiration);
 
-        switch (properties.getAlgorithm()) {
-            case RS256:
-            case RS512:
-                builder.signWith(properties.getAlgorithm(), keyPair.getPrivate());
-                break;
-            case HS256:
-            case HS512:
-                builder.signWith(properties.getAlgorithm(), properties.getSecret());
-        }
         return builder.compact();
     }
 
@@ -86,8 +81,8 @@ public class SecurityTokenProvider {
      */
 
     private Claims getClaimsFromToken(String token) {
-        JwtParser parser = getJwtParser();
-        return parser. parseClaimsJws(token).getBody();
+        JwtParser parser = this.getJwtParser();
+        return parser.parseClaimsJws(token).getBody();
     }
 
 
@@ -113,17 +108,19 @@ public class SecurityTokenProvider {
     }
 
     private JwtParser getJwtParser() {
-        JwtParser parser = Jwts.parser();
+        return Jwts.parserBuilder().setSigningKey(this.getKey()).build();
+    }
 
+    private Key getKey() {
         switch (properties.getAlgorithm()) {
             case RS256:
             case RS512:
-                parser.setSigningKey(keyPair.getPublic());
-                break;
+                return keyPair.getPrivate();
             case HS256:
             case HS512:
-                parser.setSigningKey(properties.getSecret());
+                return Keys.hmacShaKeyFor(Base64.decode(properties.getSecret()));
+            default:
+                throw new SecurityException("key 密钥错误.");
         }
-        return parser;
     }
 }
