@@ -2,25 +2,37 @@ package com.xzjie.cms.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.xzjie.cms.core.utils.ResultCode;
 import com.xzjie.cms.enums.Business;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Getter
+@ApiModel("返回结果")
 public final class Result<T extends Object> {
 
+    @ApiModelProperty("code")
     private int code;
+    @ApiModelProperty("是否成功")
     private boolean success;
+    @ApiModelProperty("信息内容")
     private String message;
+    @ApiModelProperty(value = "错误信息",hidden = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String error;
     @JsonIgnore
+    @ApiModelProperty("时间")
     private Instant time;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ApiModelProperty("对象类型")
     private T data;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ApiModelProperty("总数量")
     private long total;
 
 
@@ -60,7 +72,12 @@ public final class Result<T extends Object> {
      *
      * @return Result
      */
+    @Deprecated
     public static <T> Result<T> success(T data) {
+        return (Result<T>) success().setData(data);
+    }
+
+    public static <T> Result<T> data(T data) {
         return (Result<T>) success().setData(data);
     }
 
@@ -69,7 +86,12 @@ public final class Result<T extends Object> {
      *
      * @return Result
      */
+    @Deprecated
     public static <T> Result<T> success(T data, long total) {
+        return success(data).setTotal(total);
+    }
+
+    public static <T> Result<T> data(T data, long total) {
         return success(data).setTotal(total);
     }
 
@@ -88,7 +110,12 @@ public final class Result<T extends Object> {
      * @param data
      * @return Result
      */
+    @Deprecated
     public static <T> Result<T> success(int code, String message, T data) {
+        return new Result<>(true, code, message, data);
+    }
+
+    public static <T> Result<T> data(int code, String message, T data) {
         return new Result<>(true, code, message, data);
     }
 
@@ -98,8 +125,25 @@ public final class Result<T extends Object> {
      * @param code
      * @return Result
      */
-    public Result fail(int code, String message, String error) {
-        return setCode(code).setMessage(message).setError(error).setSuccess(false);
+    public Result fail(int code, String message) {
+        return setCode(code)
+                .setMessage(message)
+//                .setError(error)
+                .setSuccess(false);
+    }
+
+    public Result fail(String message) {
+        return setCode(Business.ERROR.getCode())
+                .setMessage(message)
+//                .setError(error)
+                .setSuccess(false);
+    }
+
+    public Result fail(Business business) {
+        return setCode(business.getCode())
+                .setMessage(business.getMessage())
+//                .setError(error)
+                .setSuccess(false);
     }
 
 

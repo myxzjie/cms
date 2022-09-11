@@ -34,9 +34,13 @@
 
 ---
 
- ### **打个广告，有需要可以联系我。^_^**
+ ### **友情链接，有需要可以联系我。^_^**
 
 好酒仓小程序
+
+https://gitee.com/xzjie/et-shop-uni-app.git
+
+https://github.com/myxzjie/et-shop-uni-app.git
 
 ![输入图片说明](./docs/image/gh_bc4d7a4152a3_258.jpg "gh_bc4d7a4152a3_258.jpg")
 
