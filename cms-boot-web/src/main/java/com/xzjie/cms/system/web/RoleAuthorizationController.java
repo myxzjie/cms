@@ -30,14 +30,14 @@ public class RoleAuthorizationController {
     @PreAuthorize("@permission.hasPermission('administrator','role:all','role:list')")
     public Result<List<Role>> roleList() {
         List<Role> roles = roleService.getRoles();
-        return Result.success(roles);
+        return Result.data(roles);
     }
 
     @GetMapping(value = "/list")
     @PreAuthorize("@permission.hasPermission('administrator','role:all','role:list')")
     public Result<List<Role>> roleList(RoleRequest roleRequest) {
         Page<Role> rolePage = roleService.getRole(roleRequest.getPage(), roleRequest.getSize(), roleRequest.toRole());
-        return Result.success(rolePage.getContent(), rolePage.getTotalElements());
+        return Result.data(rolePage.getContent(), rolePage.getTotalElements());
     }
 
     @GetMapping(value = "/permission/{roleId}")
@@ -48,7 +48,7 @@ public class RoleAuthorizationController {
                 .map(Permission::getMenuId)
                 .collect(Collectors.toList());
 
-        return Result.success(permissions);
+        return Result.data(permissions);
     }
 
 

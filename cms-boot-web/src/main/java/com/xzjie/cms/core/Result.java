@@ -22,11 +22,11 @@ public final class Result<T extends Object> {
     private boolean success;
     @ApiModelProperty("信息内容")
     private String message;
-    @ApiModelProperty(value = "错误信息",hidden = true)
+    @ApiModelProperty(value = "错误信息", hidden = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String error;
     @JsonIgnore
-    @ApiModelProperty("时间")
+    @ApiModelProperty(value = "时间", hidden = true)
     private Instant time;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ApiModelProperty("对象类型")
@@ -72,10 +72,10 @@ public final class Result<T extends Object> {
      *
      * @return Result
      */
-    @Deprecated
-    public static <T> Result<T> success(T data) {
-        return (Result<T>) success().setData(data);
-    }
+//    @Deprecated
+//    public static <T> Result<T> success(T data) {
+//        return (Result<T>) success().setData(data);
+//    }
 
     public static <T> Result<T> data(T data) {
         return (Result<T>) success().setData(data);
@@ -86,13 +86,12 @@ public final class Result<T extends Object> {
      *
      * @return Result
      */
-    @Deprecated
-    public static <T> Result<T> success(T data, long total) {
-        return success(data).setTotal(total);
-    }
-
+//    @Deprecated
+//    public static <T> Result<T> success(T data, long total) {
+//        return success(data).setTotal(total);
+//    }
     public static <T> Result<T> data(T data, long total) {
-        return success(data).setTotal(total);
+        return data(data).setTotal(total);
     }
 
     /**
@@ -101,7 +100,8 @@ public final class Result<T extends Object> {
      * @return Result
      */
     public static <T> Result<T> success(int code, String message) {
-        return success(code, message, null);
+//        return success(code, message, null);
+        return new Result<>(true, code, message, null);
     }
 
     /**
@@ -110,11 +110,10 @@ public final class Result<T extends Object> {
      * @param data
      * @return Result
      */
-    @Deprecated
-    public static <T> Result<T> success(int code, String message, T data) {
-        return new Result<>(true, code, message, data);
-    }
-
+//    @Deprecated
+//    public static <T> Result<T> success(int code, String message, T data) {
+//        return new Result<>(true, code, message, data);
+//    }
     public static <T> Result<T> data(int code, String message, T data) {
         return new Result<>(true, code, message, data);
     }

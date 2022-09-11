@@ -1,22 +1,26 @@
 package com.xzjie.cms.model;
 
 import com.xzjie.cms.enums.Sorting;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity<T extends Object> implements Serializable {
 
+    @ApiModelProperty("排序")
+    @Transient
     private Sorting sorting;
 
     public abstract void copy(T obj);

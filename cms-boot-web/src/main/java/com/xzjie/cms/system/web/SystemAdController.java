@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.web;
 
+import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.SecurityUtils;
 import com.xzjie.cms.dto.AdPositionDto;
@@ -7,6 +8,9 @@ import com.xzjie.cms.dto.AdDto;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.AdPosition;
 import com.xzjie.cms.service.AdService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,43 +22,48 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ad")
+@Api(value = "管理端-广告管理", tags = "管理端-广告管理")
 public class SystemAdController {
 
     @Autowired
     private AdService adService;
 
+
     @PostMapping("/create")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:add')")
-    public Map<String, Object> create(@Valid @RequestBody AdDto adRequest) {
+    public Result create(@Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setClickCount(0);
         adService.save(ad);
-        return MapUtils.success();
+        return Result.success();
     }
 
 
+    @ApiOperation("广告修改")
     @PutMapping("/update/{id}")
 //    @PreAuthorize("hasPermission('/user/user/list',new Object[]{RoleType.ADMINISTRATOR.getCode()})")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:edit')")
-    public Map<String, Object> update(@PathVariable Long id, @Valid @RequestBody AdDto adRequest) {
+    public Result update(@PathVariable Long id, @Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setId(id);
         adService.update(ad);
-        return MapUtils.success();
+        return Result.success();
     }
 
+    @ApiOperation("广告删除")
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:delete')")
-    public Map<String, Object> delete(@PathVariable Long id) {
+    public Map<String, Object> delete(@PathVariable @ApiParam("广告ID") Long id) {
         adService.delete(id);
         return MapUtils.success();
     }
 
+    @ApiOperation(value = "获得广告的数据列表", response = Ad.class)
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:list')")
-    public Map<String, Object> getAd(AdDto request) {
+    public Result getAd(AdDto request) {
         Page<Ad> page = adService.getAd(request);
-        return MapUtils.success(page.getContent(), page.getTotalElements());
+        return Result.data(page.getContent(), page.getTotalElements());
     }
 
     /**
@@ -63,43 +72,48 @@ public class SystemAdController {
      * @param positionRequest
      * @return
      */
+    @ApiOperation(value = "获得广告位置的数据列表", response = AdPosition.class)
     @GetMapping("/position/list")
     @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:list')")
-    public Map<String, Object> getPosition(AdPositionDto positionRequest) {
+    public Result<List<AdPosition>> getPosition(AdPositionDto positionRequest) {
         Page<AdPosition> page = adService.getPosition(positionRequest);
-        return MapUtils.success(page.getContent(), page.getTotalElements());
+        return Result.data(page.getContent(), page.getTotalElements());
     }
 
+    @ApiOperation(value = "获得广告位置的数据", response = AdPosition.class)
     @GetMapping("/position/data")
     @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:list')")
-    public Map<String, Object> getPositionData() {
+    public Result<List<AdPosition>> getPositionData() {
         List<AdPosition> positions = adService.getPositionData();
-        return MapUtils.success(positions);
+        return Result.data(positions);
     }
 
+    @ApiOperation(value = "获得广告位置创建")
     @PostMapping("/position/create")
     @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:add')")
-    public Map<String, Object> createPosition(@Valid @RequestBody AdPositionDto positionRequest) {
+    public Result<Object> createPosition(@Valid @RequestBody AdPositionDto positionRequest) {
         AdPosition position = positionRequest.toAdPosition();
         position.setUserId(SecurityUtils.getUserId());
         adService.savePosition(position);
-        return MapUtils.success();
+        return Result.success();
     }
 
 
+    @ApiOperation(value = "获得广告位置修改")
     @PutMapping("/position/update/{id}")
     @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:edit')")
-    public Map<String, Object> updatePosition(@PathVariable Long id, @Valid @RequestBody AdPositionDto positionRequest) {
+    public Result<Object> updatePosition(@PathVariable @ApiParam("广告位ID") Long id, @Valid @RequestBody AdPositionDto positionRequest) {
         AdPosition position = positionRequest.toAdPosition();
         position.setId(id);
         adService.updatePosition(position);
-        return MapUtils.success();
+        return Result.success();
     }
 
+    @ApiOperation(value = "获得广告位置删除")
     @DeleteMapping(value = "/position/delete/{id}")
     @PreAuthorize("@permission.hasPermission('administrator','ad-position:all','ad-position:delete')")
-    public Map<String, Object> deletePosition(@PathVariable Long id) {
+    public Result<Object> deletePosition(@PathVariable @ApiParam("广告位ID") Long id) {
         adService.deletePosition(id);
-        return MapUtils.success();
+        return Result.success();
     }
 }

@@ -17,8 +17,8 @@ import java.util.Date;
 public class Ad extends BaseEntity<Ad> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("ID")
     private Long id;
+
     @ApiModelProperty("广告位ID")
     private Long positionId;
     @ApiModelProperty("类型")
@@ -37,7 +37,7 @@ public class Ad extends BaseEntity<Ad> {
     @ApiModelProperty("结束时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
-//    @ApiModelProperty("结束时间")
+    @ApiModelProperty("联系人")
     private String man;
 
     @ApiModelProperty("邮箱")
@@ -55,6 +55,7 @@ public class Ad extends BaseEntity<Ad> {
     @CreationTimestamp
     private Date createDate;
 
+    @ApiModelProperty("广告位名称")
     @Transient
     private String positionName;
 
