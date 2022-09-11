@@ -54,7 +54,6 @@ public class AdDto extends BasePageDto {
     @ApiModelProperty("广告名称")
     private String positionName;
 
-
     public Ad toAd() {
         Ad ad = new Ad();
         BeanUtils.copyProperties(this, ad);
