@@ -1,17 +1,18 @@
 package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.core.Result;
-import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.service.AdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @Api(value = "前端-广告管理", tags = "前端-广告管理")
 @RestController
