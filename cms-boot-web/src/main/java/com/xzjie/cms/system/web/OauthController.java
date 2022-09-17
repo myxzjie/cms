@@ -1,16 +1,12 @@
 package com.xzjie.cms.system.web;
 
 import cn.hutool.core.lang.UUID;
-import com.alibaba.fastjson.JSON;
 import com.xkcoding.justauth.AuthRequestFactory;
 import com.xzjie.cms.configure.CmsProperties;
-import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.Social;
-import com.xzjie.cms.security.code.CodeAuthenticationToken;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
-import com.xzjie.cms.service.AccountService;
+import com.xzjie.cms.system.account.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -19,11 +15,7 @@ import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;

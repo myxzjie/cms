@@ -1,13 +1,8 @@
 package com.xzjie.cms.convert;
 
 import com.xzjie.cms.dto.ArticleDto;
-import com.xzjie.cms.dto.UserDto;
-import com.xzjie.cms.dto.WxUserResult;
-import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.Label;
-import com.xzjie.cms.model.WxAccountFans;
-import org.apache.commons.lang.StringUtils;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

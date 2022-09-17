@@ -28,7 +28,6 @@ public class SystemAdController {
     @Autowired
     private AdService adService;
 
-
     @PostMapping("/create")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:add')")
     public Result create(@Valid @RequestBody AdDto adRequest) {

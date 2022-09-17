@@ -29,18 +29,18 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
 
     @Modifying
     @Transactional
-    @Query("UPDATE Account SET password = :password WHERE userId = :userId")
-    int updatePassword(Long userId, String password);
+    @Query("UPDATE Account SET password = :password WHERE id = :id")
+    int updatePassword(Long id, String password);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Account SET phone = :phone WHERE userId = :userId")
-    int updatePhone(Long userId, String phone);
+    @Query("UPDATE Account SET phone = :phone WHERE id = :id")
+    int updatePhone(Long id, String phone);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Account SET email = :email WHERE userId = :userId")
-    int updateEmail(Long userId, String email);
+    @Query("UPDATE Account SET email = :email WHERE id = :id")
+    int updateEmail(Long id, String email);
 
     boolean existsByName(String name);
 }

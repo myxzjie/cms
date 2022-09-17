@@ -31,7 +31,8 @@ public class LabelServiceImpl extends AbstractService<Label, LabelRepository> im
         Label model = baseRepository.findById(obj.getId()).orElseGet(Label::new);
         model.copy(obj);
         model.setUpdateDate(LocalDateTime.now());
-        return save(model);
+         save(model);
+         return true;
     }
 
     @Override

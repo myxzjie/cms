@@ -13,14 +13,13 @@ public class KeyDataServiceImpl extends AbstractService<KeyData, KeyDataReposito
 
 
     @Override
-    public boolean save(KeyData keyData) {
+    public KeyData save(KeyData keyData) {
         if (existsByKey(keyData.getKey())) {
             update(keyData);
+            return keyData;
         } else {
-            super.save(keyData);
+           return super.save(keyData);
         }
-
-        return true;
     }
 
     @Override

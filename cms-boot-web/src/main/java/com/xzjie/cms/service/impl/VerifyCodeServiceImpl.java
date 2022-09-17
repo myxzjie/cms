@@ -15,14 +15,13 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +52,30 @@ public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, VerifyCod
         model.setTarget(target);
         model.setState(1);
         return baseRepository.save(model);
+    }
+
+    @Override
+    public void sendMail(String email, VerifyCodeScenes scenes, String verifyValue, Map<String, Object> data, String templateName) {
+        String subject = scenes.getName();
+        String content = null;
+        try {
+            Template template = configuration.getTemplate(templateName);
+            StringWriter result = new StringWriter();
+            template.process(data, result);
+            content = result.toString(); // FreeMarkerTemplateUtils.processTemplateIntoString(template,)
+        } catch (IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+
+        VerifyCode verifyCode = this.save(email, verifyValue, scenes, VerifyCodeType.EMAIL, null);
+
+        applicationContext.publishEvent(EmailEvent.EmailEventBuilder
+                .builder()
+                .setSubject(subject)
+                .setContent(content)
+                .setTo(email)
+                .build());
+//        timedDestruction(verifyCode);
     }
 
     @Override

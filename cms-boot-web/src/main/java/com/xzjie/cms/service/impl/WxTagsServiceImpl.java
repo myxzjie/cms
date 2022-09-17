@@ -43,7 +43,7 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, WxTagsRepository>
 
 
     @Override
-    public boolean save(WxTags obj) {
+    public WxTags save(WxTags obj) {
         WxTagsResult result = wechatService.createTags(WxTagsCreate.builder().setName(obj.getName()).build());
         obj.setId(result.getId());
         return super.save(obj);

@@ -106,6 +106,7 @@ public class AdServiceImpl extends AbstractService<Ad, AdRepository> implements 
     public boolean update(Ad obj) {
         Ad ad = baseRepository.findById(obj.getId()).orElseGet(Ad::new);
         ad.copy(obj);
-        return save(ad);
+        save(ad);
+        return true;
     }
 }

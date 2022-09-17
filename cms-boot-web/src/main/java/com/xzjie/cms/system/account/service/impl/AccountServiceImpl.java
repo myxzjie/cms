@@ -1,10 +1,14 @@
-package com.xzjie.cms.service.impl;
+package com.xzjie.cms.system.account.service.impl;
 
 import com.xzjie.cms.convert.UserDtoConverter;
 import com.xzjie.cms.convert.UserVoConverter;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.UserDto;
-import com.xzjie.cms.dto.UserQueryDto;
+import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.enums.VerifyCodeScenes;
+import com.xzjie.cms.model.VerifyCode;
+import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.system.account.dto.AccountDto;
+import com.xzjie.cms.system.account.dto.AccountQueryDto;
 import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.AccountRole;
@@ -12,9 +16,11 @@ import com.xzjie.cms.model.Social;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.AccountRepository;
 import com.xzjie.cms.repository.SocialRepository;
-import com.xzjie.cms.service.AccountService;
+import com.xzjie.cms.system.account.service.AccountService;
 import com.xzjie.cms.service.RoleService;
 import com.xzjie.cms.vo.UserVo;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,27 +28,34 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.SystemException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccountServiceImpl extends AbstractService<Account, AccountRepository> implements AccountService {
 
     @Autowired
+    private VerifyCodeService verifyCodeService;
+    @Autowired
     private RoleService roleService;
     @Autowired
     private SocialRepository socialRepository;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public void save(UserDto dto, Social social,String code) {
+    public void save(AccountDto dto, Social social, String code) {
         Account account = UserDtoConverter.INSTANCE.target(dto);
         account.setState(StateType.NORMAL.getCode());
         baseRepository.save(account);
@@ -50,23 +63,23 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
         if (dto.getRoles().size() > 0) {
             dto.getRoles().stream().forEach(roleId -> {
                 AccountRole accountRole = new AccountRole();
-                accountRole.setUserId(account.getUserId());
+                accountRole.setUserId(account.getId());
                 accountRole.setRoleId(roleId);
                 accountRoles.add(accountRole);
             });
         }
         roleService.saveAccount(accountRoles);
         if (social != null) {
-            social.setUserId(account.getUserId());
+            social.setUserId(account.getId());
             this.saveSocial(social);
             redisTemplate.opsForValue()
-                    .set("social:" + code, social,10*60, TimeUnit.SECONDS);
+                    .set("social:" + code, social, 10 * 60, TimeUnit.SECONDS);
         }
     }
 
     @Override
     @Transactional
-    public void update(Long userId, UserDto dto) {
+    public void update(Long userId, AccountDto dto) {
         Account account = UserDtoConverter.INSTANCE.target(dto);
         List<AccountRole> accountRoles = new ArrayList<>();
         if (dto.getRoles().size() > 0) {
@@ -136,13 +149,13 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
-    public Page<UserVo> getAccountList(UserQueryDto query) {
-        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("userId").descending());
+    public Page<UserVo> getAccountList(AccountQueryDto query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
         Specification<Account> specification = SpecSearchCriteria.builder(query);
         Page<Account> page = baseRepository.findAll(specification, pageable);
         Page<UserVo> voPage = page.map(UserVoConverter.INSTANCE::source);
         voPage.forEach(userVo -> {
-            List<Long> roles = roleService.getAccountRoleByUserId(userVo.getUserId());
+            List<Long> roles = roleService.getAccountRoleByUserId(userVo.getId());
             userVo.setRoles(roles);
         });
         return voPage;
@@ -170,7 +183,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 
     @Override
     @Transactional
-    public boolean save(Account obj) {
+    public Account save(Account obj) {
         obj.setState(1);
         obj.setCreateDate(LocalDateTime.now());
         return super.save(obj);
@@ -178,7 +191,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 
     @Override
     public boolean update(Account obj) {
-        Account model = baseRepository.findById(obj.getUserId()).orElseGet(Account::new);
+        Account model = baseRepository.findById(obj.getId()).orElseGet(Account::new);
         model.copy(obj);
         baseRepository.save(model);
         return true;
@@ -198,5 +211,25 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
             model = social;
         }
         return socialRepository.save(model);
+    }
+
+    @Override
+    public void resetPassword(Long userId) {
+        Account model = this.getOne(userId);
+        if (model == null) {
+            throw new RuntimeException("用户信息错误");
+        }
+        if (StringUtils.isBlank(model.getEmail())) {
+            throw new RuntimeException("用户未有邮箱，不能重置密码");
+        }
+
+        String password = RandomStringUtils.randomAlphanumeric(8);
+
+        baseRepository.updatePassword(userId, passwordEncoder.encode(password));
+        Map<String, Object> data = MapUtils.create().set("name", model.getName()).set("password", password);
+
+        String templateName = "email/reset_password.html";
+
+        verifyCodeService.sendMail(model.getEmail(), VerifyCodeScenes.RESET_PASSWORD, password, data, templateName);
     }
 }

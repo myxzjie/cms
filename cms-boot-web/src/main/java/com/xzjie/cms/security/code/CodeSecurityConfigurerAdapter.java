@@ -4,6 +4,7 @@ import com.xzjie.cms.security.SecurityUserDetailsService;
 import com.xzjie.cms.security.authentication.SecurityAuthenticationFailureHandler;
 import com.xzjie.cms.security.authentication.SecurityAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +22,8 @@ import org.springframework.stereotype.Component;
 public class CodeSecurityConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     private final SecurityAuthenticationSuccessHandler authenticationSuccessHandler;
     private final SecurityAuthenticationFailureHandler authenticationFailureHandler;
-    private final SecurityUserDetailsService userDetailsService;
+    @Autowired
+    private SecurityUserDetailsService userDetailsService;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

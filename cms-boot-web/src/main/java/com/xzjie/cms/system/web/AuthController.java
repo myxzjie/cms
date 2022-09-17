@@ -2,7 +2,6 @@ package com.xzjie.cms.system.web;
 
 import cn.hutool.core.lang.UUID;
 import com.xzjie.cms.configure.CmsProperties;
-import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.event.EmailEvent;
 import com.xzjie.cms.core.utils.MapUtils;
@@ -13,16 +12,14 @@ import com.xzjie.cms.model.Social;
 import com.xzjie.cms.security.code.CodeAuthenticationToken;
 import com.xzjie.cms.security.social.SocialAuthenticationToken;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
-import com.xzjie.cms.service.AccountService;
-import com.xzjie.cms.service.RoleService;
+import com.xzjie.cms.system.account.service.AccountService;
+import com.xzjie.cms.system.account.dto.AccountDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -38,7 +35,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -95,10 +91,10 @@ public class AuthController {
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             e.printStackTrace();
-            throw new Exception("USER_DISABLED", e);
+            throw new Exception("用户名P已经被锁，请联系管理", e);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new Exception("用户名或密码错误", e);
         }
     }
 
@@ -109,7 +105,7 @@ public class AuthController {
             throw new RuntimeException("Username is already taken!");
         }
         Social social = (Social) redisTemplate.opsForValue().get("social:" + register.getCode());
-        UserDto account = new UserDto();
+        AccountDto account = new AccountDto();
         account.setName(register.getName());
         account.setPhone(register.getPhone());
         account.setPassword(passwordEncoder.encode(register.getPassword()));
@@ -159,7 +155,7 @@ public class AuthController {
         }
 
         String code = UUID.fastUUID().toString();
-        social.setUserId(account.getUserId());
+        social.setUserId(account.getId());
         redisTemplate.opsForValue().set("bind:" + code, social, 2 * 60 * 60, TimeUnit.SECONDS);
 
         String url = properties.getUrl() + "/oauth/binder/" + code;

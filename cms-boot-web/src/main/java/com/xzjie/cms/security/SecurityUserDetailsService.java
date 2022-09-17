@@ -3,7 +3,7 @@ package com.xzjie.cms.security;
 import com.xzjie.cms.model.Account;
 import com.xzjie.cms.model.Menu;
 import com.xzjie.cms.model.Role;
-import com.xzjie.cms.service.AccountService;
+import com.xzjie.cms.system.account.service.AccountService;
 import com.xzjie.cms.service.MenuService;
 import com.xzjie.cms.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -52,7 +51,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     }
 
     private SecurityUserDetails getSecurityUserDetails(Account model) {
-        return new SecurityUserDetails(model.getUserId(), model.getName(), model.getNickName(), model.getPhone(), model.getEmail(), model.getAvatar(), model.getPassword(), model.getLocked() > 0, true, true, model.getLocked() > 0, getAuthorities(model.getUserId()));
+        return new SecurityUserDetails(model.getId(), model.getName(), model.getNickName(), model.getPhone(), model.getEmail(), model.getAvatar(), model.getPassword(), model.getLocked() > 0, true, true, model.getLocked() > 0, getAuthorities(model.getId()));
     }
 
 
