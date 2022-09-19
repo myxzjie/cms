@@ -1,11 +1,11 @@
 package com.xzjie.cms.security;
 
-import com.xzjie.cms.model.Account;
-import com.xzjie.cms.model.Menu;
-import com.xzjie.cms.model.Role;
+import com.xzjie.cms.system.account.model.Account;
+import com.xzjie.cms.system.menu.model.Menu;
+import com.xzjie.cms.system.role.model.Role;
 import com.xzjie.cms.system.account.service.AccountService;
-import com.xzjie.cms.service.MenuService;
-import com.xzjie.cms.service.RoleService;
+import com.xzjie.cms.system.menu.service.MenuService;
+import com.xzjie.cms.system.role.serivce.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;

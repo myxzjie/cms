@@ -1,24 +1,22 @@
 package com.xzjie.cms.system.account.service.impl;
 
-import com.xzjie.cms.convert.UserDtoConverter;
-import com.xzjie.cms.convert.UserVoConverter;
+import com.xzjie.cms.system.account.convert.AccountConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.enums.VerifyCodeScenes;
-import com.xzjie.cms.model.VerifyCode;
 import com.xzjie.cms.service.VerifyCodeService;
 import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.dto.AccountQueryDto;
 import com.xzjie.cms.enums.StateType;
-import com.xzjie.cms.model.Account;
-import com.xzjie.cms.model.AccountRole;
+import com.xzjie.cms.system.account.model.Account;
+import com.xzjie.cms.system.account.model.AccountRole;
 import com.xzjie.cms.model.Social;
 import com.xzjie.cms.persistence.SpecSearchCriteria;
-import com.xzjie.cms.repository.AccountRepository;
-import com.xzjie.cms.repository.SocialRepository;
+import com.xzjie.cms.system.account.repository.AccountRepository;
+import com.xzjie.cms.system.account.repository.SocialRepository;
 import com.xzjie.cms.system.account.service.AccountService;
-import com.xzjie.cms.service.RoleService;
-import com.xzjie.cms.vo.UserVo;
+import com.xzjie.cms.system.role.serivce.RoleService;
+import com.xzjie.cms.vo.AccountVo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.SystemException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +53,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     @Override
     @Transactional
     public void save(AccountDto dto, Social social, String code) {
-        Account account = UserDtoConverter.INSTANCE.target(dto);
+        Account account = AccountConverter.INSTANCE.target(dto);
         account.setState(StateType.NORMAL.getCode());
         baseRepository.save(account);
         List<AccountRole> accountRoles = new ArrayList<>();
@@ -80,7 +77,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     @Override
     @Transactional
     public void update(Long userId, AccountDto dto) {
-        Account account = UserDtoConverter.INSTANCE.target(dto);
+        Account account = AccountConverter.INSTANCE.target(dto);
         List<AccountRole> accountRoles = new ArrayList<>();
         if (dto.getRoles().size() > 0) {
             dto.getRoles().stream().forEach(roleId -> {
@@ -149,11 +146,11 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
-    public Page<UserVo> getAccountList(AccountQueryDto query) {
+    public Page<AccountVo> getAccountList(AccountQueryDto query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
         Specification<Account> specification = SpecSearchCriteria.builder(query);
         Page<Account> page = baseRepository.findAll(specification, pageable);
-        Page<UserVo> voPage = page.map(UserVoConverter.INSTANCE::source);
+        Page<AccountVo> voPage = page.map(AccountConverter.INSTANCE::convert);
         voPage.forEach(userVo -> {
             List<Long> roles = roleService.getAccountRoleByUserId(userVo.getId());
             userVo.setRoles(roles);

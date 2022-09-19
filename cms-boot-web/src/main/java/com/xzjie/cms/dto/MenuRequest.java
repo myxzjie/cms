@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.Menu;
+import com.xzjie.cms.system.menu.model.Menu;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

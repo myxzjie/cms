@@ -1,12 +1,11 @@
-package com.xzjie.cms.system.web;
+package com.xzjie.cms.system.role.web;
 
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.annotation.Log;
-import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.RoleRequest;
 import com.xzjie.cms.model.Permission;
-import com.xzjie.cms.model.Role;
-import com.xzjie.cms.service.RoleService;
+import com.xzjie.cms.system.role.model.Role;
+import com.xzjie.cms.system.role.serivce.RoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,10 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController

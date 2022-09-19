@@ -3,9 +3,9 @@ package com.xzjie.cms.system.account.service;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.dto.AccountQueryDto;
-import com.xzjie.cms.model.Account;
+import com.xzjie.cms.system.account.model.Account;
 import com.xzjie.cms.model.Social;
-import com.xzjie.cms.vo.UserVo;
+import com.xzjie.cms.vo.AccountVo;
 import org.springframework.data.domain.Page;
 
 public interface AccountService extends BaseService<Account> {
@@ -19,7 +19,7 @@ public interface AccountService extends BaseService<Account> {
 
     Account getAccountByMobile(String mobile);
 
-    Page<UserVo> getAccountList(AccountQueryDto request);
+    Page<AccountVo> getAccountList(AccountQueryDto request);
 
     boolean existsByName(String name);
 

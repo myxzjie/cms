@@ -1,4 +1,4 @@
-package com.xzjie.cms.service.impl;
+package com.xzjie.cms.system.menu.service.impl;
 
 import com.xzjie.cms.convert.MenuConverter;
 import com.xzjie.cms.core.service.AbstractService;
@@ -6,9 +6,9 @@ import com.xzjie.cms.dto.MenuMeta;
 import com.xzjie.cms.vo.MenuVo;
 import com.xzjie.cms.dto.MenuRouter;
 import com.xzjie.cms.dto.MenuTree;
-import com.xzjie.cms.model.Menu;
+import com.xzjie.cms.system.menu.model.Menu;
 import com.xzjie.cms.repository.MenuRepository;
-import com.xzjie.cms.service.MenuService;
+import com.xzjie.cms.system.menu.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

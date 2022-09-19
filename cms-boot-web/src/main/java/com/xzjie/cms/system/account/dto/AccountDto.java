@@ -1,8 +1,7 @@
 package com.xzjie.cms.system.account.dto;
 
 import com.xzjie.cms.dto.Dto;
-import com.xzjie.cms.model.Account;
-import io.swagger.annotations.ApiModel;
+import com.xzjie.cms.system.account.model.Account;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

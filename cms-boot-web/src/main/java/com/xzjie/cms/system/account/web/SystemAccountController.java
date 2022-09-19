@@ -7,7 +7,7 @@ import com.xzjie.cms.core.utils.SecurityUtils;
 import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.VerifyCodeScenes;
 import com.xzjie.cms.enums.VerifyCodeType;
-import com.xzjie.cms.model.Account;
+import com.xzjie.cms.system.account.model.Account;
 import com.xzjie.cms.model.SystemLog;
 import com.xzjie.cms.security.SecurityUserDetails;
 import com.xzjie.cms.system.account.service.AccountService;
@@ -15,8 +15,8 @@ import com.xzjie.cms.service.SystemLogService;
 import com.xzjie.cms.service.VerifyCodeService;
 import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.dto.AccountQueryDto;
+import com.xzjie.cms.vo.AccountVo;
 import com.xzjie.cms.vo.UserInfoVo;
-import com.xzjie.cms.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -149,7 +149,7 @@ public class SystemAccountController {
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPermission('administrator','user:all','user:list')")
     public Result getUserList(AccountQueryDto request) {
-        Page<UserVo> page = accountService.getAccountList(request);
+        Page<AccountVo> page = accountService.getAccountList(request);
         return Result.data(page.getContent(), page.getTotalElements());
     }
 

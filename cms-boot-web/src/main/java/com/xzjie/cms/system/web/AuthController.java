@@ -7,7 +7,7 @@ import com.xzjie.cms.core.event.EmailEvent;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.VerifyCodeScenes;
-import com.xzjie.cms.model.Account;
+import com.xzjie.cms.system.account.model.Account;
 import com.xzjie.cms.model.Social;
 import com.xzjie.cms.security.code.CodeAuthenticationToken;
 import com.xzjie.cms.security.social.SocialAuthenticationToken;

@@ -1,25 +1,19 @@
-package com.xzjie.cms.model;
+package com.xzjie.cms.system.account.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xzjie.cms.model.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity

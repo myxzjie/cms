@@ -1,13 +1,12 @@
 package com.xzjie.cms.repository;
 
-import com.xzjie.cms.model.Menu;
+import com.xzjie.cms.system.menu.model.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 

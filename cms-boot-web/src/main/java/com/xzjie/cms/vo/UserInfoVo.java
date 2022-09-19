@@ -1,7 +1,7 @@
 package com.xzjie.cms.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.xzjie.cms.model.Account;
+import com.xzjie.cms.system.account.model.Account;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

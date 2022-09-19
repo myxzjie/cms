@@ -1,21 +1,17 @@
-package com.xzjie.cms.service.impl;
+package com.xzjie.cms.system.role.serivce.impl;
 
-import com.xzjie.cms.model.AccountRole;
-import com.xzjie.cms.model.Menu;
+import com.xzjie.cms.system.account.model.AccountRole;
 import com.xzjie.cms.model.Permission;
-import com.xzjie.cms.model.Role;
-import com.xzjie.cms.repository.AccountRoleRepository;
+import com.xzjie.cms.system.role.model.Role;
+import com.xzjie.cms.system.account.repository.AccountRoleRepository;
 import com.xzjie.cms.repository.PermissionRepository;
-import com.xzjie.cms.repository.RoleRepository;
-import com.xzjie.cms.service.RoleService;
+import com.xzjie.cms.system.role.repository.RoleRepository;
+import com.xzjie.cms.system.role.serivce.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

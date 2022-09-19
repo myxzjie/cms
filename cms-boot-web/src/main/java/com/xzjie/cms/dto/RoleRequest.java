@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.Role;
+import com.xzjie.cms.system.role.model.Role;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
