@@ -20,9 +20,9 @@ import java.util.List;
 @SQLDelete(sql = "update cms_category set state = 0 where id = ?")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Category extends BaseEntity<Category> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(name = "p_id")
     private Long pid;

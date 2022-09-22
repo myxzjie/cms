@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 @Where(clause = "state = 1")
 @SQLDelete(sql = "update cms_label set state = 0 where id = ?")
 public class Label extends BaseEntity<Label> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String name;
 

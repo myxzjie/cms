@@ -10,8 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "wx_tags")
 public class WxTags extends BaseEntity<WxTags> {
-    @Id
-    private Long id;
+//    @Id
+//    private Long id;
 
     private String name;
 

@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 @Table(name = "cms_article_recommend")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ArticleRecommendStat extends BaseEntity<ArticleRecommendStat> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private Long articleId;
 

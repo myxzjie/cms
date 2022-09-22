@@ -24,11 +24,11 @@ import java.time.LocalDateTime;
 @ApiModel("管理用户对象")
 public class Account extends BaseEntity<Account> {
 
-    @Id
-    @Column(name = "id")
-    @ApiModelProperty("ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @Column(name = "id")
+//    @ApiModelProperty("ID")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column
     @ApiModelProperty("用户名")

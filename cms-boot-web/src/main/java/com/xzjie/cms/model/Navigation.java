@@ -11,9 +11,9 @@ import java.util.List;
 @Entity
 @Table(name = "cms_navigation")
 public class Navigation extends BaseEntity<Navigation> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     @Column(name = "p_id")
     private Long pid;
     private String name;

@@ -22,9 +22,9 @@ import java.util.List;
 @Table(name = "cms_article_hot")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ArticleHot extends BaseEntity<ArticleHot> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private Long articleId;
 

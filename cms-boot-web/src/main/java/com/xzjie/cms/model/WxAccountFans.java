@@ -15,9 +15,9 @@ import java.util.List;
 @SQLDelete(sql = "update wx_account_fans set state = 0 where id = ?")
 public class WxAccountFans extends BaseEntity<WxAccountFans> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String openId;
 

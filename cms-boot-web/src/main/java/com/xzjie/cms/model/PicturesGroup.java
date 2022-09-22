@@ -22,9 +22,9 @@ import java.util.Set;
 @Table(name = "sys_pictures_group")
 @SQLDelete(sql = "update sys_pictures_group set state = 0 where id = ?")
 public class PicturesGroup extends BaseEntity<PicturesGroup> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String name;
 

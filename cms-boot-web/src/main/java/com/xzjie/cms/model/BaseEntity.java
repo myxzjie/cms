@@ -19,6 +19,11 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity<T extends Object> implements Serializable {
 
+    @Id
+    @ApiModelProperty("ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ApiModelProperty("排序")
     @Transient
     private Sorting sorting;

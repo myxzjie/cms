@@ -30,9 +30,9 @@ public class AdDto extends BasePageDto {
     private String image;
     @ApiModelProperty("URL连接")
     private String adLink;
-    @ApiModelProperty("广告CODE")
-    @QueryCondition
-    private String adCode;
+//    @ApiModelProperty("广告CODE")
+//    @QueryCondition
+//    private String adCode;
     @ApiModelProperty("开始时间")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date startTime;

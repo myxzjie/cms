@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "sys_visit_log")
 public class VisitLog extends BaseEntity<VisitLog> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     private String ip;
     private String type;
     @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern="yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")

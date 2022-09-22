@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @Table(name = "sys_key_data")
 @NoArgsConstructor
 public class KeyData extends BaseEntity<KeyData> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(name = "`key`")
     private String key;

@@ -21,10 +21,10 @@ import java.util.Objects;
 @ApiModel("菜单对象")
 public class Menu extends BaseEntity<Menu> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("ID")
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @ApiModelProperty("ID")
+//    private Long id;
 
     /**
      * 上级菜单ID
@@ -94,11 +94,11 @@ public class Menu extends BaseEntity<Menu> {
             return false;
         }
         Menu menu = (Menu) o;
-        return Objects.equals(id, menu.id);
+        return Objects.equals(this.getId(), menu.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.getId());
     }
 }

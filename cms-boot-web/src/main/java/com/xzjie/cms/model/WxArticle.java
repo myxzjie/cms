@@ -18,9 +18,9 @@ public class WxArticle extends BaseEntity<WxArticle> {
     /**
      * 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     /**
      * 标题

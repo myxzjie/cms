@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @Entity(name = "sys_verify_code")
 @ApiModel("验证信息对象")
 public class VerifyCode extends BaseEntity<VerifyCode> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("ID")
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @ApiModelProperty("ID")
+//    private Long id;
 
     @Column(name = "scenes", columnDefinition = "varchar")
     @ApiModelProperty("业务类型")

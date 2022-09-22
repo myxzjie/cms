@@ -9,9 +9,9 @@ import javax.persistence.*;
 @Table(name = "sys_permission")
 public class Permission extends BaseEntity<Permission>{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     private Long roleId;
     private Long menuId;
     @Override

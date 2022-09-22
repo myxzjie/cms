@@ -13,9 +13,9 @@ import java.util.Date;
 @Table(name = "cms_ad_position")
 @ApiModel("广告位")
 public class AdPosition extends BaseEntity<AdPosition> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @ApiModelProperty("用户ID")
     private Long userId;

@@ -20,20 +20,20 @@ import java.util.Date;
 @SQLDelete(sql = "update sys_role set state = 0 where id = ?")
 @NoArgsConstructor
 @ApiModel("角色对象")
-public class Role extends BaseEntity<Role> implements Serializable {
+public class Role extends BaseEntity<Role> {
 
     public Role(Long id, String roleCode, String roleName, Integer roleLevel) {
-        this.id = id;
+        this.setId(id);
         this.roleCode = roleCode;
         this.roleName = roleName;
         this.roleLevel = roleLevel;
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("ID")
-    private Long id;
+//    @Id
+//    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @ApiModelProperty("ID")
+//    private Long id;
     @ApiModelProperty("角色code")
     private String roleCode;
     @ApiModelProperty("角色名称")

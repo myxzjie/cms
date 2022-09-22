@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "update cms_topic set state = 0 where id = ?")
 public class Topic extends BaseEntity<Topic>{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String topic;
 

@@ -21,10 +21,10 @@ import javax.persistence.*;
 @Table(name = "sys_social")
 public class Social extends BaseEntity<Social> {
 
-    @ApiModelProperty("ID")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @ApiModelProperty("ID")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     @ApiModelProperty("用户ID")
     private Long userId;
     @ApiModelProperty("第三方唯一id")

@@ -27,10 +27,10 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @ApiModel("内容对象")
 public class Article extends BaseEntity<Article> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("ID")
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @ApiModelProperty("ID")
+//    private Long id;
     @ApiModelProperty("类型ID")
     private Long categoryId;
     @ApiModelProperty("标题")
