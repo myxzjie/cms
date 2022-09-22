@@ -1,15 +1,14 @@
 package com.xzjie.cms.system.menu.service.impl;
 
-import com.xzjie.cms.convert.MenuConverter;
+import com.xzjie.cms.system.menu.convert.MenuConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.MenuMeta;
-import com.xzjie.cms.vo.MenuVo;
+import com.xzjie.cms.system.menu.vo.MenuVo;
 import com.xzjie.cms.dto.MenuRouter;
 import com.xzjie.cms.dto.MenuTree;
 import com.xzjie.cms.system.menu.model.Menu;
-import com.xzjie.cms.repository.MenuRepository;
+import com.xzjie.cms.system.menu.repository.MenuRepository;
 import com.xzjie.cms.system.menu.service.MenuService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,9 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> implements MenuService {
-
-    @Autowired
-    private MenuConverter menuConverter;
 
     @Override
     public List<MenuTree> getMenuTree(Long pid) {
@@ -91,7 +87,7 @@ public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> imple
         List<MenuVo> menuResponses = new ArrayList<>();
         List<Menu> menus = baseRepository.findByPidOrderBySortDescIdAsc(0L);
         menus.stream().forEach(menu -> {
-            MenuVo menuResponse = menuConverter.source(menu);
+            MenuVo menuResponse = MenuConverter.INSTANCE.source(menu);
             menuResponse.setChildren(getTree(menu.getId()));
             menuResponses.add(menuResponse);
         });
@@ -126,7 +122,7 @@ public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> imple
         List<MenuVo> menuResponses = new ArrayList<>();
         List<Menu> menus = baseRepository.findByPidOrderBySortDescIdAsc(pid);
         menus.stream().forEach(menu -> {
-            MenuVo menuResponse = menuConverter.source(menu);
+            MenuVo menuResponse = MenuConverter.INSTANCE.source(menu);
             List<MenuVo> children = getTree(menu.getId());
             menuResponse.setChildren(children);
             menuResponses.add(menuResponse);

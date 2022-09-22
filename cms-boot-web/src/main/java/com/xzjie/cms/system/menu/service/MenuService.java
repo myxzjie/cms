@@ -1,7 +1,7 @@
 package com.xzjie.cms.system.menu.service;
 
 import com.xzjie.cms.core.service.BaseService;
-import com.xzjie.cms.vo.MenuVo;
+import com.xzjie.cms.system.menu.vo.MenuVo;
 import com.xzjie.cms.dto.MenuRouter;
 import com.xzjie.cms.dto.MenuTree;
 import com.xzjie.cms.system.menu.model.Menu;

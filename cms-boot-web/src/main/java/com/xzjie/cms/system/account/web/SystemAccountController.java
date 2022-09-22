@@ -17,6 +17,7 @@ import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.dto.AccountQueryDto;
 import com.xzjie.cms.vo.AccountVo;
 import com.xzjie.cms.vo.UserInfoVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
+@Api(value = "管理端-用户管理", tags = "管理端-用户管理")
 public class SystemAccountController {
     @Autowired
     private AccountService accountService;

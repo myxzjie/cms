@@ -1,11 +1,11 @@
-package com.xzjie.cms.dto;
+package com.xzjie.cms.system.auth.dto;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class RegisterRequest {
+public class RegisterDto {
     @NotBlank(message = "code不能为空")
     private String code;
     @NotBlank(message = "用户名不能为空")

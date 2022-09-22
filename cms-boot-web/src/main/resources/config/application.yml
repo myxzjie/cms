@@ -1,6 +1,8 @@
 server:
   port: 8090
 spring:
+  main:
+    allow-bean-definition-overriding: true
   profiles:
     active: prod
   servlet:
@@ -24,7 +26,9 @@ spring:
     expose-session-attributes: true
     expose-spring-macro-helpers: true
     content-type: text/html;charset=UTF-8
-
+  messages:
+    basename: message/messages
+    encoding: UTF-8
 
   jpa:
     hibernate:

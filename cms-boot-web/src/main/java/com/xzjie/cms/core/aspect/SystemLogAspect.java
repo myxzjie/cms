@@ -4,7 +4,7 @@ import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.event.SystemLogEvent;
 import com.xzjie.cms.core.utils.RequestHolder;
 import com.xzjie.cms.core.utils.SecurityUtils;
-import com.xzjie.cms.dto.LoginRequest;
+import com.xzjie.cms.system.auth.dto.LoginDto;
 import com.xzjie.cms.model.SystemLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -76,7 +76,7 @@ public class SystemLogAspect {
 
         if ("login".equals(log.value())) {
             try {
-                LoginRequest loginRequest = (LoginRequest) args[0];
+                LoginDto loginRequest = (LoginDto) args[0];
                 systemLog.setUsername(loginRequest.getUsername());
                 systemLog.setParams("");
             } catch (Exception e) {

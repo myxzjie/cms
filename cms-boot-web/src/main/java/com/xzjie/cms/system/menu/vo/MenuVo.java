@@ -1,4 +1,4 @@
-package com.xzjie.cms.vo;
+package com.xzjie.cms.system.menu.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

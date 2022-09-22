@@ -1,4 +1,4 @@
-package com.xzjie.cms.repository;
+package com.xzjie.cms.system.menu.repository;
 
 import com.xzjie.cms.system.menu.model.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;

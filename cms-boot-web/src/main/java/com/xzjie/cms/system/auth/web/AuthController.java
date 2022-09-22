@@ -1,14 +1,18 @@
-package com.xzjie.cms.system.web;
+package com.xzjie.cms.system.auth.web;
 
 import cn.hutool.core.lang.UUID;
 import com.xzjie.cms.configure.CmsProperties;
+import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.event.EmailEvent;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.VerifyCodeScenes;
 import com.xzjie.cms.system.account.model.Account;
-import com.xzjie.cms.model.Social;
+import com.xzjie.cms.system.auth.dto.MobileLoginDto;
+import com.xzjie.cms.system.auth.dto.LoginDto;
+import com.xzjie.cms.system.auth.dto.RegisterDto;
+import com.xzjie.cms.system.auth.model.Social;
 import com.xzjie.cms.security.code.CodeAuthenticationToken;
 import com.xzjie.cms.security.social.SocialAuthenticationToken;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
@@ -65,7 +69,7 @@ public class AuthController {
     private CmsProperties properties;
 
     @PostMapping("/mobile")
-    public Map<String, Object> mobile(@Valid @RequestBody Login2Request login) throws Exception {
+    public Map<String, Object> mobile(@Valid @RequestBody MobileLoginDto login) throws Exception {
         CodeAuthenticationToken authenticationToken = new CodeAuthenticationToken(login.getMobile());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
@@ -78,12 +82,12 @@ public class AuthController {
 
     @Log(value = "login", descrption = "用户登录")
     @PostMapping("/sign")
-    public Map<String, Object> authenticate(@Valid @RequestBody LoginRequest login) throws Exception {
+    public Result authenticate(@Validated @RequestBody LoginDto login) throws Exception {
         Authentication authentication = authenticate(login.getUsername(), login.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.generateToken((UserDetails) authentication.getPrincipal());
 
-        return MapUtils.success(new AuthResponse(token));
+        return Result.data(new AuthResponse(token));
     }
 
     private Authentication authenticate(String username, String password) throws Exception {
@@ -100,7 +104,7 @@ public class AuthController {
 
 
     @PostMapping("/signup/binder")
-    public Map<String, Object> registerUser(@Valid @RequestBody RegisterRequest register) {
+    public Map<String, Object> registerUser(@Valid @RequestBody RegisterDto register) {
         if (accountService.existsByName(register.getName())) {
             throw new RuntimeException("Username is already taken!");
         }

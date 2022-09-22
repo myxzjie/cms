@@ -1,20 +1,20 @@
 package com.xzjie.cms.system.account.service.impl;
 
-import com.xzjie.cms.system.account.convert.AccountConverter;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.enums.VerifyCodeScenes;
+import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.system.account.convert.AccountConverter;
 import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.dto.AccountQueryDto;
-import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.system.account.model.Account;
 import com.xzjie.cms.system.account.model.AccountRole;
-import com.xzjie.cms.model.Social;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
 import com.xzjie.cms.system.account.repository.AccountRepository;
-import com.xzjie.cms.system.account.repository.SocialRepository;
 import com.xzjie.cms.system.account.service.AccountService;
+import com.xzjie.cms.system.auth.model.Social;
+import com.xzjie.cms.system.auth.repository.SocialRepository;
 import com.xzjie.cms.system.role.serivce.RoleService;
 import com.xzjie.cms.vo.AccountVo;
 import org.apache.commons.lang3.RandomStringUtils;

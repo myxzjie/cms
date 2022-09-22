@@ -1,12 +1,14 @@
-package com.xzjie.cms.system.web;
+package com.xzjie.cms.system.auth.web;
 
 import cn.hutool.core.lang.UUID;
 import com.xkcoding.justauth.AuthRequestFactory;
 import com.xzjie.cms.configure.CmsProperties;
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.model.Social;
+import com.xzjie.cms.system.auth.model.Social;
 import com.xzjie.cms.security.token.SecurityTokenProvider;
 import com.xzjie.cms.system.account.service.AccountService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -27,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/oauth")
+@Api(value = "管理端-第三方登录授权",tags = "管理端-第三方登录授权")
 public class OauthController {
     @Autowired
     private AuthRequestFactory factory;
@@ -47,12 +50,14 @@ public class OauthController {
     }
 
     @GetMapping("/{type}/login")
+    @ApiOperation("第三方登录授权")
     public void login(@PathVariable String type, String redirect, HttpServletResponse response) throws IOException {
         AuthRequest authRequest = factory.get(type);
         String url = authRequest.authorize(AuthStateUtils.createState());
         response.sendRedirect(url);
     }
 
+    @ApiOperation("第三方登录授权回调")
     @RequestMapping("/{type}/callback")
     public void login(@PathVariable String type, String redirect, AuthCallback callback, HttpServletResponse response) throws IOException {
         AuthRequest authRequest = factory.get(type);
@@ -90,6 +95,7 @@ public class OauthController {
         response.sendRedirect(redirect);
     }
 
+    @ApiOperation("第三方登录绑定")
     @GetMapping("/binder/{code}")
     public Map<String, Object> binder(@PathVariable String code, HttpServletResponse response) throws IOException {
         Social social = (Social) redisTemplate.opsForValue().get("bind:" + code);

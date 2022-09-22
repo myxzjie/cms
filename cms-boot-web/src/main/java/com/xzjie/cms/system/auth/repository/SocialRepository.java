@@ -1,6 +1,6 @@
-package com.xzjie.cms.system.account.repository;
+package com.xzjie.cms.system.auth.repository;
 
-import com.xzjie.cms.model.Social;
+import com.xzjie.cms.system.auth.model.Social;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
