@@ -1,8 +1,8 @@
 package com.xzjie.cms.client.web;
 
+import com.xzjie.cms.ad.model.Ad;
+import com.xzjie.cms.ad.service.AdService;
 import com.xzjie.cms.core.Result;
-import com.xzjie.cms.model.Ad;
-import com.xzjie.cms.service.AdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,7 +24,7 @@ public class AppAdController {
 
     @ApiOperation(value = "前端-广告位的数据列表", notes = "查询广告位的相关数据列表", response = Ad.class)
     @GetMapping("/data/{positionCode}")
-    public Result<List<Ad>> getAd(@PathVariable @ApiParam("广告位code") String positionCode) {
+    public Result<List<Ad>> getAdPositionData(@PathVariable @ApiParam("广告位code") String positionCode) {
         List<Ad> ads = adService.getAdByPositionCode(positionCode);
         return Result.data(ads);
     }

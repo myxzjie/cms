@@ -1,6 +1,6 @@
-package com.xzjie.cms.repository;
+package com.xzjie.cms.ad.repository;
 
-import com.xzjie.cms.model.Ad;
+import com.xzjie.cms.ad.model.Ad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

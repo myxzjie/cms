@@ -1,5 +1,6 @@
-package com.xzjie.cms.dto;
+package com.xzjie.cms.ad.dto;
 
+import com.xzjie.cms.dto.BasePageDto;
 import com.xzjie.cms.model.AdPosition;
 import com.xzjie.cms.persistence.enums.ConditionType;
 import com.xzjie.cms.persistence.annotation.QueryCondition;

@@ -1,4 +1,4 @@
-package com.xzjie.cms.repository;
+package com.xzjie.cms.ad.repository;
 
 import com.xzjie.cms.model.AdPosition;
 import org.springframework.data.jpa.repository.JpaRepository;

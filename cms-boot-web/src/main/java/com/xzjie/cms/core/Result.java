@@ -11,6 +11,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 @ApiModel("返回结果")
@@ -92,6 +93,10 @@ public final class Result<T extends Object> {
 //    }
     public static <T> Result<T> data(T data, long total) {
         return data(data).setTotal(total);
+    }
+
+    public static <T> Result<List<T>> data(PageResult<T> pageResult) {
+        return data(pageResult.getContent()).setTotal(pageResult.getTotal());
     }
 
     /**

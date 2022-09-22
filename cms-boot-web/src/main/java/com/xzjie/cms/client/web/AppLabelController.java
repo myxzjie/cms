@@ -2,16 +2,15 @@ package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.LabelQueryDto;
-import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.Label;
-import com.xzjie.cms.service.AdService;
 import com.xzjie.cms.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController

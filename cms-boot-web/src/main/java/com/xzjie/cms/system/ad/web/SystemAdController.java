@@ -1,13 +1,15 @@
-package com.xzjie.cms.system.web;
+package com.xzjie.cms.system.ad.web;
 
+import com.xzjie.cms.ad.dto.AdDto;
+import com.xzjie.cms.ad.dto.AdPositionDto;
+import com.xzjie.cms.ad.model.Ad;
+import com.xzjie.cms.ad.service.AdService;
+import com.xzjie.cms.ad.vo.AdVo;
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.SecurityUtils;
-import com.xzjie.cms.dto.AdPositionDto;
-import com.xzjie.cms.dto.AdDto;
-import com.xzjie.cms.model.Ad;
 import com.xzjie.cms.model.AdPosition;
-import com.xzjie.cms.service.AdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,9 +30,10 @@ public class SystemAdController {
     @Autowired
     private AdService adService;
 
+    @ApiOperation("广告创建")
     @PostMapping("/create")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:add')")
-    public Result create(@Valid @RequestBody AdDto adRequest) {
+    public Result<?> create(@Valid @RequestBody AdDto adRequest) {
         Ad ad = adRequest.toAd();
         ad.setClickCount(0);
         adService.save(ad);
@@ -60,9 +63,9 @@ public class SystemAdController {
     @ApiOperation(value = "获得广告的数据列表", response = Ad.class)
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPermission('administrator','ad:all','ad:list')")
-    public Result getAd(AdDto request) {
-        Page<Ad> page = adService.getAd(request);
-        return Result.data(page.getContent(), page.getTotalElements());
+    public Result getAdPage(AdDto request) {
+        PageResult<AdVo> page = adService.getAdPage(request);
+        return Result.data(page);
     }
 
     /**
