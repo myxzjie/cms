@@ -1,4 +1,4 @@
-package com.xzjie.cms.model;
+package com.xzjie.cms.article.model;
 
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;

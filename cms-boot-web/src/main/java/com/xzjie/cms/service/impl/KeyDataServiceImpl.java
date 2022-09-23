@@ -22,13 +22,13 @@ public class KeyDataServiceImpl extends AbstractService<KeyData, KeyDataReposito
         }
     }
 
-    @Override
-    public boolean update(KeyData obj) {
-        KeyData model = baseRepository.findByKey(obj.getKey());
-        model.copy(obj);
-        baseRepository.save(model);
-        return true;
-    }
+//    @Override
+//    public boolean update(KeyData obj) {
+//        KeyData model = baseRepository.findByKey(obj.getKey());
+//        model.copy(obj);
+//        baseRepository.save(model);
+//        return true;
+//    }
 
     @Override
     public KeyData getKeyDataByKey(String key) {

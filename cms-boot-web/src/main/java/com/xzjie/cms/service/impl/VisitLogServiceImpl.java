@@ -20,10 +20,6 @@ import java.util.List;
  */
 @Service
 public class VisitLogServiceImpl extends AbstractService<VisitLog, VisitLogRepository> implements VisitLogService {
-    @Override
-    public boolean update(VisitLog obj) {
-        return false;
-    }
 
     @Override
     public List<VisitStatistics> getVisitStatistics() {

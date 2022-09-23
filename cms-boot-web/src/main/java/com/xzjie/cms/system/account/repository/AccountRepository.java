@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.account.repository;
 
+import com.xzjie.cms.core.repository.BaseRepository;
 import com.xzjie.cms.system.account.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -8,18 +9,18 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 
-public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpecificationExecutor<Account> {
+public interface AccountRepository extends BaseRepository<Account, Long> {
 
     Account findAccountByNameAndState(String name, Integer state);
 
     Account findAccountByPhoneAndState(String phone, Integer state);
 
-    default Account findAccountByName(String name){
-        return findAccountByNameAndState(name,1);
+    default Account findAccountByName(String name) {
+        return findAccountByNameAndState(name, 1);
     }
 
-    default Account findAccountByPhone(String phone){
-        return findAccountByPhoneAndState(phone,1);
+    default Account findAccountByPhone(String phone) {
+        return findAccountByPhoneAndState(phone, 1);
     }
 
     @Modifying

@@ -1,4 +1,4 @@
-package com.xzjie.cms.system.ad.web;
+package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.ad.dto.AdDto;
 import com.xzjie.cms.ad.dto.AdPositionDto;
@@ -9,7 +9,7 @@ import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.SecurityUtils;
-import com.xzjie.cms.model.AdPosition;
+import com.xzjie.cms.ad.model.AdPosition;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

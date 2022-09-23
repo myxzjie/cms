@@ -1,4 +1,4 @@
-package com.xzjie.cms.model;
+package com.xzjie.cms.ad.model;
 
 import lombok.Data;
 

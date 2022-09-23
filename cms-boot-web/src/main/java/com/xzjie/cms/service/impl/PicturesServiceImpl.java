@@ -6,7 +6,7 @@ import com.xzjie.cms.store.local.configure.LocalProperties;
 import com.xzjie.cms.store.minio.service.MinioService;
 import com.xzjie.cms.model.Pictures;
 import com.xzjie.cms.model.PicturesGroup;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.PicturesGroupRepository;
 import com.xzjie.cms.repository.PicturesRepository;
 import com.xzjie.cms.service.PicturesService;

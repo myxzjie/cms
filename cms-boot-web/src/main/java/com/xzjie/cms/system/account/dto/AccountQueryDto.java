@@ -1,8 +1,8 @@
 package com.xzjie.cms.system.account.dto;
 
 import com.xzjie.cms.dto.BasePageDto;
-import com.xzjie.cms.persistence.annotation.QueryCondition;
-import com.xzjie.cms.persistence.enums.ConditionType;
+import com.xzjie.cms.core.persistence.annotation.QueryCondition;
+import com.xzjie.cms.core.persistence.enums.ConditionType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

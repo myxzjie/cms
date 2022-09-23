@@ -8,9 +8,9 @@ import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleQueryDto;
 import com.xzjie.cms.dto.ArticleRecommendStatResult;
 import com.xzjie.cms.dto.CategoryTree;
-import com.xzjie.cms.model.Article;
-import com.xzjie.cms.model.ArticleHot;
-import com.xzjie.cms.model.ArticleRecommendStat;
+import com.xzjie.cms.article.model.Article;
+import com.xzjie.cms.article.model.ArticleHot;
+import com.xzjie.cms.article.model.ArticleRecommendStat;
 import com.xzjie.cms.model.Category;
 import org.springframework.data.domain.Page;
 

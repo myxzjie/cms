@@ -1,7 +1,8 @@
 package com.xzjie.cms.persistence;
 
 import com.xzjie.cms.WebApplicationTests;
-import com.xzjie.cms.persistence.annotation.QueryCondition;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
+import com.xzjie.cms.core.persistence.annotation.QueryCondition;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 

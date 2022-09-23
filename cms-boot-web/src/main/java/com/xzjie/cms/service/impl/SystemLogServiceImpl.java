@@ -23,11 +23,6 @@ public class SystemLogServiceImpl extends AbstractService<SystemLog, SystemLogRe
 
     private static final String LOGIN_NAME = "login";
 
-    @Override
-    public boolean update(SystemLog obj) {
-        return false;
-    }
-
 
     @Override
     public List<SystemLog> getLoginSystemLog(String username) {

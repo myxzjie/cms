@@ -3,7 +3,7 @@ package com.xzjie.cms.service.impl;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.LabelQueryDto;
 import com.xzjie.cms.model.Label;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.LabelRepository;
 import com.xzjie.cms.service.LabelService;
 import com.xzjie.cms.vo.LabelVo;
@@ -21,12 +21,12 @@ import java.util.List;
 public class LabelServiceImpl extends AbstractService<Label, LabelRepository> implements LabelService {
 
     @Override
-    public boolean update(Label obj) {
-        Label model = baseRepository.findById(obj.getId()).orElseGet(Label::new);
-        model.copy(obj);
-        model.setUpdateDate(LocalDateTime.now());
-         save(model);
-         return true;
+    public Label update(Label entity) {
+//        Label model = baseRepository.findById(obj.getId()).orElseGet(Label::new);
+//        model.copy(obj);
+        entity.setUpdateDate(LocalDateTime.now());
+//         save(model);
+         return super.update(entity);
     }
 
     @Override

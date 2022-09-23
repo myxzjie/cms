@@ -1,7 +1,6 @@
 package com.xzjie.cms.service;
 
 import com.xzjie.cms.core.service.BaseService;
-import com.xzjie.cms.model.Article;
 import com.xzjie.cms.model.WxAccountFans;
 import org.springframework.data.domain.Page;
 

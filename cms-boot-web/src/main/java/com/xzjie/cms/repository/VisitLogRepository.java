@@ -1,5 +1,6 @@
 package com.xzjie.cms.repository;
 
+import com.xzjie.cms.core.repository.BaseRepository;
 import com.xzjie.cms.model.VisitLog;
 import com.xzjie.cms.vo.VisitStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Vito
  * @since 2022/3/19 1:30 下午
  */
-public interface VisitLogRepository extends JpaRepository<VisitLog, Long>, JpaSpecificationExecutor<VisitLog> {
+public interface VisitLogRepository extends BaseRepository<VisitLog, Long>{
 
     @Query(nativeQuery = true,value = "SELECT * FROM (\n" +
             "(SELECT 'article' NAME, count(id) total FROM cms_article where state= 1) \n" +

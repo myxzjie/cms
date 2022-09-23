@@ -100,11 +100,11 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Navigatio
         return ids;
     }
 
-    @Override
-    public boolean update(Navigation obj) {
-        Navigation model = baseRepository.findById(obj.getId()).orElseGet(Navigation::new);
-        model.copy(obj);
-        baseRepository.save(model);
-        return true;
-    }
+//    @Override
+//    public boolean update(Navigation obj) {
+//        Navigation model = baseRepository.findById(obj.getId()).orElseGet(Navigation::new);
+//        model.copy(obj);
+//        baseRepository.save(model);
+//        return true;
+//    }
 }

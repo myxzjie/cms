@@ -1,6 +1,7 @@
-package com.xzjie.cms.persistence.annotation;
+package com.xzjie.cms.core.persistence.annotation;
 
-import com.xzjie.cms.persistence.enums.ConditionType;
+import com.xzjie.cms.core.persistence.enums.ConditionType;
+import com.xzjie.cms.core.persistence.enums.Join;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,4 +16,18 @@ public @interface QueryCondition {
     String[] blurry() default {};
 
     ConditionType connect() default ConditionType.EQUAL;
+
+    // join
+
+    /**
+     * join查询
+     * @return
+     */
+    Join join() default Join.INNER;
+
+    /**
+     * join表名对象
+     * @return
+     */
+    String table() default "";
 }

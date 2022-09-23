@@ -50,12 +50,12 @@ public class WxTagsServiceImpl extends AbstractService<WxTags, WxTagsRepository>
     }
 
     @Override
-    public boolean update(WxTags obj) {
-        WxTags model = baseRepository.getOne(obj.getId());
-        wechatService.updateTags(WxTagsCreate.builder().setId(obj.getId()).setName(obj.getName()).build());
-        model.copy(obj);
-        baseRepository.save(model);
-        return true;
+    public WxTags update(WxTags entity) {
+//        WxTags model = baseRepository.getOne(obj.getId());
+        wechatService.updateTags(WxTagsCreate.builder().setId(entity.getId()).setName(entity.getName()).build());
+//        model.copy(obj);
+//        baseRepository.save(model);
+        return save(entity);
     }
 
     @Transactional

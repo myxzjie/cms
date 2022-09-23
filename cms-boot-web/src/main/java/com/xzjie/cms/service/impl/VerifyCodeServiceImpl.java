@@ -37,11 +37,6 @@ public class VerifyCodeServiceImpl extends AbstractService<VerifyCode, VerifyCod
     private ApplicationContext applicationContext;
 
     @Override
-    public boolean update(VerifyCode obj) {
-        return false;
-    }
-
-    @Override
     public VerifyCode save(String target, String value, VerifyCodeScenes scenes, VerifyCodeType type, String message) {
         VerifyCode model = new VerifyCode();
         model.setCreateDate(LocalDateTime.now());

@@ -2,7 +2,7 @@
 //
 //import com.xzjie.cms.dto.ArticleDto;
 //import com.xzjie.cms.dto.LabelQueryDto;
-//import com.xzjie.cms.model.Article;
+//import com.xzjie.cms.article.model.Article;
 //import com.xzjie.cms.model.Label;
 //import org.mapstruct.Mapper;
 //import org.mapstruct.ReportingPolicy;

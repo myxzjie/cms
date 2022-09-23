@@ -6,11 +6,11 @@ public interface BaseService<T> {
 
     <S extends T> S save(S entity);
 
-    boolean update(T entity);
+    <S extends T> S update(S entity);
 
     boolean delete(Long id);
 
     List<T> getAll();
 
-    T getOne(Long id);
+    T getById(Long id);
 }

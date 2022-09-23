@@ -1,4 +1,4 @@
-package com.xzjie.cms.persistence.enums;
+package com.xzjie.cms.core.persistence.enums;
 
 public enum ConditionType {
     EQUAL,

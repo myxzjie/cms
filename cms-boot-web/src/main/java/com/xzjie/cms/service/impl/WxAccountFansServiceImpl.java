@@ -36,11 +36,6 @@ public class WxAccountFansServiceImpl extends AbstractService<WxAccountFans, WxF
 
 
     @Override
-    public boolean update(WxAccountFans obj) {
-        return false;
-    }
-
-    @Override
     public WxAccountFans getAccountFans(Long id) {
         return baseRepository.getOne(id);
     }

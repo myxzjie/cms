@@ -4,14 +4,14 @@ import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.enums.VerifyCodeScenes;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.system.account.repository.AccountRepository;
 import com.xzjie.cms.system.account.convert.AccountConverter;
 import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.dto.AccountQueryDto;
 import com.xzjie.cms.system.account.model.Account;
 import com.xzjie.cms.system.account.model.AccountRole;
-import com.xzjie.cms.system.account.repository.AccountRepository;
 import com.xzjie.cms.system.account.service.AccountService;
 import com.xzjie.cms.system.auth.model.Social;
 import com.xzjie.cms.system.auth.repository.SocialRepository;
@@ -186,13 +186,13 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
         return super.save(obj);
     }
 
-    @Override
-    public boolean update(Account obj) {
-        Account model = baseRepository.findById(obj.getId()).orElseGet(Account::new);
-        model.copy(obj);
-        baseRepository.save(model);
-        return true;
-    }
+//    @Override
+//    public boolean update(Account obj) {
+//        Account model = baseRepository.findById(obj.getId()).orElseGet(Account::new);
+//        model.copy(obj);
+//        baseRepository.save(model);
+//        return true;
+//    }
 
     @Override
     public Social getSocialByUuid(String uuid) {
@@ -212,7 +212,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 
     @Override
     public void resetPassword(Long userId) {
-        Account model = this.getOne(userId);
+        Account model = this.getById(userId);
         if (model == null) {
             throw new RuntimeException("用户信息错误");
         }

@@ -1,7 +1,7 @@
 package com.xzjie.cms.dto;
 
 import com.xzjie.cms.model.Pictures;
-import com.xzjie.cms.persistence.annotation.QueryCondition;
+import com.xzjie.cms.core.persistence.annotation.QueryCondition;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

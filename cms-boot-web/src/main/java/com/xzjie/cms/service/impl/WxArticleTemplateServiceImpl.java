@@ -6,11 +6,10 @@ import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.core.utils.JsonUtils;
 import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.MassMsgType;
-import com.xzjie.cms.enums.MediaFileType;
 import com.xzjie.cms.model.WxAccountFans;
 import com.xzjie.cms.model.WxArticle;
 import com.xzjie.cms.model.WxArticleTemplate;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import com.xzjie.cms.repository.WxArticleRepository;
 import com.xzjie.cms.repository.WxArticleTemplateRepository;
 import com.xzjie.cms.service.WechatService;
@@ -25,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -46,13 +44,13 @@ public class WxArticleTemplateServiceImpl extends AbstractService<WxArticleTempl
     private WxAccountFansService accountFansService;
 
 
-    @Override
-    public boolean update(WxArticleTemplate obj) {
-        WxArticleTemplate model = baseRepository.getOne(obj.getId());
-        model.copy(obj);
-        baseRepository.save(model);
-        return false;
-    }
+//    @Override
+//    public boolean update(WxArticleTemplate obj) {
+//        WxArticleTemplate model = baseRepository.getOne(obj.getId());
+//        model.copy(obj);
+//        baseRepository.save(model);
+//        return false;
+//    }
 
     @Override
     public WxArticleTemplate getArticleTemplate(Long id) {

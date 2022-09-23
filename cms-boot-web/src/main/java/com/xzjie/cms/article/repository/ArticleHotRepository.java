@@ -1,7 +1,7 @@
-package com.xzjie.cms.repository;
+package com.xzjie.cms.article.repository;
 
 import com.xzjie.cms.dto.ArticleHotResult;
-import com.xzjie.cms.model.ArticleHot;
+import com.xzjie.cms.article.model.ArticleHot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

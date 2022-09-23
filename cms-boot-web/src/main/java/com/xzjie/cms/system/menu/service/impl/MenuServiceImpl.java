@@ -1,14 +1,14 @@
 package com.xzjie.cms.system.menu.service.impl;
 
 import com.xzjie.cms.system.menu.convert.MenuConverter;
+import com.xzjie.cms.system.menu.repository.MenuRepository;
+import com.xzjie.cms.system.menu.service.MenuService;
+import com.xzjie.cms.system.menu.vo.MenuVo;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.MenuMeta;
-import com.xzjie.cms.system.menu.vo.MenuVo;
 import com.xzjie.cms.dto.MenuRouter;
 import com.xzjie.cms.dto.MenuTree;
 import com.xzjie.cms.system.menu.model.Menu;
-import com.xzjie.cms.system.menu.repository.MenuRepository;
-import com.xzjie.cms.system.menu.service.MenuService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -130,11 +130,11 @@ public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> imple
         return menuResponses;
     }
 
-    @Override
-    public boolean update(Menu obj) {
-        Menu model = baseRepository.findById(obj.getId()).orElseGet(Menu::new);
-        model.copy(obj);
-        baseRepository.save(model);
-        return true;
-    }
+//    @Override
+//    public boolean update(Menu obj) {
+//        Menu model = baseRepository.findById(obj.getId()).orElseGet(Menu::new);
+//        model.copy(obj);
+//        baseRepository.save(model);
+//        return true;
+//    }
 }

@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @Entity
 @DynamicInsert
 @Table(name = "sys_system_log")
-public class SystemLog {
+public class SystemLog extends BaseEntity<SystemLog>{
     /**
      * 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String name;
 
@@ -91,4 +91,8 @@ public class SystemLog {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
+    @Override
+    public void copy(SystemLog obj) {
+
+    }
 }

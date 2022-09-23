@@ -1,5 +1,6 @@
 package com.xzjie.cms.repository;
 
+import com.xzjie.cms.core.repository.BaseRepository;
 import com.xzjie.cms.model.Navigation;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
-public interface NavigationRepository extends JpaRepository<Navigation, Long>, JpaSpecificationExecutor {
+public interface NavigationRepository extends BaseRepository<Navigation, Long> {
 
     List<Navigation> findByPid(Long pid);
 

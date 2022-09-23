@@ -1,6 +1,6 @@
 package com.xzjie.cms.client.vo;
 
-import com.xzjie.cms.model.Article;
+import com.xzjie.cms.article.model.Article;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

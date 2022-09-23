@@ -1,5 +1,8 @@
 package com.xzjie.cms.service.impl;
 
+import com.xzjie.cms.article.model.Article;
+import com.xzjie.cms.article.model.ArticleHot;
+import com.xzjie.cms.article.model.ArticleRecommendStat;
 import com.xzjie.cms.client.dto.SearchDto;
 import com.xzjie.cms.client.vo.CaseVo;
 import com.xzjie.cms.client.vo.ArticleDetailVo;
@@ -11,10 +14,10 @@ import com.xzjie.cms.dto.ArticleRecommendStatResult;
 import com.xzjie.cms.dto.CategoryTree;
 import com.xzjie.cms.enums.Sorting;
 import com.xzjie.cms.model.*;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
-import com.xzjie.cms.repository.ArticleHotRepository;
-import com.xzjie.cms.repository.ArticleRecommendStatRepository;
-import com.xzjie.cms.repository.ArticleRepository;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
+import com.xzjie.cms.article.repository.ArticleHotRepository;
+import com.xzjie.cms.article.repository.ArticleRecommendStatRepository;
+import com.xzjie.cms.article.repository.ArticleRepository;
 import com.xzjie.cms.repository.CategoryRepository;
 import com.xzjie.cms.service.ArticleService;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +29,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -190,12 +192,12 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
 
     @Override
-    public boolean update(Article article) {
-        Article model = baseRepository.findById(article.getId()).orElseGet(Article::new);
-        model.copy(article);
-        model.setUpdateDate(LocalDateTime.now());
-        baseRepository.save(model);
-        return true;
+    public Article update(Article article) {
+//        Article model = baseRepository.findById(article.getId()).orElseGet(Article::new);
+//        model.copy(article);
+        article.setUpdateDate(LocalDateTime.now());
+//        baseRepository.save(model);
+        return super.update(article);
     }
 
     @Override

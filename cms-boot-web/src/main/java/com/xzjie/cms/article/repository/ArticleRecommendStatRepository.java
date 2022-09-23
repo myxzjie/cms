@@ -1,8 +1,8 @@
-package com.xzjie.cms.repository;
+package com.xzjie.cms.article.repository;
 
 import com.xzjie.cms.dto.ArticleRecommendStatResult;
-import com.xzjie.cms.model.ArticleHot;
-import com.xzjie.cms.model.ArticleRecommendStat;
+import com.xzjie.cms.article.model.ArticleHot;
+import com.xzjie.cms.article.model.ArticleRecommendStat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

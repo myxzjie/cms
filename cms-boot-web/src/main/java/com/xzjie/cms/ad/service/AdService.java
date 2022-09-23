@@ -7,7 +7,7 @@ import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.ad.dto.AdPositionDto;
 
-import com.xzjie.cms.model.AdPosition;
+import com.xzjie.cms.ad.model.AdPosition;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

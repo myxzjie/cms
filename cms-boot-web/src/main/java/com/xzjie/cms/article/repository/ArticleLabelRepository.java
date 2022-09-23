@@ -1,6 +1,6 @@
-package com.xzjie.cms.repository;
+package com.xzjie.cms.article.repository;
 
-import com.xzjie.cms.model.Article;
+import com.xzjie.cms.article.model.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

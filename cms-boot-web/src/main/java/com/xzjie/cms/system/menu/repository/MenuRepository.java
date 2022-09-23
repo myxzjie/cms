@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.menu.repository;
 
+import com.xzjie.cms.core.repository.BaseRepository;
 import com.xzjie.cms.system.menu.model.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificationExecutor<Menu> {
+public interface MenuRepository extends BaseRepository<Menu, Long> {
 
     /**
      * 根据菜单名称查询

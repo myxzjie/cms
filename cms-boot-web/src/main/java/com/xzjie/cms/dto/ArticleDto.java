@@ -1,7 +1,7 @@
 package com.xzjie.cms.dto;
 
 import com.xzjie.cms.enums.Sorting;
-import com.xzjie.cms.model.Article;
+import com.xzjie.cms.article.model.Article;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

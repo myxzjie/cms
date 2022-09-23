@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+* @author vito
+* @since 2022/9/23 1:31 AM
+*/
 @Slf4j
 @RestController
 @RequestMapping("/api/hot")

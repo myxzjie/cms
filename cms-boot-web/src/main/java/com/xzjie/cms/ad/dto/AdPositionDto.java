@@ -1,9 +1,9 @@
 package com.xzjie.cms.ad.dto;
 
 import com.xzjie.cms.dto.BasePageDto;
-import com.xzjie.cms.model.AdPosition;
-import com.xzjie.cms.persistence.enums.ConditionType;
-import com.xzjie.cms.persistence.annotation.QueryCondition;
+import com.xzjie.cms.ad.model.AdPosition;
+import com.xzjie.cms.core.persistence.enums.ConditionType;
+import com.xzjie.cms.core.persistence.annotation.QueryCondition;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

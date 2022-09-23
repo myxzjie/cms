@@ -10,8 +10,8 @@ import com.xzjie.cms.ad.service.AdService;
 import com.xzjie.cms.ad.vo.AdVo;
 import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.model.AdPosition;
-import com.xzjie.cms.persistence.SpecSearchCriteria;
+import com.xzjie.cms.ad.model.AdPosition;
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -112,11 +112,11 @@ public class AdServiceImpl extends AbstractService<Ad, AdRepository> implements 
         return adPositionRepository.findAll();
     }
 
-    @Override
-    public boolean update(Ad obj) {
-        Ad ad = baseRepository.findById(obj.getId()).orElseGet(Ad::new);
-        ad.copy(obj);
-        save(ad);
-        return true;
-    }
+//    @Override
+//    public boolean update(Ad obj) {
+//        Ad ad = baseRepository.findById(obj.getId()).orElseGet(Ad::new);
+//        ad.copy(obj);
+//        save(ad);
+//        return true;
+//    }
 }

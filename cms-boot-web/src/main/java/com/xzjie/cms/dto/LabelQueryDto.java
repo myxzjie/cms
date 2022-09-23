@@ -1,7 +1,7 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.persistence.annotation.QueryCondition;
-import com.xzjie.cms.persistence.enums.ConditionType;
+import com.xzjie.cms.core.persistence.annotation.QueryCondition;
+import com.xzjie.cms.core.persistence.enums.ConditionType;
 import lombok.Data;
 
 @Data

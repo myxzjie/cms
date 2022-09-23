@@ -1,5 +1,6 @@
-package com.xzjie.cms.model;
+package com.xzjie.cms.ad.model;
 
+import com.xzjie.cms.model.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
