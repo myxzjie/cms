@@ -59,29 +59,7 @@ public class SpecSearchCriteria {
                     Join join = null;
                     String table = condition.table();
                     if (StringUtils.hasText(table)) {
-                        switch (condition.join()) {
-                            case INNER:
-                                if (join != null) {
-                                    join = join.join(table, JoinType.INNER);
-                                } else {
-                                    join = root.join(table, JoinType.INNER);
-                                }
-                                break;
-                            case LEFT:
-                                if (join != null) {
-                                    join = join.join(table, JoinType.LEFT);
-                                } else {
-                                    join = root.join(table, JoinType.LEFT);
-                                }
-                                break;
-                            case RIGHT:
-                                if (join != null) {
-                                    join = join.join(table, JoinType.RIGHT);
-                                } else {
-                                    join = root.join(table, JoinType.RIGHT);
-                                }
-                                break;
-                        }
+                        join = root.join(table, condition.joinType());
                     }
 
                     if (StringUtils.hasText(attribute) && blurry.length == 0) {

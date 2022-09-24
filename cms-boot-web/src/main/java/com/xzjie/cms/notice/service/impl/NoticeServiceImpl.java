@@ -1,5 +1,6 @@
 package com.xzjie.cms.notice.service.impl;
 
+import com.xzjie.cms.core.persistence.PredicateWrapper;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.notice.model.Notice;
 import com.xzjie.cms.notice.repository.NoticeRepository;
@@ -22,18 +23,23 @@ public class NoticeServiceImpl extends AbstractService<Notice, NoticeRepository>
 
     @Override
     public List<Notice> getNoticeList() {
-        return baseRepository.findAll((root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            Expression<LocalDateTime> startDate = root.get("startDate").as(LocalDateTime.class);
-            Expression<LocalDateTime> endDate = root.get("endDate").as(LocalDateTime.class);
-            LocalDateTime nowDate = LocalDateTime.now();
-            // 开始时间
-            predicates.add(cb.lessThanOrEqualTo(startDate, nowDate));
-            // 结束时间
-            predicates.add(cb.greaterThanOrEqualTo(endDate, nowDate));
-
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        });
+        LocalDateTime nowDate = LocalDateTime.now();
+        return baseRepository.findAll(PredicateWrapper.and()
+                .lessThanOrEqualTo(Notice::getStartDate, nowDate)
+                .greaterThanOrEqualTo(Notice::getEndDate, nowDate)
+                .build());
+//        return baseRepository.findAll((root, query, cb) -> {
+//            List<Predicate> predicates = new ArrayList<>();
+//
+//            Expression<LocalDateTime> startDate = root.get("startDate").as(LocalDateTime.class);
+//            Expression<LocalDateTime> endDate = root.get("endDate").as(LocalDateTime.class);
+//            LocalDateTime nowDate = LocalDateTime.now();
+//            // 开始时间
+//            predicates.add(cb.lessThanOrEqualTo(startDate, nowDate));
+//            // 结束时间
+//            predicates.add(cb.greaterThanOrEqualTo(endDate, nowDate));
+//
+//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+//        });
     }
 }

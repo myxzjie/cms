@@ -3,6 +3,7 @@ package com.xzjie.cms.core.persistence.annotation;
 import com.xzjie.cms.core.persistence.enums.ConditionType;
 import com.xzjie.cms.core.persistence.enums.Join;
 
+import javax.persistence.criteria.JoinType;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,7 +24,7 @@ public @interface QueryCondition {
      * join查询
      * @return
      */
-    Join join() default Join.INNER;
+    JoinType joinType() default JoinType.INNER;
 
     /**
      * join表名对象
