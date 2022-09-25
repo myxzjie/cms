@@ -1,7 +1,7 @@
 package com.xzjie.cms.core.persistence;
 
 import com.xzjie.cms.core.persistence.enums.ConditionType;
-import com.xzjie.cms.core.persistence.enums.Join;
+import com.xzjie.cms.core.persistence.enums.SpecType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class Criteria {
 
     private ConditionType connect = ConditionType.EQUAL;
 
-    // join
+   private SpecType specsType = SpecType.AND;
 
     /**
      * join查询

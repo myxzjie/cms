@@ -1,16 +1,13 @@
 package com.xzjie.cms.notice.service.impl;
 
-import com.xzjie.cms.core.persistence.PredicateWrapper;
+import com.xzjie.cms.core.persistence.SpecificationWrapper;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.notice.model.Notice;
 import com.xzjie.cms.notice.repository.NoticeRepository;
 import com.xzjie.cms.notice.service.NoticeService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +21,19 @@ public class NoticeServiceImpl extends AbstractService<Notice, NoticeRepository>
     @Override
     public List<Notice> getNoticeList() {
         LocalDateTime nowDate = LocalDateTime.now();
-        return baseRepository.findAll(PredicateWrapper.and()
+//        return baseRepository.findAll(PredicateWrapper.and()
+//                .lessThanOrEqualTo(Notice::getStartDate, nowDate)
+//                .greaterThanOrEqualTo(Notice::getEndDate, nowDate)
+//                .build());
+
+        return baseRepository.findAll(SpecificationWrapper.toSpecAnd()
+//                .lessThanOrEqualTo("startDate", nowDate)
+//                .greaterThanOrEqualTo("endDate", nowDate)
                 .lessThanOrEqualTo(Notice::getStartDate, nowDate)
                 .greaterThanOrEqualTo(Notice::getEndDate, nowDate)
                 .build());
+
+
 //        return baseRepository.findAll((root, query, cb) -> {
 //            List<Predicate> predicates = new ArrayList<>();
 //
