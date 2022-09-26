@@ -1,10 +1,17 @@
 package com.xzjie.cms.notice.service.impl;
 
+import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import com.xzjie.cms.core.persistence.SpecificationWrapper;
 import com.xzjie.cms.core.service.AbstractService;
+import com.xzjie.cms.label.model.Label;
+import com.xzjie.cms.notice.dto.NoticeQueryDto;
 import com.xzjie.cms.notice.model.Notice;
 import com.xzjie.cms.notice.repository.NoticeRepository;
 import com.xzjie.cms.notice.service.NoticeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,11 +26,11 @@ public class NoticeServiceImpl extends AbstractService<Notice, NoticeRepository>
 
 
     @Override
-    public List<Notice> getNoticeList() {
+    public List<Notice> getNotices() {
         LocalDateTime nowDate = LocalDateTime.now();
 //        return baseRepository.findAll(PredicateWrapper.and()
-//                .lessThanOrEqualTo(Notice::getStartDate, nowDate)
-//                .greaterThanOrEqualTo(Notice::getEndDate, nowDate)
+//                .lessThanOrEqualTo(SystemNoticeController::getStartDate, nowDate)
+//                .greaterThanOrEqualTo(SystemNoticeController::getEndDate, nowDate)
 //                .build());
 
         return baseRepository.findAll(SpecificationWrapper.toSpecAnd()
@@ -47,5 +54,11 @@ public class NoticeServiceImpl extends AbstractService<Notice, NoticeRepository>
 //
 //            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
 //        });
+    }
+
+    @Override
+    public Page<Notice> getNotices(NoticeQueryDto query) {
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
+        return baseRepository.findAll(SpecSearchCriteria.builder(query), pageable);
     }
 }

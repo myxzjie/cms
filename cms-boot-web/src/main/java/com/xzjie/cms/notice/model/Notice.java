@@ -46,10 +46,10 @@ public class Notice extends BaseEntity<Notice> {
     private LocalDateTime endDate;
 
     @ApiModelProperty("'创建者'")
-    private String author;
+    private Long author;
 
     @ApiModelProperty("修改者")
-    private String modAuthor;
+    private Long modAuthor;
 
     @ApiModelProperty("创建时间")
     @CreationTimestamp

@@ -24,6 +24,6 @@ public class AppNoticeController {
     @ApiOperation("获得通知数据")
     @GetMapping("/data")
     public Result<?> getNoticeList() {
-        return Result.data(noticeService.getNoticeList());
+        return Result.data(noticeService.getNotices());
     }
 }
