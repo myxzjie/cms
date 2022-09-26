@@ -2,9 +2,10 @@ package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.*;
-import com.xzjie.cms.model.Navigation;
-import com.xzjie.cms.service.NavigationService;
+import com.xzjie.cms.dto.NavigationRequest;
+import com.xzjie.cms.dto.NodeTree;
+import com.xzjie.cms.navigation.model.Navigation;
+import com.xzjie.cms.navigation.service.NavigationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

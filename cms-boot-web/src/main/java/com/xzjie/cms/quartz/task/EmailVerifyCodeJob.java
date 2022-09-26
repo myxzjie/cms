@@ -1,6 +1,6 @@
 package com.xzjie.cms.quartz.task;
 
-import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.verification.service.VerifyCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;

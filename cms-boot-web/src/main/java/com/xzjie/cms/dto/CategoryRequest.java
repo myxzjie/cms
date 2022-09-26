@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.Category;
+import com.xzjie.cms.article.model.Category;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

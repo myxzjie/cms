@@ -3,7 +3,7 @@ package com.xzjie.cms.system.role.web;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.dto.RoleRequest;
-import com.xzjie.cms.model.Permission;
+import com.xzjie.cms.system.menu.model.Permission;
 import com.xzjie.cms.system.role.model.Role;
 import com.xzjie.cms.system.role.serivce.RoleService;
 import io.swagger.annotations.ApiOperation;

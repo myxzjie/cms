@@ -1,6 +1,6 @@
 package com.xzjie.cms.system.web;
 
-import com.xzjie.cms.service.WechatService;
+import com.xzjie.cms.wechat.service.WechatService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

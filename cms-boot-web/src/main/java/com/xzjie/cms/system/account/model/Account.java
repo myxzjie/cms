@@ -2,7 +2,7 @@ package com.xzjie.cms.system.account.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xzjie.cms.model.BaseEntity;
+import com.xzjie.cms.core.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

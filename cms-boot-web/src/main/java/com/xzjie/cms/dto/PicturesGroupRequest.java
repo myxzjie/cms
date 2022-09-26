@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.PicturesGroup;
+import com.xzjie.cms.picture.model.PicturesGroup;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

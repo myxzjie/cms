@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.WxAccountFans;
+import com.xzjie.cms.wechat.model.WxAccountFans;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

@@ -1,10 +1,10 @@
 package com.xzjie.cms.system.role.serivce.impl;
 
 import com.xzjie.cms.system.account.model.AccountRole;
-import com.xzjie.cms.model.Permission;
+import com.xzjie.cms.system.menu.model.Permission;
 import com.xzjie.cms.system.role.model.Role;
 import com.xzjie.cms.system.account.repository.AccountRoleRepository;
-import com.xzjie.cms.repository.PermissionRepository;
+import com.xzjie.cms.system.menu.repository.PermissionRepository;
 import com.xzjie.cms.system.role.repository.RoleRepository;
 import com.xzjie.cms.system.role.serivce.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

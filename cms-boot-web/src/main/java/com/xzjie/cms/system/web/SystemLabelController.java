@@ -2,8 +2,8 @@ package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.LabelQueryDto;
-import com.xzjie.cms.model.Label;
-import com.xzjie.cms.service.LabelService;
+import com.xzjie.cms.label.service.LabelService;
+import com.xzjie.cms.label.model.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -5,7 +5,7 @@ import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.enums.VerifyCodeScenes;
 import com.xzjie.cms.core.persistence.SpecSearchCriteria;
-import com.xzjie.cms.service.VerifyCodeService;
+import com.xzjie.cms.verification.service.VerifyCodeService;
 import com.xzjie.cms.system.account.repository.AccountRepository;
 import com.xzjie.cms.system.account.convert.AccountConverter;
 import com.xzjie.cms.system.account.dto.AccountDto;

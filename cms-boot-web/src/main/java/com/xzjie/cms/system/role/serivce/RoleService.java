@@ -2,7 +2,7 @@ package com.xzjie.cms.system.role.serivce;
 
 import com.xzjie.cms.system.role.model.Role;
 import com.xzjie.cms.system.account.model.AccountRole;
-import com.xzjie.cms.model.Permission;
+import com.xzjie.cms.system.menu.model.Permission;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

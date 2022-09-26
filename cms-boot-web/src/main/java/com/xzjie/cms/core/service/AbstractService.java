@@ -1,26 +1,15 @@
 package com.xzjie.cms.core.service;
 
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.ReflectUtil;
 import com.xzjie.cms.core.ObjectConvertUtils;
 import com.xzjie.cms.core.repository.BaseRepository;
-import com.xzjie.cms.model.BaseEntity;
+import com.xzjie.cms.core.entity.BaseEntity;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 public abstract class AbstractService<T extends BaseEntity<T>, R extends BaseRepository<T, Long>> implements BaseService<T> {
     @Getter

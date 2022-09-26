@@ -1,6 +1,6 @@
 package com.xzjie.cms.system.auth.model;
 
-import com.xzjie.cms.model.BaseEntity;
+import com.xzjie.cms.core.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

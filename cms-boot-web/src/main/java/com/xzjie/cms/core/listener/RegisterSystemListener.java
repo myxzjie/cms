@@ -2,8 +2,8 @@ package com.xzjie.cms.core.listener;
 
 import com.xzjie.cms.core.event.EmailEvent;
 import com.xzjie.cms.core.event.SystemLogEvent;
-import com.xzjie.cms.model.SystemLog;
-import com.xzjie.cms.service.SystemLogService;
+import com.xzjie.cms.log.model.SystemLog;
+import com.xzjie.cms.log.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;

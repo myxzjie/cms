@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.WxTags;
+import com.xzjie.cms.wechat.model.WxTags;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

@@ -2,8 +2,8 @@ package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.RequestHolder;
-import com.xzjie.cms.model.VisitLog;
-import com.xzjie.cms.service.VisitLogService;
+import com.xzjie.cms.visit.model.VisitLog;
+import com.xzjie.cms.visit.service.VisitLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

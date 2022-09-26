@@ -1,6 +1,6 @@
 package com.xzjie.cms.system.web;
 
-import com.xzjie.cms.service.UploadService;
+import com.xzjie.cms.picture.service.UploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.xzjie.cms.dto;
 
-import com.xzjie.cms.model.Navigation;
+import com.xzjie.cms.navigation.model.Navigation;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

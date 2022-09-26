@@ -1,13 +1,9 @@
 package com.xzjie.cms.service.impl;
 
-import com.xzjie.cms.service.ArticleService;
+import com.xzjie.cms.article.service.ArticleService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Vito

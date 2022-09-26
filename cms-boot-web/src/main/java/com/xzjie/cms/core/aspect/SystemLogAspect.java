@@ -5,7 +5,7 @@ import com.xzjie.cms.core.event.SystemLogEvent;
 import com.xzjie.cms.core.utils.RequestHolder;
 import com.xzjie.cms.core.utils.SecurityUtils;
 import com.xzjie.cms.system.auth.dto.LoginDto;
-import com.xzjie.cms.model.SystemLog;
+import com.xzjie.cms.log.model.SystemLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;

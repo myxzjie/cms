@@ -1,7 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.service.VisitLogService;
+import com.xzjie.cms.visit.service.VisitLogService;
 import com.xzjie.cms.vo.ChartData;
 import com.xzjie.cms.vo.VisitStatistics;
 import org.springframework.beans.factory.annotation.Autowired;

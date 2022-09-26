@@ -1,7 +1,7 @@
 package com.xzjie.cms.dto;
 
 import com.google.common.collect.Lists;
-import com.xzjie.cms.model.WxArticleTemplate;
+import com.xzjie.cms.wechat.model.WxArticleTemplate;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

@@ -1,8 +1,8 @@
 package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.model.Navigation;
-import com.xzjie.cms.service.NavigationService;
+import com.xzjie.cms.navigation.model.Navigation;
+import com.xzjie.cms.navigation.service.NavigationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

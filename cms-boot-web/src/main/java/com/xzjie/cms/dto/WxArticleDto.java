@@ -1,7 +1,7 @@
 package com.xzjie.cms.dto;
 
 import com.google.common.collect.Lists;
-import com.xzjie.cms.model.WxArticle;
+import com.xzjie.cms.wechat.model.WxArticle;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
