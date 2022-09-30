@@ -56,11 +56,13 @@ public class SpecificationWrapper {
      * @return SpecificationUtils
      */
     public <T> SpecificationWrapper equal(String attribute, Object value) {
-//        if (this.check(MatchType.EQUAL, new Object[]{value})) {
         Specification<T> specification = (root, query, builder) -> builder.equal(root.get(attribute), value);
         this.invoke(specification);
-//        }
         return this;
+    }
+
+    public <T, R> SpecificationWrapper equal(SFunction<T, R> attribute, Object value) {
+        return this.equal(ReflectionUtils.getFieldName(attribute), value);
     }
 
     public <T> SpecificationWrapper like(String attribute, String value) {

@@ -29,8 +29,8 @@ public abstract class AbstractService<T extends BaseEntity<T>, R extends BaseRep
     @Override
     public <S extends T> S update(S entity) {
         T model = this.getById(entity.getId());
-        ObjectConvertUtils.copy(model, entity);
-        return baseRepository.save(entity);
+        ObjectConvertUtils.copy(entity, model);
+        return (S) baseRepository.save(model);
     }
 
     @Override

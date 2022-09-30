@@ -35,7 +35,7 @@ public class NoticeServiceImpl extends AbstractService<Notice, NoticeRepository>
 
         return baseRepository.findAll(SpecificationWrapper.toSpecAnd()
 //                .lessThanOrEqualTo("startDate", nowDate)
-//                .greaterThanOrEqualTo("endDate", nowDate)
+                .equal(Notice::getEnabled, true)
                 .lessThanOrEqualTo(Notice::getStartDate, nowDate)
                 .greaterThanOrEqualTo(Notice::getEndDate, nowDate)
                 .build());

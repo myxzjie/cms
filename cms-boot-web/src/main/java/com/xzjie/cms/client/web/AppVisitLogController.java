@@ -4,6 +4,7 @@ import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.core.utils.RequestHolder;
 import com.xzjie.cms.visit.model.VisitLog;
 import com.xzjie.cms.visit.service.VisitLogService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/app/visit")
+@Api(value = "前端-访问记录管理", tags = "前端-访问记录管理")
 public class AppVisitLogController {
     @Autowired
     private VisitLogService visitLogService;

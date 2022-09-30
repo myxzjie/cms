@@ -1,8 +1,8 @@
 package com.xzjie.cms.article.service;
 
-import com.xzjie.cms.client.dto.SearchDto;
-import com.xzjie.cms.client.vo.CaseVo;
-import com.xzjie.cms.client.vo.ArticleDetailVo;
+import com.xzjie.cms.article.dto.SearchDto;
+import com.xzjie.cms.article.vo.CaseVo;
+import com.xzjie.cms.article.vo.ArticleDetailVo;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.dto.ArticleHotResult;
 import com.xzjie.cms.dto.ArticleQueryDto;

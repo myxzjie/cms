@@ -1,6 +1,6 @@
 package com.xzjie.cms.system.menu.convert;
 
-import com.xzjie.cms.convert.Converter;
+import com.xzjie.cms.core.convert.Converter;
 import com.xzjie.cms.system.menu.model.Menu;
 import com.xzjie.cms.system.menu.vo.MenuVo;
 import org.mapstruct.Mapper;

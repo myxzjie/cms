@@ -1,7 +1,7 @@
-package com.xzjie.cms.client.convert;
+package com.xzjie.cms.article.convert;
 
-import com.xzjie.cms.client.vo.CaseVo;
-import com.xzjie.cms.convert.Converter;
+import com.xzjie.cms.article.vo.CaseVo;
+import com.xzjie.cms.core.convert.Converter;
 import com.xzjie.cms.article.model.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

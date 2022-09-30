@@ -1,4 +1,4 @@
-package com.xzjie.cms.client.vo;
+package com.xzjie.cms.article.vo;
 
 import com.xzjie.cms.article.model.Article;
 import lombok.Data;

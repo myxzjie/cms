@@ -1,6 +1,7 @@
 package com.xzjie.cms.notice.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.xzjie.cms.core.entity.BaseEntity;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 @Entity
 @Where(clause = "state = 1")
 @Table(name = "sys_notice")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Notice extends BaseEntity<Notice> {
 
     @ApiModelProperty("标题")
@@ -34,15 +36,13 @@ public class Notice extends BaseEntity<Notice> {
     private Integer state;
 
     @ApiModelProperty("开始时间")
-    @CreationTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
 
     @ApiModelProperty("结束时间")
-    @UpdateTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
     @ApiModelProperty("'创建者'")
@@ -54,17 +54,19 @@ public class Notice extends BaseEntity<Notice> {
     @ApiModelProperty("创建时间")
     @CreationTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
     @ApiModelProperty("修改时间")
     @UpdateTimestamp
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateDate;
 
     @ApiModelProperty("备注")
     private String remark;
+    @ApiModelProperty("是否启动")
+    private Boolean enabled;
 
     @Override
     public void copy(Notice obj) {

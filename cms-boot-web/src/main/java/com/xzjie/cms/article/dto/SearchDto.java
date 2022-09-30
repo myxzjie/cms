@@ -1,4 +1,4 @@
-package com.xzjie.cms.client.dto;
+package com.xzjie.cms.article.dto;
 
 import com.xzjie.cms.dto.BasePageDto;
 import com.xzjie.cms.core.persistence.annotation.QueryCondition;

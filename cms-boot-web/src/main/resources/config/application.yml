@@ -11,6 +11,9 @@ spring:
       max-request-size: 20MB #单个文件最大为20M
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+    local-date-time-format: yyyy-MM-dd HH:mm:ss
+    local-date-format: yyyy-MM-dd
+    local-time-format: HH:mm:ss
   freemarker:
     suffix: .html
     settings:
@@ -46,7 +49,9 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: P123456
-
+  cache:
+    redis:
+      cache-null-values: true
   flyway:
     enabled: true
 #    baseline-on-migrate: true
@@ -86,6 +91,7 @@ spring:
             clusterCheckinInterval: 15000
             misfireThreshold: 50000
             tablePrefix: QRTZ_
+
 #            class: org.quartz.impl.jdbcjobstore.JobStoreTX
 
 #    clean-disabled: true

@@ -2,7 +2,7 @@ package com.xzjie.cms.ad.convert;
 
 import com.xzjie.cms.ad.model.Ad;
 import com.xzjie.cms.ad.vo.AdVo;
-import com.xzjie.cms.convert.Converter;
+import com.xzjie.cms.core.convert.Converter;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

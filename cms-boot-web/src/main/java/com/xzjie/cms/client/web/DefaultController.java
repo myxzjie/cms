@@ -1,6 +1,7 @@
 package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.core.utils.JsonUtils;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.util.Scanner;
  * Created by xzjie on 2017/8/7.
  */
 @Controller
+@Api(value = "前端-默认DEMO",tags = "前端-默认DEMO")
 public class DefaultController extends BaseController {
 
 

@@ -3,6 +3,7 @@ package com.xzjie.cms.client.web;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.navigation.model.Navigation;
 import com.xzjie.cms.navigation.service.NavigationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/app/navigation")
+@Api(value = "前端-导航栏管理", tags = "前端-导航栏管理")
 public class AppNavigationController {
 
     @Autowired

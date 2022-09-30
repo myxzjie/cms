@@ -2,6 +2,7 @@ package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.enums.StateType;
 import com.xzjie.cms.label.model.Label;
 import com.xzjie.cms.notice.dto.NoticeQueryDto;
 import com.xzjie.cms.notice.model.Notice;
@@ -36,6 +37,7 @@ public class SystemNoticeController {
     @PostMapping(value = "/create")
     @PreAuthorize("@permission.hasPermission('administrator','notice:all','notice:add')")
     public Result<?> create(@RequestBody Notice notice) {
+        notice.setState(StateType.NORMAL.getCode());
         noticeService.save(notice);
         return Result.success();
     }
@@ -51,7 +53,7 @@ public class SystemNoticeController {
     @ApiOperation("删除通知")
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("@permission.hasPermission('administrator','notice:all','notice:delete')")
-    public Result<?> update(@PathVariable Long id) {
+    public Result<?> delete(@PathVariable Long id) {
         noticeService.delete(id);
         return Result.success();
     }

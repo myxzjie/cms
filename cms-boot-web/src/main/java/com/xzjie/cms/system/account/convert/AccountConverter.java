@@ -1,6 +1,6 @@
 package com.xzjie.cms.system.account.convert;
 
-import com.xzjie.cms.convert.Converter;
+import com.xzjie.cms.core.convert.Converter;
 import com.xzjie.cms.system.account.dto.AccountDto;
 import com.xzjie.cms.system.account.model.Account;
 import com.xzjie.cms.vo.AccountVo;

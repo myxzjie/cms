@@ -1,8 +1,8 @@
 package com.xzjie.cms.client.web;
 
-import com.xzjie.cms.client.dto.SearchDto;
-import com.xzjie.cms.client.vo.ArticleDetailVo;
-import com.xzjie.cms.client.vo.CaseVo;
+import com.xzjie.cms.article.dto.SearchDto;
+import com.xzjie.cms.article.vo.ArticleDetailVo;
+import com.xzjie.cms.article.vo.CaseVo;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.ArticleHotResult;

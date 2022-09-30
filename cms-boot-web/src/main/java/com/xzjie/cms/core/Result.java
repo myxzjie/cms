@@ -77,7 +77,6 @@ public final class Result<T extends Object> {
 //    public static <T> Result<T> success(T data) {
 //        return (Result<T>) success().setData(data);
 //    }
-
     public static <T> Result<T> data(T data) {
         return (Result<T>) success().setData(data);
     }
@@ -129,25 +128,16 @@ public final class Result<T extends Object> {
      * @param code
      * @return Result
      */
-    public Result fail(int code, String message) {
-        return setCode(code)
-                .setMessage(message)
-//                .setError(error)
-                .setSuccess(false);
+    public static Result fail(int code, String message) {
+        return new Result<>(false, code, message, null);
     }
 
-    public Result fail(String message) {
-        return setCode(Business.ERROR.getCode())
-                .setMessage(message)
-//                .setError(error)
-                .setSuccess(false);
+    public static Result fail(String message) {
+        return fail(Business.ERROR.getCode(), message);
     }
 
-    public Result fail(Business business) {
-        return setCode(business.getCode())
-                .setMessage(business.getMessage())
-//                .setError(error)
-                .setSuccess(false);
+    public static Result fail(Business business) {
+        return fail(business.getCode(), business.getMessage());
     }
 
 
