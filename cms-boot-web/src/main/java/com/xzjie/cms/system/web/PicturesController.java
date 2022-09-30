@@ -1,8 +1,8 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.PicturesGroupRequest;
-import com.xzjie.cms.dto.PictureQueryDto;
+import com.xzjie.cms.picture.dto.PicturesGroupRequest;
+import com.xzjie.cms.picture.dto.PictureQueryDto;
 import com.xzjie.cms.picture.model.Pictures;
 import com.xzjie.cms.picture.model.PicturesGroup;
 import com.xzjie.cms.picture.service.PicturesService;

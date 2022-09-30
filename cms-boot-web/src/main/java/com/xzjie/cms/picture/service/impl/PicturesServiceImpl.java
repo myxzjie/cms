@@ -1,6 +1,6 @@
 package com.xzjie.cms.picture.service.impl;
 
-import com.xzjie.cms.dto.PictureQueryDto;
+import com.xzjie.cms.picture.dto.PictureQueryDto;
 import com.xzjie.cms.enums.UploadType;
 import com.xzjie.cms.store.local.configure.LocalProperties;
 import com.xzjie.cms.store.minio.service.MinioService;

@@ -2,8 +2,8 @@ package com.xzjie.cms.system.web;
 
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.WxFansTagRequest;
-import com.xzjie.cms.dto.WxTagsRequest;
+import com.xzjie.cms.wechat.dto.WxFansTagRequest;
+import com.xzjie.cms.wechat.dto.WxTagsRequest;
 import com.xzjie.cms.wechat.model.WxTags;
 import com.xzjie.cms.wechat.service.WxTagsService;
 import org.springframework.beans.factory.annotation.Autowired;

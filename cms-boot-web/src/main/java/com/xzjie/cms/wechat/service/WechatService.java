@@ -1,8 +1,8 @@
 package com.xzjie.cms.wechat.service;
 
 
-import com.xzjie.cms.dto.*;
 import com.xzjie.cms.enums.MediaFileType;
+import com.xzjie.cms.wechat.dto.*;
 
 import java.util.List;
 

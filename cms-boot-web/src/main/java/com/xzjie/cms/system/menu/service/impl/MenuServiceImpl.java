@@ -5,9 +5,9 @@ import com.xzjie.cms.system.menu.repository.MenuRepository;
 import com.xzjie.cms.system.menu.service.MenuService;
 import com.xzjie.cms.system.menu.vo.MenuVo;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.MenuMeta;
-import com.xzjie.cms.dto.MenuRouter;
-import com.xzjie.cms.dto.MenuTree;
+import com.xzjie.cms.system.menu.dto.MenuMeta;
+import com.xzjie.cms.system.menu.dto.MenuRouter;
+import com.xzjie.cms.system.menu.dto.MenuTree;
 import com.xzjie.cms.system.menu.model.Menu;
 import org.springframework.stereotype.Service;
 

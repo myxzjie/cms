@@ -1,6 +1,6 @@
 package com.xzjie.cms.exception;
 
-import com.xzjie.cms.dto.WxMpError;
+import com.xzjie.cms.wechat.dto.WxMpError;
 import lombok.Getter;
 
 @Getter

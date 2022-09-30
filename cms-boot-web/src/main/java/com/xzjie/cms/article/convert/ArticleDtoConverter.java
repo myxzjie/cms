@@ -1,7 +1,7 @@
 package com.xzjie.cms.article.convert;
 
 import com.xzjie.cms.core.convert.Converter;
-import com.xzjie.cms.dto.ArticleDto;
+import com.xzjie.cms.article.dto.ArticleDto;
 import com.xzjie.cms.article.model.Article;
 import com.xzjie.cms.label.model.Label;
 import org.mapstruct.*;

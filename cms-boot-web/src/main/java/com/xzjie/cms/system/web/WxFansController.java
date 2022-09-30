@@ -1,7 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.WxAccountFansDto;
+import com.xzjie.cms.wechat.dto.WxAccountFansDto;
 import com.xzjie.cms.wechat.model.WxAccountFans;
 import com.xzjie.cms.wechat.service.WxAccountFansService;
 import org.springframework.beans.factory.annotation.Autowired;

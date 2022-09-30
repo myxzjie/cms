@@ -2,9 +2,9 @@ package com.xzjie.cms.wechat.service.impl;
 
 import com.google.common.collect.Sets;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.WxTagging;
-import com.xzjie.cms.dto.WxTagsCreate;
-import com.xzjie.cms.dto.WxTagsResult;
+import com.xzjie.cms.wechat.dto.WxTagging;
+import com.xzjie.cms.wechat.dto.WxTagsCreate;
+import com.xzjie.cms.wechat.dto.WxTagsResult;
 import com.xzjie.cms.wechat.model.WxAccountFans;
 import com.xzjie.cms.wechat.model.WxFansTag;
 import com.xzjie.cms.wechat.model.WxTags;

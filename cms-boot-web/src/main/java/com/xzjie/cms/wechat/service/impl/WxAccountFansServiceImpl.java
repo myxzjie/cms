@@ -2,8 +2,8 @@ package com.xzjie.cms.wechat.service.impl;
 
 import com.xzjie.cms.wechat.convert.WxAccountFansConverter;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.WxOpenIdResult;
-import com.xzjie.cms.dto.WxUserResult;
+import com.xzjie.cms.wechat.dto.WxOpenIdResult;
+import com.xzjie.cms.wechat.dto.WxUserResult;
 import com.xzjie.cms.wechat.model.WxAccountFans;
 import com.xzjie.cms.wechat.model.WxFansTag;
 import com.xzjie.cms.wechat.repository.WxFansRepository;

@@ -1,7 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.LabelQueryDto;
+import com.xzjie.cms.label.dto.LabelQueryDto;
 import com.xzjie.cms.label.service.LabelService;
 import com.xzjie.cms.label.model.Label;
 import org.springframework.beans.factory.annotation.Autowired;

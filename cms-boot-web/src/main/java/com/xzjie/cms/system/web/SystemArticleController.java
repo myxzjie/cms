@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.web;
 
+import com.xzjie.cms.article.dto.*;
 import com.xzjie.cms.article.model.Article;
 import com.xzjie.cms.article.model.ArticleHot;
 import com.xzjie.cms.article.model.ArticleRecommendStat;

@@ -2,7 +2,7 @@ package com.xzjie.cms.wechat.service;
 
 
 import com.xzjie.cms.core.service.BaseService;
-import com.xzjie.cms.dto.WxArticleTemplateQueryDto;
+import com.xzjie.cms.wechat.dto.WxArticleTemplateQueryDto;
 import com.xzjie.cms.wechat.model.WxArticle;
 import com.xzjie.cms.wechat.model.WxArticleTemplate;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
 package com.xzjie.cms.wechat.convert;
 
 import com.xzjie.cms.core.convert.Converter;
-import com.xzjie.cms.dto.WxUserResult;
+import com.xzjie.cms.wechat.dto.WxUserResult;
 import com.xzjie.cms.wechat.model.WxAccountFans;
 import org.apache.commons.lang.StringUtils;
 import org.mapstruct.*;

@@ -1,6 +1,6 @@
 package com.xzjie.cms.picture.service;
 
-import com.xzjie.cms.dto.PictureQueryDto;
+import com.xzjie.cms.picture.dto.PictureQueryDto;
 import com.xzjie.cms.picture.model.Pictures;
 import com.xzjie.cms.picture.model.PicturesGroup;
 import org.springframework.data.domain.Page;

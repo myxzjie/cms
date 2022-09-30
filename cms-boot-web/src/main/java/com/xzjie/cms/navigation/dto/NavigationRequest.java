@@ -1,0 +1,25 @@
+package com.xzjie.cms.navigation.dto;
+
+import com.xzjie.cms.navigation.model.Navigation;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
+
+@Data
+public class NavigationRequest {
+    private Long id;
+    private Long pid;
+    private String name;
+    private String url;
+    private String target;
+    private Integer sort;
+    private Boolean enabled;
+
+    public Navigation toNavigation() {
+        Navigation navigation = new Navigation();
+        BeanUtils.copyProperties(this, navigation);
+        return navigation;
+    }
+
+    public @interface Update {
+    }
+}

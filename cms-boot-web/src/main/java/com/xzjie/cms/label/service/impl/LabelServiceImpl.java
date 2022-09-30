@@ -2,7 +2,7 @@ package com.xzjie.cms.label.service.impl;
 
 import com.xzjie.cms.core.persistence.SpecSearchCriteria;
 import com.xzjie.cms.core.service.AbstractService;
-import com.xzjie.cms.dto.LabelQueryDto;
+import com.xzjie.cms.label.dto.LabelQueryDto;
 import com.xzjie.cms.label.repository.LabelRepository;
 import com.xzjie.cms.label.service.LabelService;
 import com.xzjie.cms.label.model.Label;

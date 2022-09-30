@@ -2,7 +2,7 @@ package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.NavigationRequest;
+import com.xzjie.cms.navigation.dto.NavigationRequest;
 import com.xzjie.cms.dto.NodeTree;
 import com.xzjie.cms.navigation.model.Navigation;
 import com.xzjie.cms.navigation.service.NavigationService;

@@ -1,9 +1,9 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
-import com.xzjie.cms.dto.WxArticleDto;
-import com.xzjie.cms.dto.WxArticleTemplateDto;
-import com.xzjie.cms.dto.WxArticleTemplateQueryDto;
+import com.xzjie.cms.wechat.dto.WxArticleDto;
+import com.xzjie.cms.wechat.dto.WxArticleTemplateDto;
+import com.xzjie.cms.wechat.dto.WxArticleTemplateQueryDto;
 import com.xzjie.cms.wechat.model.WxArticle;
 import com.xzjie.cms.wechat.model.WxArticleTemplate;
 import com.xzjie.cms.wechat.service.WxArticleTemplateService;
