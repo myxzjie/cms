@@ -3,6 +3,7 @@ package com.xzjie.cms.article.service;
 import com.xzjie.cms.article.dto.SearchDto;
 import com.xzjie.cms.article.vo.CaseVo;
 import com.xzjie.cms.article.vo.ArticleDetailVo;
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.article.dto.ArticleHotResult;
 import com.xzjie.cms.article.dto.ArticleQueryDto;
@@ -48,7 +49,8 @@ public interface ArticleService extends BaseService<Article> {
 
     boolean deleteCategory(Long id);
 
-    Page<ArticleHotResult> getArticleHot(Integer page, int size);
+    PageResult<ArticleHotResult> getArticleHot(Integer page, int size);
+
 
     boolean saveArticleHot(Set<Long> ids);
 

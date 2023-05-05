@@ -3,6 +3,7 @@ package com.xzjie.cms.client.web;
 import com.xzjie.cms.article.dto.SearchDto;
 import com.xzjie.cms.article.vo.ArticleDetailVo;
 import com.xzjie.cms.article.vo.CaseVo;
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.article.dto.ArticleHotResult;
@@ -43,8 +44,8 @@ public class AppArticleController extends BaseController {
     @ApiOperation(value = "热门数据内容列表", notes = "热门数据内容列表", response = ArticleHotResult.class)
     @GetMapping(value = "/hot")
     public Result<List<ArticleHotResult>> getArticleHot(BasePageDto pageRequest) {
-        Page<ArticleHotResult> hotResultPage = articleService.getArticleHot(pageRequest.getPage(), pageRequest.getSize());
-        return Result.data(hotResultPage.getContent(), hotResultPage.getTotalElements());
+        PageResult<ArticleHotResult> result = articleService.getArticleHot(pageRequest.getPage(), pageRequest.getSize());
+        return Result.data(result);
     }
 
     @ApiOperation(value = "推荐数据内容列表", notes = "推荐数据内容列表", response = ArticleHotResult.class)
@@ -56,11 +57,11 @@ public class AppArticleController extends BaseController {
         if (articles.size() < 1) {
             return Result.success();
         }
-        Article article = articles.get(0);
-        Map<String, Object> map = new HashMap<>();
-        map.put("lead", article);
-        map.put("articles", articles.subList(1, articles.size()));
-        return Result.data(map);
+//        Article article = articles.get(0);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("lead", article);
+//        map.put("articles", articles.subList(1, articles.size()));
+        return Result.data(articles);
     }
 
     @GetMapping(value = "/detail/{id}")
@@ -91,9 +92,9 @@ public class AppArticleController extends BaseController {
     }
 
     @GetMapping(value = "/cases/{id}")
-    public Map<String, Object> cases(@PathVariable Long id, ArticleQueryDto query) {
+    public Result<?> cases(@PathVariable Long id, ArticleQueryDto query) {
         List<CaseVo> categories = articleService.getCaseData(id, query);
-        return MapUtils.success(categories);
+        return Result.data(categories);
     }
 
     @GetMapping(value = "/label")

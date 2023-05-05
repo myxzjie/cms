@@ -7,6 +7,8 @@ import com.xzjie.cms.article.model.ArticleRecommendStat;
 import com.xzjie.cms.article.model.Category;
 import com.xzjie.cms.client.web.BaseController;
 import com.xzjie.cms.article.convert.ArticleDtoConverter;
+import com.xzjie.cms.core.PageResult;
+import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.*;
@@ -18,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -140,9 +143,9 @@ public class SystemArticleController extends BaseController {
 
     @GetMapping(value = "/hot")
     @PreAuthorize("@permission.hasPermission('administrator','article-hot:all','article-hot:list')")
-    public Map<String, Object> getArticleHot(BasePageDto page) {
-        Page<ArticleHotResult> resultPage = articleService.getArticleHot(page.getPage(), page.getSize());
-        return MapUtils.success(resultPage.getContent(), resultPage.getTotalElements());
+    public Result<List<ArticleHotResult>> getArticleHot(BasePageDto page) {
+        PageResult<ArticleHotResult> resultPage = articleService.getArticleHot(page.getPage(), page.getSize());
+        return Result.data(resultPage.getContent(), resultPage.getTotal());
     }
 
     @GetMapping(value = "/category")

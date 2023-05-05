@@ -22,6 +22,12 @@ public class PageResult<T> {
     private List<T> content;
     private Long total;
 
+    public static <T> PageResult<T> toPage(List<T> content, Long total) {
+        return PageResult.<T>builder()
+                .content(content)
+                .total(total).build();
+    }
+
     public static <T> PageResult<T> toPage(Page page) {
         return PageResult.builder()
                 .content(page.getContent())

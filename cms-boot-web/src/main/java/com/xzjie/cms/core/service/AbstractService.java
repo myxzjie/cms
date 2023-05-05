@@ -64,7 +64,6 @@ public abstract class AbstractService<T extends BaseEntity<T>, R extends BaseRep
 
     /**
      * 合并丢失的字段，有一些字段在查询Map的时候自动转换为小驼峰，但是实体还是下划线分割这种的
-     * @author: wei.fu
      * @param resultEntity
      * @param resultMap
      */
@@ -87,7 +86,6 @@ public abstract class AbstractService<T extends BaseEntity<T>, R extends BaseRep
 
     /**
      * 合并丢失的字段，有一些字段在查询Map的时候自动转换为小驼峰，但是实体还是下划线分割这种的
-     * @author: wei.fu
      * @param resultList
      * @param resultListMap
      */

@@ -24,10 +24,10 @@ import java.util.Scanner;
 public class DefaultController extends BaseController {
 
 
-    @RequestMapping(value = {"", "/", "index"})
-    public String index(Map<String, Object> model) {
-        return getRedirect("/article");
-    }
+//    @RequestMapping(value = {"", "/", "index"})
+//    public String index(Map<String, Object> model) {
+//        return getRedirect("/article");
+//    }
 
     // https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=zh-CN
     @GetMapping("/bg.jpg")

@@ -45,7 +45,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/**")
                 .addResourceLocations(resource).setCachePeriod(0);
-//        registry.addResourceHandler("/**").addResourceLocations("classpath:/META-INF/resources/").setCachePeriod(0);
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/public/").setCachePeriod(0);
 
         /** 配置knife4j 显示文档 */
         registry.addResourceHandler("doc.html")

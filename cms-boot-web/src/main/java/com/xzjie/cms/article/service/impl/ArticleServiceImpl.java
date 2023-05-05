@@ -1,5 +1,6 @@
 package com.xzjie.cms.article.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import com.xzjie.cms.article.model.Article;
 import com.xzjie.cms.article.model.ArticleHot;
 import com.xzjie.cms.article.model.ArticleRecommendStat;
@@ -8,6 +9,7 @@ import com.xzjie.cms.article.dto.SearchDto;
 import com.xzjie.cms.article.vo.CaseVo;
 import com.xzjie.cms.article.vo.ArticleDetailVo;
 import com.xzjie.cms.article.convert.CategoryVoConverter;
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.article.dto.ArticleHotResult;
 import com.xzjie.cms.article.dto.ArticleQueryDto;
@@ -85,7 +87,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
         Page<Article> articles = baseRepository.findAll(specification, pageable);
 
         articles.forEach(article -> {
-            Category category = categoryRepository.getOne(article.getCategoryId());
+            Category category = categoryRepository.getById(article.getCategoryId());
             article.setCategoryName(category.getCategoryName());
         });
         return articles;
@@ -100,7 +102,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public Category getCategory(Long id) {
-        return categoryRepository.getOne(id);
+        return categoryRepository.getById(id);
     }
 
     @Override
@@ -182,8 +184,8 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
             if (categoryTree.getParentId() == null) {
                 trees.add(categoryTree);
             } else {
-                if (dataMap.get(Long.valueOf(categoryTree.getParentId())) != null) {
-                    dataMap.get(Long.valueOf(categoryTree.getParentId())).getChildren().add(categoryTree);
+                if (dataMap.get(categoryTree.getParentId()) != null) {
+                    dataMap.get(categoryTree.getParentId()).getChildren().add(categoryTree);
                 }
             }
         }
@@ -201,9 +203,12 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     }
 
     @Override
-    public Page<ArticleHotResult> getArticleHot(Integer page, int size) {
+    public PageResult<ArticleHotResult> getArticleHot(Integer page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("sort").descending());
-        return articleHotRepository.findArticleHot(pageable);
+        Page<Map<String, Object>> resultPage = articleHotRepository.findArticleHot(pageable);
+
+        List<ArticleHotResult> result = Convert.toList(ArticleHotResult.class, resultPage.getContent());
+        return PageResult.toPage(result, resultPage.getTotalElements());
     }
 
     @Override
