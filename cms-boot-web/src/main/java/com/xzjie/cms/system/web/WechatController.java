@@ -1,6 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.wechat.service.WechatService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.io.PrintWriter;
 @Slf4j
 @RestController
 @RequestMapping("/api/wechat")
+@Api(value = "管理端-微信公众号管理",tags = "管理端-微信公众号管理")
 public class WechatController {
 
     @Autowired

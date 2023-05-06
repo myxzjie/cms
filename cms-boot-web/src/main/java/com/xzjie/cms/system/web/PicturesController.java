@@ -6,6 +6,7 @@ import com.xzjie.cms.picture.dto.PictureQueryDto;
 import com.xzjie.cms.picture.model.Pictures;
 import com.xzjie.cms.picture.model.PicturesGroup;
 import com.xzjie.cms.picture.service.PicturesService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pictures")
+@Api(value = "管理端-图片管理",tags = "管理端-图片管理")
 public class PicturesController {
 
     @Autowired

@@ -6,6 +6,7 @@ import com.xzjie.cms.navigation.dto.NavigationRequest;
 import com.xzjie.cms.dto.NodeTree;
 import com.xzjie.cms.navigation.model.Navigation;
 import com.xzjie.cms.navigation.service.NavigationService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/navigation")
+@Api(value = "管理端-导航栏管理", tags = "管理端-导航栏管理")
 public class SystemNavigationController {
 
     @Autowired

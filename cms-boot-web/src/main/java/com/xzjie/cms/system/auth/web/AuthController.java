@@ -21,6 +21,8 @@ import com.xzjie.cms.security.token.SecurityTokenProvider;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/auth")
+@Api(value = "管理端-权限管理",tags = "管理端-权限管理")
 public class AuthController {
 
     @Autowired
@@ -80,6 +83,7 @@ public class AuthController {
         return MapUtils.success(new AuthResponse(token));
     }
 
+    @ApiOperation("用户登录")
     @Log(value = "login", descrption = "用户登录")
     @PostMapping("/sign")
     public Result authenticate(@Validated @RequestBody LoginDto login) throws Exception {

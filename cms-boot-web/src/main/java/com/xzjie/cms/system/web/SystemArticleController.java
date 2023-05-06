@@ -14,6 +14,7 @@ import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.dto.*;
 import com.xzjie.cms.article.service.ArticleService;
 import com.xzjie.cms.label.service.LabelService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping({"/api/article", "/api/system/article"})
+@Api(value = "管理端-内容管理", tags = "管理端-内容管理")
 public class SystemArticleController extends BaseController {
 
     @Autowired

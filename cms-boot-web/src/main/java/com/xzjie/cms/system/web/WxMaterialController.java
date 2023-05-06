@@ -7,6 +7,7 @@ import com.xzjie.cms.wechat.dto.WxArticleTemplateQueryDto;
 import com.xzjie.cms.wechat.model.WxArticle;
 import com.xzjie.cms.wechat.model.WxArticleTemplate;
 import com.xzjie.cms.wechat.service.WxArticleTemplateService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/wx-material")
+@Api(value = "管理端-微信公众号图文管理",tags = "管理端-微信公众号图文管理")
 public class WxMaterialController {
     @Autowired
     private WxArticleTemplateService articleTemplateService;

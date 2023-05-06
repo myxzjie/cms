@@ -7,6 +7,7 @@ import com.xzjie.cms.dict.service.KeyDataService;
 import com.xzjie.cms.enums.KeyDataKey;
 import com.xzjie.cms.dict.model.KeyData;
 import com.xzjie.cms.wechat.service.WechatService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/key-data")
+@Api(value = "管理端-系统配置数据",tags = "管理端-系统配置数据")
 public class KeyDataController {
     //    private final String WECHAT_MENUS_KEY = "wechat_menus";
     @Autowired

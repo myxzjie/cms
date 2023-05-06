@@ -4,6 +4,7 @@ import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.visit.service.VisitLogService;
 import com.xzjie.cms.vo.ChartData;
 import com.xzjie.cms.vo.VisitStatistics;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/system")
+@Api(value = "管理端-访问量管理",tags = "管理端-访问量管理")
 public class SystemVisitController {
 
     @Autowired

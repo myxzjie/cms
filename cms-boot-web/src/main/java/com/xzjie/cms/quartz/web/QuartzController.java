@@ -5,6 +5,7 @@ import com.xzjie.cms.quartz.dto.PauseQuartzRequest;
 import com.xzjie.cms.quartz.dto.QuartzRequest;
 import com.xzjie.cms.quartz.dto.QuartzResult;
 import com.xzjie.cms.quartz.service.QuartzService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/job")
+@Api(value = "管理端-系统任务管理",tags = "管理端-系统任务管理")
 public class QuartzController {
 
     @Autowired

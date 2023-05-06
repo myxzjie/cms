@@ -6,6 +6,7 @@ import com.xzjie.cms.wechat.dto.WxFansTagRequest;
 import com.xzjie.cms.wechat.dto.WxTagsRequest;
 import com.xzjie.cms.wechat.model.WxTags;
 import com.xzjie.cms.wechat.service.WxTagsService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/wx-tags")
+@Api(value = "管理端-微信公众号标签管理",tags = "管理端-微信公众号标签管理")
 public class WxTagsController {
 
     @Autowired

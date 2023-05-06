@@ -1,11 +1,11 @@
 echo off  
   
-echo [INFO]ĞŞ¸Ä°æ±¾´ò°ü½Å±¾ ÇëÊäÈëĞèÒªÉı¼¶µÄ°æ±¾£¨Èçv1.0.1):  
-  
-set /p newVersion=   
-  
-echo [INFO]ÊäÈë%newVersion% ¿ªÊ¼Ìæ»»°æ±¾  
-  
-call mvn clean versions:set -DnewVersion=%newVersion%  
-  
-echo [INFO]Çë¼ì²éÊÇ·ñËùÓĞ×ÓÄ£¿é¶¼Éı¼¶°æ±¾³É¹¦ ĞÂ°æ±¾Îª%newVersion%  
+echo [INFO]ä¿®æ”¹ç‰ˆæœ¬æ‰“åŒ…è„šæœ¬ è¯·è¾“å…¥éœ€è¦å‡çº§çš„ç‰ˆæœ¬ï¼ˆå¦‚v1.0.1):
+
+set /p newVersion=
+
+echo [INFO]è¾“å…¥%newVersion% å¼€å§‹æ›¿æ¢ç‰ˆæœ¬
+
+call mvn clean versions:set -DnewVersion=%newVersion%
+
+echo [INFO]è¯·æ£€æŸ¥æ˜¯å¦æ‰€æœ‰å­æ¨¡å—éƒ½å‡çº§ç‰ˆæœ¬æˆåŠŸ æ–°ç‰ˆæœ¬ä¸º%newVersion%

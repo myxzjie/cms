@@ -1,6 +1,7 @@
 package com.xzjie.cms.system.web;
 
 import com.xzjie.cms.core.utils.MapUtils;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/hot")
+@Api(value = "管理端-热门管理",tags = "管理端-热门管理")
 public class HotController {
     List<String> datas = new ArrayList<>();
 

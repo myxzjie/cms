@@ -6,6 +6,7 @@ import com.xzjie.cms.dto.RoleRequest;
 import com.xzjie.cms.system.menu.model.Permission;
 import com.xzjie.cms.system.role.model.Role;
 import com.xzjie.cms.system.role.serivce.RoleService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/role")
+@Api(value = "管理端-角色管理",tags = "管理端-角色管理")
 public class RoleAuthorizationController {
     @Autowired
     private RoleService roleService;
