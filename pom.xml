@@ -37,6 +37,33 @@
         <module>cms-boot-web</module>
     </modules>
 
+    <!--<build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>true</doCheck>
+                    <doUpdate>true</doUpdate>
+                    <format>{0,number}.{1,number}.{2,number}</format>
+                    <items>
+                        <item>buildNumber0</item>
+                        <item>buildNumber1</item>
+                        <item>buildNumber2</item>
+                    </items>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>-->
 </project>
 
 
