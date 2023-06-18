@@ -53,7 +53,7 @@ spring:
     redis:
       cache-null-values: true
   flyway:
-    enabled: true
+    enabled: false
 #    baseline-on-migrate: true
   mail:
     host: smtp.mxhichina.com

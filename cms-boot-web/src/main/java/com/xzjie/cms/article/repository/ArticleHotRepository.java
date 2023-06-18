@@ -13,13 +13,15 @@ import java.util.Map;
 
 public interface ArticleHotRepository extends JpaRepository<ArticleHot, Long>, JpaSpecificationExecutor<ArticleHot> {
 
-//    @Query(value = "SELECT new com.xzjie.cms.article.dto.ArticleHotResult(b.id,b.articleId,a.title,a.description,b.sort,b.createDate) " +
+//    @Query(value = "SELECT new com.xzjie.cms.article.dto.ArticleHotResult(b.id,b.articleId,a.title,a.description,b.sort,a.image,b.createDate) " +
 //            "FROM ArticleHot b, Article a where a.id = b.articleId")
 //    Page<ArticleHotResult> findArticleHot(Pageable pageable);
 
 //    ArticleHot findByArticleId(Long ArticleId);
 
-    @Query(value = "SELECT b.id,b.article_id,a.title,a.image,a.description,b.sort,b.create_date FROM cms_article_hot b, cms_article a where a.id = b.article_id", nativeQuery = true)
+    @Query(value = "SELECT b.id,b.article_id,a.title,a.image,a.description,b.sort,b.create_date FROM cms_article_hot b, cms_article a where a.id = b.article_id"
+            ,countQuery = "select count(1) FROM cms_article_hot b, cms_article a where a.id = b.article_id"
+            , nativeQuery = true)
     Page<Map<String, Object>> findArticleHot(Pageable pageable);
 
     boolean existsByArticleId(Long articleId);

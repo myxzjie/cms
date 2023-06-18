@@ -262,7 +262,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.2.2</version>
                 <configuration>
-                    <imageName>xzjie/${project.artifactId}</imageName>
+                    <imageName>registry.cn-hangzhou.aliyuncs.com/xzjie/${project.artifactId}</imageName>
                     <dockerDirectory>${basedir}</dockerDirectory>
                     <resources>
                         <resource>

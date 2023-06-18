@@ -22,7 +22,15 @@ mail:
 
 upload:
   # local 、aliyun 、qiniu
-  type: aliyun
+  type: minio
+  minio:
+    url: http://minio:9000
+    access-key: LTAI4GL1tVVn1djTUPuwTb93
+    secret-key: UauPwiD59ZyTCvJWj2GobSgQxrawkO
+    secure:
+    bucket: files
+    metric-name:
+    url-prefix: http://yameien.com/
   local:
     path: ./upload/file/
     url-prefix: http://localhost:8090/
