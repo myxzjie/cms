@@ -1,5 +1,7 @@
 package com.xzjie.cms.wechat.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xzjie.cms.configure.LocationProperties;
 import com.xzjie.cms.core.utils.HttpUtils;
 import com.xzjie.cms.dict.service.KeyDataService;
@@ -135,6 +137,7 @@ public class WechatServiceImpl implements WechatService {
 
     /**
      * 新增永久素材
+     *
      * @param image 图片url路径
      * @return
      */
@@ -339,5 +342,19 @@ public class WechatServiceImpl implements WechatService {
         }
 
         return true;
+    }
+
+    @Override
+    public JSONObject createLoginQrcode() {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=%s", getAccessToken(false));
+
+        // 这里生成一个带参数的二维码，参数是scene_str
+        String sceneStr = RandomUtil.randomString(8);
+        String json = "{\"expire_seconds\": 604800, \"action_name\": \"QR_STR_SCENE\"" + ", \"action_info\": {\"scene\": {\"scene_str\": \"" + sceneStr + "\"}}}";
+        String result = HttpUtils.doPost(url, json);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        jsonObject.put("sceneStr", sceneStr);
+
+        return jsonObject;
     }
 }

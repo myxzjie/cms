@@ -45,7 +45,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public Article getArticle(Long id) {
-        return baseRepository.getOne(id);
+        return baseRepository.findById(id).orElseGet(Article::new);
     }
 
     @Override
@@ -86,10 +86,9 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
         Specification<Article> specification = SpecSearchCriteria.builder(dto);
         Page<Article> articles = baseRepository.findAll(specification, pageable);
 
-        articles.forEach(article -> {
-            Category category = categoryRepository.getById(article.getCategoryId());
-            article.setCategoryName(category.getCategoryName());
-        });
+        articles.forEach(article ->
+                categoryRepository.findById(article.getCategoryId()).ifPresent(category ->
+                        article.setCategoryName(category.getCategoryName())));
         return articles;
     }
 
@@ -195,10 +194,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public Article update(Article article) {
-//        Article model = baseRepository.findById(article.getId()).orElseGet(Article::new);
-//        model.copy(article);
         article.setUpdateDate(LocalDateTime.now());
-//        baseRepository.save(model);
         return super.update(article);
     }
 
@@ -236,9 +232,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public boolean deleteArticleHot(Set<Long> ids) {
-        ids.forEach(id -> {
-            articleHotRepository.deleteById(id);
-        });
+        ids.forEach(id -> articleHotRepository.deleteById(id));
         return true;
     }
 
@@ -274,9 +268,7 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public boolean deleteRecommendStat(Set<Long> ids) {
-        ids.forEach(id -> {
-            articleRecommendStatRepository.deleteById(id);
-        });
+        ids.forEach(id -> articleRecommendStatRepository.deleteById(id));
         return true;
     }
 }

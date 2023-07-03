@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信扫码登录</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+
+        body{
+            background:  aqua url("/images/bodybg.png");
+        }
+
+
+        #container{
+            margin: 0px auto;
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+            color: rgb(140,0,0);
+            font-size: 20px;
+
+        }
+
+        #container span{
+            font-family: "楷体";
+        }
+
+        #bottom{
+            display: flex;
+            margin: 0 auto;
+            justify-content: space-around;
+        }
+
+        #bottom button{
+            padding: 5px 20px;
+            background-color: rgb(140,0,0);
+            color:#ffffff;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+
+        }
+
+        #bottom button:hover{
+            padding: 5px 20px;
+            background-color: #ffffff;
+            color:rgb(140,0,0);
+            font-size: 18px;
+            border: 2px solid rgb(140,0,0);
+            border-radius: 5px;
+
+        }
+
+
+        #emPower{
+            margin-right: 20px;
+        }
+
+        #right,
+        #left{
+            width: 300px;
+            height: 300px;
+            padding: 50px;
+            background: url("/images/wxCode.png");
+        }
+
+        .qrCodeImgId{
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="container">
+    <div id="left">
+        <h4>温馨提示：</h4>
+        <span>微信登录后，您可以在微信公众号查看自己的捐赠信息，您的捐赠信息还有可能被展示在平台主页</span>
+    </div>
+    <div id="right" class="qrCodeImgId">
+        <img src="" id="qrCodeImgId"  style="width: 300px;height: 300px;display: none">
+    </div>
+
+</div>
+<div id="bottom">
+    <div>
+        <input type="hidden" id="projectId" th:value="${donateVo.projectId}">
+        <input type="hidden" id="projectName" th:value="${donateVo.projectName}">
+        <input type="hidden" id="payMoney" th:value="${donateVo.payMoney}">
+        <input type="hidden" id="projectPicture" th:value="${donateVo.projectPicture}">
+        <button id="emPower" onclick="getQrCode()">扫码授权</button>
+        <button id="cancelEmPower">跳过授权</button>
+    </div>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script>
+        $("#emPower").on("click",function(){
+            if($("#right").hasClass("qrCodeImgId")){
+                $("#right").removeClass("qrCodeImgId");
+            }else{
+                $("#right").addClass("qrCodeImgId");
+            }
+        })
+    </script>
+    <script>
+        // 存储二维码标识,用于验证是否扫码成功
+        var sceneStr;
+        var t;
+        // 获取登录二维码
+        function getQrCode(){
+            $.ajax({
+                url:'/api/wechat/qrcode/login',
+                success:  (res) => {
+                    console.log("=============getQrCode=======================");
+                    if (res.code == 0) {
+                        sceneStr = res.data.sceneStr;
+                        $('#qrCodeImgId').attr('src', "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + res.data.ticket);
+                        $('#qrCodeImgId').show();
+                        t = window.setInterval(getOpenId, 3000);
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+
+            });
+        }
+        // 扫码成功，获取用户openId=>为获取用户信息做准备
+        function getOpenId() {
+            $.ajax({
+                url:'/wx/qrCodeFirstLogin/getOpenId',
+                data:{ "eventKey":sceneStr},
+                success:function (data) {
+                    if (data.code == 200) {
+                        console.log("========getOpenId==========");
+                        console.log(data.data);
+                        window.clearInterval(t);
+                        window.location.href = "/wx/toDonate?openId="+data.data.openId
+                        alert("登录成功");
+                        /**
+                         * 1、第一次扫码登录进行账号绑定
+                         * 2、以后根据openId获取用户信息
+                         */
+                    }
+                }
+            });
+        }
+
+
+
+        $("#cancelEmPower").on("click",function () {
+            var data={
+                payMoney:$("#payMoney").val(),
+                projectName:$("#projectName").val(),
+                projectId:$("#projectId").val(),
+                projectPicture:$("#projectPicture").val()
+            }
+            window.location.href = "/wx/jumpWxCode?"+$.param(data)
+        })
+
+    </script>
+</div>
+</body>
+</html>

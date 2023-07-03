@@ -80,7 +80,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/v3/api-docs",
                         "/webjars/**").permitAll()
-                .antMatchers("/app/**", "/api/auth/**","/api/oauth/**").permitAll()
+                .antMatchers("/app/**", "/api/auth/**","/api/oauth/**","/api/wechat/**").permitAll()
                 .antMatchers("/images/**").permitAll()
                 // 所有请求都需要认证
                 .anyRequest().authenticated()

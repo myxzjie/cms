@@ -71,6 +71,6 @@ public class DefaultController extends BaseController {
 
     @RequestMapping(value = "demo")
     public String demo(){
-        return getRemoteView("demo");
+        return getRemoteView("index");
     }
 }
