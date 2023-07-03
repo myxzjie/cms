@@ -20,13 +20,25 @@ mail:
   from: admin@cms.cn
   from-name: CMS系统管理员
 
+wx:
+  mp:
+    useRedis: false
+    redisConfig:
+      host: 127.0.0.1
+      port: 6379
+      timeout: 2000
+    configs:
+      - appId: wx5f30e1d751acdcf0 # 第一个公众号的appid
+        secret: defe69330b6d690368983c6f5c52505a # 公众号的appsecret
+        token: haiyuan # 接口配置里的Token值
+
 upload:
   # local 、aliyun 、qiniu
   type: minio
   minio:
     url: http://minio:9000
-    access-key: LTAI4GL1tVVn1djTUPuwTb93
-    secret-key: UauPwiD59ZyTCvJWj2GobSgQxrawkO
+    access-key: 0yGSYYQvAFb1vlriQxv6
+    secret-key: aOOwvfoLDrJZYLKr3oBkeYTl3CXIxUcMszeLceSs
     secure:
     bucket: files
     metric-name:
