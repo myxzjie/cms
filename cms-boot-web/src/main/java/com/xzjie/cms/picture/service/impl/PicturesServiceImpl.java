@@ -1,5 +1,6 @@
 package com.xzjie.cms.picture.service.impl;
 
+import com.xzjie.cms.enums.Sorting;
 import com.xzjie.cms.picture.dto.PictureQueryDto;
 import com.xzjie.cms.enums.UploadType;
 import com.xzjie.cms.store.local.configure.LocalProperties;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -98,8 +100,13 @@ public class PicturesServiceImpl implements PicturesService {
 
     @Override
     public Page<Pictures> getPictures(PictureQueryDto query) {
-        Pageable pageable = PageRequest.of(query.getPage(), query.getSize());
+        Sort sort = Sort.by("id").descending();
+        if (Sorting.asc.equals(query.getSorting())) {
+            sort = Sort.by("id").ascending();
+        }
+        Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), sort);
         Specification<Pictures> specification = SpecSearchCriteria.builder(query);
+
         return picturesRepository.findAll(specification, pageable);
     }
 }
