@@ -31,6 +31,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -77,13 +78,27 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
 
     @Override
     public Page<Article> getArticle(ArticleQueryDto dto) {
-        Sort sort = Sort.by("id").descending();
+        Sort sort = Sort.by("sort", "id").descending();
         if (Sorting.asc.equals(dto.getSorting())) {
             sort = Sort.by("id").ascending();
         }
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
 
         Specification<Article> specification = SpecSearchCriteria.builder(dto);
+        specification = specification.and((root, criteriaQuery, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("showState"), 1));
+
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        });
+
+//        return roleRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+//            List<Predicate> predicates = new ArrayList<>();
+//            if (query == null) {
+//                return null;
+//            }
+//            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//        }, pageable);
         Page<Article> articles = baseRepository.findAll(specification, pageable);
 
         articles.forEach(article ->

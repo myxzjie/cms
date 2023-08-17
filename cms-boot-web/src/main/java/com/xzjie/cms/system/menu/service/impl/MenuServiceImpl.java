@@ -121,7 +121,7 @@ public class MenuServiceImpl extends AbstractService<Menu, MenuRepository> imple
     private List<MenuVo> getTree(Long pid) {
         List<MenuVo> menuResponses = new ArrayList<>();
         List<Menu> menus = baseRepository.findByPidOrderBySortDescIdAsc(pid);
-        menus.stream().forEach(menu -> {
+        menus.forEach(menu -> {
             MenuVo menuResponse = MenuConverter.INSTANCE.source(menu);
             List<MenuVo> children = getTree(menu.getId());
             menuResponse.setChildren(children);

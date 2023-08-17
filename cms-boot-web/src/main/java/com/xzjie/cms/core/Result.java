@@ -122,6 +122,10 @@ public final class Result<T extends Object> {
         return new Result<>(true, code, message, data);
     }
 
+    public static <T> Result<T> fail(int code, String message, T data) {
+        return new Result<>(false, code, message, data);
+    }
+
     /**
      * 系统异常类并返回结果数据
      *

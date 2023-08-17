@@ -1,5 +1,6 @@
 package com.xzjie.cms.client.web;
 
+import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.navigation.model.Navigation;
 import com.xzjie.cms.navigation.service.NavigationService;
@@ -21,8 +22,8 @@ public class AppNavigationController {
     private NavigationService navigationService;
 
     @GetMapping("/data")
-    public Map<String, Object> getNavigations() {
+    public Result<List<Navigation>> getNavigations() {
         List<Navigation> navigations = navigationService.getNavigations(0L, true);
-        return MapUtils.success(navigations);
+        return Result.data(navigations);
     }
 }

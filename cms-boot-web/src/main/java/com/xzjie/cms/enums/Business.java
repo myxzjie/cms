@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum Business {
     SUCCESS(0, "success"),
 
+    BAD_PARAM(5, "参数错误"),
     // token异常
     TOKEN_EXPIRED(301, "token过期"),
 //    TOKEN_ERROR(302, "token异常"),

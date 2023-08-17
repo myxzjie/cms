@@ -1,21 +1,19 @@
 package com.xzjie.cms.exception.handler;
 
-import com.xzjie.cms.core.utils.MapUtils;
+import com.xzjie.cms.core.Result;
+import com.xzjie.cms.enums.Business;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -30,9 +28,9 @@ public class WebGlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Map<String, Object> error(MissingServletRequestParameterException e) {
-        log.error("", e);
-        return MapUtils.error("请求参数 " + e.getParameterName() + " 不能为空");
+    public Result<Object> error(MissingServletRequestParameterException e) {
+        log.error("请求参数", e);
+        return Result.fail("请求参数 " + e.getParameterName() + " 不能为空");
     }
 
     /**
@@ -43,33 +41,21 @@ public class WebGlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public Map<String, Object> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
-        log.error("", e);
-        return MapUtils.error("参数体不能为空");
+    public Result<Object> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
+        log.error("参数体", e);
+        return Result.fail("参数体不能为空");
     }
 
-    /**
-     * 参数效验异常处理器
-     *
-     * @param e 参数验证异常
-     * @return ResponseInfo
-     */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, Object> parameterExceptionHandler(MethodArgumentNotValidException e) {
-        log.error("", e);
-        // 获取异常信息
-        BindingResult exceptions = e.getBindingResult();
-        // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息
-        if (exceptions.hasErrors()) {
-            List<ObjectError> errors = exceptions.getAllErrors();
-            if (!errors.isEmpty()) {
-                // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
-                FieldError fieldError = (FieldError) errors.get(0);
-                return MapUtils.error(fieldError.getDefaultMessage());
-            }
-        }
-        return MapUtils.error("请求参数有误!");
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Result<Map<String, Object>> handleValidException(MethodArgumentNotValidException e) {
+        log.error("数据校验出现问题{}，异常类型{}", e.getMessage(), e.getClass());
+        BindingResult bindingResult = e.getBindingResult();
+        Map<String, Object> errorMap = new HashMap<>();
+
+        bindingResult.getFieldErrors().forEach(item -> {
+            errorMap.put(item.getField(), item.getDefaultMessage());
+        });
+        return Result.fail(Business.BAD_PARAM.getCode(), "错误的参数", errorMap);
     }
 
 //    /**
@@ -97,13 +83,13 @@ public class WebGlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({Exception.class})
-    public Map<String, Object> otherExceptionHandler(Exception e) {
+    public Result<Object> otherExceptionHandler(Exception e) {
         log.error("其他异常", e);
         // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息
         if (!StringUtils.isEmpty(e.getMessage())) {
-            return MapUtils.error(e.getMessage());
+            return Result.fail(e.getMessage());
         }
-        return MapUtils.error("未知的错误!");
+        return Result.fail("未知的错误!");
     }
 
 

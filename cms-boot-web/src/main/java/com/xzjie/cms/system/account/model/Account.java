@@ -41,11 +41,11 @@ public class Account extends BaseEntity<Account> {
     @Column(name = "e_mail")
     private String email;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ApiModelProperty("密码")
     private String password;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String salt;
     @ApiModelProperty("状态")
     private Integer state;

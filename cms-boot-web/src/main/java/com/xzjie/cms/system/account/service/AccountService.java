@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.account.service;
 
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.BaseService;
 import com.xzjie.cms.system.auth.model.Social;
 import com.xzjie.cms.system.account.dto.AccountDto;
@@ -19,7 +20,7 @@ public interface AccountService extends BaseService<Account> {
 
     Account getAccountByMobile(String mobile);
 
-    Page<AccountVo> getAccountList(AccountQueryDto request);
+    PageResult<AccountVo> getAccountList(AccountQueryDto request);
 
     boolean existsByName(String name);
 

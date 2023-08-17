@@ -26,7 +26,7 @@ public class AccountDto extends Dto {
     @ApiModelProperty("用户昵称")
     private String nickName;
     @ApiModelProperty("用户头像")
-    @NotNull(groups = {Create.class, Update.class})
+    @NotNull(groups = {Create.class, Update.class}, message = "用户头像,必填")
     private String avatar;
     @ApiModelProperty("性别")
     private String sex;

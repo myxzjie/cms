@@ -5,6 +5,9 @@ import com.xzjie.cms.dto.NodeTree;
 import com.xzjie.cms.navigation.model.Navigation;
 import com.xzjie.cms.navigation.repository.NavigationRepository;
 import com.xzjie.cms.navigation.service.NavigationService;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +18,11 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@CacheConfig(cacheNames = "navigation")
 public class NavigationServiceImpl extends AbstractService<Navigation, NavigationRepository> implements NavigationService {
 
     @Override
+    @Cacheable
     public List<Navigation> getNavigation() {
         boolean enabled = true;
         List<Navigation> navigations = this.getNavigation(0L, enabled);
@@ -28,9 +33,10 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Navigatio
     }
 
     @Override
+    @Cacheable(key = "'navigations:'+#p0+#p1")
     public List<Navigation> getNavigations(Long pid, boolean enabled) {
         List<Navigation> navigations = this.getNavigation(pid, enabled);
-        navigations.stream().forEach(navigation -> {
+        navigations.forEach(navigation -> {
             navigation.setChildren(this.getNavigations(navigation.getId(), enabled));
         });
         return navigations;
@@ -57,6 +63,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Navigatio
     }
 
     @Override
+    @Cacheable(key = "'navigations:'+#p0")
     public List<Navigation> getNavigation(Long pid) {
         List<Navigation> navigations = baseRepository.findByPid(pid);
         navigations.stream().forEach(navigation -> {
@@ -66,18 +73,20 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Navigatio
     }
 
     @Override
+    @Cacheable(key = "'navigations-tree:'+#p0")
     public List<NodeTree> getNavigationTree(Long pid) {
         List<NodeTree> trees = new ArrayList<>();
         List<Navigation> navigations = baseRepository.findByPid(pid);
-        navigations.stream().forEach(navigation -> {
-            trees.add(new NodeTree(navigation.getId(), navigation.getName(), this.getNavigationTree(navigation.getId())));
-        });
+        navigations.forEach(navigation ->
+                trees.add(new NodeTree(navigation.getId(), navigation.getName(), this.getNavigationTree(navigation.getId())))
+        );
         return trees;
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void delete(Set<Long> ids) {
-        ids.stream().forEach(id -> {
+        ids.forEach(id -> {
             Set<Long> navigationIds = getIds(id);
             baseRepository.delete(navigationIds);
         });
@@ -85,6 +94,7 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Navigatio
 
     /**
      * 活动pid一下所以的节点
+     *
      * @param pid
      * @return
      */
@@ -99,11 +109,16 @@ public class NavigationServiceImpl extends AbstractService<Navigation, Navigatio
         return ids;
     }
 
-//    @Override
-//    public boolean update(Navigation obj) {
-//        Navigation model = baseRepository.findById(obj.getId()).orElseGet(Navigation::new);
-//        model.copy(obj);
-//        baseRepository.save(model);
-//        return true;
-//    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public <S extends Navigation> S save(S entity) {
+        return super.save(entity);
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public <S extends Navigation> S update(S entity) {
+        return super.update(entity);
+    }
 }

@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.account.web;
 
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.annotation.Log;
 import com.xzjie.cms.core.utils.MapUtils;
@@ -20,7 +21,6 @@ import com.xzjie.cms.vo.UserInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -150,9 +150,9 @@ public class SystemAccountController {
     @ApiOperation("获得用户列表")
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPermission('administrator','user:all','user:list')")
-    public Result getUserList(AccountQueryDto request) {
-        Page<AccountVo> page = accountService.getAccountList(request);
-        return Result.data(page.getContent(), page.getTotalElements());
+    public Result<List<AccountVo>> getUserList(AccountQueryDto request) {
+        PageResult<AccountVo> page = accountService.getAccountList(request);
+        return Result.data(page.getContent(), page.getTotal());
     }
 
     @ApiOperation("创建用户")

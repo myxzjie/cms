@@ -1,8 +1,10 @@
 package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.article.dto.SearchDto;
+import com.xzjie.cms.article.vo.ArticleCateVo;
 import com.xzjie.cms.article.vo.ArticleDetailVo;
 import com.xzjie.cms.article.vo.CaseVo;
+import com.xzjie.cms.article.vo.CategoriesVo;
 import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
@@ -78,23 +80,33 @@ public class AppArticleController extends BaseController {
     }
 
     @GetMapping(value = "/category/{id}")
-    public Map<String, Object> category(@PathVariable Long id, ArticleQueryDto query) {
-        Map<String, Object> model = new HashMap<>();
+    public Result<ArticleCateVo> category(@PathVariable Long id, ArticleQueryDto query) {
+//        Map<String, Object> model = new HashMap<>();
         Category category = articleService.getCategory(id);
         query.setCategoryId(id);
         Page<Article> articlePage = articleService.getArticle(query);
 
-        model.put("total", articlePage.getTotalElements());
-        model.put("articles", articlePage.getContent());
-        model.put("category", category);
+        ArticleCateVo model = ArticleCateVo.builder()
+                .category(category)
+                .articles(articlePage.getContent())
+                .total(articlePage.getTotalElements())
+                .build();
+//        model.put("total", articlePage.getTotalElements());
+//        model.put("articles", articlePage.getContent());
+//        model.put("category", category);
 
-        return MapUtils.success(model);
+        return Result.data(model);
     }
 
     @GetMapping(value = "/cases/{id}")
-    public Result<?> cases(@PathVariable Long id, ArticleQueryDto query) {
+    public Result<CategoriesVo> cases(@PathVariable Long id, ArticleQueryDto query) {
+        Category category = articleService.getCategory(id);
         List<CaseVo> categories = articleService.getCaseData(id, query);
-        return Result.data(categories);
+        return Result.data(CategoriesVo
+                .builder()
+                .cate(category)
+                .categories(categories)
+                .build());
     }
 
     @GetMapping(value = "/label")

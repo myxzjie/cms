@@ -4,9 +4,17 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.xzjie.cms.core.utils.JsonUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -25,6 +33,11 @@ import org.springframework.web.server.session.WebSessionIdResolver;
 
 import java.nio.charset.Charset;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableCaching
@@ -137,9 +150,20 @@ public class RedisConfigure extends CachingConfigurerSupport {
         //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值（默认使用JDK的序列化方式）
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
 
+        JavaTimeModule timeModule = new JavaTimeModule();
+        timeModule.addDeserializer(LocalDate.class,
+                new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        timeModule.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        timeModule.addSerializer(LocalDate.class,
+                new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        timeModule.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
         ObjectMapper objectMapper = new ObjectMapper();
         // 指定要序列化的域，field,get和set,以及修饰符范围，ANY是都有包括private和public
         objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
+        objectMapper.registerModule(timeModule);
         // 指定序列化输入的类型，类必须是非final修饰的，final修饰的类，比如String,Integer等会跑出异常
         //objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, As.WRAPPER_ARRAY);
@@ -171,5 +195,31 @@ public class RedisConfigure extends CachingConfigurerSupport {
             return bytes == null ? null : new String(bytes, charset);
 
         }
+    }
+
+    /**
+     * 自定义缓存key生成策略，默认将使用该策略
+     */
+    @Bean
+    @Override
+    public KeyGenerator keyGenerator() {
+        return (target, method, params) -> {
+            Map<String,Object> container = new HashMap<>(3);
+            Class<?> targetClassClass = target.getClass();
+            // 类地址
+            container.put("class",targetClassClass.toGenericString());
+            // 方法名称
+            container.put("methodName",method.getName());
+            // 包名称
+            container.put("package",targetClassClass.getPackage());
+            // 参数列表
+            for (int i = 0; i < params.length; i++) {
+                container.put(String.valueOf(i),params[i]);
+            }
+            // 转为JSON字符串
+            String json = JsonUtils.toJsonString(container);
+            // 做SHA256 Hash计算，得到一个SHA256摘要作为Key
+            return DigestUtils.sha256Hex(json);
+        };
     }
 }

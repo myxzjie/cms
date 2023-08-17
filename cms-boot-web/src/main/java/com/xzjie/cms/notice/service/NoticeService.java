@@ -1,7 +1,6 @@
 package com.xzjie.cms.notice.service;
 
 import com.xzjie.cms.core.service.BaseService;
-import com.xzjie.cms.label.model.Label;
 import com.xzjie.cms.notice.dto.NoticeQueryDto;
 import com.xzjie.cms.notice.model.Notice;
 import org.springframework.data.domain.Page;

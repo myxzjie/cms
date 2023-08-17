@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.account.service.impl;
 
+import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.core.utils.MapUtils;
 import com.xzjie.cms.enums.StateType;
@@ -20,6 +21,9 @@ import com.xzjie.cms.vo.AccountVo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +41,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@CacheConfig(cacheNames = "account")
 public class AccountServiceImpl extends AbstractService<Account, AccountRepository> implements AccountService {
 
     @Autowired
@@ -52,6 +57,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void save(AccountDto dto, Social social, String code) {
         Account account = AccountConverter.INSTANCE.target(dto);
         account.setState(StateType.NORMAL.getCode());
@@ -76,6 +82,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void update(Long userId, AccountDto dto) {
         Account account = AccountConverter.INSTANCE.target(dto);
         List<AccountRole> accountRoles = new ArrayList<>();
@@ -95,6 +102,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
+    @Cacheable(key = "'userid:'+#p0")
     public Account getAccount(Long userId) {
         return baseRepository.findById(userId).orElseGet(Account::new);
     }
@@ -134,6 +142,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
 //    }
 //
     @Override
+    @Cacheable(key = "'username:'+#p0")
     public Account getAccountByName(String name) {
         Account account = baseRepository.findAccountByName(name);
 //        account.setRoles(roleService.getRoles(account.getUserId()));
@@ -141,12 +150,14 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
+    @Cacheable(key = "'mobile:'+#p0")
     public Account getAccountByMobile(String mobile) {
         return baseRepository.findAccountByPhone(mobile);
     }
 
     @Override
-    public Page<AccountVo> getAccountList(AccountQueryDto query) {
+    @Cacheable
+    public PageResult<AccountVo> getAccountList(AccountQueryDto query) {
         Pageable pageable = PageRequest.of(query.getPage(), query.getSize(), Sort.by("id").descending());
         Specification<Account> specification = SpecSearchCriteria.builder(query);
         Page<Account> page = baseRepository.findAll(specification, pageable);
@@ -155,7 +166,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
             List<Long> roles = roleService.getAccountRoleByUserId(userVo.getId());
             userVo.setRoles(roles);
         });
-        return voPage;
+        return PageResult.toPage(voPage);
     }
 
     @Override
@@ -164,22 +175,26 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean updateAvatar(String username, String avatar) {
         return baseRepository.updateAvatar(username, avatar) > 0;
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean updatePassword(Long userId, String encode) {
         return baseRepository.updatePassword(userId, encode) > 0;
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean updateEmail(Long userId, String email) {
         return baseRepository.updateEmail(userId, email) > 0;
     }
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public Account save(Account obj) {
         obj.setState(1);
         obj.setCreateDate(LocalDateTime.now());
@@ -211,6 +226,7 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void resetPassword(Long userId) {
         Account model = this.getById(userId);
         if (model == null) {
