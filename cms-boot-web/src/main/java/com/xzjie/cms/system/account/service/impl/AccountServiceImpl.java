@@ -81,6 +81,12 @@ public class AccountServiceImpl extends AbstractService<Account, AccountReposito
     }
 
     @Override
+    @CacheEvict(allEntries = true)
+    public <S extends Account> S update(S entity) {
+        return super.update(entity);
+    }
+
+    @Override
     @Transactional
     @CacheEvict(allEntries = true)
     public void update(Long userId, AccountDto dto) {
