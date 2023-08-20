@@ -1,6 +1,5 @@
 package com.xzjie.cms.article.vo;
 
-import com.xzjie.cms.article.model.Article;
 import com.xzjie.cms.article.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +10,13 @@ import java.util.List;
 
 /**
  * @author vito(xiaozijie)
- * @since 2023/8/17 12:55 PM
+ * @since 2023/8/18 8:28 AM
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleCateVo {
-    private Category category;
-    private List<Category> fathers;
-    private List<Article> articles;
-    private Long total;
+public class CateFatherVo {
+    private Category father;
+    private List<Category> categories;
 }

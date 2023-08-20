@@ -8,7 +8,7 @@ import com.xzjie.cms.article.model.Category;
 import com.xzjie.cms.article.dto.SearchDto;
 import com.xzjie.cms.article.vo.CaseVo;
 import com.xzjie.cms.article.vo.ArticleDetailVo;
-import com.xzjie.cms.article.convert.CategoryVoConverter;
+import com.xzjie.cms.article.convert.CategoryConverter;
 import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.article.dto.ArticleHotResult;
@@ -115,14 +115,45 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     }
 
     @Override
+    public Category getCategoryFather(Long id) {
+        Category cate = categoryRepository.findById(id).orElseGet(Category::new);
+        return categoryRepository.findById(cate.getPid()).orElseGet(Category::new);
+    }
+
+    @Override
+    public List<Category> getCateFather(Long id) {
+        List<Category> result = new ArrayList<>();
+        Category cate = categoryRepository.findById(id).orElseGet(Category::new);
+        //查询父级架构
+        Category father = categoryRepository.findById(cate.getPid()).orElseGet(Category::new);
+        result.add(father);
+        result.add(cate);
+        return result;
+//        if (cate.getPid() != null) {
+//            //查询出符合条件的对象
+//            Category father = categoryRepository.findById(cate.getPid()).orElseGet(Category::new);
+//            if (father.getId() != null) {
+//                //如果查出的对象不为空，则将此对象的id存到全局变量中，并且继续调用自己，即递归，一直到查询不到为止
+//                result.add(father);
+//                getCateFather(father.getId(), result);
+//            }
+//        }
+    }
+
+    @Override
     public Category getCategory(Long id) {
         return categoryRepository.getById(id);
     }
 
     @Override
+    public List<Category> getCategoriesById(Long pid) {
+        return categoryRepository.findCategoriesByPidOrderBySort(pid);
+    }
+
+    @Override
     public List<CaseVo> getCaseData(Long categoryId, ArticleQueryDto query) {
         List<Category> categories = categoryRepository.findCategoriesByPidOrderBySort(categoryId);
-        List<CaseVo> caseResponses = CategoryVoConverter.INSTANCE.source(categories);
+        List<CaseVo> caseResponses = CategoryConverter.INSTANCE.source(categories);
 
         for (CaseVo caseResponse : caseResponses) {
             query.setCategoryId(caseResponse.getId());
@@ -285,5 +316,10 @@ public class ArticleServiceImpl extends AbstractService<Article, ArticleReposito
     public boolean deleteRecommendStat(Set<Long> ids) {
         ids.forEach(id -> articleRecommendStatRepository.deleteById(id));
         return true;
+    }
+
+    @Override
+    public List<Category> getCateVisById(Long id) {
+        return null;
     }
 }

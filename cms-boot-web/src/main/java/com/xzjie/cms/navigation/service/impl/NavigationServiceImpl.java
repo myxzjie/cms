@@ -1,5 +1,6 @@
 package com.xzjie.cms.navigation.service.impl;
 
+import com.xzjie.cms.article.model.Category;
 import com.xzjie.cms.core.service.AbstractService;
 import com.xzjie.cms.dto.NodeTree;
 import com.xzjie.cms.navigation.model.Navigation;
@@ -20,6 +21,18 @@ import java.util.Set;
 @Service
 @CacheConfig(cacheNames = "navigation")
 public class NavigationServiceImpl extends AbstractService<Navigation, NavigationRepository> implements NavigationService {
+
+    @Override
+    @Cacheable
+    public List<Navigation> getCateFather(Long id) {
+        List<Navigation> result = new ArrayList<>();
+        Navigation children = baseRepository.findById(id).orElseGet(Navigation::new);
+        //查询父级架构
+        Navigation father = baseRepository.findById(children.getPid()).orElseGet(Navigation::new);
+        result.add(father);
+        result.add(children);
+        return result;
+    }
 
     @Override
     @Cacheable

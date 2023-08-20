@@ -19,4 +19,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
     List<Category> findCategoriesByPidAndShowStateOrderBySort(Long pid, Integer showState);
 
     Page<Category> findCategoriesByPid(Long pid, Pageable pageable);
+
+//    List<Object> findCategoryById(Long id);
 }

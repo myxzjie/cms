@@ -1,5 +1,6 @@
 package com.xzjie.cms.system.web;
 
+import com.xzjie.cms.article.convert.CategoryConverter;
 import com.xzjie.cms.article.dto.*;
 import com.xzjie.cms.article.model.Article;
 import com.xzjie.cms.article.model.ArticleHot;
@@ -152,7 +153,7 @@ public class SystemArticleController extends BaseController {
 
     @GetMapping(value = "/category")
     @PreAuthorize("@permission.hasPermission('administrator','category:all','category:list')")
-    public Map<String, Object> category(CategoryRequest category) {
+    public Map<String, Object> category(CateDto category) {
         Page<Category> categoryPage = articleService.getCategory(category.getPage(), category.getSize(), category.toCategory());
 
         return MapUtils.success(categoryPage.getContent(), categoryPage.getTotalElements());
@@ -160,16 +161,16 @@ public class SystemArticleController extends BaseController {
 
     @PostMapping(value = "/category/create")
     @PreAuthorize("@permission.hasPermission('administrator','category:all','category:add')")
-    public Map<String, Object> createCategory(@RequestBody CategoryRequest categoryRequest) {
-        Category category = categoryRequest.toCategory();
+    public Map<String, Object> createCategory(@RequestBody CateDto param) {
+        Category category = CategoryConverter.INSTANCE.convert(param);
         articleService.saveCategory(category);
         return MapUtils.success();
     }
 
     @PutMapping(value = "/category/update/{id}")
     @PreAuthorize("@permission.hasPermission('administrator','category:all','category:edit')")
-    public Map<String, Object> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryRequest categoryRequest) {
-        Category category = categoryRequest.toCategory();
+    public Map<String, Object> updateCategory(@PathVariable Long id, @Valid @RequestBody CateDto param) {
+        Category category = CategoryConverter.INSTANCE.convert(param);
         category.setId(id);
         articleService.updateCategory(category);
 

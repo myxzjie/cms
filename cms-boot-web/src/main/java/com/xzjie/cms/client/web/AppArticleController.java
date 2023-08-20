@@ -1,10 +1,7 @@
 package com.xzjie.cms.client.web;
 
 import com.xzjie.cms.article.dto.SearchDto;
-import com.xzjie.cms.article.vo.ArticleCateVo;
-import com.xzjie.cms.article.vo.ArticleDetailVo;
-import com.xzjie.cms.article.vo.CaseVo;
-import com.xzjie.cms.article.vo.CategoriesVo;
+import com.xzjie.cms.article.vo.*;
 import com.xzjie.cms.core.PageResult;
 import com.xzjie.cms.core.Result;
 import com.xzjie.cms.core.utils.MapUtils;
@@ -15,6 +12,7 @@ import com.xzjie.cms.article.model.Article;
 import com.xzjie.cms.label.service.LabelService;
 import com.xzjie.cms.article.model.Category;
 import com.xzjie.cms.article.service.ArticleService;
+import com.xzjie.cms.navigation.service.NavigationService;
 import com.xzjie.cms.vo.LabelVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +32,7 @@ public class AppArticleController extends BaseController {
 
     @Autowired
     private ArticleService articleService;
+
     @Autowired
     private LabelService labelService;
 
@@ -79,21 +79,36 @@ public class AppArticleController extends BaseController {
         return MapUtils.success();
     }
 
+    @ApiOperation(value = "查询分类父级、同级", notes = "查询分类父级、同级")
+    @GetMapping(value = "/cate/vis/{id}")
+    public Result<Category> cateVis(@PathVariable Long id) {
+        Category father = articleService.getCategoryFather(id);
+//        List<Category> categories = articleService.getCategoriesById(id);
+        return Result.data(father);
+    }
+
+    @ApiOperation(value = "查询分类同级", notes = "查询分类同级")
+    @GetMapping(value = "/cate/{id}")
+    public Result<List<Category>> cate(@PathVariable Long id) {
+        List<Category> fathers = articleService.getCategoriesById(id);
+        return Result.data(fathers);
+    }
+
+    @ApiOperation(value = "查询分类和文章", notes = "查询分类和文章")
     @GetMapping(value = "/category/{id}")
     public Result<ArticleCateVo> category(@PathVariable Long id, ArticleQueryDto query) {
-//        Map<String, Object> model = new HashMap<>();
+
+        List<Category> fathers = articleService.getCateFather(id);
         Category category = articleService.getCategory(id);
         query.setCategoryId(id);
         Page<Article> articlePage = articleService.getArticle(query);
 
         ArticleCateVo model = ArticleCateVo.builder()
                 .category(category)
+                .fathers(fathers)
                 .articles(articlePage.getContent())
                 .total(articlePage.getTotalElements())
                 .build();
-//        model.put("total", articlePage.getTotalElements());
-//        model.put("articles", articlePage.getContent());
-//        model.put("category", category);
 
         return Result.data(model);
     }

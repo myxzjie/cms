@@ -9,6 +9,8 @@ import java.util.Set;
 
 public interface NavigationService extends BaseService<Navigation> {
 
+    List<Navigation> getCateFather(Long id);
+
     List<Navigation> getNavigation();
 
     List<Navigation> getNavigations(Long pid, boolean enabled);

@@ -33,9 +33,14 @@ public interface ArticleService extends BaseService<Article> {
 
     Page<Article> getArticleByLabels(ArticleQueryDto query);
 
+    Category getCategoryFather(Long id);
+    List<Category> getCateFather(Long id);
+
     Category getCategory(Long id);
 
-    List<CaseVo> getCaseData(Long categoryId,ArticleQueryDto query);
+    List<Category> getCategoriesById(Long pid);
+
+    List<CaseVo> getCaseData(Long categoryId, ArticleQueryDto query);
 
     List<Category> getCategory();
 
@@ -65,4 +70,7 @@ public interface ArticleService extends BaseService<Article> {
     boolean updateRecommendStat(ArticleRecommendStat recommendStat);
 
     boolean deleteRecommendStat(Set<Long> ids);
+
+    List<Category> getCateVisById(Long id);
+
 }

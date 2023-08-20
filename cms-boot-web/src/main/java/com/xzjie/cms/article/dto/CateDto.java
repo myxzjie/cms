@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class CategoryRequest extends BasePageDto {
+public class CateDto extends BasePageDto {
 
     private Long pid;
 
@@ -25,7 +25,7 @@ public class CategoryRequest extends BasePageDto {
 
     private String description;
 
-//    private Integer sort;
+    private Integer sort;
 
     private Integer showState;
 
