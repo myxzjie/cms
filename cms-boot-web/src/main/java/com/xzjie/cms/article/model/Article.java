@@ -82,7 +82,7 @@ public class Article extends BaseEntity<Article> {
     @ApiModelProperty("是否推荐")
     private Integer recommendStat;
     @ApiModelProperty("内容")
-    @Column(name = "content", columnDefinition = "text")
+    @Column(name = "content", columnDefinition = "longtext")
     private String content;
     @ApiModelProperty("是否显示")
     private Integer showState;
