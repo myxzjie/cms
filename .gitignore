@@ -36,6 +36,7 @@ docker-compose-*.yml
 /hbase/
 /pinpoint-docker/
 docs/*.sql
+docs/*.md
 /pinpoint-docker-master.zip
 
 HELP.md

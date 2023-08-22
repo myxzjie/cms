@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds" debug="false">
     <contextName>cms</contextName>
-    <property name="log.path" value="/home/java/logs"/>
-<!--    <property name="log.path" value="./logs"/>-->
+    <property name="log.path" value="./logs"/>
     <property name="max.history" value="30"/>
     <property name="max.file.size" value="100MB"/>
     <property name="log.charset" value="utf-8" />
