@@ -52,17 +52,13 @@ public class AppArticleController extends BaseController {
 
     @ApiOperation(value = "推荐数据内容列表", notes = "推荐数据内容列表", response = ArticleHotResult.class)
     @GetMapping(value = "/recommend-stat")
-    public Result<?> recommendStat(ArticleQueryDto query) {
+    public Result<List<Article>> recommendStat(ArticleQueryDto query) {
         query.setRecommendStat(1);
         Page<Article> recommendsPage = articleService.getArticle(query);
         List<Article> articles = recommendsPage.getContent();
-        if (articles.size() < 1) {
+        if (articles.isEmpty()) {
             return Result.success();
         }
-//        Article article = articles.get(0);
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("lead", article);
-//        map.put("articles", articles.subList(1, articles.size()));
         return Result.data(articles);
     }
 
@@ -74,9 +70,9 @@ public class AppArticleController extends BaseController {
     }
 
     @PostMapping("/praise/{id}")
-    public Map<String, Object> praise(@PathVariable Long id) {
+    public Result<Object> praise(@PathVariable Long id) {
         articleService.updatePraise(id);
-        return MapUtils.success();
+        return Result.success();
     }
 
     @ApiOperation(value = "查询分类父级、同级", notes = "查询分类父级、同级")

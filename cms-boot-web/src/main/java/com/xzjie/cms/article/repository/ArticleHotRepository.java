@@ -20,7 +20,7 @@ public interface ArticleHotRepository extends JpaRepository<ArticleHot, Long>, J
 //    ArticleHot findByArticleId(Long ArticleId);
 
     @Query(value = "SELECT b.id,b.article_id,a.title,a.image,a.description,b.sort,b.create_date FROM cms_article_hot b, cms_article a where a.id = b.article_id"
-            ,countQuery = "select count(1) FROM cms_article_hot b, cms_article a where a.id = b.article_id"
+            ,countQuery = "select count(1) FROM cms_article_hot b, cms_article a where a.id = b.article_id and a.show_state = 1"
             , nativeQuery = true)
     Page<Map<String, Object>> findArticleHot(Pageable pageable);
 
